@@ -9,10 +9,18 @@ namespace XSIRC {
 		public Gtk.TextView text_entry;
 		public Gtk.Entry topic_view;
 		public Gtk.Statusbar status_bar;
+		public View system_view;
 		// Other stuff
 		private LinkedList<string> command_history = new LinkedList<string>();
 		private int command_history_index = 0;
 		public ArrayList<Server> servers = new ArrayList<Server>();
+		
+		public struct View {
+			public string name;
+			public Gtk.ScrolledWindow scrolled_window;
+			public Gtk.TextView text_view;
+			public Gtk.Label label;
+		}
 		
 		public GUI() {
 			main_window = new Gtk.Window(Gtk.WindowType.TOPLEVEL);
@@ -87,6 +95,9 @@ namespace XSIRC {
 			
 			// System view goes here.
 			
+			system_view = create_view("System");
+			servers_notebook.append_page(system_view.scrolled_window,system_view.label);
+			servers_notebook.show_all();
 			// Input entry
 			
 			text_entry = new Gtk.TextView();
@@ -113,5 +124,32 @@ namespace XSIRC {
 		private void parse_text(string text) {
 			
 		}
+		
+		// View creation and adding-to
+		
+		public View create_view(string name) {
+			Gtk.Label label = new Gtk.Label(name);
+			
+			Gtk.TextView text_view = new Gtk.TextView();
+			text_view.editable = false;
+			text_view.cursor_visible = false;
+			text_view.wrap_mode = Gtk.WrapMode.WORD;
+			text_view.modify_font(Pango.FontDescription.from_string(Main.config["core"]["font"]));
+			
+			Gtk.ScrolledWindow scrolled_window = new Gtk.ScrolledWindow(null,null);
+			scrolled_window.vscrollbar_policy = Gtk.PolicyType.ALWAYS;
+			scrolled_window.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
+			scrolled_window.add(text_view);
+			
+			View view = {name,scrolled_window,text_view,label};
+			
+			return view;
+		}
+		
+		public void add_to_view(View view,string text) {
+			
+		}
+		
+		// Network and view finding stuff
 	}
 }
