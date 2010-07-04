@@ -10,6 +10,7 @@ namespace XSIRC {
 		public Gtk.Entry topic_view;
 		public Gtk.Statusbar status_bar;
 		public View system_view;
+		private bool destroyed = false;
 		// Other stuff
 		private LinkedList<string> command_history = new LinkedList<string>();
 		private int command_history_index = 0;
@@ -26,7 +27,8 @@ namespace XSIRC {
 			main_window = new Gtk.Window(Gtk.WindowType.TOPLEVEL);
 			main_window.title = "XSIRC";
 			main_window.set_default_size(640,320);
-			main_window.destroy.connect(Gtk.main_quit);
+			main_window.delete_event.connect(quit);
+			main_window.destroy.connect(()=>{destroyed=true;});
 			
 			Gtk.VBox main_vbox = new Gtk.VBox(false,0); // Main VBox, holds menubar + userlist, server notebook, entry field + status bar
 			main_window.add(main_vbox);
@@ -38,7 +40,7 @@ namespace XSIRC {
 			// Menus: Client | Edit | View | Server | Help
 			// Client menu
 			
-			Gtk.MenuItem client_menu_item = new Gtk.MenuItem.with_label("Client");
+			Gtk.MenuItem client_menu_item = new Gtk.MenuItem.with_mnemonic("_Client");
 			menu_bar.add(client_menu_item);
 			
 			Gtk.Menu client_menu = new Gtk.Menu();
@@ -51,14 +53,20 @@ namespace XSIRC {
 				stdout.printf("TODO\n");
 			});
 			
-			Gtk.MenuItem disconnect_all_servers_item = new Gtk.MenuItem.with_label("Disconnect from all servers");
+			Gtk.MenuItem disconnect_all_servers_item = new Gtk.MenuItem.with_label("Disconnect all");
 			client_menu.append(disconnect_all_servers_item);
 			disconnect_all_servers_item.activate.connect(() => {
 				stdout.printf("TODO\n");
 			});
 			
-			Gtk.MenuItem reconnect_all_servers_item = new Gtk.MenuItem.with_label("Reconnect to all servers");
+			Gtk.MenuItem reconnect_all_servers_item = new Gtk.MenuItem.with_label("Reconnect all");
 			client_menu.append(reconnect_all_servers_item);
+			
+			// Edit menu
+			Gtk.MenuItem edit_menu_item = new Gtk.MenuItem.with_mnemonic("_Edit");
+			Gtk.Menu edit_menu = new Gtk.Menu();
+			menu_bar.add(edit_menu_item);
+			
 			
 			// Topic text box
 			topic_view = new Gtk.Entry();
@@ -119,12 +127,29 @@ namespace XSIRC {
 					text_entry.buffer.text = "";
 				}
 			});
+		
 		}
 		
 		private void parse_text(string text) {
 			
 		}
 		
+		private bool quit() {
+			// TODO
+			return false;
+		}
+		
+		public void main_loop() {
+			while(!destroyed) {
+				while(Gtk.events_pending()) {
+					Gtk.main_iteration();
+				}
+				foreach(Server server in servers) {
+					server.iterate();
+				}
+				Posix.usleep(10);
+			}
+		}
 		// View creation and adding-to
 		
 		public View create_view(string name) {
@@ -146,10 +171,59 @@ namespace XSIRC {
 			return view;
 		}
 		
-		public void add_to_view(View view,string text) {
-			
+		public void add_to_view(View view,string what) {
+			string text = "\n"+timestamp()+" "+what;
+			bool scrolled = (int)view.scrolled_window.vadjustment.value == (int)(view.scrolled_window.vadjustment.upper - view.scrolled_window.vadjustment.page_size);
+			Gtk.TextIter end_iter;
+			view.text_view.buffer.get_end_iter(out end_iter);
+			view.text_view.buffer.insert(end_iter,text,(int)text.size());
+			if(scrolled) {
+				Gtk.TextIter scroll_iter;
+				view.text_view.buffer.get_end_iter(out scroll_iter);
+				view.text_view.scroll_to_mark(view.text_view.buffer.create_mark(null,scroll_iter,false),0,true,0,1);
+			}
 		}
 		
 		// Network and view finding stuff
+		
+		public Gtk.Widget? get_curr_notebook_widget() {
+			foreach(Gtk.Widget child in servers_notebook.get_children()) {
+				if(servers_notebook.page_num(child) == servers_notebook.page) {
+					return child;
+				}
+			}
+			return null;
+		}
+		
+		public Server? find_server_by_notebook(Gtk.Notebook? notebook) {
+			foreach(Server server in servers) {
+				if(server.notebook == notebook) {
+					return server;
+				}
+			}
+			return null;
+		}
+		
+		public Server? curr_server() {
+			return find_server_by_notebook(get_curr_notebook_widget() as Gtk.Notebook);
+		}
+		
+		public bool in_system_view() {
+			return curr_server == null;
+		}
+		
+		public void open_server(string address,int port = 6667,bool ssl = false,string password = "",string? network = null) {
+			Server server = new Server(address,port,ssl,password,network);
+			servers.add(server);
+			servers_notebook.append_page(server.notebook,server.label);
+			servers_notebook.show_all();
+		}
+		// Dialogs
+		
+		// Misc
+		
+		public string timestamp() {
+			return Time.local(time_t()).format(Main.config["core"]["timestamp_format"]);
+		}
 	}
 }
