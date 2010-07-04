@@ -18,7 +18,10 @@ namespace XSIRC {
 		Main.config_manager = new ConfigManager();
 		Main.config = Main.config_manager.config;
 		Main.gui = new XSIRC.GUI();
-		Gtk.main();
+
+		// Daebug
+		Main.gui.open_server("naos.foonetic.net");
+		Main.gui.main_loop();
 		return 0;
 	}
 }

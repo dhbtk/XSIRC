@@ -44,6 +44,7 @@ namespace XSIRC {
 			config["core"]["quit_msg"]    = "Leaving";
 			config["core"]["web_browser"] = "firefox %s";
 			config["core"]["font"]        = "Monospace 10";
+			config["core"]["timestamp_format"] = "[%H:%M:%S]";
 			
 			if(FileUtils.test(Environment.get_home_dir()+"/.xsirc/xsirc.conf",FileTest.EXISTS)) {
 				ConfigParser.parse_file(Environment.get_home_dir()+"/.xsirc/xsirc.conf",config);
