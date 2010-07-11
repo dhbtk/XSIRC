@@ -16,7 +16,7 @@ namespace XSIRC {
 		private int command_history_index = 0;
 		public ArrayList<Server> servers = new ArrayList<Server>();
 		
-		public struct View {
+		public class View {
 			public string name;
 			public Gtk.ScrolledWindow scrolled_window;
 			public Gtk.TextView text_view;
@@ -66,7 +66,7 @@ namespace XSIRC {
 			Gtk.MenuItem edit_menu_item = new Gtk.MenuItem.with_mnemonic("_Edit");
 			Gtk.Menu edit_menu = new Gtk.Menu();
 			menu_bar.add(edit_menu_item);
-			
+			edit_menu_item.submenu = edit_menu;
 			
 			// Topic text box
 			topic_view = new Gtk.Entry();
@@ -80,17 +80,9 @@ namespace XSIRC {
 			user_list = new Gtk.TreeView.with_model(new Gtk.ListStore(1,typeof(string)));
 			main_hbox.pack_start(user_list,false,true,0);
 			
-			var display_column = new Gtk.TreeViewColumn();
-			display_column.title = "Users";
-			var renderer = new Gtk.CellRendererText();
+			Gtk.CellRendererText renderer = new Gtk.CellRendererText();
+			Gtk.TreeViewColumn display_column = new Gtk.TreeViewColumn.with_attributes("Users",renderer,"text",0,null);
 			user_list.append_column(display_column);
-			
-			display_column.set_attributes(renderer,"text",0);
-			// Debugging things
-			Gtk.TreeIter iter;
-			Gtk.ListStore model = user_list.model as Gtk.ListStore;
-			model.append(out iter);
-			model.set(iter,0,"Yes!",-1);
 			
 			// Quick VBox for server notebook+input
 			var vbox = new Gtk.VBox(false,0);
@@ -130,8 +122,38 @@ namespace XSIRC {
 		
 		}
 		
-		private void parse_text(string text) {
-			
+		private void parse_text(string s) {
+			if(s.has_prefix("///")) {
+				// Send privmsg to current channel + /
+				string sent = s.substring(2);
+				if(curr_server() != null && curr_server().current_view() != null) {
+					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,sent));
+				}
+			} else if(s.has_prefix("//")) {
+				// Client command
+				string sent = s.substring(2).strip();
+				print("\""+sent+"\"\n");
+				string[] split = sent.split(" ");
+				string cmd = split[0];
+				sent = sent.substring(cmd.length);
+				switch(cmd) {
+					case "connect":
+						open_server(split[1]);
+						break;
+					default:
+						break;
+				}
+			} else if(s.has_prefix("/")) {
+				// IRC command
+				string sent = s.substring(1);
+				if(curr_server() != null && curr_server().current_view() != null) {
+					curr_server().send(sent);
+				}
+			} else {
+				if(curr_server() != null && curr_server().current_view() != null) {
+					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,s));
+				}
+			}
 		}
 		
 		private bool quit() {
@@ -166,7 +188,11 @@ namespace XSIRC {
 			scrolled_window.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 			scrolled_window.add(text_view);
 			
-			View view = {name,scrolled_window,text_view,label};
+			View view = new View();
+			view.name = name;
+			view.scrolled_window = scrolled_window;
+			view.text_view = text_view;
+			view.label = label;
 			
 			return view;
 		}
@@ -217,6 +243,7 @@ namespace XSIRC {
 			servers.add(server);
 			servers_notebook.append_page(server.notebook,server.label);
 			servers_notebook.show_all();
+			servers_notebook.page = servers_notebook.page_num(server.notebook);
 		}
 		// Dialogs
 		

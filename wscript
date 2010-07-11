@@ -30,6 +30,7 @@ def configure(conf):
 	conf.define('VERSION',VERSION)
 	conf.define('GETTEXT_PACKAGE',APPNAME)
 	conf.write_config_header('config.h')
+	conf.env.append_value('VALAFLAGS',['--enable-checking','-g'])
 	
 def build(bld):
 	bld.add_subdirs('src')
