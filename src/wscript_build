@@ -4,7 +4,9 @@ obj = bld(
 	features  = 'cc cprogram',
 	packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix',
 	target    = 'xsirc',
-	ccflags   = ['-include','config.h'],
+	ccflags   = ['-include','config.h','-g'],
+	linkflags = ['-g'],
+	
 	uselib    = 'GTK GLIB GIO GEE',
 	)
 

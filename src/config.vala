@@ -3,7 +3,15 @@ namespace XSIRC {
 	public class ConfigParser : Object {
 		public static HashMap<string,HashMap<string,string>> parse_file(string fname,HashMap<string,HashMap<string,string>>? existing_hash = null) {
 			string raw_file;
-			FileUtils.get_contents(fname,out raw_file,null);
+			try {
+				FileUtils.get_contents(fname,out raw_file,null);
+			} catch(FileError e) {
+				if(existing_hash != null) {
+					return existing_hash; // Sorry
+				} else {
+					return new HashMap<string,HashMap<string,string>>();
+				}
+			}
 			string[] split_file = raw_file.split("\n");
 			string section = "core"; // A default so things don't choke
 			HashMap<string,HashMap<string,string>> result;
