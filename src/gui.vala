@@ -78,7 +78,9 @@ namespace XSIRC {
 			
 			// User list
 			user_list = new Gtk.TreeView.with_model(new Gtk.ListStore(1,typeof(string)));
-			main_hbox.pack_start(user_list,false,true,0);
+			Gtk.ScrolledWindow user_list_container = new Gtk.ScrolledWindow(null,null);
+			user_list_container.add(user_list);
+			main_hbox.pack_start(user_list_container,false,true,0);
 			
 			Gtk.CellRendererText renderer = new Gtk.CellRendererText();
 			Gtk.TreeViewColumn display_column = new Gtk.TreeViewColumn.with_attributes("Users",renderer,"text",0,null);
@@ -128,6 +130,7 @@ namespace XSIRC {
 				string sent = s.substring(2);
 				if(curr_server() != null && curr_server().current_view() != null) {
 					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,sent));
+					curr_server().add_to_view(curr_server().current_view().name,s);
 				}
 			} else if(s.has_prefix("//")) {
 				// Client command
@@ -150,8 +153,9 @@ namespace XSIRC {
 					curr_server().send(sent);
 				}
 			} else {
-				if(curr_server() != null && curr_server().current_view() != null) {
+				if(curr_server() != null && curr_server().current_view() != null && s.size() > 0) {
 					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,s));
+					curr_server().add_to_view(curr_server().current_view().name,"<%s> %s".printf(curr_server().nick,s));
 				}
 			}
 		}
@@ -238,7 +242,7 @@ namespace XSIRC {
 			return curr_server == null;
 		}
 		
-		public void open_server(string address,int port = 6667,bool ssl = false,string password = "",string? network = null) {
+		public void open_server(string address,int port = 6667,bool ssl = false,string password = "",ServerManager.Network? network = null) {
 			Server server = new Server(address,port,ssl,password,network);
 			servers.add(server);
 			servers_notebook.append_page(server.notebook,server.label);
