@@ -4,6 +4,7 @@ namespace XSIRC {
 		public static GUI gui;
 		public static ConfigManager config_manager;
 		public static HashMap<string,HashMap<string,string>> config;
+		public static ServerManager server_manager;
 	}
 	
 	int main(string[] args) {
@@ -17,6 +18,7 @@ namespace XSIRC {
 		// Starting up!
 		Main.config_manager = new ConfigManager();
 		Main.config = Main.config_manager.config;
+		Main.server_manager = new ServerManager();
 		Main.gui = new XSIRC.GUI();
 
 		Main.gui.main_loop();

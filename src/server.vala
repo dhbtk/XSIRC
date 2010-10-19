@@ -8,7 +8,7 @@ namespace XSIRC {
 		public int port;
 		public bool ssl;
 		public string password;
-		public string? network;
+		public ServerManager.Network network;
 		// State
 		public LinkedList<Channel> channels = new LinkedList<Channel>();
 		public LinkedList<GUI.View> views  = new LinkedList<GUI.View>();
@@ -69,10 +69,10 @@ namespace XSIRC {
 			}
 		}
 		
-		public Server(string server,int port,bool ssl,string password,string? network = null) {
+		public Server(string server,int port,bool ssl,string password,ServerManager.Network? network = null) {
 			// GUI
 			notebook = new Gtk.Notebook();
-			label    = new Gtk.Label((network != null ? network+" - " : "")+server);
+			label    = new Gtk.Label((network != null ? network.name+" - " : "")+server);
 			open_view("<server>",false); // Non-reordable
 			// State stuff
 			this.server   = server;
@@ -102,7 +102,7 @@ namespace XSIRC {
 		
 		public void iterate() {
 			if(socket_ready() && connected && !sock_error) {
-				add_to_view("<server>","DEBUG -- socket ready");
+				//add_to_view("<server>","DEBUG -- socket ready");
 				string s = null;
 				try {
 					s = socket_stream.read_line(null,null);
@@ -124,8 +124,8 @@ namespace XSIRC {
 						return;
 					}
 				}
-				s = s.strip().replace("\r","");
-				add_to_view("<server>","DEBUG -- got: %s".printf(s));
+				s = s.strip().replace("\r","").replace("\n","");
+				//add_to_view("<server>","DEBUG -- got: %s".printf(s));
 				handle_server_input(s);
 			}
 		}
@@ -270,7 +270,7 @@ namespace XSIRC {
 						list.clear();
 						Gtk.TreeIter iter;
 						foreach(string user in channel.raw_users) {
-							list.append(out iter);
+							//list.append(out iter);
 							list.insert_with_values(out iter,0,0,user,-1);
 						}
 						break;
@@ -320,6 +320,9 @@ namespace XSIRC {
 					case "PRIVMSG":
 						add_to_view(split[2],"<%s> %s".printf(usernick,message));
 						break;
+					default:
+						add_to_view("<server>","UNHANDLED MESSAGE: %s".printf(s));
+						break;
 				}
 			}
 		}
@@ -348,7 +351,7 @@ namespace XSIRC {
 			notebook.page = notebook.page_num(view.scrolled_window);
 		}
 		
-		private void add_to_view(string name,string text) {
+		public void add_to_view(string name,string text) {
 			GUI.View? view;
 			if((view = find_view(name)) != null) {
 				Main.gui.add_to_view(view,text);
