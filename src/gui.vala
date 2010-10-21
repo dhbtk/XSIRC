@@ -11,6 +11,93 @@ namespace XSIRC {
 		public Gtk.Statusbar status_bar;
 		public View system_view;
 		private bool destroyed = false;
+		private const Gtk.ActionEntry[] menu_actions = {
+			// Client
+			{"ClientMenu",null,"_Client"},
+			{"Connect",null,"_Connect...","<control><shift>O"},
+			{"DisconnectAll",null,"_Disconnect all"},
+			{"ReconnectAll",null,"_Reconnect all"},
+			{"OpenLastLink",null,"_Open last link"},
+			{"DebugMenu",null,"_Debug"},
+			{"FailAssertion",null,"_Fail assertion"},
+			{"ThrowException",null,"_Throw exception"},
+			{"ShowLog",null,"Show _log"},
+			{"Exit",Gtk.STOCK_QUIT},
+			// Edit
+			{"EditMenu",null,"_Edit"},
+			{"Cut",Gtk.STOCK_CUT},
+			{"Copy",Gtk.STOCK_COPY},
+			{"Paste",Gtk.STOCK_PASTE},
+			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P"},
+			// View
+			{"ViewMenu",null,"_View"},
+			{"PrevServer",null,"Previous server","<control><shift>comma"},
+			{"NextServer",null,"Next server","<control><shift>period"},
+			{"PrevView",null,"Previous view","<control>comma"},
+			{"NextView",null,"Next view","<control>period"},
+			{"CloseView",null,"_Close view","<control>w"},
+			{"RejoinChannel",null,"Re_join channel"},
+			{"OpenView",null,"_Open view...","<control>o"},
+			// Server
+			{"ServerMenu",null,"_Server"},
+			{"Disconnect",null,"_Disconnect","<control><shift>d"},
+			{"Reconnect",null,"_Reconnect","<control><shift>r"},
+			{"CloseServer",null,"_Close","<control><shift>w"},
+			{"RejoinAll",null,"Re_join all"},
+			{"GoAway",null,"_Mark as away","<control><shift>a"},
+			// Help
+			{"HelpMenu",null,"_Help"},
+			{"HelpContents",null,"_Contents"},
+			{"About",null,"_About"}
+		};
+		private string ui_manager_xml = """
+<ui>
+	<menubar name="MainMenu">
+		<menu action="ClientMenu">
+			<menuitem action="Connect"/>
+			<menuitem action="DisconnectAll"/>
+			<menuitem action="ReconnectAll"/>
+			<menuitem action="OpenLastLink"/>
+			<separator/>
+			<menu action="DebugMenu">
+				<menuitem action="FailAssertion"/>
+				<menuitem action="ThrowException"/>
+				<menuitem action="ShowLog"/>
+			</menu>
+			<separator/>
+			<menuitem action="Exit"/>
+		</menu>
+		<menu action="EditMenu">
+			<menuitem action="Cut"/>
+			<menuitem action="Copy"/>
+			<menuitem action="Paste"/>
+			<separator/>
+			<menuitem action="Preferences"/>
+		</menu>
+		<menu action="ViewMenu">
+			<menuitem action="PrevServer"/>
+			<menuitem action="NextServer"/>
+			<separator/>
+			<menuitem action="PrevView"/>
+			<menuitem action="NextView"/>
+			<menuitem action="CloseView"/>
+			<menuitem action="RejoinChannel"/>
+			<menuitem action="OpenView"/>
+		</menu>
+		<menu action="ServerMenu">
+			<menuitem action="Disconnect"/>
+			<menuitem action="Reconnect"/>
+			<menuitem action="CloseServer"/>
+			<menuitem action="RejoinAll"/>
+			<separator/>
+			<menuitem action="GoAway"/>
+		</menu>
+		<menu action="HelpMenu">
+			<menuitem action="HelpContents"/>
+			<menuitem action="About"/>
+		</menu>
+	</menubar>
+</ui>""";
 		// Other stuff
 		private LinkedList<string> command_history = new LinkedList<string>();
 		private int command_history_index = 0;
@@ -33,40 +120,17 @@ namespace XSIRC {
 			Gtk.VBox main_vbox = new Gtk.VBox(false,0); // Main VBox, holds menubar + userlist, server notebook, entry field + status bar
 			main_window.add(main_vbox);
 			
+			// Menus
+			Gtk.ActionGroup action_group = new Gtk.ActionGroup("MenuActions");
+			action_group.add_actions(menu_actions,null);
+			Gtk.UIManager ui_manager = new Gtk.UIManager();
+			ui_manager.insert_action_group(action_group,0);
+			main_window.add_accel_group(ui_manager.get_accel_group());
+			ui_manager.add_ui_from_string(ui_manager_xml,-1);		
+			
 			// Menu bar & children
-			Gtk.MenuBar menu_bar = new Gtk.MenuBar();
+			Gtk.MenuBar menu_bar = ui_manager.get_widget("/MainMenu") as Gtk.MenuBar;
 			main_vbox.pack_start(menu_bar,false,true,0);
-			
-			// Menus: Client | Edit | View | Server | Help
-			// Client menu
-			
-			Gtk.MenuItem client_menu_item = new Gtk.MenuItem.with_mnemonic("_Client");
-			menu_bar.add(client_menu_item);
-			
-			Gtk.Menu client_menu = new Gtk.Menu();
-			
-			client_menu_item.submenu = client_menu;
-			
-			Gtk.ImageMenuItem connect_item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_CONNECT,null);
-			client_menu.append(connect_item);
-			connect_item.activate.connect(() => {
-				stdout.printf("TODO\n");
-			});
-			
-			Gtk.MenuItem disconnect_all_servers_item = new Gtk.MenuItem.with_label("Disconnect all");
-			client_menu.append(disconnect_all_servers_item);
-			disconnect_all_servers_item.activate.connect(() => {
-				stdout.printf("TODO\n");
-			});
-			
-			Gtk.MenuItem reconnect_all_servers_item = new Gtk.MenuItem.with_label("Reconnect all");
-			client_menu.append(reconnect_all_servers_item);
-			
-			// Edit menu
-			Gtk.MenuItem edit_menu_item = new Gtk.MenuItem.with_mnemonic("_Edit");
-			Gtk.Menu edit_menu = new Gtk.Menu();
-			menu_bar.add(edit_menu_item);
-			edit_menu_item.submenu = edit_menu;
 			
 			// Topic text box
 			topic_view = new Gtk.Entry();
@@ -249,6 +313,8 @@ namespace XSIRC {
 			servers_notebook.show_all();
 			servers_notebook.page = servers_notebook.page_num(server.notebook);
 		}
+		// Menu callbacks
+		
 		// Dialogs
 		
 		// Misc
