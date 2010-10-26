@@ -76,5 +76,13 @@ namespace XSIRC {
 				}
 			}
 		}
+		
+		public void save_networks() {
+			
+		}
+		
+		public void startup() {
+			
+		}
 	}
 }

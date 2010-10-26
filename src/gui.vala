@@ -14,7 +14,7 @@ namespace XSIRC {
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
 			{"ClientMenu",null,"_Client"},
-			{"Connect",null,"_Connect...","<control><shift>O"},
+			{"Connect",null,"_Connect...","<control><shift>O","Connect to a server.",connect_server_cb},
 			{"DisconnectAll",null,"_Disconnect all"},
 			{"ReconnectAll",null,"_Reconnect all"},
 			{"OpenLastLink",null,"_Open last link"},
@@ -102,6 +102,7 @@ namespace XSIRC {
 		private LinkedList<string> command_history = new LinkedList<string>();
 		private int command_history_index = 0;
 		public ArrayList<Server> servers = new ArrayList<Server>();
+		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
 		
 		public class View {
 			public string name;
@@ -159,6 +160,9 @@ namespace XSIRC {
 			servers_notebook = new Gtk.Notebook();
 			vbox.pack_start(servers_notebook,true,true,0);
 			
+			// Creating tags.
+			set_up_text_tags();
+			
 			// System view goes here.
 			
 			system_view = create_view("System");
@@ -179,9 +183,8 @@ namespace XSIRC {
 			// Activate signal
 			text_entry.buffer.changed.connect(() => {
 				if(text_entry.buffer.text.contains("\n")) {
-					foreach(string text in this.text_entry.buffer.text.split("\n")) {
-						parse_text(text);
-					}
+					string text = text_entry.buffer.text.replace("\n","");
+					parse_text(text);
 					text_entry.buffer.text = "";
 				}
 			});
@@ -189,14 +192,15 @@ namespace XSIRC {
 		}
 		
 		private void parse_text(string s) {
-			if(s.has_prefix("///")) {
+			stdout.printf("Calling GUI.parse_text with argument \"%s\"\n",s);
+			if(s.has_prefix("//")) {
 				// Send privmsg to current channel + /
-				string sent = s.substring(2);
+				string sent = s.substring(1);
 				if(curr_server() != null && curr_server().current_view() != null) {
 					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,sent));
 					curr_server().add_to_view(curr_server().current_view().name,s);
 				}
-			} else if(s.has_prefix("//")) {
+			} /*else if(s.has_prefix("//")) {
 				// Client command
 				string sent = s.substring(2).strip();
 				print("\""+sent+"\"\n");
@@ -210,8 +214,8 @@ namespace XSIRC {
 					default:
 						break;
 				}
-			} else if(s.has_prefix("/")) {
-				// IRC command
+			}*/ else if(s.has_prefix("/")) {
+				// IRC command, with exactly two exceptions
 				string sent = s.substring(1);
 				if(curr_server() != null && curr_server().current_view() != null) {
 					curr_server().send(sent);
@@ -240,12 +244,39 @@ namespace XSIRC {
 				Posix.usleep(10);
 			}
 		}
+		
+		private void set_up_text_tags() {
+			string[] colors = {"white","black","dark blue","green","red","dark red","purple","brown","yellow","light green","cyan","light cyan","blue","pink","grey","light grey"};
+			// Foregrounds
+			foreach(string color in colors) {
+				Gtk.TextTag tag = new Gtk.TextTag(color);
+				tag.foreground = color;
+				global_tag_table.add(tag);
+			}
+			// Backgrounds
+			foreach(string color in colors) {
+				Gtk.TextTag tag = new Gtk.TextTag("back "+color);
+				tag.background = color;
+				global_tag_table.add(tag);
+			}
+			// Bold, underlined, italics
+			Gtk.TextTag bold = new Gtk.TextTag("bold");
+			bold.weight = Pango.Weight.BOLD;
+			Gtk.TextTag underlined = new Gtk.TextTag("underlined");
+			underlined.underline = Pango.Underline.SINGLE;
+			Gtk.TextTag italic = new Gtk.TextTag("italic");
+			italic.style = Pango.Style.ITALIC;
+			global_tag_table.add(bold);
+			global_tag_table.add(underlined);
+			global_tag_table.add(italic);
+		}
+		
 		// View creation and adding-to
 		
 		public View create_view(string name) {
 			Gtk.Label label = new Gtk.Label(name);
 			
-			Gtk.TextView text_view = new Gtk.TextView();
+			Gtk.TextView text_view = new Gtk.TextView.with_buffer(new Gtk.TextBuffer(global_tag_table));
 			text_view.editable = false;
 			text_view.cursor_visible = false;
 			text_view.wrap_mode = Gtk.WrapMode.WORD;
@@ -315,8 +346,36 @@ namespace XSIRC {
 		}
 		// Menu callbacks
 		
+		public static void connect_server_cb(Gtk.Action action) {
+			Main.gui.open_connect_dialog();
+		}
 		// Dialogs
-		
+		public void open_connect_dialog() {
+			Gtk.Dialog dialog = new Gtk.Dialog.with_buttons("Connect to server",main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
+			Gtk.HBox box = new Gtk.HBox(false,0);
+			box.pack_start(new Gtk.Label("Server string:"),false,false,0);
+			Gtk.Entry server_entry = new Gtk.Entry();
+			server_entry.text = "irc://";
+			server_entry.activate.connect(() => {
+				dialog.response(Gtk.ResponseType.ACCEPT);
+			});
+			box.pack_start(server_entry,false,false,0);
+			server_entry.grab_focus();
+			dialog.vbox.pack_start(box,false,false,0);
+			dialog.response.connect((id) => {
+				if(id == Gtk.ResponseType.ACCEPT) {
+					// Checking for a valid pseudo-uri
+					if(/^(irc|sirc):\/\/[a-zA-Z0-9-_.]+:\d+/.match(server_entry.text)) {
+						string[] split_server_data = Regex.split_simple("(:\\/\\/|:)",server_entry.text);
+						open_server(split_server_data[2],split_server_data[4].to_int(),split_server_data[0] == "ircs",server_entry.text.substring((long)server_entry.text.split(" ")[0].size()));
+						dialog.destroy();
+					}
+				} else {
+					dialog.destroy();
+				}
+			});
+			dialog.show_all();
+		}
 		// Misc
 		
 		public string timestamp() {
