@@ -172,7 +172,7 @@ namespace XSIRC {
 			
 			text_entry = new Gtk.TextView();
 			text_entry.accepts_tab = true;
-			text_entry.buffer.text = "test";
+			//text_entry.buffer.text = "test";
 			vbox.pack_start(text_entry,false,true,0);
 			
 			// Status bar
@@ -188,11 +188,18 @@ namespace XSIRC {
 					text_entry.buffer.text = "";
 				}
 			});
+			// Server-switching
+			servers_notebook.switch_page.connect((nb_page,page_num) => {
+				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)));
+			});
+			
+			// Ready to go!
+			text_entry.grab_focus();
 		
 		}
 		
 		private void parse_text(string s) {
-			stdout.printf("Calling GUI.parse_text with argument \"%s\"\n",s);
+			//stdout.printf("Calling GUI.parse_text with argument \"%s\"\n",s);
 			if(s.has_prefix("//")) {
 				// Send privmsg to current channel + /
 				string sent = s.substring(1);
@@ -234,6 +241,7 @@ namespace XSIRC {
 		}
 		
 		public void main_loop() {
+			Main.server_manager.startup();
 			while(!destroyed) {
 				while(Gtk.events_pending()) {
 					Gtk.main_iteration();
@@ -271,6 +279,50 @@ namespace XSIRC {
 			global_tag_table.add(italic);
 		}
 		
+		public void update_gui(Server? server,owned GUI.View? curr_view = null) {
+			if(server != null) {
+				// Only servers in the foreground can update the GUI
+				if(server != curr_server()) {
+					return;
+				}
+				// User list
+				if(curr_view == null) {
+					curr_view = server.current_view();
+				}
+				Gtk.ListStore list = user_list.model as Gtk.ListStore;
+				list.clear();
+				if((curr_view != null) && (server.find_channel(curr_view.name) != null)) {
+					Gtk.TreeIter iter;
+					foreach(string user in server.find_channel(curr_view.name).raw_users) {
+						list.insert_with_values(out iter,0,0,user,-1);
+					}
+				}
+				StringBuilder title_string = new StringBuilder("XSIRC - ");
+				title_string.append(server.nick).append("@");
+				if(server.network != null) {
+					title_string.append(server.network.name);
+				} else {
+					title_string.append(server.server);
+				}
+				if(!server.connected) {
+					title_string.append(" (disconnected)");
+				}
+				if(server.current_view() != null) {
+					title_string.append(" - ").append(curr_view.name);
+					if(server.find_channel(curr_view.name) != null) {
+						if(!server.find_channel(curr_view.name).in_channel) {
+							title_string.append(" (kicked) ");
+							title_string.append("(").append(server.find_channel(curr_view.name).mode).append(")");
+						}
+					}
+				}
+				main_window.title = title_string.str;
+			} else {
+				(user_list.model as Gtk.ListStore).clear();
+				main_window.title = "XSIRC - Idle";
+			}
+		}
+		
 		// View creation and adding-to
 		
 		public View create_view(string name) {
@@ -297,7 +349,7 @@ namespace XSIRC {
 		}
 		
 		public void add_to_view(View view,string what) {
-			string text = "\n"+timestamp()+" "+what;
+			string text = timestamp()+" "+what+"\n";
 			bool scrolled = (int)view.scrolled_window.vadjustment.value == (int)(view.scrolled_window.vadjustment.upper - view.scrolled_window.vadjustment.page_size);
 			Gtk.TextIter end_iter;
 			view.text_view.buffer.get_end_iter(out end_iter);
@@ -315,6 +367,15 @@ namespace XSIRC {
 			foreach(Gtk.Widget child in servers_notebook.get_children()) {
 				if(servers_notebook.page_num(child) == servers_notebook.page) {
 					return child;
+				}
+			}
+			return null;
+		}
+		
+		private Gtk.Notebook? get_notebook_widget_by_page(int page_num) {
+			foreach(Gtk.Widget child in servers_notebook.get_children()) {
+				if(servers_notebook.page_num(child) == page_num) {
+					return child as Gtk.Notebook;
 				}
 			}
 			return null;

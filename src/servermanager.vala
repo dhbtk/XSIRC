@@ -49,6 +49,16 @@ namespace XSIRC {
 					if(skip) { continue; }
 					Network network = new Network();
 					network.name = net_name;
+					// Wtf, sanity check
+					bool duplicate_found = false;
+					foreach(Network network_ in networks) {
+						if(network_.name == net_name) {
+							stderr.printf("Duplicate network!\n");
+							duplicate_found = true;
+							break;
+						}
+					}
+					if(duplicate_found) { continue; }
 					for(int curr_server = 0;raw_conf.has_key(net_name,"server%d".printf(curr_server));curr_server++) {
 						Network.ServerData server = new Network.ServerData();
 						if(!Regex.match_simple("^(irc|sirc):\\/\\/[a-zA-Z0-9-_.]+:\\d+",raw_conf.get_string(net_name,"server%d".printf(curr_server)))) {
@@ -82,7 +92,20 @@ namespace XSIRC {
 		}
 		
 		public void startup() {
-			
+			foreach(Network network in networks) {
+				stdout.printf("Iterating through network %s\n",network.name);
+				if(!network.auto_connect) {
+					continue;
+				}
+				Network.ServerData server = network.servers[0];
+				Main.gui.open_server(server.address,server.port,server.ssl,(server.password ?? ""),network);
+			}
+		}
+		
+		public void on_connect(Server server) requires (server.network != null) {
+			foreach(string command in server.network.commands) {
+				server.send(command.replace("$nick",server.nick));
+			}
 		}
 	}
 }

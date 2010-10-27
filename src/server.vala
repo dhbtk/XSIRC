@@ -56,7 +56,7 @@ namespace XSIRC {
 				topic.setter   = "";
 				topic.time_set = (time_t)0;
 				in_channel = true;
-				mode = null;
+				mode = "";
 			}
 		}
 		
@@ -93,7 +93,12 @@ namespace XSIRC {
 				connected = false;
 				sock_error = true;
 				add_to_view("<server>","ERROR: could not connect - %s".printf(e.message));
+				Main.gui.update_gui(this);
 			}
+			
+			notebook.switch_page.connect((page,page_num) => {
+				Main.gui.update_gui(this,find_view_from_page_num((int)page_num));
+			});
 		}
 		
 		~Server() {
@@ -109,11 +114,13 @@ namespace XSIRC {
 				} catch(Error e) {
 					connected = false;
 					sock_error = true;
+					Main.gui.update_gui(this);
 					add_to_view("<server>","ERROR: error fetching line: %s".printf(e.message));
 				}
 				if(s == null) {
 					connected = false;
 					sock_error = false;
+					Main.gui.update_gui(this);
 					return;
 				}
 				if(!s.validate()) {
@@ -165,7 +172,7 @@ namespace XSIRC {
 		}
 		
 		public void send(string s,float priority = 0.5) {
-			if(s.down().has_prefix("privmsg ") || s.down().has_prefix("notice ")) {
+			if(false/*s.down().has_prefix("privmsg ") || s.down().has_prefix("notice ")*/) { // Buggy: FIXME
 				string prefix = s.split(" :")[0] + " :";
 				string message = s.substring(prefix.length);
 				string[] split_message = {};
@@ -266,13 +273,7 @@ namespace XSIRC {
 						channel.raw_users.sort((CompareFunc)ircusrcmp);
 						channel.users.sort();
 						// User list
-						Gtk.ListStore list = Main.gui.user_list.model as Gtk.ListStore;
-						list.clear();
-						Gtk.TreeIter iter;
-						foreach(string user in channel.raw_users) {
-							//list.append(out iter);
-							list.insert_with_values(out iter,0,0,user,-1);
-						}
+						Main.gui.update_gui(this);
 						break;
 					case "JOIN":
 						if(find_channel(message) == null) {
@@ -294,6 +295,7 @@ namespace XSIRC {
 						} else {
 							send("NAMES %s".printf(split[2]));
 						}
+						add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,find_channel(split[2]).title,message));
 						break;
 					case "KICK":
 						if(split[3].down() == nick.down()) {
@@ -304,18 +306,29 @@ namespace XSIRC {
 						add_to_view(find_channel(split[2]).title,"%s has kicked %s from %s [%s]".printf(split[3],usernick,split[2],message));
 						break;
 					case "NICK":
-						if(nick.down() == usernick.down())
+						if(nick.down() == usernick.down()) {
 							nick = message;
+							Main.gui.update_gui(this);
+						}
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
 								add_to_view(channel.title,"%s is now known as %s.".printf(usernick,message));
 								send("NAMES %s".printf(channel.title));
 							}
 						}
-						break;
-					case "001":
+						foreach(GUI.View view in views) {
+							if(view.name.down() == usernick.down()) {
+								view.name = usernick;
+								view.label.label = usernick;
+								add_to_view(view.name,"%s is now known as %s.".printf(usernick,message));
+							}
+						}
 						break;
 					case "INVITE":
+						add_to_view("<server>","%s has invited you to %s.".printf(usernick,split[3]));
+						break;
+					case "001":
+						Main.server_manager.on_connect(this);
 						break;
 					case "PRIVMSG":
 						add_to_view(split[2],"<%s> %s".printf(usernick,message));
@@ -328,7 +341,7 @@ namespace XSIRC {
 		}
 		
 		// Misc utility
-		private Channel? find_channel(string s) {
+		public Channel? find_channel(string s) {
 			foreach(Channel channel in this.channels) {
 				if(channel.title.down() == s.down()) {
 					return channel;
@@ -380,6 +393,15 @@ namespace XSIRC {
 			foreach(GUI.View view in views) {
 				if(scrolled_window == view.scrolled_window) {
 					return view;
+				}
+			}
+			return null;
+		}
+		
+		private GUI.View? find_view_from_page_num(int num) {
+			foreach(Gtk.Widget child in notebook.get_children()) {
+				if(notebook.page_num(child) == num) {
+					return find_view_from_scrolled_window(child as Gtk.ScrolledWindow);
 				}
 			}
 			return null;
