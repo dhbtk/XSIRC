@@ -14,41 +14,38 @@ namespace XSIRC {
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
 			{"ClientMenu",null,"_Client"},
-			{"Connect",null,"_Connect...","<control><shift>O","Connect to a server.",connect_server_cb},
-			{"DisconnectAll",null,"_Disconnect all"},
-			{"ReconnectAll",null,"_Reconnect all"},
+			{"Connect",Gtk.STOCK_CONNECT,"_Connect...","<control><shift>O","Connect to a server.",connect_server_cb},
+			{"DisconnectAll",Gtk.STOCK_DISCONNECT,"_Disconnect all"},
+			{"ReconnectAll",Gtk.STOCK_NETWORK,"_Reconnect all"},
 			{"OpenLastLink",null,"_Open last link"},
 			{"DebugMenu",null,"_Debug"},
 			{"FailAssertion",null,"_Fail assertion"},
 			{"ThrowException",null,"_Throw exception"},
 			{"ShowLog",null,"Show _log"},
 			{"Exit",Gtk.STOCK_QUIT},
-			// Edit
-			{"EditMenu",null,"_Edit"},
-			{"Cut",Gtk.STOCK_CUT},
-			{"Copy",Gtk.STOCK_COPY},
-			{"Paste",Gtk.STOCK_PASTE},
+			// Settings
+			{"SettingsMenu",null,"_Settings"},
 			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P"},
 			// View
 			{"ViewMenu",null,"_View"},
-			{"PrevServer",null,"Previous server","<control><shift>comma"},
-			{"NextServer",null,"Next server","<control><shift>period"},
-			{"PrevView",null,"Previous view","<control>comma"},
-			{"NextView",null,"Next view","<control>period"},
-			{"CloseView",null,"_Close view","<control>w"},
+			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><shift>comma"},
+			{"NextServer",Gtk.STOCK_GOTO_LAST,"Next server","<control><shift>period"},
+			{"PrevView",Gtk.STOCK_GO_BACK,"Previous view","<control>comma"},
+			{"NextView",Gtk.STOCK_GO_FORWARD,"Next view","<control>period"},
+			{"CloseView",Gtk.STOCK_CLOSE,"_Close view","<control>w"},
 			{"RejoinChannel",null,"Re_join channel"},
-			{"OpenView",null,"_Open view...","<control>o"},
+			{"OpenView",Gtk.STOCK_OPEN,"_Open view...","<control>o"},
 			// Server
 			{"ServerMenu",null,"_Server"},
-			{"Disconnect",null,"_Disconnect","<control><shift>d"},
-			{"Reconnect",null,"_Reconnect","<control><shift>r"},
-			{"CloseServer",null,"_Close","<control><shift>w"},
+			{"Disconnect",Gtk.STOCK_DISCONNECT,"_Disconnect","<control><shift>d"},
+			{"Reconnect",Gtk.STOCK_CONNECT,"_Reconnect","<control><shift>r"},
+			{"CloseServer",Gtk.STOCK_CLOSE,"_Close","<control><shift>w"},
 			{"RejoinAll",null,"Re_join all"},
 			{"GoAway",null,"_Mark as away","<control><shift>a"},
 			// Help
 			{"HelpMenu",null,"_Help"},
-			{"HelpContents",null,"_Contents"},
-			{"About",null,"_About"}
+			{"HelpContents",Gtk.STOCK_HELP,"_Contents","F1"},
+			{"About",Gtk.STOCK_ABOUT}
 		};
 		private string ui_manager_xml = """
 <ui>
@@ -66,13 +63,6 @@ namespace XSIRC {
 			</menu>
 			<separator/>
 			<menuitem action="Exit"/>
-		</menu>
-		<menu action="EditMenu">
-			<menuitem action="Cut"/>
-			<menuitem action="Copy"/>
-			<menuitem action="Paste"/>
-			<separator/>
-			<menuitem action="Preferences"/>
 		</menu>
 		<menu action="ViewMenu">
 			<menuitem action="PrevServer"/>
@@ -92,6 +82,9 @@ namespace XSIRC {
 			<separator/>
 			<menuitem action="GoAway"/>
 		</menu>
+		<menu action="SettingsMenu">
+			<menuitem action="Preferences"/>
+		</menu>
 		<menu action="HelpMenu">
 			<menuitem action="HelpContents"/>
 			<menuitem action="About"/>
@@ -103,6 +96,7 @@ namespace XSIRC {
 		private int command_history_index = 0;
 		public ArrayList<Server> servers = new ArrayList<Server>();
 		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
+		//private unowned Thread server_threads;
 		
 		public class View {
 			public string name;
@@ -158,6 +152,7 @@ namespace XSIRC {
 			// Server notebook
 			
 			servers_notebook = new Gtk.Notebook();
+			servers_notebook.tab_pos = Gtk.PositionType.BOTTOM;
 			vbox.pack_start(servers_notebook,true,true,0);
 			
 			// Creating tags.
@@ -192,6 +187,10 @@ namespace XSIRC {
 			servers_notebook.switch_page.connect((nb_page,page_num) => {
 				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)));
 			});
+			
+			// Servers thread
+			
+			//server_threads = Thread.create(thread_func,true);
 			
 			// Ready to go!
 			text_entry.grab_focus();
@@ -253,6 +252,16 @@ namespace XSIRC {
 			}
 		}
 		
+		/*private void* thread_func() {
+			while(!destroyed) {
+				foreach(Server server in servers) {
+					server.iterate();
+				}
+				Posix.usleep(10);
+			}
+			return null;
+		}*/
+		
 		private void set_up_text_tags() {
 			string[] colors = {"white","black","dark blue","green","red","dark red","purple","brown","yellow","light green","cyan","light cyan","blue","pink","grey","light grey"};
 			// Foregrounds
@@ -311,9 +320,10 @@ namespace XSIRC {
 					title_string.append(" - ").append(curr_view.name);
 					if(server.find_channel(curr_view.name) != null) {
 						if(!server.find_channel(curr_view.name).in_channel) {
-							title_string.append(" (kicked) ");
-							title_string.append("(").append(server.find_channel(curr_view.name).mode).append(")");
+							title_string.append(" (kicked)");
 						}
+						title_string.append(" (").append(server.find_channel(curr_view.name).mode).append(")");
+						topic_view.text = server.find_channel(curr_view.name).topic.content;
 					}
 				}
 				main_window.title = title_string.str;
