@@ -72,6 +72,7 @@ namespace XSIRC {
 		public Server(string server,int port,bool ssl,string password,ServerManager.Network? network = null) {
 			// GUI
 			notebook = new Gtk.Notebook();
+			notebook.tab_pos = Gtk.PositionType.BOTTOM;
 			label    = new Gtk.Label((network != null ? network.name+" - " : "")+server);
 			open_view("<server>",false); // Non-reordable
 			// State stuff
@@ -331,7 +332,67 @@ namespace XSIRC {
 						Main.server_manager.on_connect(this);
 						break;
 					case "PRIVMSG":
-						add_to_view(split[2],"<%s> %s".printf(usernick,message));
+						if(message.has_prefix(((char)1).to_string())) {
+							message = message.replace(((char)1).to_string(),"");
+							string prefix = message.split(" ")[0];
+							message = message.substring(prefix.length);
+							switch(prefix) {
+								case "ACTION":
+									add_to_view(split[2],"* %s%s".printf(usernick,message));
+									break;
+								default:
+									add_to_view("<server>","UNHANDLED CTCP MESSAGE -- PREFIX: %s; MESSAGE: %s".printf(prefix,message));
+									break;
+							}
+						} else {
+							add_to_view(split[2],"<%s> %s".printf(usernick,message));
+						}
+						break;
+					case "QUIT":
+						foreach(Channel channel in channels) {
+							if(usernick.down() in channel.users) {
+								add_to_view(channel.title,"%s has disconnected [%s]".printf(usernick,message));
+								send("NAMES %s".printf(channel.title));
+							}
+						}
+						break;
+					case "MODE":
+						if(split[4] != null && !(/^[0-9]+$/.match(split[4]))) {
+							string targets = string.joinv(" ",split[4:(split.length-1)]);
+							add_to_view(split[2],"%s sets %s on %s".printf(usernick,split[3],targets));
+							send("NAMES %s".printf(split[2]));
+						} else if(split[2].has_prefix("#")) {
+							string targets = string.joinv(" ",split[3:(split.length-1)]);
+							add_to_view(split[2],"%s sets mode %s on %s".printf(usernick,targets,split[2]));
+							send("MODE %s".printf(split[2]));
+						} else {
+							add_to_view("<server>","%s sets mode %s".printf(usernick,split[3]));
+						}
+						break;
+					case "TOPIC":
+						Channel chan = find_channel(split[2]);
+						chan.topic.setter = usernick;
+						chan.topic.content = message;
+						chan.topic.time_set = time_t();
+						add_to_view(split[2],"%s has set the topic to: %s".printf(usernick,message));
+						Main.gui.update_gui(this);
+						break;
+					case "333":
+						Channel chan = find_channel(split[3]);
+						chan.topic.setter = split[4];
+						chan.topic.time_set = (time_t)split[5].to_int();
+						add_to_view(split[3],"Topic set by %s on %s".printf(split[4],Time.local(chan.topic.time_set).format("%c")));
+						break;
+					case "332":
+						Channel chan = find_channel(split[3]);
+						chan.topic.content = message;
+						add_to_view(split[3],"The topic is: %s".printf(message));
+						Main.gui.update_gui(this);
+						break;
+					case "324":
+						Channel chan = find_channel(split[3]);
+						chan.mode = string.joinv(" ",split[4:(split.length-1)]);
+						Main.gui.update_gui(this);
 						break;
 					default:
 						add_to_view("<server>","UNHANDLED MESSAGE: %s".printf(s));
