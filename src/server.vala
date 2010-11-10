@@ -14,11 +14,11 @@ namespace XSIRC {
 		public LinkedList<GUI.View> views  = new LinkedList<GUI.View>();
 		public string nick;
 		private time_t last_recieved = time_t();
-		public IdleSource iterator;
 		public bool connected = false;
 		public bool sock_error = false;
 		private LinkedList<OutgoingMessage> output_queue = new LinkedList<OutgoingMessage>();
 		public unowned Thread sender_thread;
+		public bool am_away;
 		// Socket
 		public SocketClient socket_client;
 		public SocketConnection socket_conn;
@@ -48,7 +48,7 @@ namespace XSIRC {
 				public string setter;
 				public time_t time_set;
 			}
-			public string title {get; set;}
+			public string title;
 			public Channel() {
 				title = "";
 				topic = new Topic();
@@ -139,14 +139,18 @@ namespace XSIRC {
 		}
 		
 		private bool socket_ready() {
-			if(socket_conn.socket.condition_check(IOCondition.IN) == IOCondition.IN) {
+			if(!connected || sock_error) {
+				return false;
+			} else if(socket_conn.socket == null) {
+				return false;
+			} else if(socket_conn.socket.condition_check(IOCondition.IN) == IOCondition.IN) {
 				return true;
 			} else {
 				return false;
 			}
 		}
 		
-		private void irc_connect() throws Error {
+		public void irc_connect() throws Error {
 			Resolver resolver = Resolver.get_default();
 			GLib.List<InetAddress> addresses = resolver.lookup_by_name(server,null);
 			if(addresses.length() < 1) {
@@ -169,6 +173,13 @@ namespace XSIRC {
 				send("PASS %s".printf(password));
 			}
 			connected = true;
+			sock_error = false;
+		}
+		
+		public void irc_disconnect() {
+			send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
+			socket_conn.socket.close();
+			connected = false;
 			sock_error = false;
 		}
 		
@@ -223,6 +234,7 @@ namespace XSIRC {
 		
 		private void handle_server_input(owned string s) {
 			stdout.printf("%s\n",s);
+			last_recieved = time_t();
 			// Getting PING out of the way.
 			if(s.has_prefix("PING :")) {
 				send("PONG :"+s.split(" :")[1]);
@@ -296,7 +308,7 @@ namespace XSIRC {
 						} else {
 							send("NAMES %s".printf(split[2]));
 						}
-						add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,find_channel(split[2]).title,message));
+						add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,split[2],message));
 						break;
 					case "KICK":
 						if(split[3].down() == nick.down()) {
@@ -319,8 +331,8 @@ namespace XSIRC {
 						}
 						foreach(GUI.View view in views) {
 							if(view.name.down() == usernick.down()) {
-								view.name = usernick;
-								view.label.label = usernick;
+								view.name = message;
+								view.label.label = message;
 								add_to_view(view.name,"%s is now known as %s.".printf(usernick,message));
 							}
 						}
@@ -394,6 +406,12 @@ namespace XSIRC {
 						chan.mode = string.joinv(" ",split[4:(split.length-1)]);
 						Main.gui.update_gui(this);
 						break;
+					case "305":
+						am_away = false;
+						break;
+					case "306":
+						am_away = true;
+						break;
 					default:
 						add_to_view("<server>","UNHANDLED MESSAGE: %s".printf(s));
 						break;
@@ -413,7 +431,7 @@ namespace XSIRC {
 		
 		// GUI stuff
 		
-		private void open_view(string name,bool reordable = true) {
+		public void open_view(string name,bool reordable = true) {
 			if(find_view(name) != null) {
 				return;
 			}
@@ -470,6 +488,21 @@ namespace XSIRC {
 			
 		public GUI.View? current_view() {
 			return find_view_from_scrolled_window((Gtk.ScrolledWindow)get_current_notebook_widget());
+		}
+		
+		public void close_view(owned GUI.View? view = null) {
+			if(view == null) {
+				view = current_view();
+			}
+			if(view == null || view.name == "<server>") {
+				return;
+			}
+			if(view.name.has_prefix("#") && (find_channel(view.name) != null) && find_channel(view.name).in_channel) {
+				send("PART %s".printf(view.name));
+			} else {
+				views.remove(view);
+				notebook.remove_page(notebook.page_num(view.scrolled_window));
+			}
 		}
 	}
 	int ircusrcmp(string a,string b) {

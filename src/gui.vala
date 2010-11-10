@@ -15,33 +15,33 @@ namespace XSIRC {
 			// Client
 			{"ClientMenu",null,"_Client"},
 			{"Connect",Gtk.STOCK_CONNECT,"_Connect...","<control><shift>O","Connect to a server.",connect_server_cb},
-			{"DisconnectAll",Gtk.STOCK_DISCONNECT,"_Disconnect all"},
-			{"ReconnectAll",Gtk.STOCK_NETWORK,"_Reconnect all"},
+			{"DisconnectAll",Gtk.STOCK_DISCONNECT,"_Disconnect all",null,null,disconnect_all_cb},
+			{"ReconnectAll",Gtk.STOCK_NETWORK,"_Reconnect all",null,null,reconnect_all_cb},
 			{"OpenLastLink",null,"_Open last link"},
 			{"DebugMenu",null,"_Debug"},
 			{"FailAssertion",null,"_Fail assertion"},
 			{"ThrowException",null,"_Throw exception"},
 			{"ShowLog",null,"Show _log"},
-			{"Exit",Gtk.STOCK_QUIT},
+			{"Exit",Gtk.STOCK_QUIT,null,null,null,quit_client_cb},
 			// Settings
 			{"SettingsMenu",null,"_Settings"},
-			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P"},
+			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
 			// View
 			{"ViewMenu",null,"_View"},
-			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><shift>comma"},
-			{"NextServer",Gtk.STOCK_GOTO_LAST,"Next server","<control><shift>period"},
-			{"PrevView",Gtk.STOCK_GO_BACK,"Previous view","<control>comma"},
-			{"NextView",Gtk.STOCK_GO_FORWARD,"Next view","<control>period"},
-			{"CloseView",Gtk.STOCK_CLOSE,"_Close view","<control>w"},
-			{"RejoinChannel",null,"Re_join channel"},
-			{"OpenView",Gtk.STOCK_OPEN,"_Open view...","<control>o"},
+			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><shift>comma",null,previous_server_cb},
+			{"NextServer",Gtk.STOCK_GOTO_LAST,"Next server","<control><shift>period",null,next_server_cb},
+			{"PrevView",Gtk.STOCK_GO_BACK,"Previous view","<control>comma",null,previous_view_cb},
+			{"NextView",Gtk.STOCK_GO_FORWARD,"Next view","<control>period",null,next_view_cb},
+			{"CloseView",Gtk.STOCK_CLOSE,"_Close view","<control>w",null,close_view_cb},
+			{"RejoinChannel",null,"Re_join channel",null,null,rejoin_chan_cb},
+			{"OpenView",Gtk.STOCK_OPEN,"_Open view...","<control>o",null,open_view_cb},
 			// Server
 			{"ServerMenu",null,"_Server"},
-			{"Disconnect",Gtk.STOCK_DISCONNECT,"_Disconnect","<control><shift>d"},
-			{"Reconnect",Gtk.STOCK_CONNECT,"_Reconnect","<control><shift>r"},
-			{"CloseServer",Gtk.STOCK_CLOSE,"_Close","<control><shift>w"},
-			{"RejoinAll",null,"Re_join all"},
-			{"GoAway",null,"_Mark as away","<control><shift>a"},
+			{"Disconnect",Gtk.STOCK_DISCONNECT,"_Disconnect","<control><shift>d",null,disconnect_server_cb},
+			{"Reconnect",Gtk.STOCK_CONNECT,"_Reconnect","<control><shift>r",null,reconnect_server_cb},
+			{"CloseServer",Gtk.STOCK_CLOSE,"_Close","<control><shift>w",null,close_server_cb},
+			{"RejoinAll",null,"Re_join all",null,null,rejoin_all_cb},
+			{"GoAway",null,"_Mark as away","<control><shift>a",null,go_away_cb},
 			// Help
 			{"HelpMenu",null,"_Help"},
 			{"HelpContents",Gtk.STOCK_HELP,"_Contents","F1"},
@@ -96,7 +96,8 @@ namespace XSIRC {
 		private int command_history_index = 0;
 		public ArrayList<Server> servers = new ArrayList<Server>();
 		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
-		//private unowned Thread server_threads;
+		private unowned Thread server_threads;
+		public Mutex gui_mutex = new Mutex();
 		
 		public class View {
 			public string name;
@@ -243,7 +244,9 @@ namespace XSIRC {
 			Main.server_manager.startup();
 			while(!destroyed) {
 				while(Gtk.events_pending()) {
+					//gui_mutex.lock();
 					Gtk.main_iteration();
+					//gui_mutex.unlock();
 				}
 				foreach(Server server in servers) {
 					server.iterate();
@@ -257,7 +260,7 @@ namespace XSIRC {
 				foreach(Server server in servers) {
 					server.iterate();
 				}
-				Posix.usleep(10);
+				Posix.usleep(1);
 			}
 			return null;
 		}*/
@@ -289,6 +292,7 @@ namespace XSIRC {
 		}
 		
 		public void update_gui(Server? server,owned GUI.View? curr_view = null) {
+			//gui_mutex.lock();
 			if(server != null) {
 				// Only servers in the foreground can update the GUI
 				if(server != curr_server()) {
@@ -331,6 +335,7 @@ namespace XSIRC {
 				(user_list.model as Gtk.ListStore).clear();
 				main_window.title = "XSIRC - Idle";
 			}
+			//gui_mutex.unlock();
 		}
 		
 		// View creation and adding-to
@@ -354,11 +359,11 @@ namespace XSIRC {
 			view.scrolled_window = scrolled_window;
 			view.text_view = text_view;
 			view.label = label;
-			
 			return view;
 		}
 		
 		public void add_to_view(View view,string what) {
+			//gui_mutex.lock();
 			string text = timestamp()+" "+what+"\n";
 			bool scrolled = (int)view.scrolled_window.vadjustment.value == (int)(view.scrolled_window.vadjustment.upper - view.scrolled_window.vadjustment.page_size);
 			Gtk.TextIter end_iter;
@@ -369,6 +374,7 @@ namespace XSIRC {
 				view.text_view.buffer.get_end_iter(out scroll_iter);
 				view.text_view.scroll_to_mark(view.text_view.buffer.create_mark(null,scroll_iter,false),0,true,0,1);
 			}
+			//gui_mutex.unlock();
 		}
 		
 		// Network and view finding stuff
@@ -411,17 +417,149 @@ namespace XSIRC {
 		public void open_server(string address,int port = 6667,bool ssl = false,string password = "",ServerManager.Network? network = null) {
 			Server server = new Server(address,port,ssl,password,network);
 			servers.add(server);
+			//gui_mutex.lock();
 			servers_notebook.append_page(server.notebook,server.label);
 			servers_notebook.show_all();
 			servers_notebook.page = servers_notebook.page_num(server.notebook);
+			//gui_mutex.unlock();
 		}
 		// Menu callbacks
 		
 		public static void connect_server_cb(Gtk.Action action) {
 			Main.gui.open_connect_dialog();
 		}
+		
+		public static void disconnect_all_cb(Gtk.Action action) {
+			foreach(Server server in Main.gui.servers) {
+				server.irc_disconnect();
+			}
+		}
+
+		public static void reconnect_all_cb(Gtk.Action action) {
+			foreach(Server server in Main.gui.servers) {
+				server.irc_disconnect();
+				server.irc_connect();
+			}
+		}
+		
+		public static void quit_client_cb(Gtk.Action action) {
+			Main.gui.destroyed = true;
+		}
+		
+		public static void spawn_preferences_cb(Gtk.Action action) {
+			
+		}
+		
+		public static void previous_server_cb(Gtk.Action action) {
+			Main.gui.servers_notebook.prev_page();
+		}
+		
+		public static void next_server_cb(Gtk.Action action) {
+			Main.gui.servers_notebook.next_page();
+		}
+		
+		public static void previous_view_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				server.notebook.prev_page();
+			}
+		}
+		
+		public static void next_view_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				server.notebook.next_page();
+			}
+		}
+		
+		public static void close_view_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				server.close_view();
+			}
+		}
+		
+		public static void rejoin_chan_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				GUI.View? view = server.current_view();
+				if(view != null && view.name.has_prefix("#")) {
+					server.send("PART %s".printf(view.name));
+					server.send("JOIN %s".printf(view.name));
+				}
+			}
+		}
+		
+		public static void open_view_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				Gtk.Dialog dialog = new Gtk.Dialog.with_buttons("Open view",Main.gui.main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
+				Gtk.HBox box = new Gtk.HBox(false,0);
+				box.pack_start(new Gtk.Label("View name:"),false,false,0);
+				Gtk.Entry server_entry = new Gtk.Entry();
+				server_entry.activate.connect(() => {
+					dialog.response(Gtk.ResponseType.ACCEPT);
+				});
+				box.pack_start(server_entry,false,false,0);
+				server_entry.grab_focus();
+				dialog.vbox.pack_start(box,false,false,0);
+				dialog.response.connect((id) => {
+					if(id == Gtk.ResponseType.ACCEPT) {
+						server.open_view(server_entry.text);
+					}
+					dialog.destroy();
+				});
+				dialog.show_all();
+			}
+		}
+		
+		public static void disconnect_server_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				server.irc_disconnect();
+			}
+		}
+		
+		public static void reconnect_server_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				server.irc_disconnect();
+				server.irc_connect();
+			}
+		}
+		
+		public static void close_server_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				server.irc_disconnect();
+				servers.remove(server);
+				servers_notebook.remove_page(servers_notebook.page_num(server.notebook));
+			}
+		}
+		
+		public static void rejoin_all_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				foreach(Server.Channel channel in server.channels) {
+					send("PART %s".printf(channel.title));
+					send("JOIN %s".printf(channel.title));
+				}
+			}
+		}
+		
+		public static void go_away_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				if(server.am_away) {
+					server.send("AWAY");
+				} else {
+					server.send("AWAY :%s".printf(Main.config["core"]["away_msg"]));
+				}
+			}
+		}
 		// Dialogs
 		public void open_connect_dialog() {
+			//gui_mutex.lock();
 			Gtk.Dialog dialog = new Gtk.Dialog.with_buttons("Connect to server",main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
 			Gtk.HBox box = new Gtk.HBox(false,0);
 			box.pack_start(new Gtk.Label("Server string:"),false,false,0);
@@ -446,6 +584,7 @@ namespace XSIRC {
 				}
 			});
 			dialog.show_all();
+			//gui_mutex.unlock();
 		}
 		// Misc
 		
