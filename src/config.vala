@@ -14,6 +14,7 @@ namespace XSIRC {
 			config["core"]["web_browser"] = "firefox %s";
 			config["core"]["font"]        = "Monospace 10";
 			config["core"]["timestamp_format"] = "[%H:%M:%S]";
+			config["core"]["away_msg"]    = "Away";
 			
 			if(FileUtils.test(Environment.get_home_dir()+"/.xsirc/xsirc.conf",FileTest.EXISTS)) {
 				try {
@@ -24,7 +25,7 @@ namespace XSIRC {
 					stderr.printf("Could not open config file\n");
 				}
 			}
-			load_strings(config["core"],"XSIRC",{"nickname","username","realname","quit_msg","web_browser","font","timestamp_format"});
+			load_strings(config["core"],"XSIRC",{"nickname","username","realname","quit_msg","web_browser","font","timestamp_format","away_msg"});
 		}
 		
 		private void load_strings(HashMap<string,string> hash_map,string section,string[] keys) {
