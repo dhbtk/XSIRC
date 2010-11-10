@@ -532,8 +532,8 @@ namespace XSIRC {
 			Server server;
 			if((server = Main.gui.curr_server()) != null) {
 				server.irc_disconnect();
-				servers.remove(server);
-				servers_notebook.remove_page(servers_notebook.page_num(server.notebook));
+				Main.gui.servers.remove(server);
+				Main.gui.servers_notebook.remove_page(Main.gui.servers_notebook.page_num(server.notebook));
 			}
 		}
 		
@@ -541,8 +541,8 @@ namespace XSIRC {
 			Server server;
 			if((server = Main.gui.curr_server()) != null) {
 				foreach(Server.Channel channel in server.channels) {
-					send("PART %s".printf(channel.title));
-					send("JOIN %s".printf(channel.title));
+					server.send("PART %s".printf(channel.title));
+					server.send("JOIN %s".printf(channel.title));
 				}
 			}
 		}
