@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-
+# wscript_build
+#
+# Copyright (c) 2010 Eduardo Niehues
+# Distributed under the New BSD License; see LICENSE for details.
 obj = bld(
 	features  = 'cc cprogram',
 	packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix',

@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+# wscript
+#
+# Copyright (c) 2010 Eduardo Niehues
+# Distributed under the New BSD License; see LICENSE for details.
 import intltool
 
 APPNAME = "XSIRC"
