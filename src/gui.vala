@@ -225,7 +225,15 @@ namespace XSIRC {
 				// IRC command, with exactly two exceptions
 				string sent = s.substring(1);
 				if(curr_server() != null && curr_server().current_view() != null) {
-					curr_server().send(sent);
+					if(sent.has_prefix("me")) { // CTCP ACTION
+						curr_server().send("PRIVMSG %s :%sACTION %s%s".printf(curr_server().current_view().name,MIRCParser.CTCP_CHAR,sent.substring(3),MIRCParser.CTCP_CHAR));
+					} else if(sent.has_prefix("ctcp")) {
+						string[] split = sent.split(" ");
+						string target = split[1];
+						curr_server().send("PRIVMSG %s :%s%s%s".printf(target,MIRCParser.CTCP_CHAR,sent.substring(4+target.length),MIRCParser.CTCP_CHAR));
+					} else {
+						curr_server().send(sent);
+					}
 				}
 			} else {
 				if(curr_server() != null && curr_server().current_view() != null && s.size() > 0) {
@@ -328,11 +336,14 @@ namespace XSIRC {
 						}
 						title_string.append(" (").append(server.find_channel(curr_view.name).mode).append(")");
 						topic_view.text = server.find_channel(curr_view.name).topic.content;
+					} else {
+						topic_view.text = "";
 					}
 				}
 				main_window.title = title_string.str;
 			} else {
 				(user_list.model as Gtk.ListStore).clear();
+				topic_view.text = "";
 				main_window.title = "XSIRC - Idle";
 			}
 			//gui_mutex.unlock();
@@ -365,10 +376,10 @@ namespace XSIRC {
 		public void add_to_view(View view,string what) {
 			//gui_mutex.lock();
 			string text = timestamp()+" "+what+"\n";
+			// Parsing text
+			MIRCParser parser = new MIRCParser(text);
 			bool scrolled = (int)view.scrolled_window.vadjustment.value == (int)(view.scrolled_window.vadjustment.upper - view.scrolled_window.vadjustment.page_size);
-			Gtk.TextIter end_iter;
-			view.text_view.buffer.get_end_iter(out end_iter);
-			view.text_view.buffer.insert(end_iter,text,(int)text.size());
+			parser.insert(view.text_view);
 			if(scrolled) {
 				Gtk.TextIter scroll_iter;
 				view.text_view.buffer.get_end_iter(out scroll_iter);

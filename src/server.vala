@@ -315,6 +315,21 @@ namespace XSIRC {
 						break;
 					case "001":
 						Main.server_manager.on_connect(this);
+						add_to_view("<server>",message);
+						break;
+					case "002":
+					case "003":
+						add_to_view("<server>",message);
+						break;
+					case "004":
+						add_to_view("<server>","Server info: %s %s %s %s".printf(split[3],split[4],split[5],split[6]));
+						break;
+					case "005":
+						StringBuilder supported = new StringBuilder("");
+						for(int i = 3; !split[i].has_prefix(":"); i++) {
+							supported.append(split[i]).append(" ");
+						}
+						add_to_view("<server>","Server info: %s are supported by this server".printf(supported.str));
 						break;
 					case "PRIVMSG":
 						if(message.has_prefix(((char)1).to_string())) {
@@ -586,7 +601,7 @@ namespace XSIRC {
 						add_to_view(split[2],"No topic is set");
 						break;
 					case "329":
-						add_to_view(split[2],"Channel was created %s".printf(Time.local(split[4]).format("%c")));
+						add_to_view(split[2],"Channel was created %s".printf(Time.local((time_t)split[4].to_int()).format("%c")));
 						break;
 					case "332":
 						Channel chan = find_channel(split[3]);
@@ -647,6 +662,12 @@ namespace XSIRC {
 						break;
 					case "368":
 						add_to_view("<server>","Bans for %s: end of ban list.");
+						break;
+					case "348":
+						add_to_view("<server>","Exceptions for %s: %s".printf(split[3],split[4]));
+						break;
+					case "349":
+						add_to_view("<server>","Exceptions for %s: end of exceptions list.");
 						break;
 					case "371":
 						add_to_view("<server>","INFO: %s".printf(message));

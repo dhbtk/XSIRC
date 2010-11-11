@@ -1,13 +1,26 @@
 using Gee;
 namespace XSIRC {
 	public class MIRCParser : Object {
-		private struct AttrChar {
+		public static const string CTCP_CHAR = "";
+		public static const string BOLD      = "";
+		public static const string ITALIC    = "";
+		public static const string UNDERLINE = "";
+		public static const string COLOR     = "";
+		private class AttrChar {
 			public char    contents;
 			public bool    bold;
 			public bool    italic;
 			public bool    underlined;
 			public string? foreground;
 			public string? background;
+		public AttrChar(char c, bool b, bool i, bool u, string? fg, string? bg) {
+			contents = c;
+			bold = b;
+			italic = i;
+			underlined = u;
+			foreground = fg;
+			background = bg;
+		}
 		}
 		private HashMap<int,string> mirc_colors = new HashMap<int,string>();
 		private char[] data;
@@ -34,7 +47,41 @@ namespace XSIRC {
 		}
 		
 		public void insert(Gtk.TextView textview) {
-			
+			AttrChar[] parsed = parse();
+			foreach(AttrChar c in parsed) {
+				string[] tags = {};
+				if(c.bold) {
+					tags += "bold";
+				}
+				if(c.italic) {
+					tags += "italic";
+				}
+				if(c.underlined) {
+					tags += "underlined";
+				}
+				if(c.background != null) {
+					tags += c.background;
+				}
+				if(c.foreground != null) {
+					tags += c.foreground;
+				}
+				//stdout.printf("Tags: %s\n".printf(string.joinv(", ",tags)));
+				insert_with_tag_array(textview,c.contents,tags);
+			}
+		}
+		
+		private void insert_with_tag_array(Gtk.TextView textview,char what,string[] tags) {
+			Gtk.TextIter start_iter;
+			Gtk.TextIter end_iter;
+			textview.buffer.get_end_iter(out start_iter);
+			//stdout.printf("start_iter offset: %d\n",start_iter.get_offset());
+			textview.buffer.insert(start_iter,what.to_string(),1);
+			textview.buffer.get_end_iter(out end_iter);
+			//stdout.printf("end_iter offset: %d\n",end_iter.get_offset());
+			foreach(string tag in tags) {
+				assert(textview.buffer.tag_table.lookup(tag) != null);
+				textview.buffer.apply_tag_by_name(tag,start_iter,end_iter);
+			}
 		}
 		
 		private AttrChar[] parse() {
@@ -94,7 +141,7 @@ namespace XSIRC {
 								parsing_color = false;
 								got_foreground = false;
 							}
-							AttrChar parsed_char = {c,bold,italic,underlined,(foreground != null ? mirc_colors[foreground.to_int()%16] : null),(background != null ? "back "+mirc_colors[background.to_int()%16] : null)};
+							AttrChar parsed_char = new AttrChar(c,bold,italic,underlined,(foreground != null ? mirc_colors[foreground.to_int()%16] : null),(background != null ? "back "+mirc_colors[background.to_int()%16] : null));
 							parsed_string += parsed_char;
 						}
 						break;
