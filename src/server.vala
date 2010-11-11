@@ -74,6 +74,7 @@ namespace XSIRC {
 			notebook = new Gtk.Notebook();
 			notebook.tab_pos = Gtk.PositionType.BOTTOM;
 			label    = new Gtk.Label((network != null ? network.name+" - " : "")+server);
+			label.use_markup = true;
 			open_view("<server>",false); // Non-reordable
 			// State stuff
 			this.server   = server;
@@ -99,6 +100,7 @@ namespace XSIRC {
 			
 			notebook.switch_page.connect((page,page_num) => {
 				Main.gui.update_gui(this,find_view_from_page_num((int)page_num));
+				find_view_from_page_num((int)page_num).label.label = Markup.escape_text(find_view_from_page_num((int)page_num).name);
 			});
 		}
 		
@@ -761,6 +763,12 @@ namespace XSIRC {
 			GUI.View? view;
 			if((view = find_view(name)) != null) {
 				Main.gui.add_to_view(view,text);
+				if(current_view() != view) {
+					view.label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text(view.name));
+				}
+				if(Main.gui.curr_server() != this) {
+					label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text((network != null ? network.name+" - " : "")+server));
+				}
 			}
 		}
 		

@@ -227,10 +227,12 @@ namespace XSIRC {
 				if(curr_server() != null && curr_server().current_view() != null) {
 					if(sent.has_prefix("me")) { // CTCP ACTION
 						curr_server().send("PRIVMSG %s :%sACTION %s%s".printf(curr_server().current_view().name,MIRCParser.CTCP_CHAR,sent.substring(3),MIRCParser.CTCP_CHAR));
+						curr_server().add_to_view(curr_server().current_view().name,"* %s %s".printf(curr_server().nick,sent.substring(3)));
 					} else if(sent.has_prefix("ctcp")) {
 						string[] split = sent.split(" ");
 						string target = split[1];
 						curr_server().send("PRIVMSG %s :%s%s%s".printf(target,MIRCParser.CTCP_CHAR,sent.substring(4+target.length),MIRCParser.CTCP_CHAR));
+						curr_server().add_to_view("<server>",">%s< CTCP %s".printf(target,sent.substring(4+target.length)));
 					} else {
 						curr_server().send(sent);
 					}
@@ -340,6 +342,7 @@ namespace XSIRC {
 						topic_view.text = "";
 					}
 				}
+				server.label.label = Markup.escape_text((server.network != null ? server.network.name+" - " : "")+server.server);
 				main_window.title = title_string.str;
 			} else {
 				(user_list.model as Gtk.ListStore).clear();
@@ -353,7 +356,7 @@ namespace XSIRC {
 		
 		public View create_view(string name) {
 			Gtk.Label label = new Gtk.Label(name);
-			
+			label.use_markup = true;
 			Gtk.TextView text_view = new Gtk.TextView.with_buffer(new Gtk.TextBuffer(global_tag_table));
 			text_view.editable = false;
 			text_view.cursor_visible = false;
