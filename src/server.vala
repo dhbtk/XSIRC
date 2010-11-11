@@ -261,33 +261,6 @@ namespace XSIRC {
 				}
 				message = s.replace(s.split(" :")[0]+" :","");
 				switch(split[1]) {
-					case "353":
-						Channel channel = find_channel(split[4]);
-						return_if_fail(channel != null);
-						if(channel.userlist_recieved) {
-							channel.users.clear();
-							channel.raw_users.clear();
-						}
-						string[] users = message.split(" ");
-						foreach(string user in users) {
-							channel.raw_users.add(user);
-							user = user.down();
-							if(/^(&|@|%|\+)/.match(user)) {
-								user = user.substring(1);
-							}
-							channel.users.add(user);
-						}
-						channel.userlist_recieved = false;
-						break;
-					case "366":
-						Channel channel = find_channel(split[3]);
-						return_if_fail(channel != null);
-						channel.userlist_recieved = true;
-						channel.raw_users.sort((CompareFunc)ircusrcmp);
-						channel.users.sort();
-						// User list
-						Main.gui.update_gui(this);
-						break;
 					case "JOIN":
 						if(find_channel(message) == null) {
 							Channel channel = new Channel();
@@ -360,6 +333,24 @@ namespace XSIRC {
 							add_to_view(split[2],"<%s> %s".printf(usernick,message));
 						}
 						break;
+					case "NOTICE":
+						if(split[3] == "AUTH") {
+							add_to_view("<server>","AUTH -- %s".printf(message));
+						} else {
+							if(message.has_prefix(((char)1).to_string())) {
+								message = message.replace(((char)1).to_string(),"");
+								string prefix = message.split(" ")[0];
+								message = message.substring(prefix.length);
+								switch(prefix) {
+									default:
+										add_to_view("<server>","UNHANDLED CTCP REPLY -- PREFIX: %s; MESSAGE: %s".printf(prefix,message));
+										break;
+								}
+							} else {
+								add_to_view(split[2],"-%s- %s".printf(usernick,message));
+							}
+						}
+						break;
 					case "QUIT":
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
@@ -395,22 +386,324 @@ namespace XSIRC {
 						chan.topic.time_set = (time_t)split[5].to_int();
 						add_to_view(split[3],"Topic set by %s on %s".printf(split[4],Time.local(chan.topic.time_set).format("%c")));
 						break;
-					case "332":
-						Channel chan = find_channel(split[3]);
-						chan.topic.content = message;
-						add_to_view(split[3],"The topic is: %s".printf(message));
-						Main.gui.update_gui(this);
+					/*case "305":
+						am_away = false;
+						break;
+					case "306":
+						am_away = true;
+						break;*/
+					// Error messages
+					case "401":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "402":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "403":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "404":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "405":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "406":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "407":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "409":
+						add_to_view("<server>",message);
+						break;
+					case "411":
+						add_to_view("<server>",message);
+						break;
+					case "412":
+						add_to_view("<server>",message);
+						break;
+					case "413":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "414":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "421":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "422":
+						add_to_view("<server>",message);
+						break;
+					case "423":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "424":
+						add_to_view("<server>",message);
+						break;
+					case "431":
+						add_to_view("<server>",message);
+						break;
+					case "432":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "433":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "436":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "441":
+						add_to_view("<server>","%s isn't on %s".printf(split[3],split[4]));
+						break;
+					case "442":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "443":
+						add_to_view("<server>","%s is already on %s".printf(split[3],split[4]));
+						break;
+					case "444":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "445":
+						add_to_view("<server>",message);
+						break;
+					case "446":
+						add_to_view("<server>",message);
+						break;
+					case "451":
+						add_to_view("<server>",message);
+						break;
+					case "461":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "462":
+						add_to_view("<server>",message);
+						break;
+					case "463":
+						add_to_view("<server>",message);
+						break;
+					case "464":
+						add_to_view("<server>",message);
+						break;
+					case "465":
+						add_to_view("<server>",message);
+						break;
+					case "467":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "471":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "472":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "473":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "474":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "475":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "481":
+						add_to_view("<server>",message);
+						break;
+					case "482":
+						add_to_view("<server>","%s: %s".printf(split[3],message));
+						break;
+					case "483":
+						add_to_view("<server>",message);
+						break;
+					case "491":
+						add_to_view("<server>",message);
+						break;
+					case "501":
+						add_to_view("<server>",message);
+						break;
+					case "502":
+						add_to_view("<server>",message);
+						break;
+					// Command responses
+					case "302":
+						string name = message.split("=")[0];
+						add_to_view("<server>","Userhost for %s: %s".printf(name,message));
+						break;
+					case "303":
+						add_to_view("<server>","%s is on".printf(message));
+						break;
+					case "301":
+						add_to_view("<server>","%s is away: %s".printf(split[3],message));
+						break;
+					case "305":
+						add_to_view("<server>","You are no longer marked as away.");
+						am_away = false;
+						break;
+					case "306":
+						add_to_view("<server>","You are now marked as away.");
+						am_away = true;
+						break;
+					case "311":
+						add_to_view("<server>","WHOIS for %s: %s@%s: %s".printf(split[3],split[4],split[5],message));
+						break;
+					case "312":
+						add_to_view("<server>","WHOIS for %s: in server %s: %s".printf(split[3],split[4],message));
+						break;
+					case "313":
+						add_to_view("<server>","WHOIS for %s: is an IRCop".printf(split[3]));
+						break;
+					case "317":
+						add_to_view("<server>","WHOIS for %s: %s seconds idle".printf(split[3],split[4]));
+						break;
+					case "318":
+						add_to_view("<server>","WHOIS for %s: end of /WHOIS list.".printf(split[3]));
+						break;
+					case "319":
+						add_to_view("<server>","WHOIS for %s: in channels %s".printf(split[3],message));
+						break;
+					case "314":
+						add_to_view("<server>","WHOWAS for %s: %s@%s: %s".printf(split[3],split[4],split[5],message));
+						break;
+					case "369":
+						add_to_view("<server>","WHOWAS for %s: end of /WHOWAS list.".printf(split[3]));
+						break;
+					case "321":
+						add_to_view("<server>","LIST: Channel (Users) Topic");
+						break;
+					case "322":
+						add_to_view("<server>","LIST: %s (%s) %s".printf(split[3],split[4],message));
+						break;
+					case "323":
+						add_to_view("<server>","LIST: end of /LIST.");
 						break;
 					case "324":
 						Channel chan = find_channel(split[3]);
 						chan.mode = string.joinv(" ",split[4:(split.length-1)]);
 						Main.gui.update_gui(this);
 						break;
-					case "305":
-						am_away = false;
+					case "331":
+						add_to_view(split[2],"No topic is set");
 						break;
-					case "306":
-						am_away = true;
+					case "329":
+						add_to_view(split[2],"Channel was created %s".printf(Time.local(split[4]).format("%c")));
+						break;
+					case "332":
+						Channel chan = find_channel(split[3]);
+						chan.topic.content = message;
+						add_to_view(split[3],"The topic is: %s".printf(message));
+						Main.gui.update_gui(this);
+						break;
+					case "341":
+						add_to_view("<server>","INVITE: inviting %s to %s".printf(split[3],split[4]));
+						break;
+					case "342":
+						add_to_view("<server>","SUMMON: summoning %s to IRC".printf(split[3]));
+						break;
+					case "351":
+						add_to_view("<server>","Server version: %s; server software: %s; %s".printf(split[3],split[4],message));
+						break;
+					case "352":
+						add_to_view("<server>","WHO in %s: %s!%s@%s in server %s (%s) %s".printf(split[3],split[7],split[4],split[5],split[6],split[8],message));
+						break;
+					case "315":
+						add_to_view("<server>","WHO in %s: end of /WHO list.".printf(split[3]));
+						break;
+					case "353":
+						Channel channel = find_channel(split[4]);
+						return_if_fail(channel != null);
+						if(channel.userlist_recieved) {
+							channel.users.clear();
+							channel.raw_users.clear();
+						}
+						string[] users = message.split(" ");
+						foreach(string user in users) {
+							channel.raw_users.add(user);
+							user = user.down();
+							if(/^(&|@|%|\+)/.match(user)) {
+								user = user.substring(1);
+							}
+							channel.users.add(user);
+						}
+						channel.userlist_recieved = false;
+						break;
+					case "366":
+						Channel channel = find_channel(split[3]);
+						return_if_fail(channel != null);
+						channel.userlist_recieved = true;
+						channel.raw_users.sort((CompareFunc)ircusrcmp);
+						channel.users.sort();
+						// User list
+						Main.gui.update_gui(this);
+						break;
+					case "364":
+						add_to_view("<server>","LINKS: %s %s :%s".printf(split[3],split[4],message));
+						break;
+					case "365":
+						add_to_view("<server>","LINKS: end of /LINKS list.");
+						break;
+					case "367":
+						add_to_view("<server>","Bans for %s: %s".printf(split[3],split[4]));
+						break;
+					case "368":
+						add_to_view("<server>","Bans for %s: end of ban list.");
+						break;
+					case "371":
+						add_to_view("<server>","INFO: %s".printf(message));
+						break;
+					case "374":
+						add_to_view("<server>","INFO: end of /INFO list.");
+						break;
+					case "375":
+						add_to_view("<server>","MOTD for %s:".printf(server));
+						break;
+					case "372":
+						add_to_view("<server>",message);
+						break;
+					case "376":
+						add_to_view("<server>","End of /MOTD command.");
+						break;
+					case "381":
+						add_to_view("<server>","You are now an IRCop.");
+						break;
+					case "382":
+						add_to_view("<server>","Rehashing config file %s.".printf(split[3]));
+						break;
+					case "391":
+						add_to_view("<server>","Server's local time: %s".printf(message));
+						break;
+					/* TODO: implement 200, 201, 202, 203, 204, 205, 206, 208,
+					         261, 211, 212, 213, 214, 215, 216, 218, 219, 241,
+					         242, 243, 244 */
+					case "221":
+						add_to_view("<server>","Your mode is: %s".printf(split[3]));
+						break;
+					case "251":
+						add_to_view("<server>","Server info: %s".printf(message));
+						break;
+					case "252":
+						add_to_view("<server>","Server info: %s operator(s) online".printf(split[3]));
+						break;
+					case "253":
+						add_to_view("<server>","Server info: %s unknown connection(s)".printf(split[3]));
+						break;
+					case "254":
+						add_to_view("<server>","Server info: %s channels formed".printf(split[3]));
+						break;
+					case "255":
+						add_to_view("<server>","Server info: %s".printf(message));
+						break;
+					case "256":
+						add_to_view("<server>","Administrative info for %s:".printf(split[3]));
+						break;
+					case "257":
+						add_to_view("<server>",message);
+						break;
+					case "258":
+						add_to_view("<server>",message);
+						break;
+					case "259":
+						add_to_view("<server>",message);
 						break;
 					default:
 						add_to_view("<server>","UNHANDLED MESSAGE: %s".printf(s));
