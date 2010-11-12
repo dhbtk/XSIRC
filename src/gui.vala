@@ -212,7 +212,7 @@ namespace XSIRC {
 				string sent = s.substring(1);
 				if(curr_server() != null && curr_server().current_view() != null) {
 					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,sent));
-					curr_server().add_to_view(curr_server().current_view().name,"<%s> %s".printf(curr_server().nick,sent);
+					curr_server().add_to_view(curr_server().current_view().name,"<%s> %s".printf(curr_server().nick,sent));
 				}
 			} /*else if(s.has_prefix("//")) {
 				// Client command
