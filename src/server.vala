@@ -25,6 +25,7 @@ namespace XSIRC {
 		private LinkedList<OutgoingMessage> output_queue = new LinkedList<OutgoingMessage>();
 		public unowned Thread sender_thread;
 		public bool am_away;
+		private int nick_tries = 0;
 		// Socket
 		public SocketClient socket_client;
 		public SocketConnection socket_conn;
@@ -323,6 +324,8 @@ namespace XSIRC {
 						break;
 					case "001":
 						Main.server_manager.on_connect(this);
+						nick_tries = 0;
+						nick = split[2];
 						add_to_view("<server>",message);
 						break;
 					case "002":
@@ -340,37 +343,39 @@ namespace XSIRC {
 						add_to_view("<server>","Server info: %s are supported by this server".printf(supported.str));
 						break;
 					case "PRIVMSG":
+						string target = (split[2].has_prefix("#") ? usernick : split[2]);
 						if(message.has_prefix(((char)1).to_string())) {
 							message = message.replace(((char)1).to_string(),"");
 							string prefix = message.split(" ")[0];
 							message = message.substring(prefix.length);
 							switch(prefix) {
 								case "ACTION":
-									add_to_view(split[2],"* %s%s".printf(usernick,message));
+									add_to_view(target,"* %s%s".printf(usernick,message));
 									break;
 								default:
 									add_to_view("<server>","UNHANDLED CTCP MESSAGE -- PREFIX: %s; MESSAGE: %s".printf(prefix,message));
 									break;
 							}
 						} else {
-							add_to_view(split[2],"<%s> %s".printf(usernick,message));
+							add_to_view(target,"<%s> %s".printf(usernick,message));
 						}
 						break;
 					case "NOTICE":
 						if(split[3] == "AUTH") {
 							add_to_view("<server>","AUTH -- %s".printf(message));
 						} else {
+							string target = (split[2].has_prefix("#") ? usernick : split[2]);
 							if(message.has_prefix(((char)1).to_string())) {
 								message = message.replace(((char)1).to_string(),"");
 								string prefix = message.split(" ")[0];
 								message = message.substring(prefix.length);
 								switch(prefix) {
 									default:
-										add_to_view("<server>","UNHANDLED CTCP REPLY -- PREFIX: %s; MESSAGE: %s".printf(prefix,message));
+										add_to_view("<server>","UNHANDLED CTCP REPLY -- PREFIX: %s; SENDER: %s; MESSAGE: %s".printf(prefix,target,message));
 										break;
 								}
 							} else {
-								add_to_view(split[2],"-%s- %s".printf(usernick,message));
+								add_to_view(target,"-%s- %s".printf(usernick,message));
 							}
 						}
 						break;
@@ -471,6 +476,12 @@ namespace XSIRC {
 						add_to_view("<server>","%s: %s".printf(split[3],message));
 						break;
 					case "433":
+						nick_tries++;
+						StringBuilder new_nick = new StringBuilder(nick);
+						for(int i = 0; i <= nick_tries; i++) {
+							new_nick.append("_");
+						}
+						send("NICK %s".printf(new_nick.str));
 						add_to_view("<server>","%s: %s".printf(split[3],message));
 						break;
 					case "436":
@@ -766,6 +777,7 @@ namespace XSIRC {
 		}
 		
 		public void add_to_view(string name,string text) {
+			open_view(name);
 			GUI.View? view;
 			if((view = find_view(name)) != null) {
 				Main.gui.add_to_view(view,text);

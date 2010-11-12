@@ -7,6 +7,7 @@
 using Gee;
 namespace XSIRC {
 	public class GUI {
+		public static const string link_regex = "[a-z]+://[a-zA-Z0-9-.]+(:[0-9]+)?(/[a-zA-Z0-9-_$.+[]!*\\(),;:@&=?/~#%){0,1}";
 		// GUI proper
 		public Gtk.Window main_window;
 		public Gtk.TreeView user_list;
@@ -23,7 +24,7 @@ namespace XSIRC {
 			{"Connect",Gtk.STOCK_CONNECT,"_Connect...","<control><shift>O","Connect to a server.",connect_server_cb},
 			{"DisconnectAll",Gtk.STOCK_DISCONNECT,"_Disconnect all",null,null,disconnect_all_cb},
 			{"ReconnectAll",Gtk.STOCK_NETWORK,"_Reconnect all",null,null,reconnect_all_cb},
-			{"OpenLastLink",null,"_Open last link"},
+			{"OpenLastLink",null,"_Open last link","F2",null,open_last_link_cb},
 			{"DebugMenu",null,"_Debug"},
 			{"FailAssertion",null,"_Fail assertion"},
 			{"ThrowException",null,"_Throw exception"},
@@ -173,7 +174,7 @@ namespace XSIRC {
 			// Input entry
 			
 			text_entry = new Gtk.TextView();
-			text_entry.accepts_tab = true;
+			//text_entry.accepts_tab = true; // tab completion is "bloat"
 			//text_entry.buffer.text = "test";
 			vbox.pack_start(text_entry,false,true,0);
 			
@@ -211,7 +212,7 @@ namespace XSIRC {
 				string sent = s.substring(1);
 				if(curr_server() != null && curr_server().current_view() != null) {
 					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,sent));
-					curr_server().add_to_view(curr_server().current_view().name,s);
+					curr_server().add_to_view(curr_server().current_view().name,"<%s> %s".printf(curr_server().nick,sent);
 				}
 			} /*else if(s.has_prefix("//")) {
 				// Client command
@@ -237,8 +238,8 @@ namespace XSIRC {
 					} else if(sent.has_prefix("ctcp")) {
 						string[] split = sent.split(" ");
 						string target = split[1];
-						curr_server().send("PRIVMSG %s :%s%s%s".printf(target,MIRCParser.CTCP_CHAR,sent.substring(4+target.length),MIRCParser.CTCP_CHAR));
-						curr_server().add_to_view("<server>",">%s< CTCP %s".printf(target,sent.substring(4+target.length)));
+						curr_server().send("PRIVMSG %s :%s%s%s".printf(target,MIRCParser.CTCP_CHAR,sent.substring(6+target.length),MIRCParser.CTCP_CHAR));
+						curr_server().add_to_view("<server>",">%s< CTCP %s".printf(target,sent.substring(6+target.length)));
 					} else {
 						curr_server().send(sent);
 					}
@@ -574,6 +575,19 @@ namespace XSIRC {
 					server.send("AWAY");
 				} else {
 					server.send("AWAY :%s".printf(Main.config["core"]["away_msg"]));
+				}
+			}
+		}
+		
+		public static void open_last_link_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				View? view;
+				if((view = server.current_view()) != null) {
+					string[] lines = view.text_view.buffer.text.split("\n");
+					for(int i = lines.length-1; i <= 0; i--) {
+						
+					}
 				}
 			}
 		}
