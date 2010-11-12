@@ -343,7 +343,6 @@ namespace XSIRC {
 						add_to_view("<server>","Server info: %s are supported by this server".printf(supported.str));
 						break;
 					case "PRIVMSG":
-						string target = (split[2].has_prefix("#") ? usernick : split[2]);
 						if(message.has_prefix(((char)1).to_string())) {
 							message = message.replace(((char)1).to_string(),"");
 							string prefix = message.split(" ")[0];
@@ -364,7 +363,6 @@ namespace XSIRC {
 						if(split[3] == "AUTH") {
 							add_to_view("<server>","AUTH -- %s".printf(message));
 						} else {
-							string target = (split[2].has_prefix("#") ? usernick : split[2]);
 							if(message.has_prefix(((char)1).to_string())) {
 								message = message.replace(((char)1).to_string(),"");
 								string prefix = message.split(" ")[0];
