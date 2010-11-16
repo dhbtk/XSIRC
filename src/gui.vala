@@ -7,7 +7,7 @@
 using Gee;
 namespace XSIRC {
 	public class GUI {
-		public static const string link_regex = "[a-z]+://[a-zA-Z0-9-.]+(:[0-9]+)?(/[a-zA-Z0-9-_$.+[]!*\\(),;:@&=?/~#%){0,1}";
+		public static const string link_regex = "([a-z]+://[a-zA-Z0-9\\-.]+(:[0-9]+)?(/[a-zA-Z0-9\\-_$.+\\[\\]!*\\(),;:@&=?/~#%]+){0,1})";
 		// GUI proper
 		public Gtk.Window main_window;
 		public Gtk.TreeView user_list;
@@ -580,13 +580,30 @@ namespace XSIRC {
 		}
 		
 		public static void open_last_link_cb(Gtk.Action action) {
+			//stderr.printf("Entering open_last_link_cb\n");
 			Server server;
 			if((server = Main.gui.curr_server()) != null) {
+				//stderr.printf("Server != null\n");
 				View? view;
 				if((view = server.current_view()) != null) {
+					//stderr.printf("View != null\n");
 					string[] lines = view.text_view.buffer.text.split("\n");
-					for(int i = lines.length-1; i <= 0; i--) {
-						
+					Regex regex = new Regex(link_regex);
+					for(int i = lines.length-1; i >= 0; i--) {
+						//stderr.printf("Testing line %d\n",i);
+						MatchInfo info;
+						if(!regex.match(lines[i],0,out info)) {
+							//stderr.printf("Line doesn't match\n");
+							continue;
+						}
+						try {
+							//stderr.printf("Spawning process\n");
+							//stderr.printf("Matches: %s\n",string.joinv(", ",info.fetch_all()));
+							Process.spawn_async(null,Main.config["core"]["web_browser"].printf(info.fetch(1)).split(" "),null,0,null,null);
+						} catch(SpawnError e) {
+							stderr.printf("Could not spawn browser: %s\n",e.message);
+						}
+						break;
 					}
 				}
 			}

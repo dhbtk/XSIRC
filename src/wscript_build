@@ -3,14 +3,13 @@
 #
 # Copyright (c) 2010 Eduardo Niehues
 # Distributed under the New BSD License; see LICENSE for details.
-obj = bld(
-	features  = 'cc cprogram',
-	packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix',
+bld.program(
+	source    = ['gui.vala','main.vala','config.vala','server.vala','mircparser.vala','servermanager.vala'],
+	features  = 'c cprogram',
+	packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix glib-2.0',
 	target    = 'xsirc',
-	ccflags   = ['-include','config.h','-g'],
+	cflags    = ['-include','config.h','-g'],
 	linkflags = ['-g'],
 	
 	uselib    = 'GTK GLIB GIO GEE',
 	)
-
-obj.find_sources_in_dirs('.')

@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2010 Eduardo Niehues
 # Distributed under the New BSD License; see LICENSE for details.
-import intltool
+#import intltool
 
 APPNAME = "XSIRC"
 VERSION = "0.1"
@@ -19,12 +19,12 @@ except:
 top = "."
 out = "build"
 
-def set_options(opt):
-	opt.tool_options('compiler_cc')
+def options(opt):
+	opt.tool_options('compiler_c')
 	opt.tool_options('vala')
 
 def configure(conf):
-	conf.check_tool('compiler_cc cc vala') # intltool later too
+	conf.check_tool('compiler_c vala') # intltool later too
 	conf.check_cfg(package='glib-2.0',uselib_store='GLIB',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gtk+-2.0',uselib_store='GTK',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gio-2.0',uselib_store='GIO',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
