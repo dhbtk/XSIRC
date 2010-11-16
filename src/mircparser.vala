@@ -12,7 +12,7 @@ namespace XSIRC {
 		public static const string ITALIC    = "";
 		public static const string UNDERLINE = "";
 		public static const string COLOR     = "";
-		private class AttrChar {
+		public class AttrChar {
 			public char    contents;
 			public bool    bold;
 			public bool    italic;
@@ -94,7 +94,7 @@ namespace XSIRC {
 			}
 		}
 		
-		private AttrChar[] parse() {
+		public AttrChar[] parse() {
 			AttrChar[] parsed_string = {};
 			bool bold = false;
 			bool italic = false;
