@@ -28,7 +28,8 @@ Using it
 
 Connect to a server by pressing Ctrl-Shift-O or clicking Client->Connect... in
 the menu. The slash-commands are all sent directly to the server, except for /me
-and /ctcp, which are helper commands. The syntax for /ctcp is: /ctcp <target> <message>
+and /ctcp, which are helper commands. The syntax for /ctcp is:
+	/ctcp <target> <message>
 
 Configuring it has to be done by hand still. Config dialog coming soon!
 
