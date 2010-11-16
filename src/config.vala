@@ -34,6 +34,7 @@ namespace XSIRC {
 				}
 			}
 			load_strings(config["core"],"XSIRC",{"nickname","username","realname","quit_msg","web_browser","font","timestamp_format","away_msg","log_date_format","log"});
+			
 		}
 		
 		private void load_strings(HashMap<string,string> hash_map,string section,string[] keys) {
