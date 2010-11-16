@@ -29,9 +29,9 @@ namespace XSIRC {
 		public ServerManager() {
 			stdout.printf("Loading networks\n");
 			// Checking if networks.conf exists, and trying to load it
-			if(FileUtils.test(Environment.get_home_dir()+"/.xsirc/networks.conf",FileTest.EXISTS)) {
+			if(FileUtils.test(Environment.get_user_config_dir()+"/xsirc/networks.conf",FileTest.EXISTS)) {
 				try {
-					raw_conf.load_from_file(Environment.get_home_dir()+"/.xsirc/networks.conf",KeyFileFlags.KEEP_COMMENTS);
+					raw_conf.load_from_file(Environment.get_user_config_dir()+"/xsirc/networks.conf",KeyFileFlags.KEEP_COMMENTS);
 				} catch(KeyFileError e) {
 					stderr.printf("Could not parse networks.conf\n");
 				} catch(FileError e) {

@@ -360,7 +360,7 @@ namespace XSIRC {
 						}
 						break;
 					case "NOTICE":
-						if(split[3] == "AUTH") {
+						if(split[2] == "AUTH") {
 							add_to_view("<server>","AUTH -- %s".printf(message));
 						} else {
 							if(message.has_prefix(((char)1).to_string())) {
@@ -618,7 +618,7 @@ namespace XSIRC {
 						add_to_view(split[2],"No topic is set");
 						break;
 					case "329":
-						add_to_view(split[2],"Channel was created %s".printf(Time.local((time_t)split[4].to_int()).format("%c")));
+						add_to_view(split[3],"Channel was created %s".printf(Time.local((time_t)split[4].to_int()).format("%c")));
 						break;
 					case "332":
 						Channel chan = find_channel(split[3]);

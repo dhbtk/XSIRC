@@ -22,9 +22,9 @@ namespace XSIRC {
 			config["core"]["timestamp_format"] = "[%H:%M:%S]";
 			config["core"]["away_msg"]    = "Away";
 			
-			if(FileUtils.test(Environment.get_home_dir()+"/.xsirc/xsirc.conf",FileTest.EXISTS)) {
+			if(FileUtils.test(Environment.get_user_config_dir()+"/xsirc/xsirc.conf",FileTest.EXISTS)) {
 				try {
-					raw_file.load_from_file(Environment.get_home_dir()+"/.xsirc/xsirc.conf",KeyFileFlags.KEEP_COMMENTS);
+					raw_file.load_from_file(Environment.get_user_config_dir()+"/xsirc/xsirc.conf",KeyFileFlags.KEEP_COMMENTS);
 				} catch(KeyFileError e) {
 					stderr.printf("Could not parse config file, using defaults\n");
 				} catch(FileError e) {
