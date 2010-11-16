@@ -194,6 +194,7 @@ namespace XSIRC {
 			// Server-switching
 			servers_notebook.switch_page.connect((nb_page,page_num) => {
 				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)));
+				text_entry.grab_focus();
 			});
 			
 			// Servers thread
@@ -269,6 +270,10 @@ namespace XSIRC {
 					server.iterate();
 				}
 				Posix.usleep(10);
+			}
+			// Exiting properly
+			foreach(Server server in servers) {
+				server.irc_disconnect();
 			}
 		}
 		
@@ -362,7 +367,7 @@ namespace XSIRC {
 		// View creation and adding-to
 		
 		public View create_view(string name) {
-			Gtk.Label label = new Gtk.Label(name);
+			Gtk.Label label = new Gtk.Label(Markup.escape_text(name));
 			label.use_markup = true;
 			Gtk.TextView text_view = new Gtk.TextView.with_buffer(new Gtk.TextBuffer(global_tag_table));
 			text_view.editable = false;

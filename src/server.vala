@@ -108,6 +108,7 @@ namespace XSIRC {
 			notebook.switch_page.connect((page,page_num) => {
 				Main.gui.update_gui(this,find_view_from_page_num((int)page_num));
 				find_view_from_page_num((int)page_num).label.label = Markup.escape_text(find_view_from_page_num((int)page_num).name);
+				Main.gui.text_entry.grab_focus();
 			});
 		}
 		
@@ -476,7 +477,7 @@ namespace XSIRC {
 					case "433":
 						nick_tries++;
 						StringBuilder new_nick = new StringBuilder(nick);
-						for(int i = 0; i <= nick_tries; i++) {
+						for(int i = 0; i < nick_tries; i++) {
 							new_nick.append("_");
 						}
 						send("NICK %s".printf(new_nick.str));
