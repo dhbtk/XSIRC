@@ -84,10 +84,12 @@ namespace XSIRC {
 			//stdout.printf("start_iter offset: %d\n",start_iter.get_offset());
 			string added = convert(what.to_string(),(ssize_t)1,"UTF-8","ISO-8859-1");
 			textview.buffer.insert(start_iter,added,(int)added.size());
-			textview.buffer.get_end_iter(out end_iter);
+			end_iter = start_iter;
+			end_iter.forward_char();
 			//stdout.printf("end_iter offset: %d\n",end_iter.get_offset());
 			foreach(string tag in tags) {
 				assert(textview.buffer.tag_table.lookup(tag) != null);
+				//stdout.printf("Applying tag %s\n",tag);
 				textview.buffer.apply_tag_by_name(tag,start_iter,end_iter);
 			}
 		}
