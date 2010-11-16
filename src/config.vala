@@ -21,6 +21,8 @@ namespace XSIRC {
 			config["core"]["font"]        = "Monospace 10";
 			config["core"]["timestamp_format"] = "[%H:%M:%S]";
 			config["core"]["away_msg"]    = "Away";
+			config["core"]["log_date_format"] = "%F";
+			config["core"]["log"]         = "true";
 			
 			if(FileUtils.test(Environment.get_user_config_dir()+"/xsirc/xsirc.conf",FileTest.EXISTS)) {
 				try {
@@ -31,7 +33,7 @@ namespace XSIRC {
 					stderr.printf("Could not open config file\n");
 				}
 			}
-			load_strings(config["core"],"XSIRC",{"nickname","username","realname","quit_msg","web_browser","font","timestamp_format","away_msg"});
+			load_strings(config["core"],"XSIRC",{"nickname","username","realname","quit_msg","web_browser","font","timestamp_format","away_msg","log_date_format","log"});
 		}
 		
 		private void load_strings(HashMap<string,string> hash_map,string section,string[] keys) {

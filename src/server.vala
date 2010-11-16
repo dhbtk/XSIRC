@@ -779,6 +779,7 @@ namespace XSIRC {
 			open_view(name);
 			GUI.View? view;
 			if((view = find_view(name)) != null) {
+				IRCLogger.log(this,view,text);
 				Main.gui.add_to_view(view,text);
 				if(current_view() != view) {
 					view.label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text(view.name));
