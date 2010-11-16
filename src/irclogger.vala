@@ -1,6 +1,7 @@
 namespace XSIRC {
 	public class IRCLogger : Object {
-		public static void log(Server server,GUI.View view,string str) {
+		public static void log(Server server,GUI.View view,owned string str) {
+			str = Main.gui.timestamp() + " " + str;
 			if(Main.config["core"]["log"] != "true") {
 				return;
 			}
