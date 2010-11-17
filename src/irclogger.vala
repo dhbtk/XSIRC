@@ -1,3 +1,9 @@
+/*
+ * irclogger.vala
+ *
+ * Copyright (c) 2010 Eduardo Niehues
+ * Distributed under the New BSD License; see ../LICENSE for details.
+ */
 namespace XSIRC {
 	public class IRCLogger : Object {
 		public static void log(Server server,GUI.View view,owned string str) {
@@ -16,7 +22,7 @@ namespace XSIRC {
 			
 			path.append("/").append(view.name.down()).append("-");
 			path.append(Time.local(time_t()).format(Main.config["core"]["log_date_format"])).append(".log");
-			stdout.printf("%s\n",path.str);
+			//stdout.printf("%s\n",path.str);
 			FileStream stream = FileStream.open(path.str,"a");
 			if(stream == null) {
 				stderr.printf("Could not open log file for appending!\n");

@@ -291,6 +291,7 @@ namespace XSIRC {
 						} else {
 							send("NAMES %s".printf(split[2]));
 						}
+						message = message == s ? "" : message;
 						add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,split[2],message));
 						break;
 					case "KICK":
@@ -299,6 +300,7 @@ namespace XSIRC {
 						} else {
 							send("NAMES %s".printf(split[2]));
 						}
+						message = message == s ? "" : message;
 						add_to_view(find_channel(split[2]).title,"%s has kicked %s from %s [%s]".printf(split[3],usernick,split[2],message));
 						break;
 					case "NICK":
