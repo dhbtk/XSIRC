@@ -105,6 +105,7 @@ namespace XSIRC {
 		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
 		private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
+		private PrefWindow prefs_window;
 		
 		public class View {
 			public string name;
@@ -473,7 +474,7 @@ namespace XSIRC {
 		}
 		
 		public static void spawn_preferences_cb(Gtk.Action action) {
-			
+			Main.gui.create_prefs_window();
 		}
 		
 		public static void previous_server_cb(Gtk.Action action) {
@@ -641,6 +642,14 @@ namespace XSIRC {
 			});
 			dialog.show_all();
 			//gui_mutex.unlock();
+		}
+		
+		public void create_prefs_window() {
+			prefs_window = new PrefWindow();
+		}
+		
+		public void destroy_prefs_window() {
+			prefs_window = null;
 		}
 		// Misc
 		
