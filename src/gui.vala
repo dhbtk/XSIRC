@@ -203,7 +203,7 @@ namespace XSIRC {
 			});
 			// Server-switching
 			servers_notebook.switch_page.connect((nb_page,page_num) => {
-				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)));
+				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)),null,true);
 				text_entry.grab_focus();
 			});
 			
@@ -325,11 +325,11 @@ namespace XSIRC {
 			global_tag_table.add(italic);
 		}
 		
-		public void update_gui(Server? server,owned GUI.View? curr_view = null) {
+		public void update_gui(Server? server,owned GUI.View? curr_view = null,bool force = false) {
 			//gui_mutex.lock();
 			if(server != null) {
 				// Only servers in the foreground can update the GUI
-				if(server != curr_server()) {
+				if(server != curr_server() && !force) {
 					return;
 				}
 				// User list
