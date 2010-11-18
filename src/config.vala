@@ -48,5 +48,20 @@ namespace XSIRC {
 				}
 			}
 		}
+		
+		private void save_strings(HashMap<string,string> map,string section) {
+			foreach(string key in map.keys) {
+				raw_file.set_string(section,key,map[key]);
+			}
+		}
+		
+		public void save_settings() {
+			save_strings(config["core"],"XSIRC");
+			try {
+				FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/xsirc.conf",raw_file.to_data());
+			} catch(Error e) {
+				
+			}
+		}
 	}
 }
