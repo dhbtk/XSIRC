@@ -197,22 +197,25 @@ namespace XSIRC {
 			sock_error = false;
 		}
 		
-		public void send(string s,float priority = 0.5) {
-			if(false/*s.down().has_prefix("privmsg ") || s.down().has_prefix("notice ")*/) { // Buggy: FIXME
+		public void send(string s,float priority = 0.5,bool add_to_view_ = false,string view_name = "") {
+			if(s.down().has_prefix("privmsg ") || s.down().has_prefix("notice ")) {
 				string prefix = s.split(" :")[0] + " :";
 				string message = s.substring(prefix.length);
 				string[] split_message = {};
 				while(message.length != 0) {
 					string[] split = message.split(" ");
-					string msg = "";
+					StringBuilder str = new StringBuilder("");
 					foreach(string i in split) {
-						if(msg.length >= 380) break;
-						msg += i + " ";
+						if(str.str.length >= 380) break;
+						str.append(i).append(" ");
 					}
-					message = message.substring(msg.strip().length).strip();
-					split_message += msg;
+					message = message.substring(str.str.length);
+					split_message += str.str;
 				}
 				foreach(string i in split_message) {
+					if(add_to_view_) {
+						add_to_view(view_name,"<%s> %s".printf(nick,i));
+					}
 					output_queue.offer(new OutgoingMessage(prefix+i,priority));
 				}
 			} else {
