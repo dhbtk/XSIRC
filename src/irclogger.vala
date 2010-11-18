@@ -21,7 +21,11 @@ namespace XSIRC {
 			DirUtils.create_with_parents(path.str,0755);
 			
 			path.append("/").append(view.name.down()).append("-");
+#if WINDOWS
+			path.append(localtime(time_t()).format(Main.config["core"]["log_date_format"])).append(".log");
+#else
 			path.append(Time.local(time_t()).format(Main.config["core"]["log_date_format"])).append(".log");
+#endif
 			//stdout.printf("%s\n",path.str);
 			FileStream stream = FileStream.open(path.str,"a");
 			if(stream == null) {
