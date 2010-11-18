@@ -659,7 +659,11 @@ namespace XSIRC {
 		// Misc
 		
 		public string timestamp() {
+#if WINDOWS
+			return localtime(time_t()).format(Main.config["core"]["timestamp_format"]);
+#else
 			return Time.local(time_t()).format(Main.config["core"]["timestamp_format"]);
+#endif
 		}
 	}
 }

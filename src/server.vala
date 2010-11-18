@@ -413,7 +413,11 @@ namespace XSIRC {
 						Channel chan = find_channel(split[3]);
 						chan.topic.setter = split[4];
 						chan.topic.time_set = (time_t)split[5].to_int();
+#if WINDOWS
+						add_to_view(split[3],"Topic set by %s on %s".printf(split[4],localtime(chan.topic.time_set).format("%c")));
+#else
 						add_to_view(split[3],"Topic set by %s on %s".printf(split[4],Time.local(chan.topic.time_set).format("%c")));
+#endif
 						break;
 					/*case "305":
 						am_away = false;
@@ -621,7 +625,11 @@ namespace XSIRC {
 						add_to_view(split[2],"No topic is set");
 						break;
 					case "329":
+#if WINDOWS
+						add_to_view(split[3],"Channel was created %s".printf(localtime((time_t)split[4].to_int()).format("%c")));
+#else
 						add_to_view(split[3],"Channel was created %s".printf(Time.local((time_t)split[4].to_int()).format("%c")));
+#endif
 						break;
 					case "332":
 						Channel chan = find_channel(split[3]);

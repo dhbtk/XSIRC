@@ -3,13 +3,25 @@
 #
 # Copyright (c) 2010 Eduardo Niehues
 # Distributed under the New BSD License; see LICENSE for details.
+if bld.env['windows'] == 'yes':
+	flags = ['-g','-mingw32']
+	bld.stlib(
+		source = 'localtime_r_w32.c',
+		target = 'localtime_r')
+	to_use = 'localtime_r'
+else:
+	flags = ['-g']
+	to_use = ''
 bld.program(
 	source    = ['gui.vala','main.vala','config.vala','server.vala','mircparser.vala','servermanager.vala','irclogger.vala','prefwindow.vala'],
 	features  = 'c cprogram',
-	packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix glib-2.0',
+	packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix xsirc glib-2.0',
+	vapi_dirs = '../vapi',
+	includes  = '../vapi',
 	target    = 'xsirc',
+	use       = to_use,
 	cflags    = ['-include','config.h','-g'],
-	linkflags = ['-g'],
+	linkflags = flags,
 	
 	uselib    = 'GTK GLIB GIO GEE',
 	)
