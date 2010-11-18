@@ -360,9 +360,9 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox1">
+              <object class="GtkHPaned" id="hpaned1">
                 <property name="visible">True</property>
-                <property name="spacing">5</property>
+                <property name="can_focus">True</property>
                 <child>
                   <object class="GtkVBox" id="vbox2">
                     <property name="visible">True</property>
@@ -403,8 +403,8 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="network_edit">
-                            <property name="label">gtk-edit</property>
+                          <object class="GtkButton" id="network_remove">
+                            <property name="label">gtk-remove</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -416,20 +416,6 @@
                             <property name="position">1</property>
                           </packing>
                         </child>
-                        <child>
-                          <object class="GtkButton" id="network_remove">
-                            <property name="label">gtk-remove</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -438,7 +424,8 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">0</property>
+                    <property name="resize">False</property>
+                    <property name="shrink">True</property>
                   </packing>
                 </child>
                 <child>
@@ -500,20 +487,6 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="server_edit">
-                                <property name="label">gtk-edit</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="use_stock">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkButton" id="server_remove">
                                 <property name="label">gtk-remove</property>
                                 <property name="visible">True</property>
@@ -524,7 +497,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -579,20 +552,6 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="command_edit">
-                                <property name="label">gtk-edit</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="use_stock">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkButton" id="command_remove">
                                 <property name="label">gtk-remove</property>
                                 <property name="visible">True</property>
@@ -603,7 +562,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -620,7 +579,8 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="resize">True</property>
+                    <property name="shrink">True</property>
                   </packing>
                 </child>
               </object>

@@ -141,14 +141,14 @@ namespace XSIRC {
 			main_vbox.pack_start(topic_view,false,true,0);
 			
 			// Main HBox, users, servers notebook
-			Gtk.HBox main_hbox = new Gtk.HBox(false,0);
+			Gtk.HPaned main_hbox = new Gtk.HPaned();
 			main_vbox.pack_start(main_hbox,true,true,0);
 			
 			// User list
 			user_list = new Gtk.TreeView.with_model(new Gtk.ListStore(1,typeof(string)));
 			Gtk.ScrolledWindow user_list_container = new Gtk.ScrolledWindow(null,null);
 			user_list_container.add(user_list);
-			main_hbox.pack_start(user_list_container,false,true,0);
+			main_hbox.add1(user_list_container);
 			
 			Gtk.CellRendererText renderer = new Gtk.CellRendererText();
 			Gtk.TreeViewColumn display_column = new Gtk.TreeViewColumn.with_attributes("Users",renderer,"text",0,null);
@@ -156,7 +156,7 @@ namespace XSIRC {
 			
 			// Quick VBox for server notebook+input
 			var vbox = new Gtk.VBox(false,0);
-			main_hbox.pack_start(vbox,true,true,5);
+			main_hbox.add2(vbox);
 			
 			// Server notebook
 			

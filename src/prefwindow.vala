@@ -369,9 +369,9 @@ namespace XSIRC {
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox1">
+              <object class="GtkHPaned" id="hpaned1">
                 <property name="visible">True</property>
-                <property name="spacing">5</property>
+                <property name="can_focus">True</property>
                 <child>
                   <object class="GtkVBox" id="vbox2">
                     <property name="visible">True</property>
@@ -412,8 +412,8 @@ namespace XSIRC {
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="network_edit">
-                            <property name="label">gtk-edit</property>
+                          <object class="GtkButton" id="network_remove">
+                            <property name="label">gtk-remove</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -425,20 +425,6 @@ namespace XSIRC {
                             <property name="position">1</property>
                           </packing>
                         </child>
-                        <child>
-                          <object class="GtkButton" id="network_remove">
-                            <property name="label">gtk-remove</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -447,7 +433,8 @@ namespace XSIRC {
                     </child>
                   </object>
                   <packing>
-                    <property name="position">0</property>
+                    <property name="resize">False</property>
+                    <property name="shrink">True</property>
                   </packing>
                 </child>
                 <child>
@@ -509,20 +496,6 @@ namespace XSIRC {
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="server_edit">
-                                <property name="label">gtk-edit</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="use_stock">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkButton" id="server_remove">
                                 <property name="label">gtk-remove</property>
                                 <property name="visible">True</property>
@@ -533,7 +506,7 @@ namespace XSIRC {
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -588,20 +561,6 @@ namespace XSIRC {
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="command_edit">
-                                <property name="label">gtk-edit</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="use_stock">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkButton" id="command_remove">
                                 <property name="label">gtk-remove</property>
                                 <property name="visible">True</property>
@@ -612,7 +571,7 @@ namespace XSIRC {
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -629,7 +588,8 @@ namespace XSIRC {
                     </child>
                   </object>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="resize">True</property>
+                    <property name="shrink">True</property>
                   </packing>
                 </child>
               </object>
@@ -694,7 +654,7 @@ namespace XSIRC {
       </object>
     </child>
     <action-widgets>
-      <action-widget response="2">button1</action-widget>
+      <action-widget response="0">button1</action-widget>
       <action-widget response="0">button2</action-widget>
     </action-widgets>
   </object>
@@ -708,6 +668,7 @@ namespace XSIRC {
 		private Gtk.TreeView network_tree;
 		private Gtk.TreeView server_tree;
 		private Gtk.TreeView cmd_tree;
+		private Gtk.CheckButton network_ac;
 		public PrefWindow() {
 			ui_builder = new Gtk.Builder();
 			ui_builder.add_from_string(ui_definition,ui_definition.size());
@@ -728,14 +689,29 @@ namespace XSIRC {
 			network_tree = ((Gtk.TreeView)ui_builder.get_object("network_tree"));
 			server_tree  = ((Gtk.TreeView)ui_builder.get_object("server_tree"));
 			cmd_tree     = ((Gtk.TreeView)ui_builder.get_object("command_tree"));
-			Gtk.CellRendererText renderer  = new Gtk.CellRendererText();
-			Gtk.TreeViewColumn network_col = new Gtk.TreeViewColumn.with_attributes("Networks",renderer,"text",0,null);
+			network_ac   = ((Gtk.CheckButton)ui_builder.get_object("autoconnect"));
+			
+			Gtk.CellRendererText net_renderer = new Gtk.CellRendererText();
+			net_renderer.editable = true;
+			net_renderer.edited.connect(network_edited);
+			Gtk.TreeViewColumn network_col = new Gtk.TreeViewColumn.with_attributes("Networks",net_renderer,"text",0,null);
 			network_tree.append_column(network_col);
 			network_tree.model = network_store;
-			Gtk.TreeViewColumn server_col  = new Gtk.TreeViewColumn.with_attributes("Servers",renderer,"text",0,null);
+			Gtk.TreeSelection network_selection = network_tree.get_selection();
+			network_selection.changed.connect(network_changed);
+			init_network_tree();
+			
+			Gtk.CellRendererText server_renderer = new Gtk.CellRendererText();
+			server_renderer.editable = true;
+			server_renderer.edited.connect(server_edited);
+			Gtk.TreeViewColumn server_col  = new Gtk.TreeViewColumn.with_attributes("Servers",server_renderer,"text",0,null);
 			server_tree.append_column(server_col);
 			server_tree.model = server_store;
-			Gtk.TreeViewColumn cmd_col     = new Gtk.TreeViewColumn.with_attributes("Commands",renderer,"text",0,null);
+			
+			Gtk.CellRendererText cmd_renderer = new Gtk.CellRendererText();
+			cmd_renderer.editable = true;
+			cmd_renderer.edited.connect(cmd_edited);
+			Gtk.TreeViewColumn cmd_col     = new Gtk.TreeViewColumn.with_attributes("Commands",cmd_renderer,"text",0,null);
 			cmd_tree.append_column(cmd_col);
 			cmd_tree.model = cmd_store;
 			window.response.connect((id) => {
@@ -745,6 +721,71 @@ namespace XSIRC {
 			});
 			
 			window.show_all();
+		}
+		
+		private void init_network_tree() {
+			Gtk.TreeIter iter;
+			// Need to reverse the list first
+			LinkedList<ServerManager.Network> netlist = new LinkedList<ServerManager.Network>();
+			foreach(ServerManager.Network network in Main.server_manager.networks) {
+				netlist.insert(0,network);
+			}
+			foreach(ServerManager.Network network in netlist) {
+				network_store.insert_with_values(out iter,0,0,network.name,-1);
+			}
+		}
+		
+		private void network_changed() {
+			Gtk.TreeModel model;
+			Gtk.TreeIter  iter;
+			string        network_name;
+			Gtk.TreeSelection sel = network_tree.get_selection();
+			if(sel.get_selected(out model,out iter)) {
+				model.get(iter,0,out network_name,-1);
+				ServerManager.Network network = Main.server_manager.find_network(network_name);
+				// Clearing the rows first
+				server_store.clear();
+				cmd_store.clear();
+				Gtk.TreeIter s_iter;
+				LinkedList<ServerManager.Network.ServerData> slist = new LinkedList<ServerManager.Network.ServerData>();
+				foreach(ServerManager.Network.ServerData server in network.servers) {
+					slist.insert(0,server);
+				}
+				foreach(ServerManager.Network.ServerData server in slist) {
+					StringBuilder server_str = new StringBuilder();
+					(server.ssl ? server_str.append("ircs://") : server_str.append("irc://"));
+					server_str.append(server.address).append(":").append(server.port.to_string());
+					if(server.password != null) {
+						server_str.append(" ").append(server.password);
+					}
+					server_store.insert_with_values(out s_iter,0,0,server_str.str,-1);
+				}
+				Gtk.TreeIter c_iter;
+				LinkedList<string> clist = new LinkedList<string>();
+				foreach(string command in network.commands) {
+					clist.insert(0,command);
+				}
+				foreach(string command in clist) {
+					cmd_store.insert_with_values(out c_iter,0,0,command,-1);
+				}
+				network_ac.active = network.auto_connect;
+			} else {
+				network_ac.active = false;
+				server_store.clear();
+				cmd_store.clear();
+			}
+		}
+		
+		private void network_edited(string path,string new_text) {
+			
+		}
+		
+		private void server_edited(string path,string new_text) {
+			
+		}
+		
+		private void cmd_edited(string path,string new_text) {
+			
 		}
 	}
 }
