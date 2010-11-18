@@ -46,25 +46,17 @@ namespace XSIRC {
 				loaded_networks = true;
 				bool skip = false;
 				string[] needed_keys = {"server0","autoconnect"};
-				foreach(string key in needed_keys) {
-					if(!raw_conf.has_key(net_name,key)) {
-						stderr.printf("Could not parse network %s!\n",net_name);
-						skip = true;
-						break;
+				try {
+					foreach(string key in needed_keys) {
+						if(!raw_conf.has_key(net_name,key)) {
+							stderr.printf("Could not parse network %s!\n",net_name);
+							skip = true;
+							break;
+						}
 					}
 					if(skip) { continue; }
 					Network network = new Network();
 					network.name = net_name;
-					// Wtf, sanity check
-					bool duplicate_found = false;
-					foreach(Network network_ in networks) {
-						if(network_.name == net_name) {
-							stderr.printf("Duplicate network!\n");
-							duplicate_found = true;
-							break;
-						}
-					}
-					if(duplicate_found) { continue; }
 					for(int curr_server = 0;raw_conf.has_key(net_name,"server%d".printf(curr_server));curr_server++) {
 						Network.ServerData server = new Network.ServerData();
 						if(!Regex.match_simple("^(irc|sirc):\\/\\/[a-zA-Z0-9-_.]+:\\d+",raw_conf.get_string(net_name,"server%d".printf(curr_server)))) {
@@ -89,6 +81,8 @@ namespace XSIRC {
 						network.commands.add(raw_conf.get_string(net_name,"command%d".printf(curr_cmd)));
 					}
 					networks.add(network);
+				} catch(KeyFileError e) {
+					stderr.printf("Error loading network: %s\n",e.message);
 				}
 			}
 		}

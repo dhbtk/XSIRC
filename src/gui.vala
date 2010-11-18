@@ -103,7 +103,7 @@ namespace XSIRC {
 		private int command_history_index = 0;
 		public ArrayList<Server> servers = new ArrayList<Server>();
 		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
-		private unowned Thread server_threads;
+		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
 		private PrefWindow prefs_window;
 		
@@ -130,7 +130,11 @@ namespace XSIRC {
 			Gtk.UIManager ui_manager = new Gtk.UIManager();
 			ui_manager.insert_action_group(action_group,0);
 			main_window.add_accel_group(ui_manager.get_accel_group());
-			ui_manager.add_ui_from_string(ui_manager_xml,-1);		
+			try {
+				ui_manager.add_ui_from_string(ui_manager_xml,-1);
+			} catch(Error e) {
+				Posix.exit(Posix.EXIT_FAILURE);
+			}
 			
 			// Menu bar & children
 			Gtk.MenuBar menu_bar = ui_manager.get_widget("/MainMenu") as Gtk.MenuBar;
@@ -214,6 +218,8 @@ namespace XSIRC {
 		
 		private void parse_text(string s) {
 			//stdout.printf("Calling GUI.parse_text with argument \"%s\"\n",s);
+			command_history.insert(0,s);
+			command_history_index = 0;
 			if(s.has_prefix("//")) {
 				// Send privmsg to current channel + /
 				string sent = s.substring(1);
@@ -334,7 +340,11 @@ namespace XSIRC {
 				list.clear();
 				if((curr_view != null) && (server.find_channel(curr_view.name) != null)) {
 					Gtk.TreeIter iter;
-					foreach(string user in server.find_channel(curr_view.name).raw_users) {
+					LinkedList<string> ulist = new LinkedList<string>();
+					foreach(string u in server.find_channel(curr_view.name).raw_users) {
+						ulist.insert(0,u);
+					}
+					foreach(string user in ulist) {
 						list.insert_with_values(out iter,0,0,user,-1);
 					}
 				}
@@ -470,7 +480,11 @@ namespace XSIRC {
 		public static void reconnect_all_cb(Gtk.Action action) {
 			foreach(Server server in Main.gui.servers) {
 				server.irc_disconnect();
-				server.irc_connect();
+				try {
+					server.irc_connect();
+				} catch(Error e) {
+					
+				}
 			}
 		}
 		
@@ -556,7 +570,11 @@ namespace XSIRC {
 			Server server;
 			if((server = Main.gui.curr_server()) != null) {
 				server.irc_disconnect();
-				server.irc_connect();
+				try {
+					server.irc_connect();
+				} catch(Error e) {
+					
+				}
 			}
 		}
 		
@@ -599,7 +617,12 @@ namespace XSIRC {
 				if((view = server.current_view()) != null) {
 					//stderr.printf("View != null\n");
 					string[] lines = view.text_view.buffer.text.split("\n");
-					Regex regex = new Regex(link_regex);
+					Regex regex = null;
+					try {
+						regex = new Regex(link_regex);
+					} catch(RegexError e) {
+						return;
+					}
 					for(int i = lines.length-1; i >= 0; i--) {
 						//stderr.printf("Testing line %d\n",i);
 						MatchInfo info;

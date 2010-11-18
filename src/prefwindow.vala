@@ -617,22 +617,11 @@ namespace XSIRC {
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="button1">
-                <property name="label">gtk-save</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
               <object class="GtkButton" id="button2">
-                <property name="label">gtk-cancel</property>
+                <property name="label">gtk-close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -654,7 +643,6 @@ namespace XSIRC {
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">button1</action-widget>
       <action-widget response="0">button2</action-widget>
     </action-widgets>
   </object>
@@ -671,7 +659,11 @@ namespace XSIRC {
 		private Gtk.CheckButton network_ac;
 		public PrefWindow() {
 			ui_builder = new Gtk.Builder();
-			ui_builder.add_from_string(ui_definition,ui_definition.size());
+			try {
+				ui_builder.add_from_string(ui_definition,ui_definition.size());
+			} catch(Error e) {
+				Posix.exit(Posix.EXIT_FAILURE);
+			}
 			window = ui_builder.get_object("dialog1") as Gtk.Dialog;
 			// Setting all the widget's contents according to current settings
 			((Gtk.Entry)ui_builder.get_object("nickname")).text = Main.config["core"]["nickname"];
@@ -802,22 +794,26 @@ namespace XSIRC {
 				}
 			});
 			window.response.connect((id) => {
-				//TODO
-				if(id == 2) {
-					Main.config["core"]["nickname"] = ((Gtk.Entry)ui_builder.get_object("nickname")).text;
-					Main.config["core"]["username"] = ((Gtk.Entry)ui_builder.get_object("username")).text;
-					Main.config["core"]["realname"] = ((Gtk.Entry)ui_builder.get_object("realname")).text;
-					Main.config["core"]["quit_msg"] = ((Gtk.Entry)ui_builder.get_object("quit_msg")).text;
-					Main.config["core"]["away_msg"] = ((Gtk.Entry)ui_builder.get_object("away_msg")).text;
-					Main.config["core"]["web_browser"] = ((Gtk.Entry)ui_builder.get_object("web_browser")).text;
-					Main.config["core"]["timestamp_format"] = ((Gtk.Entry)ui_builder.get_object("timestamp_format")).text;
-					Main.config["core"]["log_date_format"] = ((Gtk.Entry)ui_builder.get_object("log_date_format")).text;
-			
-					Main.config["core"]["log"] = ((Gtk.CheckButton)ui_builder.get_object("logging")).active ? "true" : "false";
-					Main.config["core"]["font"] = ((Gtk.FontButton)ui_builder.get_object("font")).font_name;
-					Main.config_manager.save_settings();
-				}
+				Main.config["core"]["nickname"] = ((Gtk.Entry)ui_builder.get_object("nickname")).text;
+				Main.config["core"]["username"] = ((Gtk.Entry)ui_builder.get_object("username")).text;
+				Main.config["core"]["realname"] = ((Gtk.Entry)ui_builder.get_object("realname")).text;
+				Main.config["core"]["quit_msg"] = ((Gtk.Entry)ui_builder.get_object("quit_msg")).text;
+				Main.config["core"]["away_msg"] = ((Gtk.Entry)ui_builder.get_object("away_msg")).text;
+				Main.config["core"]["web_browser"] = ((Gtk.Entry)ui_builder.get_object("web_browser")).text;
+				Main.config["core"]["timestamp_format"] = ((Gtk.Entry)ui_builder.get_object("timestamp_format")).text;
+				Main.config["core"]["log_date_format"] = ((Gtk.Entry)ui_builder.get_object("log_date_format")).text;
+		
+				Main.config["core"]["log"] = ((Gtk.CheckButton)ui_builder.get_object("logging")).active ? "true" : "false";
+				Main.config["core"]["font"] = ((Gtk.FontButton)ui_builder.get_object("font")).font_name;
+				Main.config_manager.save_settings();
 				Main.server_manager.save_networks();
+				// Updating the fonts
+				Main.gui.system_view.text_view.modify_font(Pango.FontDescription.from_string(Main.config["core"]["font"]));
+				foreach(Server server in Main.gui.servers) {
+					foreach(GUI.View view in server.views) {
+						view.text_view.modify_font(Pango.FontDescription.from_string(Main.config["core"]["font"]));
+					}
+				}
 				window.destroy();
 				Main.gui.destroy_prefs_window();
 			});

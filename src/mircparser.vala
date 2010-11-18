@@ -49,7 +49,12 @@ namespace XSIRC {
 			mirc_colors[13] = "pink";
 			mirc_colors[14] = "grey";
 			mirc_colors[15] = "dark grey";
-			string s = convert(str,(ssize_t)str.size(),"ISO-8859-1","UTF-8");
+			string s = str;
+			try {
+				s = convert(str,(ssize_t)str.size(),"ISO-8859-1","UTF-8");
+			} catch(ConvertError e) {
+				s = str;
+			}
 			data = (char[])s.data;
 		}
 		
@@ -82,7 +87,12 @@ namespace XSIRC {
 			Gtk.TextIter end_iter;
 			textview.buffer.get_end_iter(out start_iter);
 			//stdout.printf("start_iter offset: %d\n",start_iter.get_offset());
-			string added = convert(what.to_string(),(ssize_t)1,"UTF-8","ISO-8859-1");
+			string added = what.to_string();
+			try {
+				added = convert(what.to_string(),(ssize_t)1,"UTF-8","ISO-8859-1");
+			} catch(ConvertError e) {
+				added = what.to_string();
+			}
 			textview.buffer.insert(start_iter,added,(int)added.size());
 			end_iter = start_iter;
 			end_iter.forward_char();

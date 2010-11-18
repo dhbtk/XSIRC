@@ -60,7 +60,7 @@ namespace XSIRC {
 			try {
 				FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/xsirc.conf",raw_file.to_data());
 			} catch(Error e) {
-				
+				stderr.printf("Error saving settings: %s\n",e.message);
 			}
 		}
 	}

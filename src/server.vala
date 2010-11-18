@@ -188,7 +188,11 @@ namespace XSIRC {
 		
 		public void irc_disconnect() {
 			send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
-			socket_conn.socket.close();
+			try {
+				socket_conn.socket.close();
+			} catch(Error e) {
+				
+			}
 			connected = false;
 			sock_error = false;
 		}
@@ -868,34 +872,20 @@ namespace XSIRC {
 		unichar prefix_b = user_b[0];
 		// Hacking this for display, since we can't easily reverse a Gee Linked
 		// List
-		if((prefix_a in comp_table) && !(prefix_b in comp_table)) {
-			return 1;
-		} else if(!(prefix_a in comp_table) && (prefix_b in comp_table)) {
+		if((comp_table.has_key(prefix_a)) && !(comp_table.has_key(prefix_b))) {
 			return -1;
-		} else if((prefix_a in comp_table) && (prefix_b in comp_table)) {
+		} else if(!(comp_table.has_key(prefix_a)) && (comp_table.has_key(prefix_b))) {
+			return 1;
+		} else if((comp_table.has_key(prefix_a)) && (comp_table.has_key(prefix_b))) {
 			if(comp_table[prefix_a] > comp_table[prefix_b]) {
-				return 1;
-			} else if(comp_table[prefix_a] < comp_table[prefix_b]) {
 				return -1;
+			} else if(comp_table[prefix_a] < comp_table[prefix_b]) {
+				return 1;
 			} else {
-				int i = strcmp(a.down(),b.down());
-				if(i>0) {
-					return -1;
-				}else if(i<0) {
-					return 1;
-				}else {
-					return 0;
-				}
+				return strcmp(a.down(),b.down());
 			}
 		} else {
-			int i = strcmp(a.down(),b.down());
-			if(i>0) {
-				return -1;
-			}else if(i<0) {
-				return 1;
-			}else {
-				return 0;
-			}
+			return strcmp(a.down(),b.down());
 		}
 	}
 }
