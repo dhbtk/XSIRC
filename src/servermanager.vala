@@ -22,8 +22,8 @@ namespace XSIRC {
 			
 		}
 		
-		private LinkedList<Network> networks = new LinkedList<Network>();
-		private KeyFile raw_conf = new KeyFile();
+		public LinkedList<Network> networks = new LinkedList<Network>();
+		public KeyFile raw_conf = new KeyFile();
 		public bool loaded_networks = false;
 		
 		public ServerManager() {
@@ -95,6 +95,15 @@ namespace XSIRC {
 		
 		public void save_networks() {
 			
+		}
+		
+		public Network? find_network(string name) {
+			foreach(Network network in networks) {
+				if(network.name == name) {
+					return network;
+				}
+			}
+			return null;
 		}
 		
 		public void startup() {
