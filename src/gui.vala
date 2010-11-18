@@ -31,7 +31,7 @@ namespace XSIRC {
 			{"ShowLog",null,"Show _log"},
 			{"Exit",Gtk.STOCK_QUIT,null,null,null,quit_client_cb},
 			// Settings
-			{"SettingsMenu",null,"_Settings"},
+			{"SettingsMenu",null,"S_ettings"},
 			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
 			// View
 			{"ViewMenu",null,"_View"},
@@ -139,6 +139,11 @@ namespace XSIRC {
 			// Topic text box
 			topic_view = new Gtk.Entry();
 			main_vbox.pack_start(topic_view,false,true,0);
+			topic_view.activate.connect(() => {
+				if(curr_server() != null && curr_server().current_view() != null && curr_server().current_view().name.has_prefix("#")) {
+					curr_server().send("TOPIC %s :%s".printf(curr_server().current_view().name,topic_view.text));
+				}
+			});
 			
 			// Main HBox, users, servers notebook
 			Gtk.HPaned main_hbox = new Gtk.HPaned();

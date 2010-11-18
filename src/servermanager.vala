@@ -94,7 +94,29 @@ namespace XSIRC {
 		}
 		
 		public void save_networks() {
-			
+			raw_conf = new KeyFile();
+			foreach(Network network in networks) {
+				raw_conf.set_boolean(network.name,"autoconnect",network.auto_connect);
+				for(int i = 0;i < network.servers.size; i++) {
+					StringBuilder s = new StringBuilder("irc");
+					if(network.servers[i].ssl) {
+						s.append("s");
+					}
+					s.append("://").append(network.servers[i].address).append(":").append(network.servers[i].port.to_string());
+					if(network.servers[i].password != null) {
+						s.append(" ").append(network.servers[i].password);
+					}
+					raw_conf.set_string(network.name,"server%d".printf(i),s.str);
+				}
+				for(int i = 0;i < network.commands.size; i++) {
+					raw_conf.set_string(network.name,"command%d".printf(i),network.commands[i]);
+				}
+			}
+			try {
+				FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/networks.conf",raw_conf.to_data());
+			} catch(Error e) {
+				
+			}
 		}
 		
 		public Network? find_network(string name) {
