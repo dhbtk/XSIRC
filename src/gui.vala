@@ -25,18 +25,14 @@ namespace XSIRC {
 			{"DisconnectAll",Gtk.STOCK_DISCONNECT,"_Disconnect all",null,null,disconnect_all_cb},
 			{"ReconnectAll",Gtk.STOCK_NETWORK,"_Reconnect all",null,null,reconnect_all_cb},
 			{"OpenLastLink",null,"_Open last link","F2",null,open_last_link_cb},
-			{"DebugMenu",null,"_Debug"},
-			{"FailAssertion",null,"_Fail assertion"},
-			{"ThrowException",null,"_Throw exception"},
-			{"ShowLog",null,"Show _log"},
 			{"Exit",Gtk.STOCK_QUIT,null,null,null,quit_client_cb},
 			// Settings
 			{"SettingsMenu",null,"S_ettings"},
 			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
 			// View
 			{"ViewMenu",null,"_View"},
-			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><shift>comma",null,previous_server_cb},
-			{"NextServer",Gtk.STOCK_GOTO_LAST,"Next server","<control><shift>period",null,next_server_cb},
+			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><shift>less",null,previous_server_cb},
+			{"NextServer",Gtk.STOCK_GOTO_LAST,"Next server","<control><shift>greater",null,next_server_cb},
 			{"PrevView",Gtk.STOCK_GO_BACK,"Previous view","<control>comma",null,previous_view_cb},
 			{"NextView",Gtk.STOCK_GO_FORWARD,"Next view","<control>period",null,next_view_cb},
 			{"CloseView",Gtk.STOCK_CLOSE,"_Close view","<control>w",null,close_view_cb},
@@ -62,12 +58,6 @@ namespace XSIRC {
 			<menuitem action="DisconnectAll"/>
 			<menuitem action="ReconnectAll"/>
 			<menuitem action="OpenLastLink"/>
-			<separator/>
-			<menu action="DebugMenu">
-				<menuitem action="FailAssertion"/>
-				<menuitem action="ThrowException"/>
-				<menuitem action="ShowLog"/>
-			</menu>
 			<separator/>
 			<menuitem action="Exit"/>
 		</menu>

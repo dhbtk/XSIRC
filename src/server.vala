@@ -26,6 +26,7 @@ namespace XSIRC {
 		public unowned Thread sender_thread;
 		public bool am_away;
 		private int nick_tries = 0;
+		private bool sent_ping = false;
 		// Socket
 		public SocketClient socket_client;
 		public SocketConnection socket_conn;
@@ -145,6 +146,25 @@ namespace XSIRC {
 				s = s.strip().replace("\r","").replace("\n","");
 				//add_to_view("<server>","DEBUG -- got: %s".printf(s));
 				handle_server_input(s);
+			}
+			if(connected && !sock_error) {
+				// Checking if almost timeouting
+				if(((int)time_t() - (int)last_recieved) >= 250) {
+					if(!sent_ping) {
+						send("PING :lagcheck");
+						sent_ping = true;
+					}
+				}
+				// Ping timeout
+				if(((int)time_t() - (int)last_recieved) >= 300) {
+					add_to_view("<server>","Ping timeout. Reconnecting...");
+					try {
+						irc_disconnect();
+						irc_connect();
+					} catch(Error e) {
+						
+					}
+				}
 			}
 		}
 		
@@ -278,6 +298,9 @@ namespace XSIRC {
 				}
 				message = s.replace(s.split(" :")[0]+" :","");
 				switch(split[1]) {
+					case "PONG":
+						sent_ping = false;
+						break;
 					case "JOIN":
 						if(find_channel(message) == null) {
 							Channel channel = new Channel();

@@ -66,7 +66,7 @@ namespace XSIRC {
 						string[] split_server = raw_conf.get_string(net_name,"server%d".printf(curr_server)).split(" ");
 						string server_data = split_server[0];
 						if(split_server.length > 1) {
-							server.password = split_server[1];
+							server.password = string.joinv(" ",split_server[1:split_server.length-1]);
 						} else {
 							server.password = null;
 						}
