@@ -224,8 +224,7 @@ namespace XSIRC {
 				// Send privmsg to current channel + /
 				string sent = s.substring(1);
 				if(curr_server() != null && curr_server().current_view() != null) {
-					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,sent));
-					curr_server().add_to_view(curr_server().current_view().name,"<%s> %s".printf(curr_server().nick,sent));
+					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,sent),(float)0.5,true,curr_server().current_view().name);
 				}
 			} /*else if(s.has_prefix("//")) {
 				// Client command
@@ -259,8 +258,8 @@ namespace XSIRC {
 				}
 			} else {
 				if(curr_server() != null && curr_server().current_view() != null && s.size() > 0) {
-					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,s));
-					curr_server().add_to_view(curr_server().current_view().name,"<%s> %s".printf(curr_server().nick,s));
+					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,s),(float)0.5,true,curr_server().current_view().name);
+					//curr_server().add_to_view(curr_server().current_view().name,"<%s> %s".printf(curr_server().nick,s));
 				}
 			}
 		}
