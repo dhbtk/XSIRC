@@ -103,6 +103,7 @@ namespace XSIRC {
 				connected = false;
 				sock_error = true;
 				add_to_view("<server>","ERROR: could not connect - %s".printf(e.message));
+				Main.server_manager.on_connect_error(this);
 				Main.gui.update_gui(this);
 			}
 			

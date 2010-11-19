@@ -166,7 +166,24 @@ namespace XSIRC {
 		}
 		
 		public void on_connect_error(Server server) requires (server.network != null) {
-			
+			server.network.server_index++;
+			if((server.network.servers.size - 1) <= server.network.server_index) {
+				server.irc_disconnect();
+				Network.ServerData new_server = server.network.servers[server.network.server_index];
+				server.add_to_view("<server>","Switching to server %s".printf(new_server.address));
+				server.server  = new_server.address;
+				server.port    = new_server.port;
+				server.ssl     = new_server.ssl;
+				server.password= new_server.password;
+				server.label.label = Markup.escape_text("%s - %s".printf(server.network.name,server.server));
+				try {
+					server.irc_connect();
+				} catch(Error e) {
+					on_connect_error(server);
+				}
+			} else {
+				server.add_to_view("<server>","No more servers to connect to");
+			}
 		}
 	}
 }
