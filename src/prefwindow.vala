@@ -809,7 +809,7 @@ namespace XSIRC {
 				Main.server_manager.save_networks();
 				// Updating the fonts
 				Main.gui.system_view.text_view.modify_font(Pango.FontDescription.from_string(Main.config["core"]["font"]));
-				foreach(Server server in Main.gui.servers) {
+				foreach(Server server in Main.server_manager.servers) {
 					foreach(GUI.View view in server.views) {
 						view.text_view.modify_font(Pango.FontDescription.from_string(Main.config["core"]["font"]));
 					}

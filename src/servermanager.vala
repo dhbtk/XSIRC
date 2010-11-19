@@ -19,10 +19,11 @@ namespace XSIRC {
 			public LinkedList<ServerData> servers = new LinkedList<ServerData>();
 			public LinkedList<string> commands    = new LinkedList<string>();
 			public bool auto_connect;
-			
+			public int server_index = 0;
 		}
 		
 		public LinkedList<Network> networks = new LinkedList<Network>();
+		public ArrayList<Server> servers = new ArrayList<Server>();
 		public KeyFile raw_conf = new KeyFile();
 		public bool loaded_networks = false;
 		
@@ -129,14 +130,43 @@ namespace XSIRC {
 					continue;
 				}
 				Network.ServerData server = network.servers[0];
-				Main.gui.open_server(server.address,server.port,server.ssl,(server.password ?? ""),network);
+				open_server(server.address,server.port,server.ssl,(server.password ?? ""),network);
 			}
+		}
+		
+		public void iterate() {
+			foreach(Server server in servers) {
+				server.iterate();
+			}
+		}
+		
+		public void shutdown() {
+			foreach(Server server in servers) {
+				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
+				while(server.connected) {
+					server.iterate();
+				}
+			}
+		}
+		
+		public void open_server(string address,int port = 6667,bool ssl = false,string password = "",Network? network = null) {
+			Server server = new Server(address,port,ssl,password,network);
+			servers.add(server);
+			//gui_mutex.lock();
+			Main.gui.servers_notebook.append_page(server.notebook,server.label);
+			Main.gui.servers_notebook.show_all();
+			Main.gui.servers_notebook.page = Main.gui.servers_notebook.page_num(server.notebook);
+			//gui_mutex.unlock();
 		}
 		
 		public void on_connect(Server server) requires (server.network != null) {
 			foreach(string command in server.network.commands) {
 				server.send(command.replace("$nick",server.nick));
 			}
+		}
+		
+		public void on_connect_error(Server server) requires (server.network != null) {
+			
 		}
 	}
 }

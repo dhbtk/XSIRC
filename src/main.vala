@@ -7,8 +7,20 @@ namespace XSIRC {
 		public static ServerManager server_manager;
 	}
 	
+	void main_loop() {
+		while(!Main.gui.destroyed) {
+			Main.gui.iterate();
+			Main.server_manager.iterate();
+			Posix.usleep(10);
+		}
+	}
 	int main(string[] args) {
 		Gtk.init(ref args);
+		try {
+			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file(PREFIX+"/share/pixmaps/xsirc.png"));
+		} catch(Error e) {
+			
+		}
 		// Setting up some folder structure for stuff
 		if(!FileUtils.test(Environment.get_home_dir()+"/.xsirc",FileTest.EXISTS)) {
 			DirUtils.create(Environment.get_home_dir()+"/.xsirc",0755);
@@ -20,8 +32,10 @@ namespace XSIRC {
 		Main.config = Main.config_manager.config;
 		Main.server_manager = new ServerManager();
 		Main.gui = new XSIRC.GUI();
+		Main.server_manager.startup();
 
-		Main.gui.main_loop();
+		main_loop();
+		Main.server_manager.shutdown();
 		return 0;
 	}
 }

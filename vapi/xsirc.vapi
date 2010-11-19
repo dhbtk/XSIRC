@@ -8,4 +8,5 @@ GLib.Time localtime(time_t time);
 	public const string VERSION;
 	public const string GETTEXT_PACKAGE;
 	public const string OS;
+	public const string PREFIX;
 //}
