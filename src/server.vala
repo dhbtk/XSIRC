@@ -273,6 +273,9 @@ namespace XSIRC {
 			stdout.printf("%s\n",s);
 			last_recieved = time_t();
 			// Getting PING out of the way.
+			if(s.has_prefix("ERROR")) {
+				irc_disconnect();
+			}
 			if(s.has_prefix("PING :")) {
 				send("PONG :"+s.split(" :")[1]);
 			} else {

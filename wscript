@@ -53,6 +53,7 @@ def configure(conf):
 	conf.define('APPNAME',APPNAME)
 	conf.define('VERSION',VERSION)
 	conf.define('GETTEXT_PACKAGE',APPNAME)
+	conf.define('PREFIX',conf.env['PREFIX'])
 	conf.write_config_header('config.h')
 	conf.env.append_value('VALAFLAGS','-g')
 	conf.env.append_value('CCFLAGS','-g')
@@ -63,3 +64,5 @@ def build(bld):
 	bld.add_subdirs('src')
 	#bld.add_subdirs('po')
 	bld.install_files(bld.env['PREFIX']+'/share/licenses/xsirc','LICENSE') # Arch Linux thing
+	# Icon
+	bld.install_files(bld.env['PREFIX']+'/share/pixmaps','xsirc.png')

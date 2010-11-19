@@ -9,6 +9,7 @@ namespace XSIRC {
 	public class ConfigManager : Object {
 		public HashMap<string,HashMap<string,string>> config = new HashMap<string,HashMap<string,string>>();
 		private KeyFile raw_file = new KeyFile();
+		public bool loaded_config = false;
 		
 		public ConfigManager() {
 			config["core"] = new HashMap<string,string>();
@@ -27,6 +28,7 @@ namespace XSIRC {
 			if(FileUtils.test(Environment.get_user_config_dir()+"/xsirc/xsirc.conf",FileTest.EXISTS)) {
 				try {
 					raw_file.load_from_file(Environment.get_user_config_dir()+"/xsirc/xsirc.conf",KeyFileFlags.KEEP_COMMENTS);
+					loaded_config = true;
 				} catch(KeyFileError e) {
 					stderr.printf("Could not parse config file, using defaults\n");
 				} catch(FileError e) {

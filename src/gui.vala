@@ -17,7 +17,7 @@ namespace XSIRC {
 		public Gtk.Entry topic_view;
 		public Gtk.Statusbar status_bar;
 		public View system_view;
-		private bool destroyed = false;
+		public bool destroyed = false;
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
 			{"ClientMenu",null,"_Client"},
@@ -91,7 +91,6 @@ namespace XSIRC {
 		// Other stuff
 		private LinkedList<string> command_history = new LinkedList<string>();
 		private int command_history_index = 0;
-		public ArrayList<Server> servers = new ArrayList<Server>();
 		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
@@ -203,7 +202,18 @@ namespace XSIRC {
 			
 			// Ready to go!
 			text_entry.grab_focus();
+			
+			// Checking if it's a probable first run
+			if(!Main.config_manager.loaded_config) {
+				create_prefs_window();
+			}
 		
+		}
+		
+		public void iterate() {
+			while(Gtk.events_pending()) {
+				Gtk.main_iteration();
+			}
 		}
 		
 		private void parse_text(string s) {
@@ -257,25 +267,6 @@ namespace XSIRC {
 		private bool quit() {
 			// TODO
 			return false;
-		}
-		
-		public void main_loop() {
-			Main.server_manager.startup();
-			while(!destroyed) {
-				while(Gtk.events_pending()) {
-					//gui_mutex.lock();
-					Gtk.main_iteration();
-					//gui_mutex.unlock();
-				}
-				foreach(Server server in servers) {
-					server.iterate();
-				}
-				Posix.usleep(10);
-			}
-			// Exiting properly
-			foreach(Server server in servers) {
-				server.irc_disconnect();
-			}
 		}
 		
 		/*private void* thread_func() {
@@ -429,7 +420,7 @@ namespace XSIRC {
 		}
 		
 		public Server? find_server_by_notebook(Gtk.Notebook? notebook) {
-			foreach(Server server in servers) {
+			foreach(Server server in Main.server_manager.servers) {
 				if(server.notebook == notebook) {
 					return server;
 				}
@@ -445,15 +436,6 @@ namespace XSIRC {
 			return curr_server == null;
 		}
 		
-		public void open_server(string address,int port = 6667,bool ssl = false,string password = "",ServerManager.Network? network = null) {
-			Server server = new Server(address,port,ssl,password,network);
-			servers.add(server);
-			//gui_mutex.lock();
-			servers_notebook.append_page(server.notebook,server.label);
-			servers_notebook.show_all();
-			servers_notebook.page = servers_notebook.page_num(server.notebook);
-			//gui_mutex.unlock();
-		}
 		// Menu callbacks
 		
 		public static void connect_server_cb(Gtk.Action action) {
@@ -461,13 +443,13 @@ namespace XSIRC {
 		}
 		
 		public static void disconnect_all_cb(Gtk.Action action) {
-			foreach(Server server in Main.gui.servers) {
+			foreach(Server server in Main.server_manager.servers) {
 				server.irc_disconnect();
 			}
 		}
 
 		public static void reconnect_all_cb(Gtk.Action action) {
-			foreach(Server server in Main.gui.servers) {
+			foreach(Server server in Main.server_manager.servers) {
 				server.irc_disconnect();
 				try {
 					server.irc_connect();
@@ -571,7 +553,7 @@ namespace XSIRC {
 			Server server;
 			if((server = Main.gui.curr_server()) != null) {
 				server.irc_disconnect();
-				Main.gui.servers.remove(server);
+				Main.server_manager.servers.remove(server);
 				Main.gui.servers_notebook.remove_page(Main.gui.servers_notebook.page_num(server.notebook));
 			}
 		}
@@ -650,7 +632,7 @@ namespace XSIRC {
 					// Checking for a valid pseudo-uri
 					if(/^(irc|sirc):\/\/[a-zA-Z0-9-_.]+:\d+/.match(server_entry.text)) {
 						string[] split_server_data = Regex.split_simple("(:\\/\\/|:)",server_entry.text);
-						open_server(split_server_data[2],split_server_data[4].to_int(),split_server_data[0] == "ircs",server_entry.text.substring((long)server_entry.text.split(" ")[0].size()));
+						Main.server_manager.open_server(split_server_data[2],split_server_data[4].to_int(),split_server_data[0] == "ircs",server_entry.text.substring((long)server_entry.text.split(" ")[0].size()));
 						dialog.destroy();
 					}
 				} else {
