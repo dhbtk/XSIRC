@@ -444,7 +444,7 @@ namespace XSIRC {
 		
 		public static void disconnect_all_cb(Gtk.Action action) {
 			foreach(Server server in Main.server_manager.servers) {
-				server.irc_disconnect();
+				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
 			}
 		}
 
@@ -533,7 +533,7 @@ namespace XSIRC {
 		public static void disconnect_server_cb(Gtk.Action action) {
 			Server server;
 			if((server = Main.gui.curr_server()) != null) {
-				server.irc_disconnect();
+				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
 			}
 		}
 		

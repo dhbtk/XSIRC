@@ -205,10 +205,10 @@ namespace XSIRC {
 			}
 			connected = true;
 			sock_error = false;
+			Main.gui.update_gui(this);
 		}
 		
 		public void irc_disconnect() {
-			send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
 			try {
 				socket_conn.socket.close();
 			} catch(Error e) {
@@ -216,6 +216,7 @@ namespace XSIRC {
 			}
 			connected = false;
 			sock_error = false;
+			Main.gui.update_gui(this);
 		}
 		
 		public void send(string s,float priority = 0.5,bool add_to_view_ = false,string view_name = "") {
@@ -226,9 +227,14 @@ namespace XSIRC {
 				while(message.length != 0) {
 					string[] split = message.split(" ");
 					StringBuilder str = new StringBuilder("");
+					int n = 1;
 					foreach(string i in split) {
 						if(str.str.length >= 380) break;
-						str.append(i).append(" ");
+						str.append(i);
+						if(n < split.length) {
+							str.append(" ");
+						}
+						n++;
 					}
 					message = message.substring(str.str.length);
 					split_message += str.str;
