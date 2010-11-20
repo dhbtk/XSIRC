@@ -24,6 +24,7 @@ a {
 }
 
 #menu ul, #menu li {
+	text-align: center;
 	list-style-type: none;
 	display: inline;
 }

@@ -17,7 +17,7 @@ You can also get it by using git:
 
 	git clone git://github.com/NieXS/XSIRC.git
 
-The client's GitHub page is [here.](http://github.com/NieXS/XSIRC)
+The client's GitHub page is [here](http://github.com/NieXS/XSIRC).
 
 Installation
 ------------
