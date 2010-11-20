@@ -23,7 +23,7 @@ a {
 	letter-spacing: 0.5em;
 }
 
-#content {
-	margin-left: 3%;
-	margin-right: 3%;
+#menu {
+	list-style-type: none;
+	display: inline;
 }
