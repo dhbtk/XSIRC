@@ -3,7 +3,7 @@
 	 \  /\___ \| || |_) | |    
 	 /  \ ___) | ||  _ <| |___ 
 	/_/\_\____/___|_| \_\\____|
-	XSIRC           version 0.2
+	XSIRC           version 0.4
 
 XSIRC is a GTK+-based IRC client for *nix platforms. It is lightweight and uses
 only stock GTK+ widgets.
