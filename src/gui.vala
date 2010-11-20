@@ -191,6 +191,24 @@ namespace XSIRC {
 					text_entry.buffer.text = "";
 				}
 			});
+			// Command history
+			text_entry.key_press_event.connect((key) => {
+				if(key.keyval == Gdk.keyval_from_name("Up")) {
+					command_history_index++;
+					if((command_history.size - 1) >= command_history_index) {
+						text_entry.buffer.text = command_history[command_history_index];
+						return true;
+					}
+				} else if(key.keyval == Gdk.keyval_from_name("Down")) {
+					command_history_index--;
+					if((command_history.size - 1) >= command_history_index && command_history_index > -1) {
+						text_entry.buffer.text = command_history[command_history_index];
+						return true;
+					}
+				}
+				return false;
+			});
+			
 			// Server-switching
 			servers_notebook.switch_page.connect((nb_page,page_num) => {
 				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)),null,true);
@@ -224,7 +242,7 @@ namespace XSIRC {
 		private void parse_text(string s) {
 			//stdout.printf("Calling GUI.parse_text with argument \"%s\"\n",s);
 			command_history.insert(0,s);
-			command_history_index = 0;
+			command_history_index = -1;
 			if(s.has_prefix("//")) {
 				// Send privmsg to current channel + /
 				string sent = s.substring(1);
