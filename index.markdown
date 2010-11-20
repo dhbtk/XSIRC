@@ -11,13 +11,13 @@ XSIRC is a GTK+-based IRC client for Linux and Windows (partially functional). I
 Download
 --------
 
-You can download the bleeding edge git commit here: [.zip][https://github.com/NieXS/XSIRC/zipball/master] [.tar.gz][https://github.com/NieXS/XSIRC/tarball/master]
+You can download the bleeding edge git commit here: [.zip](https://github.com/NieXS/XSIRC/zipball/master) [.tar.gz](https://github.com/NieXS/XSIRC/tarball/master)
 
 You can also get it by using git:
 
 	git clone git://github.com/NieXS/XSIRC.git
 
-The client's GitHub page is [here.][http://github.com/NieXS/XSIRC]
+The client's GitHub page is [here.](http://github.com/NieXS/XSIRC)
 
 Installation
 ------------
@@ -40,4 +40,4 @@ Uninstallation is also easy:
 Usage
 -----
 
-See [Usage][/manual.html].
+See [Usage](/manual.html).
