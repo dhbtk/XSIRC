@@ -18,6 +18,8 @@ a {
 }
 
 #header {
+	line-height: 1em;
+	font-size: 400%;
 	text-align: center;
 	letter-spacing: 0.5em;
 }
