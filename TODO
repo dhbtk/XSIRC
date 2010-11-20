@@ -1,4 +1,6 @@
-* About window
 * Win32 compilation targets (broken)
 * Clickable links?
 * A context menu for tabs
+* Improve tab-completion and command history
+* Alias system
+* Plugin system (and a scripting plugin)
