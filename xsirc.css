@@ -19,3 +19,13 @@ a {
 #header {
 	text-align: center;
 }
+
+.siteheader {
+	letter-spacing: 0.5em;
+	font-size: 200%;
+}
+
+#content {
+	margin-left: 5%;
+	margin-right: 5%;
+}
