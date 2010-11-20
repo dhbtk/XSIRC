@@ -24,6 +24,7 @@ namespace XSIRC {
 		public bool sock_error = false;
 		private LinkedList<OutgoingMessage> output_queue = new LinkedList<OutgoingMessage>();
 		public unowned Thread sender_thread;
+		private bool shutting_down = false;
 		public bool am_away;
 		private int nick_tries = 0;
 		private bool sent_ping = false;
@@ -118,6 +119,7 @@ namespace XSIRC {
 		}
 		
 		~Server() {
+			shutting_down = true;
 			sender_thread.join();
 		}
 		
@@ -269,7 +271,7 @@ namespace XSIRC {
 		}
 		
 		private void* thread_func() {
-			while(true) {
+			while(!shutting_down) {
 				OutgoingMessage message;
 				if((message = output_queue.poll()) != null) {
 					Posix.usleep(((int)message.priority*1000));
@@ -277,6 +279,7 @@ namespace XSIRC {
 				}
 				Posix.usleep(10);
 			}
+			return null;
 		}
 		
 		private void handle_server_input(owned string s) {
