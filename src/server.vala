@@ -648,6 +648,9 @@ namespace XSIRC {
 					case "319":
 						add_to_view("<server>","WHOIS for %s: in channels %s".printf(split[3],message));
 						break;
+					case "307":
+						add_to_view("<server>","WHOIS for %s: is a registered nickname".printf(split[3]));
+						break;
 					case "314":
 						add_to_view("<server>","WHOWAS for %s: %s@%s: %s".printf(split[3],split[4],split[5],message));
 						break;
@@ -787,6 +790,8 @@ namespace XSIRC {
 						add_to_view("<server>","Server info: %s channels formed".printf(split[3]));
 						break;
 					case "255":
+					case "265":
+					case "266":
 						add_to_view("<server>","Server info: %s".printf(message));
 						break;
 					case "256":
