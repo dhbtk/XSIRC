@@ -7,6 +7,13 @@ About
 
 XSIRC is a GTK+-based IRC client for Linux and Windows (partially functional). It is lightweight, written in Vala (easier to maintain, C-library-compatible) and easy to use. It is still in its infancy; contributions are welcomed.
 
+
+Download
+--------
+
+
+
+
 Installation
 ------------
 
@@ -20,9 +27,8 @@ The steps for installation are:
 Uninstallation is also easy:
 	~/XSIRC$ ./waf uninstall
 
+
 Usage
 -----
 
-See [Usage][].
-
-[Usage]: /manual.html
+See [Usage][/manual.html].
