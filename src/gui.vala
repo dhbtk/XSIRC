@@ -208,6 +208,9 @@ namespace XSIRC {
 						return true;
 					}
 				} else if(key.keyval == Gdk.keyval_from_name("Tab")) {
+					if(text_entry.buffer.text.length == 0) {
+						return true;
+					}
 					if(curr_server() != null && curr_server().current_view() != null) {
 						Gtk.TextBuffer buf = text_entry.buffer;
 						Gtk.TextIter start;
