@@ -23,7 +23,7 @@ a {
 	letter-spacing: 0.5em;
 }
 
-#menu {
+#menu ul, #menu li {
 	list-style-type: none;
 	display: inline;
 }
