@@ -621,7 +621,7 @@ namespace XSIRC {
 		public static void close_server_cb(Gtk.Action action) {
 			Server server;
 			if((server = Main.gui.curr_server()) != null) {
-				server.irc_disconnect();
+				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
 				Main.server_manager.servers.remove(server);
 				Main.gui.servers_notebook.remove_page(Main.gui.servers_notebook.page_num(server.notebook));
 			}
