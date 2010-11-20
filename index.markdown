@@ -23,4 +23,6 @@ Uninstallation is also easy:
 Usage
 -----
 
-See [Usage][/usage].
+See [Usage][].
+
+[Usage]: /manual
