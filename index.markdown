@@ -25,4 +25,4 @@ Usage
 
 See [Usage][].
 
-[Usage]: /manual
+[Usage]: /manual.html
