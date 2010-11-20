@@ -1,0 +1,9 @@
+---
+layout: site
+---
+{% for post in site.posts %}
+<div class="post">
+<p><strong>{{ post.title }}</strong> &bull; Posted {{ post.date | date_to_string }}</p>
+{{ post.content }}
+</div>
+{% endfor %}
