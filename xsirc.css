@@ -9,7 +9,11 @@ body {
 #container {
 	margin-left: 10%;
 	margin-right: 10%;
-	background-color: #4a4a4a;
+	background-color: #1f1f1f;
+}
+
+a {
+	color: #ffae00;
 }
 
 #header {
