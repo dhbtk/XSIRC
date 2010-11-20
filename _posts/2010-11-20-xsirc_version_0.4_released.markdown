@@ -15,7 +15,7 @@ Changes since version 0.3:
 * Added ping timeout handling
 * Fixed GUI not updating upon tab removal
 * Fixed NOTICEs creating views for themselves
-* Fixed <server> view not being reordable
+* Fixed server view not being reordable
 * Fixed (hopefully) Win32 timestamps
 * Fixed extra space in sent privmsgs and notices
 * Fixed GUI not updating on server connection and disconnection
