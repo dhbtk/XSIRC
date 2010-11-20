@@ -83,7 +83,7 @@ namespace XSIRC {
 			notebook.tab_pos = Gtk.PositionType.BOTTOM;
 			label    = new Gtk.Label((network != null ? network.name+" - " : "")+server);
 			label.use_markup = true;
-			open_view("<server>",false); // Non-reordable
+			open_view("<server>");
 			// State stuff
 			this.server   = server;
 			this.port     = port;
@@ -111,6 +111,9 @@ namespace XSIRC {
 				Main.gui.update_gui(this,find_view_from_page_num((int)page_num));
 				find_view_from_page_num((int)page_num).label.label = Markup.escape_text(find_view_from_page_num((int)page_num).name);
 				Main.gui.text_entry.grab_focus();
+			});
+			notebook.page_removed.connect(() => {
+				Main.gui.queue_update_gui();
 			});
 		}
 		
@@ -416,7 +419,11 @@ namespace XSIRC {
 										break;
 								}
 							} else {
-								add_to_view(target,"-%s- %s".printf(usernick,message));
+								if(find_view(target) != null) {
+									add_to_view(target,"-%s- %s".printf(usernick,message));
+								} else {
+									add_to_view(current_view().name,"-%s- %s".printf(usernick,message));
+								}
 							}
 						}
 						break;

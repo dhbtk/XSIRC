@@ -18,7 +18,7 @@ namespace XSIRC {
 			config["core"]["username"]    = Environment.get_user_name();
 			config["core"]["realname"]    = Environment.get_user_name();
 			config["core"]["quit_msg"]    = "Leaving";
-			config["core"]["web_browser"] = "firefox %s";
+			config["core"]["web_browser"] = "/usr/bin/firefox";
 			config["core"]["font"]        = "Monospace 10";
 			config["core"]["timestamp_format"] = "[%H:%M:%S]";
 			config["core"]["away_msg"]    = "Away";
