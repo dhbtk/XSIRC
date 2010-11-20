@@ -47,8 +47,8 @@ namespace XSIRC {
 			{"GoAway",null,"_Mark as away","<control><shift>a",null,go_away_cb},
 			// Help
 			{"HelpMenu",null,"_Help"},
-			{"HelpContents",Gtk.STOCK_HELP,"_Contents","F1"},
-			{"About",Gtk.STOCK_ABOUT}
+			{"HelpContents",Gtk.STOCK_HELP,"_Contents","F1",null,spawn_help_cb},
+			{"About",Gtk.STOCK_ABOUT,null,null,null,spawn_about_cb}
 		};
 		private string ui_manager_xml = """
 <ui>
@@ -92,6 +92,7 @@ namespace XSIRC {
 		private LinkedList<string> command_history = new LinkedList<string>();
 		private int command_history_index = 0;
 		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
+		private bool gui_updated = true;
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
 		private PrefWindow prefs_window;
@@ -213,6 +214,10 @@ namespace XSIRC {
 		public void iterate() {
 			while(Gtk.events_pending()) {
 				Gtk.main_iteration();
+			}
+			if(!gui_updated) {
+				update_gui(curr_server());
+				gui_updated = true;
 			}
 		}
 		
@@ -358,6 +363,10 @@ namespace XSIRC {
 				main_window.title = "XSIRC - Idle";
 			}
 			//gui_mutex.unlock();
+		}
+		
+		public void queue_update_gui() {
+			gui_updated = false;
 		}
 		
 		// View creation and adding-to
@@ -604,14 +613,67 @@ namespace XSIRC {
 						try {
 							//stderr.printf("Spawning process\n");
 							//stderr.printf("Matches: %s\n",string.joinv(", ",info.fetch_all()));
-							Process.spawn_async(null,Main.config["core"]["web_browser"].printf(info.fetch(1)).split(" "),null,0,null,null);
+							Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+info.fetch(1)).split(" "),null,0,null,null);
 						} catch(SpawnError e) {
-							stderr.printf("Could not spawn browser: %s\n",e.message);
+							Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
+							d.response.connect(() => {d.destroy();});
+							d.show_all();
 						}
 						break;
 					}
 				}
 			}
+		}
+		
+		public static void spawn_help_cb(Gtk.Action action) {
+				try {
+					Process.spawn_async(null,(Main.config["core"]["web_browser"]+" http://niexs.github.com/XSIRC/manual.html").split(" "),null,0,null,null);
+				} catch(SpawnError e) {
+					Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
+					d.response.connect(() => {d.destroy();});
+					d.show_all();
+				}
+		}
+		
+		public static void spawn_about_cb(Gtk.Action action) {
+			Gtk.AboutDialog d = new Gtk.AboutDialog();
+			d.authors = {"Eduardo Niehues (NieXS) <neo.niexs@gmail.com>"};
+			d.copyright = "Copyright (c) 2010 Eduardo Niehues. All rights reserved.";
+			d.license = """Copyright (c) 2010, Eduardo Niehues.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Eduardo Niehues nor the
+      names of his contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL EDUARDO NIEHUES BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
+			try {
+				d.logo = new Gdk.Pixbuf.from_file(PREFIX+"/share/pixmaps/xsirc.png");
+			} catch(Error e) {
+				
+			}
+			d.program_name = "XSIRC";
+			d.comments = "GTK+ IRC Client";
+			d.version      = VERSION;
+			d.website      = "http://niexs.github.com/XSIRC";
+			d.response.connect(() => {d.destroy();});
+			d.show_all();
 		}
 		// Dialogs
 		public void open_connect_dialog() {
