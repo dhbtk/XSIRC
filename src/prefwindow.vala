@@ -399,7 +399,6 @@ namespace XSIRC {
                         <property name="layout_style">center</property>
                         <child>
                           <object class="GtkButton" id="network_add">
-                            <property name="label">gtk-add</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -423,6 +422,20 @@ namespace XSIRC {
                             <property name="expand">False</property>
                             <property name="fill">False</property>
                             <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="network_connect">
+                            <property name="label">gtk-connect</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -737,6 +750,15 @@ namespace XSIRC {
 						d.destroy();
 					});
 					d.show_all();
+				}
+			});
+			((Gtk.Button)ui_builder.get_object("network_connect")).clicked.connect(() => {
+				ServerManager.Network network = null;
+				if(get_current_network() != null && (network = Main.server_manager.find_network(get_current_network())) != null) {
+					if(network.servers.size != 0) {
+						ServerManager.Network.ServerData server = network.servers[0];
+						Main.server_manager.open_server(server.address,server.port,server.ssl,(server.password ?? ""),network);
+					}
 				}
 			});
 			((Gtk.Button)ui_builder.get_object("server_add")).clicked.connect(() => {
