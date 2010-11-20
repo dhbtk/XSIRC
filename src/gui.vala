@@ -25,6 +25,7 @@ namespace XSIRC {
 			{"DisconnectAll",Gtk.STOCK_DISCONNECT,"_Disconnect all",null,null,disconnect_all_cb},
 			{"ReconnectAll",Gtk.STOCK_NETWORK,"_Reconnect all",null,null,reconnect_all_cb},
 			{"OpenLastLink",null,"_Open last link","F2",null,open_last_link_cb},
+			{"OpenSLastLink",null,"O_pen sec-to-last link","<control>F2",null,open_sl_link_cb},
 			{"Exit",Gtk.STOCK_QUIT,null,null,null,quit_client_cb},
 			// Settings
 			{"SettingsMenu",null,"S_ettings"},
@@ -58,6 +59,7 @@ namespace XSIRC {
 			<menuitem action="DisconnectAll"/>
 			<menuitem action="ReconnectAll"/>
 			<menuitem action="OpenLastLink"/>
+			<menuitem action="OpenSLastLink"/>
 			<separator/>
 			<menuitem action="Exit"/>
 		</menu>
@@ -191,7 +193,7 @@ namespace XSIRC {
 					text_entry.buffer.text = "";
 				}
 			});
-			// Command history
+			// Command history, tab completion
 			text_entry.key_press_event.connect((key) => {
 				if(key.keyval == Gdk.keyval_from_name("Up")) {
 					command_history_index++;
@@ -205,6 +207,43 @@ namespace XSIRC {
 						text_entry.buffer.text = command_history[command_history_index];
 						return true;
 					}
+				} else if(key.keyval == Gdk.keyval_from_name("Tab")) {
+					if(curr_server() != null && curr_server().current_view() != null) {
+						Gtk.TextBuffer buf = text_entry.buffer;
+						Gtk.TextIter start;
+						Gtk.TextIter start_word;
+						Gtk.TextIter end;
+						buf.get_iter_at_offset(out start,0);
+						buf.get_iter_at_offset(out end,buf.cursor_position);
+						string curr_text = buf.get_text(start,end,false);
+						string[] curr_text_words = curr_text.split(" ");
+						string last_word = curr_text_words[curr_text_words.length-1];
+						stdout.printf("Last word: %s\n",last_word);
+						int last_word_offset = (int)(buf.cursor_position-last_word.length);
+						buf.get_iter_at_offset(out start_word,last_word_offset);
+						string replacement = null;
+						if(curr_server().current_view().name.has_prefix("#")) {
+							foreach(string user in curr_server().find_channel(curr_server().current_view().name).raw_users) {
+								string tested = user;
+								if(/^(&|@|%|\+)/.match(user)) {
+									tested = user.substring(1);
+								}
+								if(tested.down().has_prefix(last_word.down())) {
+									replacement = tested;
+									break;
+								}
+							}
+						} else {
+							if(curr_server().current_view().name.down().has_prefix(last_word)) {
+								replacement = curr_server().current_view().name;
+							}
+						}
+						if(replacement != null) {
+							buf.delete(start_word,end);
+							buf.insert(start_word,replacement,(int)replacement.length);
+						}
+					}
+					return true;
 				}
 				return false;
 			});
@@ -607,14 +646,11 @@ namespace XSIRC {
 		}
 		
 		public static void open_last_link_cb(Gtk.Action action) {
-			//stderr.printf("Entering open_last_link_cb\n");
 			Server server;
 			if((server = Main.gui.curr_server()) != null) {
-				//stderr.printf("Server != null\n");
 				View? view;
 				if((view = server.current_view()) != null) {
-					//stderr.printf("View != null\n");
-					string[] lines = view.text_view.buffer.text.split("\n");
+					string[] lines = view.text_view.buffer.text.split(" ");
 					Regex regex = null;
 					try {
 						regex = new Regex(link_regex);
@@ -622,15 +658,47 @@ namespace XSIRC {
 						return;
 					}
 					for(int i = lines.length-1; i >= 0; i--) {
-						//stderr.printf("Testing line %d\n",i);
 						MatchInfo info;
 						if(!regex.match(lines[i],0,out info)) {
 							//stderr.printf("Line doesn't match\n");
 							continue;
 						}
 						try {
-							//stderr.printf("Spawning process\n");
-							//stderr.printf("Matches: %s\n",string.joinv(", ",info.fetch_all()));
+							Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+info.fetch(1)).split(" "),null,0,null,null);
+						} catch(SpawnError e) {
+							Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
+							d.response.connect(() => {d.destroy();});
+							d.show_all();
+						}
+						break;
+					}
+				}
+			}
+		}
+		
+		public static void open_sl_link_cb(Gtk.Action action) {
+			Server server;
+			if((server = Main.gui.curr_server()) != null) {
+				View? view;
+				if((view = server.current_view()) != null) {
+					string[] lines = view.text_view.buffer.text.split(" ");
+					Regex regex = null;
+					try {
+						regex = new Regex(link_regex);
+					} catch(RegexError e) {
+						return;
+					}
+					bool first_match = true;
+					for(int i = lines.length-1; i >= 0; i--) {
+						MatchInfo info;
+						if(!regex.match(lines[i],0,out info)) {
+							continue;
+						}
+						if(first_match) {
+							first_match = false;
+							continue;
+						}
+						try {
 							Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+info.fetch(1)).split(" "),null,0,null,null);
 						} catch(SpawnError e) {
 							Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
