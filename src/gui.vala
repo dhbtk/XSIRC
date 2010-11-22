@@ -95,6 +95,7 @@ namespace XSIRC {
 		private int command_history_index = 0;
 		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
 		private bool gui_updated = true;
+		private TabCompleter tab_completer = new TabCompleter();
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
 		private PrefWindow prefs_window;
@@ -196,57 +197,24 @@ namespace XSIRC {
 			// Command history, tab completion
 			text_entry.key_press_event.connect((key) => {
 				if(key.keyval == Gdk.keyval_from_name("Up")) {
+					tab_completer.reset();
 					command_history_index++;
 					if((command_history.size - 1) >= command_history_index) {
 						text_entry.buffer.text = command_history[command_history_index];
-						return true;
 					}
+					return true;
 				} else if(key.keyval == Gdk.keyval_from_name("Down")) {
+					tab_completer.reset();
 					command_history_index--;
 					if((command_history.size - 1) >= command_history_index && command_history_index > -1) {
 						text_entry.buffer.text = command_history[command_history_index];
-						return true;
-					}
-				} else if(key.keyval == Gdk.keyval_from_name("Tab")) {
-					if(text_entry.buffer.text.length == 0) {
-						return true;
-					}
-					if(curr_server() != null && curr_server().current_view() != null) {
-						Gtk.TextBuffer buf = text_entry.buffer;
-						Gtk.TextIter start;
-						Gtk.TextIter start_word;
-						Gtk.TextIter end;
-						buf.get_iter_at_offset(out start,0);
-						buf.get_iter_at_offset(out end,buf.cursor_position);
-						string curr_text = buf.get_text(start,end,false);
-						string[] curr_text_words = curr_text.split(" ");
-						string last_word = curr_text_words[curr_text_words.length-1];
-						stdout.printf("Last word: %s\n",last_word);
-						int last_word_offset = (int)(buf.cursor_position-last_word.length);
-						buf.get_iter_at_offset(out start_word,last_word_offset);
-						string replacement = null;
-						if(curr_server().current_view().name.has_prefix("#")) {
-							foreach(string user in curr_server().find_channel(curr_server().current_view().name).raw_users) {
-								string tested = user;
-								if(/^(&|@|%|\+)/.match(user)) {
-									tested = user.substring(1);
-								}
-								if(tested.down().has_prefix(last_word.down())) {
-									replacement = tested;
-									break;
-								}
-							}
-						} else {
-							if(curr_server().current_view().name.down().has_prefix(last_word)) {
-								replacement = curr_server().current_view().name;
-							}
-						}
-						if(replacement != null) {
-							buf.delete(start_word,end);
-							buf.insert(start_word,replacement,(int)replacement.length);
-						}
 					}
 					return true;
+				} else if(key.keyval == Gdk.keyval_from_name("Tab")) {
+					tab_completer.complete(curr_server(),curr_server().current_view(),text_entry.buffer);
+					return true;
+				} else {
+					tab_completer.reset();
 				}
 				return false;
 			});
