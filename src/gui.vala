@@ -716,7 +716,7 @@ namespace XSIRC {
 		
 		public static void spawn_help_cb(Gtk.Action action) {
 				try {
-					Process.spawn_async(null,(Main.config["core"]["web_browser"]+" http://niexs.github.com/XSIRC/manual.html").split(" "),null,0,null,null);
+					Process.spawn_async(null,(Main.config["core"]["web_browser"]+" http://xsirc.niexs.net/manual.html").split(" "),null,0,null,null);
 				} catch(SpawnError e) {
 					Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
 					d.response.connect(() => {d.destroy();});
@@ -760,7 +760,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			d.program_name = "XSIRC";
 			d.comments = "GTK+ IRC Client";
 			d.version      = VERSION;
-			d.website      = "http://niexs.github.com/XSIRC";
+			d.website      = "http://xsirc.niexs.net";
 			d.response.connect(() => {d.destroy();});
 			d.show_all();
 		}
