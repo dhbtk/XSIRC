@@ -29,7 +29,8 @@ a {
 #menu ul, #menu li {
 	text-align: center;
 	padding-left: 0px;
-	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
 	list-style-type: none;
 	display: inline;
 }
