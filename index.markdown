@@ -40,4 +40,4 @@ Uninstallation is also easy:
 Usage
 -----
 
-See [Usage](manual.html).
+See [Usage](manual).
