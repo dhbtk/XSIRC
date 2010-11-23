@@ -1,6 +1,10 @@
 * Win32 compilation targets (broken)
 * Clickable links?
 * A context menu for tabs
-* Improve tab-completion and command history
-* Alias system
+* Improve command history
+* Alias system GUI
 * Plugin system (and a scripting plugin)
+* Internationalization
+* CTCP replies for things like VERSION and PING
+* Highlights
+* Find out why the tags applied by the MIRCParser don't work
