@@ -246,14 +246,15 @@ namespace XSIRC {
 					split_message += str.str;
 				}
 				foreach(string i in split_message) {
-					string target = i.split(" ")[1];
-					string msg = i.substring((s.split(" :")[0] + " :").length);
-					if(i.down().has_prefix("notice")) {
+					stdout.printf("%s\n",i);
+					string target = s.split(" ")[1];
+					string msg = i; // herp derp
+					if(s.down().has_prefix("notice")) {
 						add_to_view(target,"-%s- %s".printf(nick,msg));
 					} else if(msg.has_prefix("ACTION")) {
 						add_to_view(target,"* %s %s".printf(nick,msg.replace("","").substring(6)));
 					} else if(msg.has_prefix("")) {
-						add_to_view(target,">%s< CTCP %s".printf(nick,message.replace("","")));
+						add_to_view(target,">%s< CTCP %s".printf(nick,msg.replace("","")));
 					} else {
 						add_to_view(target,"<%s> %s".printf(nick,msg));
 					}
