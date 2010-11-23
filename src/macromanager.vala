@@ -81,10 +81,12 @@ namespace XSIRC {
 					if(regex.match(testee,0,out info)) {
 						string result = macro.result;
 						for(int i = 1; i <= 9 && i <= info.get_match_count(); i++) {
-							result = result.replace("$%d".printf(i),info.fetch(i));
+							if(info.fetch(i) != null) {
+								result = (result.replace("$%d".printf(i),info.fetch(i)) ?? result);
+							}
 						}
 						if(Main.gui.current_server() != null && Main.gui.current_server().current_view() != null) {
-							result = result.replace("$CURR_VIEW",Main.gui.current_server().current_view().name);
+							result = (result.replace("$CURR_VIEW",Main.gui.current_server().current_view().name) ?? result);
 						}
 						return result;
 					}
