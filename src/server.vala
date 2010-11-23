@@ -417,6 +417,9 @@ namespace XSIRC {
 						} else {
 							add_to_view(target,"<%s> %s".printf(usernick,message));
 						}
+						/*if(message.down().contains(nick.down())) {
+							Notifier.fire_notification(this,find_view(target),"<%s> %s".printf(usernick,message));
+						}*/
 						break;
 					case "NOTICE":
 						if(split[2] == "AUTH") {

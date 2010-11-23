@@ -50,6 +50,7 @@ def configure(conf):
 	conf.check_cfg(package='gio-2.0',uselib_store='GIO',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gmodule-2.0',uselib_store='GMODULE',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gee-1.0',uselib_store='GEE',atleast_version='0.5.0',mandatory=1,args='--cflags --libs')
+	conf.check_cfg(package='libnotify',uselib_store='NOTIFY',atleast_version='0.5.0',mandatory=1,args='--cflags --libs')
 	conf.define('PACKAGE_NAME',APPNAME)
 	conf.define('APPNAME',APPNAME)
 	conf.define('VERSION',VERSION)
