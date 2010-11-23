@@ -15,8 +15,8 @@ Most of the options should be self-explanatory. Some that require special attent
 
 ### Setting up networks
 
-Create a network by clicking the "Add" button. Double-clicking on its name lets
-you edit it.
+Create a network by clicking the "Add" button in the "Networks" tab of the preferences
+window. Double-clicking on its name lets you edit it.
 
 You can add/remove servers by clicking their respective buttons. You can then
 edit the provided server URL; all parts are required. If the server has a password,
