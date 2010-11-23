@@ -259,41 +259,22 @@ namespace XSIRC {
 				// Send privmsg to current channel + /
 				string sent = s.substring(1);
 				if(current_server() != null && current_server().current_view() != null) {
-					current_server().send("PRIVMSG %s :%s".printf(current_server().current_view().name,sent),(float)0.5,true,current_server().current_view().name);
+					current_server().send("PRIVMSG %s :%s".printf(current_server().current_view().name,sent),(float)0.5,current_server().current_view().name);
 				}
-			} /*else if(s.has_prefix("//")) {
-				// Client command
-				string sent = s.substring(2).strip();
-				print("\""+sent+"\"\n");
-				string[] split = sent.split(" ");
-				string cmd = split[0];
-				sent = sent.substring(cmd.length);
-				switch(cmd) {
-					case "connect":
-						open_server(split[1]);
-						break;
-					default:
-						break;
-				}
-			}*/ else if(s.has_prefix("/")) {
+			} else if(s.has_prefix("/")) {
 				// IRC command, with exactly two exceptions
 				string sent = s.substring(1);
 				if(current_server() != null && current_server().current_view() != null) {
-					if(sent.has_prefix("me")) { // CTCP ACTION
-						current_server().send("PRIVMSG %s :%sACTION %s%s".printf(current_server().current_view().name,MIRCParser.CTCP_CHAR,sent.substring(3),MIRCParser.CTCP_CHAR));
-						current_server().add_to_view(current_server().current_view().name,"* %s %s".printf(current_server().nick,sent.substring(3)));
-					} else if(sent.has_prefix("ctcp")) {
-						string[] split = sent.split(" ");
-						string target = split[1];
-						current_server().send("PRIVMSG %s :%s%s%s".printf(target,MIRCParser.CTCP_CHAR,sent.substring(6+target.length),MIRCParser.CTCP_CHAR));
-						current_server().add_to_view("<server>",">%s< CTCP %s".printf(target,sent.substring(6+target.length)));
+					string result;
+					if((result = Main.macro_manager.parse_string(sent)) != null) {
+						current_server().send(result);
 					} else {
 						current_server().send(sent);
 					}
 				}
 			} else {
 				if(current_server() != null && current_server().current_view() != null && s.size() > 0) {
-					current_server().send("PRIVMSG %s :%s".printf(current_server().current_view().name,s),(float)0.5,true,current_server().current_view().name);
+					current_server().send("PRIVMSG %s :%s".printf(current_server().current_view().name,s),(float)0.5,current_server().current_view().name);
 					//current_server().add_to_view(current_server().current_view().name,"<%s> %s".printf(current_server().nick,s));
 				}
 			}

@@ -225,7 +225,7 @@ namespace XSIRC {
 			Main.gui.update_gui(this);
 		}
 		
-		public void send(string s,float priority = 0.5,bool add_to_view_ = false,string view_name = "") {
+		public void send(string s,float priority = 0.5,string view_name = "") {
 			if(s.down().has_prefix("privmsg ") || s.down().has_prefix("notice ")) {
 				string prefix = s.split(" :")[0] + " :";
 				string message = s.substring(prefix.length);
@@ -246,8 +246,16 @@ namespace XSIRC {
 					split_message += str.str;
 				}
 				foreach(string i in split_message) {
-					if(add_to_view_) {
-						add_to_view(view_name,"<%s> %s".printf(nick,i));
+					string target = i.split(" ")[1];
+					string msg = i.substring((s.split(" :")[0] + " :").length);
+					if(i.down().has_prefix("notice")) {
+						add_to_view(target,"-%s- %s".printf(nick,msg));
+					} else if(msg.has_prefix("ACTION")) {
+						add_to_view(target,"* %s %s".printf(nick,msg.replace("","").substring(6)));
+					} else if(msg.has_prefix("")) {
+						add_to_view(target,">%s< CTCP %s".printf(nick,message.replace("","")));
+					} else {
+						add_to_view(target,"<%s> %s".printf(nick,msg));
 					}
 					output_queue.offer(new OutgoingMessage(prefix+i,priority));
 				}
