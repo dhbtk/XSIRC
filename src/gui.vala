@@ -13,7 +13,7 @@ namespace XSIRC {
 		public Gtk.TreeView user_list;
 		public Gtk.Notebook servers_notebook;
 		public Gtk.Label nickname_label;
-		public Gtk.TextView text_entry;
+		public Gtk.Entry text_entry;
 		public Gtk.Entry topic_view;
 		public Gtk.Statusbar status_bar;
 		public View system_view;
@@ -176,7 +176,7 @@ namespace XSIRC {
 			servers_notebook.show_all();
 			// Input entry
 			
-			text_entry = new Gtk.TextView();
+			text_entry = new Gtk.Entry();
 			//Gtk.ScrolledWindow te_scroll = new Gtk.ScrolledWindow(null,null);
 			//te_scroll.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 			//te_scroll.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
@@ -189,12 +189,12 @@ namespace XSIRC {
 			main_window.show_all();
 
 			// Activate signal
-			text_entry.buffer.changed.connect(() => {
-				if(text_entry.buffer.text.contains("\n")) {
-					string text = text_entry.buffer.text.replace("\n","");
+			text_entry.activate.connect(() => {
+				command_history.insert(0,text_entry.text);
+				foreach(string text in text_entry.text.split("\n")) {
 					parse_text(text);
-					text_entry.buffer.text = "";
 				}
+				text_entry.text = "";
 			});
 			// Command history, tab completion
 			text_entry.key_press_event.connect((key) => {
@@ -202,18 +202,18 @@ namespace XSIRC {
 					tab_completer.reset();
 					command_history_index++;
 					if((command_history.size - 1) >= command_history_index) {
-						text_entry.buffer.text = command_history[command_history_index];
+						text_entry.text = command_history[command_history_index];
 					}
 					return true;
 				} else if(key.keyval == Gdk.keyval_from_name("Down")) {
 					tab_completer.reset();
 					command_history_index--;
 					if((command_history.size - 1) >= command_history_index && command_history_index > -1) {
-						text_entry.buffer.text = command_history[command_history_index];
+						text_entry.text = command_history[command_history_index];
 					}
 					return true;
 				} else if(key.keyval == Gdk.keyval_from_name("Tab")) {
-					tab_completer.complete(current_server(),current_server().current_view(),text_entry.buffer);
+					tab_completer.complete(current_server(),current_server().current_view(),text_entry);
 					return true;
 				} else {
 					tab_completer.reset();
@@ -253,7 +253,6 @@ namespace XSIRC {
 		
 		private void parse_text(string s) {
 			//stdout.printf("Calling GUI.parse_text with argument \"%s\"\n",s);
-			command_history.insert(0,s);
 			command_history_index = -1;
 			if(s.has_prefix("//")) {
 				// Send privmsg to current channel + /
