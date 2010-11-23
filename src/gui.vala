@@ -719,7 +719,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			//gui_mutex.lock();
 			Gtk.Dialog dialog = new Gtk.Dialog.with_buttons("Connect to server",main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
 			Gtk.HBox box = new Gtk.HBox(false,0);
-			box.pack_start(new Gtk.Label("Server string:"),false,false,0);
+			box.pack_start(new Gtk.Label("Server URL:"),false,false,0);
 			Gtk.Entry server_entry = new Gtk.Entry();
 			server_entry.text = "irc://";
 			server_entry.activate.connect(() => {
@@ -731,9 +731,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			dialog.response.connect((id) => {
 				if(id == Gtk.ResponseType.ACCEPT) {
 					// Checking for a valid pseudo-uri
-					if(/^(irc|sirc):\/\/[a-zA-Z0-9-_.]+:\d+/.match(server_entry.text)) {
-						string[] split_server_data = Regex.split_simple("(:\\/\\/|:)",server_entry.text);
-						Main.server_manager.open_server(split_server_data[2],split_server_data[4].to_int(),split_server_data[0] == "ircs",server_entry.text.substring((long)server_entry.text.split(" ")[0].size()));
+					if(/^(irc|sirc):\/\/[a-zA-Z0-9-_.]+/.match(server_entry.text)) {
+						string[] split_server_data = server_entry.text.split(":");
+						bool ssl = split_server_data[0] == "ircs";
+						string address = split_server_data[1].substring(2);
+						int port = split_server_data[2] != null ? split_server_data[2].to_int() : 6667;
+						Main.server_manager.open_server(address,port,ssl,server_entry.text.substring(server_entry.text.split(" ")[0].length));
 						dialog.destroy();
 					}
 				} else {
