@@ -67,3 +67,5 @@ def build(bld):
 	bld.install_files(bld.env['PREFIX']+'/share/licenses/xsirc','LICENSE') # Arch Linux thing
 	# Icon
 	bld.install_files(bld.env['PREFIX']+'/share/pixmaps','xsirc.png')
+	# Preferences ui
+	bld.install_files(bld.env['PREFIX']+'/share/xsirc','src/prefwindow.ui')

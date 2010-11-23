@@ -1,9 +1,0 @@
-#!/usr/bin/ruby
-a = open('src/prefwindow.vala').read
-b = open('src/prefwindow.ui').read
-c = a.split('"""')
-c[1] = b
-a = c.join('"""')
-File.open('src/prefwindow.vala','w') do |f|
-	f << a
-end
