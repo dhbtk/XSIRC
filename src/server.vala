@@ -165,6 +165,7 @@ namespace XSIRC {
 				if(((int)time_t() - (int)last_recieved) >= 300) {
 					add_to_view("<server>","Ping timeout. Reconnecting...");
 					try {
+						last_recieved = time_t();
 						irc_disconnect();
 						irc_connect();
 					} catch(Error e) {
@@ -849,7 +850,7 @@ namespace XSIRC {
 				if(current_view() != view) {
 					view.label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text(view.name));
 				}
-				if(Main.gui.curr_server() != this) {
+				if(Main.gui.current_server() != this) {
 					label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text((network != null ? network.name+" - " : "")+server));
 				}
 			}
