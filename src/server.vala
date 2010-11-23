@@ -52,6 +52,7 @@ namespace XSIRC {
 			public bool userlist_recieved = true;
 			public bool in_channel;
 			public string mode;
+			public bool got_create_date = false;
 			public class Topic : Object {
 				public string content;
 				public string setter;
@@ -461,7 +462,7 @@ namespace XSIRC {
 							add_to_view(split[2],"%s sets mode %s on %s".printf(usernick,targets,split[2]));
 							send("MODE %s".printf(split[2]));
 						} else {
-							add_to_view("<server>","%s sets mode %s".printf(usernick,split[3]));
+							add_to_view("<server>","Changing mode: %s".printf(split[3]));
 						}
 						break;
 					case "TOPIC":
@@ -691,11 +692,14 @@ namespace XSIRC {
 						add_to_view(split[2],"No topic is set");
 						break;
 					case "329":
+						if(find_channel(split[3]) != null && !find_channel(split[3]).got_create_date) {
 #if WINDOWS
-						add_to_view(split[3],"Channel was created %s".printf(localtime((time_t)split[4].to_int()).format("%c")));
+							add_to_view(split[3],"Channel was created %s".printf(localtime((time_t)split[4].to_int()).format("%c")));
 #else
-						add_to_view(split[3],"Channel was created %s".printf(Time.local((time_t)split[4].to_int()).format("%c")));
+							add_to_view(split[3],"Channel was created %s".printf(Time.local((time_t)split[4].to_int()).format("%c")));
 #endif
+							find_channel(split[3]).got_create_date = true;
+						}
 						break;
 					case "332":
 						Channel chan = find_channel(split[3]);
