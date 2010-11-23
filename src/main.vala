@@ -5,7 +5,7 @@ namespace XSIRC {
 		public static ConfigManager config_manager;
 		public static HashMap<string,HashMap<string,string>> config;
 		public static ServerManager server_manager;
-		public static AliasManager alias_manager;
+		public static MacroManager macro_manager;
 	}
 	
 	void main_loop() {
@@ -33,7 +33,7 @@ namespace XSIRC {
 		Main.config = Main.config_manager.config;
 		Main.server_manager = new ServerManager();
 		Main.gui = new XSIRC.GUI();
-		Main.alias_manager = new AliasManager();
+		Main.macro_manager = new MacroManager();
 		Main.server_manager.startup();
 
 		main_loop();
