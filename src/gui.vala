@@ -137,8 +137,8 @@ namespace XSIRC {
 			topic_view = new Gtk.Entry();
 			main_vbox.pack_start(topic_view,false,true,0);
 			topic_view.activate.connect(() => {
-				if(curr_server() != null && curr_server().current_view() != null && curr_server().current_view().name.has_prefix("#")) {
-					curr_server().send("TOPIC %s :%s".printf(curr_server().current_view().name,topic_view.text));
+				if(current_server() != null && current_server().current_view() != null && current_server().current_view().name.has_prefix("#")) {
+					current_server().send("TOPIC %s :%s".printf(current_server().current_view().name,topic_view.text));
 				}
 			});
 			
@@ -177,9 +177,11 @@ namespace XSIRC {
 			// Input entry
 			
 			text_entry = new Gtk.TextView();
-			//text_entry.accepts_tab = true; // tab completion is "bloat"
-			//text_entry.buffer.text = "test";
-			vbox.pack_start(text_entry,false,true,0);
+			//Gtk.ScrolledWindow te_scroll = new Gtk.ScrolledWindow(null,null);
+			//te_scroll.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
+			//te_scroll.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
+			//te_scroll.add(text_entry);
+			vbox.pack_start(/*te_scroll*/text_entry,false,false,0);
 			
 			// Status bar
 			status_bar = new Gtk.Statusbar();
@@ -211,7 +213,7 @@ namespace XSIRC {
 					}
 					return true;
 				} else if(key.keyval == Gdk.keyval_from_name("Tab")) {
-					tab_completer.complete(curr_server(),curr_server().current_view(),text_entry.buffer);
+					tab_completer.complete(current_server(),current_server().current_view(),text_entry.buffer);
 					return true;
 				} else {
 					tab_completer.reset();
@@ -244,7 +246,7 @@ namespace XSIRC {
 				Gtk.main_iteration();
 			}
 			if(!gui_updated) {
-				update_gui(curr_server());
+				update_gui(current_server());
 				gui_updated = true;
 			}
 		}
@@ -256,8 +258,8 @@ namespace XSIRC {
 			if(s.has_prefix("//")) {
 				// Send privmsg to current channel + /
 				string sent = s.substring(1);
-				if(curr_server() != null && curr_server().current_view() != null) {
-					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,sent),(float)0.5,true,curr_server().current_view().name);
+				if(current_server() != null && current_server().current_view() != null) {
+					current_server().send("PRIVMSG %s :%s".printf(current_server().current_view().name,sent),(float)0.5,true,current_server().current_view().name);
 				}
 			} /*else if(s.has_prefix("//")) {
 				// Client command
@@ -276,23 +278,23 @@ namespace XSIRC {
 			}*/ else if(s.has_prefix("/")) {
 				// IRC command, with exactly two exceptions
 				string sent = s.substring(1);
-				if(curr_server() != null && curr_server().current_view() != null) {
+				if(current_server() != null && current_server().current_view() != null) {
 					if(sent.has_prefix("me")) { // CTCP ACTION
-						curr_server().send("PRIVMSG %s :%sACTION %s%s".printf(curr_server().current_view().name,MIRCParser.CTCP_CHAR,sent.substring(3),MIRCParser.CTCP_CHAR));
-						curr_server().add_to_view(curr_server().current_view().name,"* %s %s".printf(curr_server().nick,sent.substring(3)));
+						current_server().send("PRIVMSG %s :%sACTION %s%s".printf(current_server().current_view().name,MIRCParser.CTCP_CHAR,sent.substring(3),MIRCParser.CTCP_CHAR));
+						current_server().add_to_view(current_server().current_view().name,"* %s %s".printf(current_server().nick,sent.substring(3)));
 					} else if(sent.has_prefix("ctcp")) {
 						string[] split = sent.split(" ");
 						string target = split[1];
-						curr_server().send("PRIVMSG %s :%s%s%s".printf(target,MIRCParser.CTCP_CHAR,sent.substring(6+target.length),MIRCParser.CTCP_CHAR));
-						curr_server().add_to_view("<server>",">%s< CTCP %s".printf(target,sent.substring(6+target.length)));
+						current_server().send("PRIVMSG %s :%s%s%s".printf(target,MIRCParser.CTCP_CHAR,sent.substring(6+target.length),MIRCParser.CTCP_CHAR));
+						current_server().add_to_view("<server>",">%s< CTCP %s".printf(target,sent.substring(6+target.length)));
 					} else {
-						curr_server().send(sent);
+						current_server().send(sent);
 					}
 				}
 			} else {
-				if(curr_server() != null && curr_server().current_view() != null && s.size() > 0) {
-					curr_server().send("PRIVMSG %s :%s".printf(curr_server().current_view().name,s),(float)0.5,true,curr_server().current_view().name);
-					//curr_server().add_to_view(curr_server().current_view().name,"<%s> %s".printf(curr_server().nick,s));
+				if(current_server() != null && current_server().current_view() != null && s.size() > 0) {
+					current_server().send("PRIVMSG %s :%s".printf(current_server().current_view().name,s),(float)0.5,true,current_server().current_view().name);
+					//current_server().add_to_view(current_server().current_view().name,"<%s> %s".printf(current_server().nick,s));
 				}
 			}
 		}
@@ -342,7 +344,7 @@ namespace XSIRC {
 			//gui_mutex.lock();
 			if(server != null) {
 				// Only servers in the foreground can update the GUI
-				if(server != curr_server() && !force) {
+				if(server != current_server() && !force) {
 					return;
 				}
 				// User list
@@ -465,12 +467,12 @@ namespace XSIRC {
 			return null;
 		}
 		
-		public Server? curr_server() {
+		public Server? current_server() {
 			return find_server_by_notebook(get_curr_notebook_widget() as Gtk.Notebook);
 		}
 		
 		public bool in_system_view() {
-			return curr_server == null;
+			return current_server() == null;
 		}
 		
 		// Menu callbacks
@@ -514,28 +516,28 @@ namespace XSIRC {
 		
 		public static void previous_view_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				server.notebook.prev_page();
 			}
 		}
 		
 		public static void next_view_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				server.notebook.next_page();
 			}
 		}
 		
 		public static void close_view_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				server.close_view();
 			}
 		}
 		
 		public static void rejoin_chan_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				GUI.View? view = server.current_view();
 				if(view != null && view.name.has_prefix("#")) {
 					server.send("PART %s".printf(view.name));
@@ -546,7 +548,7 @@ namespace XSIRC {
 		
 		public static void open_view_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				Gtk.Dialog dialog = new Gtk.Dialog.with_buttons("Open view",Main.gui.main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
 				Gtk.HBox box = new Gtk.HBox(false,0);
 				box.pack_start(new Gtk.Label("View name:"),false,false,0);
@@ -569,14 +571,14 @@ namespace XSIRC {
 		
 		public static void disconnect_server_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
 			}
 		}
 		
 		public static void reconnect_server_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				server.irc_disconnect();
 				try {
 					server.irc_connect();
@@ -588,7 +590,7 @@ namespace XSIRC {
 		
 		public static void close_server_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
 				Main.server_manager.servers.remove(server);
 				Main.gui.servers_notebook.remove_page(Main.gui.servers_notebook.page_num(server.notebook));
@@ -597,7 +599,7 @@ namespace XSIRC {
 		
 		public static void rejoin_all_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				foreach(Server.Channel channel in server.channels) {
 					server.send("PART %s".printf(channel.title));
 					server.send("JOIN %s".printf(channel.title));
@@ -607,7 +609,7 @@ namespace XSIRC {
 		
 		public static void go_away_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				if(server.am_away) {
 					server.send("AWAY");
 				} else {
@@ -618,7 +620,7 @@ namespace XSIRC {
 		
 		public static void open_last_link_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				View? view;
 				if((view = server.current_view()) != null) {
 					string[] lines = view.text_view.buffer.text.split(" ");
@@ -649,7 +651,7 @@ namespace XSIRC {
 		
 		public static void open_sl_link_cb(Gtk.Action action) {
 			Server server;
-			if((server = Main.gui.curr_server()) != null) {
+			if((server = Main.gui.current_server()) != null) {
 				View? view;
 				if((view = server.current_view()) != null) {
 					string[] lines = view.text_view.buffer.text.split(" ");
