@@ -252,7 +252,7 @@ namespace XSIRC {
 					if(s.down().has_prefix("notice")) {
 						add_to_view(target,"-%s- %s".printf(nick,msg));
 					} else if(msg.has_prefix("ACTION")) {
-						add_to_view(target,"* %s %s".printf(nick,msg.replace("","").substring(6)));
+						add_to_view(target,"* %s %s".printf(nick,msg.replace("","").substring(7)));
 					} else if(msg.has_prefix("")) {
 						add_to_view(target,">%s< CTCP %s".printf(nick,msg.replace("","")));
 					} else {
