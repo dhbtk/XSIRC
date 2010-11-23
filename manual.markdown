@@ -25,7 +25,7 @@ add it after the URL. Commands work in the same way.
 ### Connecting manually to a server
 
 Go to Client->Connect... or press Ctrl-Shift-O. In the dialog, type the server's
-URL, including the port.
+URL.
 
 ### Using the client
 
