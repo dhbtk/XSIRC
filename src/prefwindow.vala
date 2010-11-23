@@ -399,6 +399,7 @@ namespace XSIRC {
                         <property name="layout_style">center</property>
                         <child>
                           <object class="GtkButton" id="network_add">
+                            <property name="label">gtk-add</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
