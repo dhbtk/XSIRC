@@ -1,3 +1,9 @@
+/*
+ * macromanager.vala
+ *
+ * Copyright (c) 2010 Eduardo Niehues
+ * Distributed under the New BSD License; see ../LICENSE for details.
+ */
 using Gee;
 namespace XSIRC {
 	public class MacroManager : Object {
@@ -49,8 +55,8 @@ namespace XSIRC {
 			string v;
 			try {
 				for(int i = 0; macros_file.has_key("macros","regex%d".printf(i)) && macros_file.has_key("macros","result%d".printf(i)); i++) {
-					k = "regex%d".printf(i);
-					v = "result%d".printf(i);
+					k = macros_file.get_string("macros","regex%d".printf(i));
+					v = macros_file.get_string("macros","result%d".printf(i));
 					Macro macro = Macro();
 					try {
 						// Testing if it compiles
@@ -95,6 +101,25 @@ namespace XSIRC {
 				}
 			}
 			return null;
+		}
+		
+		public void save_macros() {
+			macros_file = new KeyFile();
+			int i = 0;
+			foreach(Macro macro in macros) {
+				try {
+					macros_file.set_string("macros","regex%d".printf(i),macro.regex);
+					macros_file.set_string("macros","result%d".printf(i),macro.result);
+				} catch(KeyFileError e) {
+					
+				}
+				i++;
+			}
+			try {
+				FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/macros.conf",macros_file.to_data());
+			} catch(Error e) {
+				stderr.printf("Could not save macros file.\n");
+			}
 		}
 	}
 }

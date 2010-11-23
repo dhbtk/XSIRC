@@ -32,8 +32,8 @@ namespace XSIRC {
 			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
 			// View
 			{"ViewMenu",null,"_View"},
-			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><shift>less",null,previous_server_cb},
-			{"NextServer",Gtk.STOCK_GOTO_LAST,"Next server","<control><shift>greater",null,next_server_cb},
+			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><alt>comma",null,previous_server_cb},
+			{"NextServer",Gtk.STOCK_GOTO_LAST,"Next server","<control><alt>period",null,next_server_cb},
 			{"PrevView",Gtk.STOCK_GO_BACK,"Previous view","<control>comma",null,previous_view_cb},
 			{"NextView",Gtk.STOCK_GO_FORWARD,"Next view","<control>period",null,next_view_cb},
 			{"CloseView",Gtk.STOCK_CLOSE,"_Close view","<control>w",null,close_view_cb},
