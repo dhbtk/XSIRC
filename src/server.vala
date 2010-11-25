@@ -16,13 +16,13 @@ namespace XSIRC {
 		public string password;
 		public ServerManager.Network network;
 		// State
-		public LinkedList<Channel> channels = new LinkedList<Channel>();
-		public LinkedList<GUI.View> views  = new LinkedList<GUI.View>();
+		public LinkedList<Channel?> channels = new LinkedList<Channel?>();
+		public LinkedList<GUI.View?> views  = new LinkedList<GUI.View?>();
 		public string nick;
 		private time_t last_recieved = time_t();
 		public bool connected = false;
 		public bool sock_error = false;
-		private LinkedList<OutgoingMessage> output_queue = new LinkedList<OutgoingMessage>();
+		private LinkedList<OutgoingMessage?> output_queue = new LinkedList<OutgoingMessage?>();
 		public unowned Thread sender_thread;
 		private bool shutting_down = false;
 		public bool am_away;
@@ -33,18 +33,6 @@ namespace XSIRC {
 		public SocketConnection socket_conn;
 		public DataInputStream socket_stream;
 		
-		/*public struct Channel {
-			public string name;
-			public string topic_content;
-			public string topic_setter;
-			public time_t topic_time_set;
-			public LinkedList<string> raw_users;
-			public LinkedList<string> users;
-			public bool   userlist_recieved;
-			public bool   in_channel;
-			public string mode;
-		}*/
-		
 		public class Channel : Object {
 			public Topic topic;
 			public ArrayList<string> raw_users = new ArrayList<string>();
@@ -53,7 +41,7 @@ namespace XSIRC {
 			public bool in_channel;
 			public string mode;
 			public bool got_create_date = false;
-			public class Topic : Object {
+			public struct Topic {
 				public string content;
 				public string setter;
 				public time_t time_set;
@@ -61,7 +49,7 @@ namespace XSIRC {
 			public string title;
 			public Channel() {
 				title = "";
-				topic = new Topic();
+				topic = Topic();
 				topic.content  = "";
 				topic.setter   = "";
 				topic.time_set = (time_t)0;
@@ -70,13 +58,9 @@ namespace XSIRC {
 			}
 		}
 		
-		private class OutgoingMessage {
+		private struct OutgoingMessage {
 			public string message;
 			public float priority;
-			public OutgoingMessage(string m,float p) {
-				message = m;
-				priority = p;
-			}
 		}
 		
 		public Server(string server,int port,bool ssl,string password,ServerManager.Network? network = null) {
@@ -259,10 +243,12 @@ namespace XSIRC {
 					} else {
 						add_to_view(target,"<%s> %s".printf(nick,msg));
 					}
-					output_queue.offer(new OutgoingMessage(prefix+i,priority));
+					OutgoingMessage outg = {prefix+i,priority};
+					output_queue.offer(outg);
 				}
 			} else {
-				output_queue.offer(new OutgoingMessage(s,priority));
+				OutgoingMessage outg = {s,priority};
+				output_queue.offer(outg);
 			}
 		}
 		
@@ -284,7 +270,8 @@ namespace XSIRC {
 		private void* thread_func() {
 			while(!shutting_down) {
 				OutgoingMessage message;
-				if((message = output_queue.poll()) != null) {
+				if(output_queue.size != 0) {
+					message = output_queue.poll();
 					Posix.usleep(((int)message.priority*1000));
 					raw_send(message.message);
 				}

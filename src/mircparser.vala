@@ -12,21 +12,13 @@ namespace XSIRC {
 		public static const string ITALIC    = "";
 		public static const string UNDERLINE = "";
 		public static const string COLOR     = "";
-		public class AttrChar {
+		public struct AttrChar {
 			public char    contents;
 			public bool    bold;
 			public bool    italic;
 			public bool    underlined;
 			public string? foreground;
 			public string? background;
-		public AttrChar(char c, bool b, bool i, bool u, string? fg, string? bg) {
-			contents = c;
-			bold = b;
-			italic = i;
-			underlined = u;
-			foreground = fg;
-			background = bg;
-		}
 		}
 		private HashMap<int,string> mirc_colors = new HashMap<int,string>();
 		private char[] data;
@@ -161,7 +153,7 @@ namespace XSIRC {
 								parsing_color = false;
 								got_foreground = false;
 							}
-							AttrChar parsed_char = new AttrChar(c,bold,italic,underlined,(foreground != null ? mirc_colors[foreground.to_int()%16] : null),(background != null ? "back "+mirc_colors[background.to_int()%16] : null));
+							AttrChar parsed_char = {c,bold,italic,underlined,(foreground != null ? mirc_colors[foreground.to_int()%16] : null),(background != null ? "back "+mirc_colors[background.to_int()%16] : null)};
 							parsed_string += parsed_char;
 						}
 						break;
