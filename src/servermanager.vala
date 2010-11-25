@@ -8,7 +8,7 @@ using Gee;
 namespace XSIRC {
 	public class ServerManager : Object {
 		public class Network {
-			public class ServerData {
+			public struct ServerData {
 				public string  address;
 				public int     port;
 				public bool    ssl;
@@ -16,7 +16,7 @@ namespace XSIRC {
 			}
 			
 			public string name;
-			public LinkedList<ServerData> servers = new LinkedList<ServerData>();
+			public LinkedList<ServerData?> servers = new LinkedList<ServerData?>();
 			public LinkedList<string> commands    = new LinkedList<string>();
 			public bool auto_connect;
 			public int server_index = 0;
@@ -59,7 +59,7 @@ namespace XSIRC {
 					Network network = new Network();
 					network.name = net_name;
 					for(int curr_server = 0;raw_conf.has_key(net_name,"server%d".printf(curr_server));curr_server++) {
-						Network.ServerData server = new Network.ServerData();
+						Network.ServerData server = Network.ServerData();
 						if(!Regex.match_simple("^(irc|sirc):\\/\\/[a-zA-Z0-9-_.]+:\\d+",raw_conf.get_string(net_name,"server%d".printf(curr_server)))) {
 							stderr.printf("Could not parse server #%d in network %s!\n",curr_server,net_name);
 							continue;

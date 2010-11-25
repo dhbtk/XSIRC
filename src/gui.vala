@@ -6,7 +6,7 @@
  */
 using Gee;
 namespace XSIRC {
-	public class GUI {
+	public class GUI : Object {
 		public static const string link_regex = "([a-z]+://[a-zA-Z0-9\\-.]+(:[0-9]+)?(/[a-zA-Z0-9\\-_$.+\\[\\]!*\\(),;:@&=?/~#%]+){0,1})";
 		// GUI proper
 		public Gtk.Window main_window;
@@ -100,7 +100,7 @@ namespace XSIRC {
 		public Mutex gui_mutex = new Mutex();
 		private PrefWindow prefs_window;
 		
-		public class View {
+		public struct View {
 			public string name;
 			public Gtk.ScrolledWindow scrolled_window;
 			public Gtk.TextView text_view;
@@ -395,7 +395,7 @@ namespace XSIRC {
 			scrolled_window.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 			scrolled_window.add(text_view);
 			
-			View view = new View();
+			View view = View();
 			view.name = name;
 			view.scrolled_window = scrolled_window;
 			view.text_view = text_view;
