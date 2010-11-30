@@ -23,7 +23,7 @@ namespace XSIRC {
 			config["core"]["timestamp_format"] = "[%H:%M:%S]";
 			config["core"]["away_msg"]    = "Away";
 			config["core"]["log_date_format"] = "%F";
-			config["core"]["log"]         = "true";
+			IRCLogger.logging_enabled     = true;
 			
 			if(FileUtils.test(Environment.get_user_config_dir()+"/xsirc/xsirc.conf",FileTest.EXISTS)) {
 				try {
@@ -35,7 +35,8 @@ namespace XSIRC {
 					stderr.printf("Could not open config file\n");
 				}
 			}
-			load_strings(config["core"],"XSIRC",{"nickname","username","realname","quit_msg","web_browser","font","timestamp_format","away_msg","log_date_format","log"});
+			load_strings(config["core"],"XSIRC",{"nickname","username","realname","quit_msg","web_browser","font","timestamp_format","away_msg","log_date_format"});
+			load_bool(out IRCLogger.logging_enabled,"XSIRC","log");
 			
 		}
 		
@@ -57,8 +58,25 @@ namespace XSIRC {
 			}
 		}
 		
+		private void save_bool(bool what,string section,string name) {
+			try {
+				raw_file.set_boolean(section,name,what);
+			} catch(KeyFileError e) {
+				
+			}
+		}
+		
+		private void load_bool(out bool what,string section,string name) {
+			try {
+				what = raw_file.get_boolean(section,name);
+			} catch(KeyFileError e) {
+				what = false;
+			}
+		}
+		
 		public void save_settings() {
 			save_strings(config["core"],"XSIRC");
+			save_bool(IRCLogger.logging_enabled,"XSIRC","log");
 			try {
 				FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/xsirc.conf",raw_file.to_data());
 			} catch(Error e) {

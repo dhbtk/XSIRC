@@ -34,7 +34,7 @@ namespace XSIRC {
 			((Gtk.Entry)ui_builder.get_object("timestamp_format")).text = Main.config["core"]["timestamp_format"];
 			((Gtk.Entry)ui_builder.get_object("log_date_format")).text = Main.config["core"]["log_date_format"];
 			
-			((Gtk.CheckButton)ui_builder.get_object("logging")).active = Main.config["core"]["log"] == "true";
+			((Gtk.CheckButton)ui_builder.get_object("logging")).active = IRCLogger.logging_enabled;
 			((Gtk.FontButton)ui_builder.get_object("font")).font_name = Main.config["core"]["font"];
 			// Setting up the tree views
 			network_tree = ((Gtk.TreeView)ui_builder.get_object("network_tree"));
@@ -171,7 +171,7 @@ namespace XSIRC {
 				Main.config["core"]["timestamp_format"] = ((Gtk.Entry)ui_builder.get_object("timestamp_format")).text;
 				Main.config["core"]["log_date_format"] = ((Gtk.Entry)ui_builder.get_object("log_date_format")).text;
 		
-				Main.config["core"]["log"] = ((Gtk.CheckButton)ui_builder.get_object("logging")).active ? "true" : "false";
+				IRCLogger.logging_enabled   = ((Gtk.CheckButton)ui_builder.get_object("logging")).active ? true : false;
 				Main.config["core"]["font"] = ((Gtk.FontButton)ui_builder.get_object("font")).font_name;
 				Main.config_manager.save_settings();
 				Main.server_manager.save_networks();

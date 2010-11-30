@@ -6,9 +6,10 @@
  */
 namespace XSIRC {
 	public class IRCLogger : Object {
+		public static bool logging_enabled;
 		public static void log(Server server,GUI.View view,owned string str) {
 			str = Main.gui.timestamp() + " " + str;
-			if(Main.config["core"]["log"] != "true") {
+			if(!logging_enabled) {
 				return;
 			}
 			StringBuilder path = new StringBuilder(Environment.get_user_config_dir()+"/xsirc/irclogs/");

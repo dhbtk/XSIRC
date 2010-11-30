@@ -7,6 +7,17 @@
 using Gee;
 namespace XSIRC {
 	public class MacroManager : Object {
+		public class PrefWindow : Object {
+			private Gtk.Dialog window;
+			private Gtk.TreeView macro_tree;
+			private Gtk.ListStore macro_model;
+			
+			enum MacroColumns {
+				REGEX,
+				RESULT,
+				N_COLUMNS
+			}
+		}
 		public struct Macro {
 			public string regex;
 			public string result;
