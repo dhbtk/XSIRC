@@ -18,6 +18,7 @@ namespace XSIRC {
 		public Gtk.Statusbar status_bar;
 		public View system_view;
 		public bool destroyed = false;
+		private Gtk.MenuItem[] views_menu = new Gtk.MenuItem[9];
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
 			{"ClientMenu",null,"_Client"},
@@ -41,6 +42,16 @@ namespace XSIRC {
 			{"CloseView",Gtk.STOCK_CLOSE,"_Close view","<control>w",null,close_view_cb},
 			{"RejoinChannel",null,"Re_join channel",null,null,rejoin_chan_cb},
 			{"OpenView",Gtk.STOCK_OPEN,"_Open view...","<control>o",null,open_view_cb},
+			{"View1",null,"View 1","<alt>1",null,change_view_cb},
+			{"View2",null,"View 2","<alt>2",null,change_view_cb},
+			{"View3",null,"View 3","<alt>3",null,change_view_cb},
+			{"View4",null,"View 4","<alt>4",null,change_view_cb},
+			{"View5",null,"View 5","<alt>5",null,change_view_cb},
+			{"View6",null,"View 6","<alt>6",null,change_view_cb},
+			{"View7",null,"View 7","<alt>7",null,change_view_cb},
+			{"View8",null,"View 8","<alt>8",null,change_view_cb},
+			{"View9",null,"View 9","<alt>9",null,change_view_cb},
+			{"View10",null,"View 10","<alt>0",null,change_view_cb},
 			// Server
 			{"ServerMenu",null,"_Server"},
 			{"Disconnect",Gtk.STOCK_DISCONNECT,"_Disconnect","<control><shift>d",null,disconnect_server_cb},
@@ -53,6 +64,7 @@ namespace XSIRC {
 			{"HelpContents",Gtk.STOCK_HELP,"_Contents","F1",null,spawn_help_cb},
 			{"About",Gtk.STOCK_ABOUT,null,null,null,spawn_about_cb}
 		};
+		private Gtk.UIManager ui_manager;
 		private string ui_manager_xml = """
 <ui>
 	<menubar name="MainMenu">
@@ -74,6 +86,17 @@ namespace XSIRC {
 			<menuitem action="CloseView"/>
 			<menuitem action="RejoinChannel"/>
 			<menuitem action="OpenView"/>
+			<separator/>
+			<menuitem action="View1"/>
+			<menuitem action="View2"/>
+			<menuitem action="View3"/>
+			<menuitem action="View4"/>
+			<menuitem action="View5"/>
+			<menuitem action="View6"/>
+			<menuitem action="View7"/>
+			<menuitem action="View8"/>
+			<menuitem action="View9"/>
+			<menuitem action="View10"/>
 		</menu>
 		<menu action="ServerMenu">
 			<menuitem action="Disconnect"/>
@@ -126,7 +149,7 @@ namespace XSIRC {
 			// Menus
 			Gtk.ActionGroup action_group = new Gtk.ActionGroup("MenuActions");
 			action_group.add_actions(menu_actions,null);
-			Gtk.UIManager ui_manager = new Gtk.UIManager();
+			ui_manager = new Gtk.UIManager();
 			ui_manager.insert_action_group(action_group,0);
 			main_window.add_accel_group(ui_manager.get_accel_group());
 			try {
@@ -368,6 +391,17 @@ namespace XSIRC {
 						topic_view.text = "";
 					}
 				}
+				// Updating the labels in the view menu
+				for(int i = 1; i <= 10; i++) {
+					Gtk.MenuItem item = ui_manager.get_widget("/MainMenu/ViewMenu/View%d".printf(i)) as Gtk.MenuItem;
+					item.visible = false;
+					if(current_server() != null) {
+						if(current_server().notebook.get_n_pages() >= i) {
+							item.label = current_server().find_view_from_scrolled_window(current_server().notebook.get_nth_page(i-1) as Gtk.ScrolledWindow).name;
+							item.visible = true;
+						}
+					}
+				}
 				server.label.label = Markup.escape_text((server.network != null ? server.network.name+" - " : "")+server.server);
 				main_window.title = title_string.str;
 			} else {
@@ -553,6 +587,14 @@ namespace XSIRC {
 					dialog.destroy();
 				});
 				dialog.show_all();
+			}
+		}
+		
+		public static void change_view_cb(Gtk.Action action) {
+			int view_no = action.name.substring(4).to_int();
+			view_no--;
+			if(Main.gui.current_server() != null && Main.gui.current_server().notebook.get_n_pages() >= view_no) {
+				Main.gui.current_server().notebook.page = view_no;
 			}
 		}
 		

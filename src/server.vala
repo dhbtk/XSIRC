@@ -885,7 +885,7 @@ namespace XSIRC {
 			return null;
 		}
 		
-		private GUI.View? find_view_from_scrolled_window(Gtk.ScrolledWindow? scrolled_window) {
+		public GUI.View? find_view_from_scrolled_window(Gtk.ScrolledWindow? scrolled_window) {
 			foreach(GUI.View view in views) {
 				if(scrolled_window == view.scrolled_window) {
 					return view;
