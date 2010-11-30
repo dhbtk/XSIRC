@@ -196,6 +196,11 @@ namespace XSIRC {
 			}
 			connected = true;
 			sock_error = false;
+			foreach(Channel channel in channels) {
+				if(!channel.in_channel) {
+					send("JOIN %s".printf(channel.title));
+				}
+			}
 			Main.gui.update_gui(this);
 		}
 		
@@ -207,6 +212,9 @@ namespace XSIRC {
 			}
 			connected = false;
 			sock_error = false;
+			foreach(Channel channel in channels) {
+				channel.in_channel = false;
+			}
 			Main.gui.update_gui(this);
 		}
 		
@@ -327,6 +335,8 @@ namespace XSIRC {
 						add_to_view(message,"%s [%s@%s] has joined %s".printf(usernick,username,usermask,message));
 						break;
 					case "PART":
+						message = message == s ? "" : message;
+						add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,split[2],message));
 						if(usernick.down() == nick.down()) {
 							channels.remove(find_channel(split[2].down()));
 							GUI.View view = find_view(split[2]);
@@ -335,8 +345,6 @@ namespace XSIRC {
 						} else {
 							send("NAMES %s".printf(split[2]));
 						}
-						message = message == s ? "" : message;
-						add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,split[2],message));
 						break;
 					case "KICK":
 						if(split[3].down() == nick.down()) {
