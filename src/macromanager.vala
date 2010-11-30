@@ -12,17 +12,80 @@ namespace XSIRC {
 			private Gtk.TreeView macro_tree;
 			private Gtk.ListStore macro_model;
 			
-			enum MacroColumns {
+			private enum MacroColumns {
 				REGEX,
 				RESULT,
 				N_COLUMNS
+			}
+			
+			public PrefWindow() {
+				window = new Gtk.Dialog.with_buttons("Macros",Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.STOCK_CLOSE,0,null);
+				
+				macro_model = new Gtk.ListStore(MacroColumns.N_COLUMNS,typeof(string),typeof(string));
+				macro_tree = new Gtk.TreeView.with_model(macro_model);
+				
+				Gtk.CellRendererText regex_renderer = new Gtk.CellRendererText();
+				regex_renderer.editable = true;
+				regex_renderer.edited.connect(regex_edited);
+				macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes("Regex",regex_renderer,"text",MacroColumns.REGEX,null));
+				
+				Gtk.CellRendererText result_renderer = new Gtk.CellRendererText();
+				result_renderer.editable = true;
+				result_renderer.edited.connect(result_edited);
+				macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes("Result",result_renderer,"text",MacroColumns.RESULT,null));
+				
+				Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow(null,null);
+				scroll.add(macro_tree);
+				window.vbox.pack_start(scroll,true,true,0);
+				
+				Gtk.HButtonBox bbox = new Gtk.HButtonBox();
+				window.vbox.pack_start(bbox,false,true,0);
+				Gtk.Button add_button = new Gtk.Button.from_stock(Gtk.STOCK_ADD);
+				bbox.pack_start(add_button,true,true,0);
+				add_button.clicked.connect(add_macro);
+				Gtk.Button remove_button = new Gtk.Button.from_stock(Gtk.STOCK_REMOVE);
+				remove_button.clicked.connect(remove_macro);
+				bbox.pack_start(remove_button,true,true,0);
+				
+				load_macros();
+				
+				window.response.connect(() => {
+					window.destroy();
+					Main.gui.destroy_macro_prefs_window();
+				});
+				window.show_all();
+			}
+			
+			private void add_macro() {
+				
+			}
+			
+			private void remove_macro() {
+				
+			}
+			
+			private void regex_edited(string path,string new_text) {
+				
+			}
+			
+			private void result_edited(string path,string new_text) {
+				
+			}
+			
+			private void load_macros() {
+				macro_model.clear();
+				Gtk.TreeIter iter;
+				foreach(Macro macro in Main.macro_manager.macros) {
+					macro_model.append(out iter);
+					macro_model.set(iter,MacroColumns.REGEX,macro.regex,MacroColumns.RESULT,macro.result);
+				}
 			}
 		}
 		public struct Macro {
 			public string regex;
 			public string result;
 		}
-		private LinkedList<Macro?> macros = new LinkedList<Macro?>();
+		public LinkedList<Macro?> macros = new LinkedList<Macro?>();
 		private KeyFile macros_file;
 		private const Macro[] default_macros = {
 			{"^me (.+)$","PRIVMSG $CURR_VIEW :ACTION $1"},

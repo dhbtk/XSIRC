@@ -192,13 +192,9 @@ namespace XSIRC {
 		private void init_network_tree() {
 			network_store.clear();
 			Gtk.TreeIter iter;
-			// Need to reverse the list first
-			LinkedList<ServerManager.Network> netlist = new LinkedList<ServerManager.Network>();
 			foreach(ServerManager.Network network in Main.server_manager.networks) {
-				netlist.insert(0,network);
-			}
-			foreach(ServerManager.Network network in netlist) {
-				network_store.insert_with_values(out iter,0,0,network.name,-1);
+				network_store.append(out iter);
+				network_store.set(iter,0,network.name,-1);
 			}
 		}
 		
@@ -214,26 +210,21 @@ namespace XSIRC {
 				server_store.clear();
 				cmd_store.clear();
 				Gtk.TreeIter s_iter;
-				LinkedList<ServerManager.Network.ServerData?> slist = new LinkedList<ServerManager.Network.ServerData?>();
 				foreach(ServerManager.Network.ServerData server in network.servers) {
-					slist.insert(0,server);
-				}
-				foreach(ServerManager.Network.ServerData server in slist) {
 					StringBuilder server_str = new StringBuilder();
 					(server.ssl ? server_str.append("ircs://") : server_str.append("irc://"));
 					server_str.append(server.address).append(":").append(server.port.to_string());
 					if(server.password != null) {
 						server_str.append(" ").append(server.password);
 					}
-					server_store.insert_with_values(out s_iter,0,0,server_str.str,-1);
+					server_store.append(out s_iter);
+					server_store.set(s_iter,0,server_str.str,-1);
 				}
 				Gtk.TreeIter c_iter;
 				LinkedList<string> clist = new LinkedList<string>();
 				foreach(string command in network.commands) {
-					clist.insert(0,command);
-				}
-				foreach(string command in clist) {
-					cmd_store.insert_with_values(out c_iter,0,0,command,-1);
+					cmd_store.append(out c_iter);
+					cmd_store.set(c_iter,0,command,-1);
 				}
 				network_ac.active = network.auto_connect;
 			} else {

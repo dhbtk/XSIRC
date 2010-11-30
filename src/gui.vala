@@ -30,6 +30,8 @@ namespace XSIRC {
 			// Settings
 			{"SettingsMenu",null,"S_ettings"},
 			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
+			{"AdvancedMenu",null,"_Advanced"},
+			{"MacroPreferences",null,"_Macros",null,null,spawn_macro_preferences_cb},
 			// View
 			{"ViewMenu",null,"_View"},
 			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><alt>comma",null,previous_server_cb},
@@ -83,6 +85,9 @@ namespace XSIRC {
 		</menu>
 		<menu action="SettingsMenu">
 			<menuitem action="Preferences"/>
+			<menu action="AdvancedMenu">
+				<menuitem action="MacroPreferences"/>
+			</menu>
 		</menu>
 		<menu action="HelpMenu">
 			<menuitem action="HelpContents"/>
@@ -99,6 +104,7 @@ namespace XSIRC {
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
 		private PrefWindow prefs_window;
+		private MacroManager.PrefWindow macro_prefs_window;
 		
 		public struct View {
 			public string name;
@@ -486,6 +492,10 @@ namespace XSIRC {
 			Main.gui.create_prefs_window();
 		}
 		
+		public static void spawn_macro_preferences_cb(Gtk.Action action) {
+			Main.gui.create_macro_prefs_window();
+		}
+		
 		public static void previous_server_cb(Gtk.Action action) {
 			Main.gui.servers_notebook.prev_page();
 		}
@@ -753,6 +763,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		
 		public void destroy_prefs_window() {
 			prefs_window = null;
+		}
+		
+		public void create_macro_prefs_window() {
+			macro_prefs_window = new MacroManager.PrefWindow();
+		}
+		
+		public void destroy_macro_prefs_window() {
+			macro_prefs_window = null;
 		}
 		// Misc
 		
