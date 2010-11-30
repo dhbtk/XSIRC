@@ -21,7 +21,7 @@ XSIRC is a GTK+-based IRC client for Linux and Windows (partially functional). I
 Download
 --------
 
-The latest version is 0.5 ([.tar.gz](https://github.com/NieXS/XSIRC/tarball/v0.5) [.zip](https://github.com/NieXS/XSIRC/zipball/v0.5)). The client needs a fix to the GTK+ vapi that still hasn't been added to the Vala tree; get the fixed file [here](http://ahb.me/11-h) and extract it to `/usr/share/vala-0.10/vapi`.
+The latest version is 0.5.1 ([.tar.gz](https://github.com/NieXS/XSIRC/tarball/v0.5.1) [.zip](https://github.com/NieXS/XSIRC/zipball/v0.5.1)). The client needs a fix to the GTK+ vapi that still hasn't been added to the Vala tree; get the fixed file [here](http://ahb.me/11-h) and extract it to `/usr/share/vala-0.10/vapi`.
 
 You can download the bleeding edge git commit here: [.zip](https://github.com/NieXS/XSIRC/zipball/master) [.tar.gz](https://github.com/NieXS/XSIRC/tarball/master)
 
@@ -34,9 +34,9 @@ The client's GitHub page is [here](http://github.com/NieXS/XSIRC).
 Installation
 ------------
 
-XSIRC depends on GTK+ 2.10 and libgee-0.5. For compilation, Python and the Vala compiler are required. In Debian and Ubuntu, the packages required for compilation are:
+XSIRC depends on GTK+ 2.10, libnotify and libgee-0.5. For compilation, Python and the Vala compiler are required. In Debian and Ubuntu, the packages required for compilation are:
 
-	build-essential vala libgtk2.0-dev libgee-dev
+	build-essential vala libgtk2.0-dev libnotify-def libgee-dev
 
 The steps for installation are:
 
