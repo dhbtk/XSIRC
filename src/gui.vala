@@ -341,12 +341,9 @@ namespace XSIRC {
 				list.clear();
 				if((curr_view != null) && (server.find_channel(curr_view.name) != null)) {
 					Gtk.TreeIter iter;
-					LinkedList<string> ulist = new LinkedList<string>();
-					foreach(string u in server.find_channel(curr_view.name).raw_users) {
-						ulist.insert(0,u);
-					}
-					foreach(string user in ulist) {
-						list.insert_with_values(out iter,0,0,user,-1);
+					foreach(string user in server.find_channel(curr_view.name).raw_users) {
+						list.append(out iter);
+						list.set(iter,0,user,-1);
 					}
 				}
 				StringBuilder title_string = new StringBuilder("XSIRC - ");
