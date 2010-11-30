@@ -304,7 +304,7 @@ namespace XSIRC {
 				string usermask;
 				string target;
 				string message;
-				if(Regex.match_simple("^:.+\\!.+\\@.+ ",s)) {
+				if(/^[^ ]+?![^ ]+?@[^ ]+? /.match(s)) {
 					usernick = split[0].replace(":","").split("!")[0];
 					username = split[0].replace(":","").split("!")[1].split("@")[0];
 					usermask = split[0].replace(":","").split("!")[1].split("@")[1];
