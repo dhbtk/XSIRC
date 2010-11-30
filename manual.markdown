@@ -56,32 +56,32 @@ regular expression substitutions can be performed. These substitutions are calle
 		<th>Result</th>
 	</tr>
 	<tr>
-		<td>`/me <text>`</td>
-		<td>`PRIVMSG $CURR_VIEW :\0x01ACTION <text>\0x01`</td>
+		<td>/me [text]</td>
+		<td>PRIVMSG $CURR_VIEW :\0x01ACTION [text]\0x01</td>
 	</tr>
 	<tr>
-		<td>`/ctcp <target> <message>`</td>
-		<td>`PRIVMSG <target> :\0x01<message>\0x01`</td>
+		<td>/ctcp [target] [message]</td>
+		<td>PRIVMSG [target] :\0x01[message]\0x01</td>
 	</tr>
 	<tr>
-		<td>`/msg <who> <what>`</td>
-		<td>`PRIVMSG $1 :$2`</td>
+		<td>/msg [who] [what]</td>
+		<td>PRIVMSG $1 :$2</td>
 	</tr>
 	<tr>
-		<td>`/part [where] [message]`</td>
-		<td>`PART [where] :[message]`</td>
+		<td>/part [where] [message]</td>
+		<td>PART [where] :[message]</td>
 	</tr>
 	<tr>
-		<td>`/kick <who> [message]`</td>
-		<td>`KICK $CURR_VIEW <who> :[message]`</td>
+		<td>/kick [who] [message]</td>
+		<td>KICK $CURR_VIEW [who] :[message]</td>
 	</tr>
 	<tr>
-		<td>`/quit [message]`</td>
-		<td>`QUIT :[message]`</td>
+		<td>/quit [message]</td>
+		<td>QUIT :[message]</td>
 	</tr>
 	<tr>
-		<td>`/topic [new_topic]`</td>
-		<td>`TOPIC $CURR_VIEW :[new_topic]`</td>
+		<td>/topic [new_topic]</td>
+		<td>TOPIC $CURR_VIEW :[new_topic]</td>
 	</tr>
 </table>
 
