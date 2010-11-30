@@ -1,7 +1,7 @@
 ---
 layout: site
 title: XSIRC version 0.5 released
-date: 2010-11-30 01:50
+date: 2010-11-30 01:03
 ---
 
 Version 0.5 has been released. This version adds tab completion and editable slash-commands (macros), as well as GUI and code improvements. This version requires a fixed GTK+ vapi file which still hasn't been applied to the Vala tree; get the fixed file [here](http://ahb.me/11-h) and extract it to `/usr/share/vala-0.10/vapi`.

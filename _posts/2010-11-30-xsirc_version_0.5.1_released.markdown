@@ -1,7 +1,7 @@
 ---
 layout: site
 title: XSIRC version 0.5.1 released
-date: 2010-11-30 01:03
+date: 2010-11-30 01:50
 ---
 
 Version 0.5.1 has been released. This version fixes a crash bug. The fixed vapi file requeriment still stands.
