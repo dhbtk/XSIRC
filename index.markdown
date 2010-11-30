@@ -12,9 +12,9 @@ XSIRC is a GTK+-based IRC client for Linux and Windows (partially functional). I
 <table>
 <tr>
 <td>
-<a target='_blank' href='http://img87.imageshack.us/i/xsirccurrent.png/'><img src='http://img87.imageshack.us/img87/4462/xsirccurrent.th.png' border='0'/></a></td>
+<a target='_blank' href='http://img87.imageshack.us/img87/4462/xsirccurrent.png'><img src='http://img87.imageshack.us/img87/4462/xsirccurrent.th.png' border='0'/></a></td>
 <td>
-<a target='_blank' href='http://img690.imageshack.us/i/xsircprefs.png/'><img src='http://img690.imageshack.us/img690/8237/xsircprefs.th.png' border='0'/></a></td>
+<a target='_blank' href='http://img690.imageshack.us/img690/8237/xsircprefs.png'><img src='http://img690.imageshack.us/img690/8237/xsircprefs.th.png' border='0'/></a></td>
 </tr>
 </table>
 
