@@ -43,3 +43,51 @@ link.
 ### Config files and logs
 
 Files are stored in `~/.config/xsirc`. The logs are stored in the `irclogs` folder.
+
+### Slash-commands
+
+Before being sent to the server, slash-commands are parsed by the client, and simple
+regular expression substitutions can be performed. These substitutions are called
+"macros". The default macros are shown below.
+
+<table>
+	<tr>
+		<th>Macro</th>
+		<th>Result</th>
+	</tr>
+	<tr>
+		<td>`/me <text>`</td>
+		<td>`PRIVMSG $CURR_VIEW :\0x01ACTION <text>\0x01`</td>
+	</tr>
+	<tr>
+		<td>`/ctcp <target> <message>`</td>
+		<td>`PRIVMSG <target> :\0x01<message>\0x01`</td>
+	</tr>
+	<tr>
+		<td>`/msg <who> <what>`</td>
+		<td>`PRIVMSG $1 :$2`</td>
+	</tr>
+	<tr>
+		<td>`/part [where] [message]`</td>
+		<td>`PART [where] :[message]`</td>
+	</tr>
+	<tr>
+		<td>`/kick <who> [message]`</td>
+		<td>`KICK $CURR_VIEW <who> :[message]`</td>
+	</tr>
+	<tr>
+		<td>`/quit [message]`</td>
+		<td>`QUIT :[message]`</td>
+	</tr>
+	<tr>
+		<td>`/topic [new_topic]`</td>
+		<td>`TOPIC $CURR_VIEW :[new_topic]`</td>
+	</tr>
+</table>
+
+### Adding your own
+
+You can add/change/remove macros to your heart's content by going to Settings->Advanced->Macros.
+The regexes are standard Perl-compatible regular expressions. In the result, the variables
+`$1` through `$9` are replaced by the respective matches, and `$CURR_VIEW` is replaced by the
+current view selected.
