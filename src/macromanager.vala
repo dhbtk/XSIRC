@@ -58,9 +58,8 @@ namespace XSIRC {
 			}
 			
 			private void add_macro() {
-				Gtk.TreeIter iter;
-				macro_model.append(out iter);
-				macro_model.set(iter,MacroColumns.REGEX,"regex",MacroColumns.RESULT,"result");
+				Main.macro_manager.macros.add(new Macro("regex","result"));
+				load_macros();
 			}
 			
 			private void remove_macro() {
@@ -71,14 +70,12 @@ namespace XSIRC {
 				Gtk.TreeSelection sel = macro_tree.get_selection();
 				if(sel.get_selected(out model,out iter)) {
 					model.get(iter,MacroColumns.REGEX,out regex,MacroColumns.RESULT,out result,-1);
-					Macro macro = {};
 					foreach(Macro m in Main.macro_manager.macros) {
 						if(m.regex == regex) {
-							macro = m;
+							Main.macro_manager.macros.remove(m);
 							break;
 						}
 					}
-					Main.macro_manager.macros.remove(macro);
 					load_macros();
 				}
 			}
@@ -88,6 +85,17 @@ namespace XSIRC {
 				try {
 					Regex test = new Regex(new_text);
 					test = test;
+					// Checking for uniqueness
+					foreach(Macro macro in Main.macro_manager.macros) {
+						if(macro.regex == new_text) {
+							Gtk.MessageDialog d = new Gtk.MessageDialog(window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,"The regular expression entered is not unique.");
+							d.response.connect(() => {
+								d.destroy();
+							});
+							d.show_all();
+							return;
+						}
+					}
 					Gtk.TreeIter iter;
 					string old_regex;
 					if(macro_model.get_iter_from_string(out iter,path)) {
@@ -110,7 +118,18 @@ namespace XSIRC {
 			}
 			
 			private void result_edited(string path,string new_text) {
-				
+				Gtk.TreeIter iter;
+				string regex;
+				if(macro_model.get_iter_from_string(out iter,path)) {
+					macro_model.get(iter,MacroColumns.REGEX,out regex,-1);
+					foreach(Macro macro in Main.macro_manager.macros) {
+						if(macro.regex == regex) {
+							macro.result = new_text;
+							break;
+						}
+					}
+					macro_model.set(iter,MacroColumns.RESULT,new_text,-1);
+				}
 			}
 			
 			private void load_macros() {
@@ -122,13 +141,21 @@ namespace XSIRC {
 				}
 			}
 		}
-		public struct Macro {
+		private struct DefaultMacro {
 			public string regex;
 			public string result;
 		}
-		public LinkedList<Macro?> macros = new LinkedList<Macro?>();
+		public class Macro {
+			public string regex;
+			public string result;
+			public Macro(string a,string b) {
+				regex = a;
+				result = b;
+			}
+		}
+		public LinkedList<Macro> macros = new LinkedList<Macro>();
 		private KeyFile macros_file;
-		private const Macro[] default_macros = {
+		private const DefaultMacro[] default_macros = {
 			{"^me (.+)$","PRIVMSG $CURR_VIEW :ACTION $1"},
 			{"^ctcp ([^ ]+) ([^ ]+) (.+)$","PRIVMSG $1 :$2 $3"},
 			{"^ctcp ([^ ]+) ([^ ]+)$","PRIVMSG $1 :$2"},
@@ -172,7 +199,7 @@ namespace XSIRC {
 				for(int i = 0; macros_file.has_key("macros","regex%d".printf(i)) && macros_file.has_key("macros","result%d".printf(i)); i++) {
 					k = macros_file.get_string("macros","regex%d".printf(i));
 					v = macros_file.get_string("macros","result%d".printf(i));
-					Macro macro = Macro();
+					Macro macro = new Macro("regex","result");
 					try {
 						// Testing if it compiles
 						Regex test =  new Regex(k);
@@ -190,8 +217,8 @@ namespace XSIRC {
 		}
 		
 		private void load_default_macros() {
-			foreach(Macro macro in default_macros) {
-				macros.add(macro);
+			foreach(DefaultMacro macro in default_macros) {
+				macros.add(new Macro(macro.regex,macro.result));
 			}
 		}
 		
