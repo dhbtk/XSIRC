@@ -221,7 +221,6 @@ namespace XSIRC {
 					server_store.set(s_iter,0,server_str.str,-1);
 				}
 				Gtk.TreeIter c_iter;
-				LinkedList<string> clist = new LinkedList<string>();
 				foreach(string command in network.commands) {
 					cmd_store.append(out c_iter);
 					cmd_store.set(c_iter,0,command,-1);
