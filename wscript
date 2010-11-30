@@ -7,7 +7,7 @@
 import os
 import Options
 APPNAME = "XSIRC"
-VERSION = "0.5"
+VERSION = "0.5.1"
 # Shamefully stolen from midori's wscript
 try:
 	git = Utils.cmd_output(['git','rev-parse','--short','HEAD'],silent=True)
