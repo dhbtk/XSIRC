@@ -50,6 +50,7 @@ namespace XSIRC {
 				load_macros();
 				
 				window.response.connect(() => {
+					Main.macro_manager.save_macros();
 					window.destroy();
 					Main.gui.destroy_macro_prefs_window();
 				});
@@ -57,15 +58,55 @@ namespace XSIRC {
 			}
 			
 			private void add_macro() {
-				
+				Gtk.TreeIter iter;
+				macro_model.append(out iter);
+				macro_model.set(iter,MacroColumns.REGEX,"regex",MacroColumns.RESULT,"result");
 			}
 			
 			private void remove_macro() {
-				
+				Gtk.TreeIter iter;
+				Gtk.TreeModel model;
+				string regex;
+				string result;
+				Gtk.TreeSelection sel = macro_tree.get_selection();
+				if(sel.get_selected(out model,out iter)) {
+					model.get(iter,MacroColumns.REGEX,out regex,MacroColumns.RESULT,out result,-1);
+					Macro macro = {};
+					foreach(Macro m in Main.macro_manager.macros) {
+						if(m.regex == regex) {
+							macro = m;
+							break;
+						}
+					}
+					Main.macro_manager.macros.remove(macro);
+					load_macros();
+				}
 			}
 			
 			private void regex_edited(string path,string new_text) {
-				
+				// Testing the regex for validity
+				try {
+					Regex test = new Regex(new_text);
+					test = test;
+					Gtk.TreeIter iter;
+					string old_regex;
+					if(macro_model.get_iter_from_string(out iter,path)) {
+						macro_model.get(iter,MacroColumns.REGEX,out old_regex,-1);
+						foreach(Macro macro in Main.macro_manager.macros) {
+							if(macro.regex == old_regex) {
+								macro.regex = new_text;
+								break;
+							}
+						}
+						macro_model.set(iter,MacroColumns.REGEX,new_text,-1);
+					}
+				} catch(Error e) {
+					Gtk.MessageDialog d = new Gtk.MessageDialog(window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,"The string entered isn't a valid regular expression.");
+					d.response.connect(() => {
+						d.destroy();
+					});
+					d.show_all();
+				}
 			}
 			
 			private void result_edited(string path,string new_text) {
@@ -135,6 +176,7 @@ namespace XSIRC {
 					try {
 						// Testing if it compiles
 						Regex test =  new Regex(k);
+						test = test;
 						macro.regex = k;
 					} catch(RegexError e) {
 						continue;
