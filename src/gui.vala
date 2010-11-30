@@ -106,7 +106,7 @@ namespace XSIRC {
 		private PrefWindow prefs_window;
 		private MacroManager.PrefWindow macro_prefs_window;
 		
-		public struct View {
+		public class View {
 			public string name;
 			public Gtk.ScrolledWindow scrolled_window;
 			public Gtk.TextView text_view;
@@ -398,7 +398,7 @@ namespace XSIRC {
 			scrolled_window.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 			scrolled_window.add(text_view);
 			
-			View view = View();
+			View view = new View();
 			view.name = name;
 			view.scrolled_window = scrolled_window;
 			view.text_view = text_view;
