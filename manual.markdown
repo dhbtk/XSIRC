@@ -50,8 +50,8 @@ Before being sent to the server, slash-commands are parsed by the client, and si
 regular expression substitutions can be performed. These substitutions are called
 "macros". The default macros are shown below.
 
-<table>
-	<tr>
+<table style="font-family: monospace">
+	<tr style="font-family: Lucida Grande, Helvetica, Verdana, sans-serif">
 		<th>Macro</th>
 		<th>Result</th>
 	</tr>
