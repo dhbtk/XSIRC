@@ -21,7 +21,7 @@ XSIRC is a GTK+-based IRC client for Linux and Windows (partially functional). I
 Download
 --------
 
-The latest version is 0.5.1 ([.tar.gz](https://github.com/NieXS/XSIRC/tarball/v0.5.1) [.zip](https://github.com/NieXS/XSIRC/zipball/v0.5.1)). The client needs a fix to the GTK+ vapi that still hasn't been added to the Vala tree; get the fixed file [here](http://ahb.me/11-h) and extract it to `/usr/share/vala-0.10/vapi`.
+The latest version is 0.5.2 ([.tar.gz](https://github.com/NieXS/XSIRC/tarball/v0.5.2) [.zip](https://github.com/NieXS/XSIRC/zipball/v0.5.2)).
 
 You can download the bleeding edge git commit here: [.zip](https://github.com/NieXS/XSIRC/zipball/master) [.tar.gz](https://github.com/NieXS/XSIRC/tarball/master)
 
