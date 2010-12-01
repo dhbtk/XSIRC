@@ -437,6 +437,18 @@ namespace XSIRC {
 								case "ACTION":
 									add_to_view(target,"* %s%s".printf(usernick,message));
 									break;
+								case "PING":
+									send("NOTICE "+target+" :\x01PING"+message+"\x01");
+									break;
+								case "VERSION":
+									//there may be some duplication here from the spawn_about_cb method in gui.vala
+									//also it would be nice if I could detect the environment better
+//									if(WINDOWS) {
+//										send("NOTICE "+target+" :\x01VERSION "+"XSIRC:"+VERSION+":"+"Windows"+"\x01");
+//									} else {
+										send("NOTICE "+target+" :\x01VERSION "+"XSIRC:"+VERSION+":"+"Unix-like"+"\x01");
+//									}
+									break;
 								default:
 									add_to_view("<server>","UNHANDLED CTCP MESSAGE -- PREFIX: %s; MESSAGE: %s".printf(prefix,message));
 									break;
