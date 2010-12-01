@@ -167,7 +167,7 @@ namespace XSIRC {
 		
 		public void on_connect_error(Server server) requires (server.network != null) {
 			server.network.server_index++;
-			if((server.network.servers.size - 1) <= server.network.server_index) {
+			if((server.network.servers.size - 1) >= server.network.server_index) {
 				server.irc_disconnect();
 				Network.ServerData new_server = server.network.servers[server.network.server_index];
 				server.add_to_view("<server>","Switching to server %s".printf(new_server.address));
