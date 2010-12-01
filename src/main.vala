@@ -23,10 +23,10 @@ namespace XSIRC {
 			
 		}
 		// Setting up some folder structure for stuff
-		if(!FileUtils.test(Environment.get_home_dir()+"/.xsirc",FileTest.EXISTS)) {
-			DirUtils.create(Environment.get_home_dir()+"/.xsirc",0755);
-			DirUtils.create(Environment.get_home_dir()+"/.xsirc/plugins",0755);
-			DirUtils.create(Environment.get_home_dir()+"/.xsirc/irclogs",0755);
+		if(!FileUtils.test(Environment.get_user_config_dir()+"/xsirc",FileTest.EXISTS)) {
+			DirUtils.create(Environment.get_user_config_dir()+"/xsirc",0755);
+			DirUtils.create(Environment.get_user_config_dir()+"/xsirc/plugins",0755);
+			DirUtils.create(Environment.get_user_config_dir()+"/xsirc/irclogs",0755);
 		}
 		// Starting up!
 		Main.config_manager = new ConfigManager();

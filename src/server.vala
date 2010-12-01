@@ -32,6 +32,9 @@ namespace XSIRC {
 		public SocketClient socket_client;
 		public SocketConnection socket_conn;
 		public DataInputStream socket_stream;
+		private bool connecting = false;
+		private string error = null;
+		private InetAddress address;
 		
 		public class Channel : Object {
 			public Topic topic;
@@ -109,7 +112,32 @@ namespace XSIRC {
 		}
 		
 		public void iterate() {
-			if(socket_ready() && connected && !sock_error) {
+			if(connecting) {
+				if(connected) {
+					connecting = false;
+					add_to_view("<server>","DEBUG -- connected through port %d".printf(port));
+					socket_stream = new DataInputStream(socket_conn.input_stream);
+			
+					raw_send("USER %s rocks hard :%s".printf(Main.config["core"]["username"],Main.config["core"]["realname"]));
+					raw_send("NICK %s".printf(Main.config["core"]["nickname"]));
+					if(password != "") {
+						send("PASS %s".printf(password));
+					}
+					connected = true;
+					sock_error = false;
+					foreach(Channel channel in channels) {
+						if(!channel.in_channel) {
+							send("JOIN %s".printf(channel.title));
+						}
+					}
+					Main.gui.update_gui(this);
+				} else if(sock_error) {
+					connecting = false;
+					add_to_view("<server>","ERROR: could not connect - %s".printf(error));
+					Main.server_manager.on_connect_error(this);
+					Main.gui.update_gui(this);
+				}
+			} else if(socket_ready() && connected && !sock_error) {
 				//add_to_view("<server>","DEBUG -- socket ready");
 				string s = null;
 				try {
@@ -181,27 +209,30 @@ namespace XSIRC {
 				sock_error = true;
 				return;
 			}
-			InetAddress address = addresses.nth_data(0);
+			address = addresses.nth_data(0);
 			add_to_view("<server>","DEBUG -- resolved %s to %s".printf(server,address.to_string()));
 			
 			socket_client = new SocketClient();
-			socket_conn   = socket_client.connect(new InetSocketAddress(address,(uint16)port),null);
-			add_to_view("<server>","DEBUG -- connected through port %d".printf(port));
-			socket_stream = new DataInputStream(socket_conn.input_stream);
-			
-			raw_send("USER %s rocks hard :%s".printf(Main.config["core"]["username"],Main.config["core"]["realname"]));
-			raw_send("NICK %s".printf(Main.config["core"]["nickname"]));
-			if(password != "") {
-				send("PASS %s".printf(password));
+			try {
+				Thread.create(socket_connect_async,true);
+			} catch(ThreadError e) {
+				connected = false;
+				sock_error = true;
 			}
-			connected = true;
-			sock_error = false;
-			foreach(Channel channel in channels) {
-				if(!channel.in_channel) {
-					send("JOIN %s".printf(channel.title));
-				}
+		}
+		
+		private void* socket_connect_async() {
+			connecting = true;
+			try {
+				socket_conn = socket_client.connect(new InetSocketAddress(address,(uint16)port),null);
+				connected = true;
+				sock_error = false;
+			} catch(Error e) {
+				connected = false;
+				sock_error = true;
+				error = e.message;
 			}
-			Main.gui.update_gui(this);
+			return null;
 		}
 		
 		public void irc_disconnect() {
