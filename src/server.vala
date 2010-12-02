@@ -429,7 +429,7 @@ namespace XSIRC {
 						add_to_view("<server>","Server info: %s are supported by this server".printf(supported.str));
 						break;
 					case "PRIVMSG":
-						if(message.has_prefix(((char)1).to_string())) {
+						if(message[0] == '\x01') {
 							message = message.replace(((char)1).to_string(),"");
 							string prefix = message.split(" ")[0];
 							message = message.substring(prefix.length);
@@ -438,16 +438,16 @@ namespace XSIRC {
 									add_to_view(target,"* %s%s".printf(usernick,message));
 									break;
 								case "PING":
+									add_to_view("<server>","Got CTCP PING from %s".printf(usernick));
 									send("NOTICE "+target+" :\x01PING"+message+"\x01");
 									break;
 								case "VERSION":
-									//there may be some duplication here from the spawn_about_cb method in gui.vala
-									//also it would be nice if I could detect the environment better
-//									if(WINDOWS) {
-//										send("NOTICE "+target+" :\x01VERSION "+"XSIRC:"+VERSION+":"+"Windows"+"\x01");
-//									} else {
-										send("NOTICE "+target+" :\x01VERSION "+"XSIRC:"+VERSION+":"+"Unix-like"+"\x01");
-//									}
+									add_to_view("<server>","Got CTCP VERSION from %s".printf(usernick));
+#if WINDOWS
+									send("NOTICE "+target+" :\x01VERSION "+"XSIRC:"+VERSION+":"+"Windows"+"\x01");
+#else
+									send("NOTICE "+target+" :\x01VERSION "+"XSIRC:"+VERSION+":"+"Unix-like"+"\x01");
+#endif
 									break;
 								default:
 									add_to_view("<server>","UNHANDLED CTCP MESSAGE -- PREFIX: %s; MESSAGE: %s".printf(prefix,message));
