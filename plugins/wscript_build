@@ -14,3 +14,14 @@ bld.shlib(
 	use = 'xsirc',
 	install_path = bld.env['PREFIX']+'/lib/xsirc'
 )
+bld.shlib(
+	source = 'highlights.vala',
+	features = 'c cshlib',
+	packages = 'xsirc',
+	vapi_dirs = '../src ../vapi',
+	includes = '../src',
+	target = 'highlights',
+	uselib = 'GMODULE GLIB',
+	use = 'xsirc',
+	install_path = bld.env['PREFIX']+'/lib/xsirc'
+)
