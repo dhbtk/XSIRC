@@ -77,7 +77,7 @@ namespace XSIRC {
 		
 		private bool load_plugin(string filename) {
 			stdout.printf("Loading module %s\n",filename);
-			Module module = Module.open(filename,ModuleFlags.BIND_LAZY);
+			Module module = Module.open(filename,0);
 			if(module == null) {
 				stdout.printf("Failed to load module %s: %s\n",filename,Module.error());
 				return false;
