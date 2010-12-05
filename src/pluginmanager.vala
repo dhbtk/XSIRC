@@ -95,7 +95,7 @@ namespace XSIRC {
 		// APi goes here.
 		public internal void on_join(Server server,string usernick,string username,string usermask,string channel) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_join(server,usernick,username,usermask,channel)) {
 					break;
 				}
 			}
@@ -103,7 +103,7 @@ namespace XSIRC {
 		
 		public internal void on_part(Server server,string usernick,string username,string usermask,string channel,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_part(server,usernick,username,usermask,channel,message)) {
 					break;
 				}
 			}
@@ -111,7 +111,7 @@ namespace XSIRC {
 		
 		public internal void on_kick(Server server,string kicker,string usernick,string username,string usermask,string channel,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_kick(server,kicker,usernick,username,usermask,channel,message)) {
 					break;
 				}
 			}
@@ -119,7 +119,7 @@ namespace XSIRC {
 		
 		public internal void on_nick(Server server,string new_nick,string usernick,string username,string usermask) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_nick(server,new_nick,usernick,username,usermask)) {
 					break;
 				}
 			}
@@ -127,7 +127,7 @@ namespace XSIRC {
 		
 		public internal void on_privmsg(Server server,string usernick,string username,string usermask,string target,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_privmsg(server,usernick,username,usermask,target,message)) {
 					break;
 				}
 			}
@@ -135,7 +135,7 @@ namespace XSIRC {
 		
 		public internal void on_notice(Server server,string usernick,string username,string usermask,string target,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_notice(server,usernick,username,usermask,target,message)) {
 					break;
 				}
 			}
@@ -143,7 +143,7 @@ namespace XSIRC {
 		
 		public internal void on_quit(Server server,string usernick,string username,string usermask,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_quit(server,usernick,username,usermask,message)) {
 					break;
 				}
 			}
@@ -151,7 +151,7 @@ namespace XSIRC {
 		
 		public internal void on_chan_user_mode(Server server,string usernick,string username,string usermask,string channel,string modes,string targets) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_chan_user_mode(server,usernick,username,usermask,channel,modes,targets)) {
 					break;
 				}
 			}
@@ -159,7 +159,7 @@ namespace XSIRC {
 		
 		public internal void on_chan_mode(Server server,string usernick,string username,string usermask,string channel,string modes) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_chan_mode(server,usernick,username,usermask,channel,modes)) {
 					break;
 				}
 			}
@@ -167,7 +167,7 @@ namespace XSIRC {
 		
 		public internal void on_mode(Server server,string usernick,string mode) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_mode(server,usernick,mode)) {
 					break;
 				}
 			}
@@ -175,7 +175,7 @@ namespace XSIRC {
 		
 		public internal void on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_topic(server,usernick,username,usermask,channel,topic)) {
 					break;
 				}
 			}
@@ -183,7 +183,7 @@ namespace XSIRC {
 		
 		public internal void on_startup() {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_startup()) {
 					break;
 				}
 			}
@@ -191,7 +191,7 @@ namespace XSIRC {
 		
 		public internal void on_shutdown() {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_shutdown()) {
 					break;
 				}
 			}
@@ -199,7 +199,7 @@ namespace XSIRC {
 		
 		public internal void on_connect(Server server) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_connect(server)) {
 					break;
 				}
 			}
@@ -207,7 +207,7 @@ namespace XSIRC {
 		
 		public internal void on_disconnect(Server server) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_disconnect(server)) {
 					break;
 				}
 			}
@@ -215,7 +215,7 @@ namespace XSIRC {
 		
 		public internal void on_connect_error(Server server) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_()) {
+				if(!plugin.on_connect_error(server)) {
 					break;
 				}
 			}
