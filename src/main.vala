@@ -6,6 +6,7 @@ namespace XSIRC {
 		public static HashMap<string,HashMap<string,string>> config;
 		public static ServerManager server_manager;
 		public static MacroManager macro_manager;
+		public static PluginManager plugin_manager;
 	}
 	
 	void main_loop() {
@@ -35,6 +36,8 @@ namespace XSIRC {
 		Main.gui = new XSIRC.GUI();
 		Main.macro_manager = new MacroManager();
 		Main.server_manager.startup();
+		Main.plugin_manager = new PluginManager();
+		Main.plugin_manager.startup();
 
 		main_loop();
 		Main.server_manager.shutdown();
