@@ -361,6 +361,7 @@ namespace XSIRC {
 							channel.title = message;
 							open_view(message);
 						}
+						find_channel(message).in_channel = true;
 						send("NAMES %s".printf(message));
 						send("MODE "+message);
 						add_to_view(message,"%s [%s@%s] has joined %s".printf(usernick,username,usermask,message));

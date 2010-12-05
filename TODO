@@ -4,6 +4,5 @@
 * Improve command history
 * Plugin system (and a scripting plugin)
 * Internationalization
-* CTCP replies for things like VERSION and PING
 * Highlights
 * Find out why the tags applied by the MIRCParser don't work
