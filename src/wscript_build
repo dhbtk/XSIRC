@@ -13,7 +13,7 @@ else:
 	flags = ['-g']
 	to_use = ''
 bld.program(
-	source    = ['gui.vala','main.vala','config.vala','server.vala','mircparser.vala','servermanager.vala','irclogger.vala','prefwindow.vala','tabcompleter.vala','macromanager.vala','notifier.vala','plugin.vala'],
+	source    = ['gui.vala','main.vala','config.vala','server.vala','mircparser.vala','servermanager.vala', 'irclogger.vala','prefwindow.vala','tabcompleter.vala','macromanager.vala','notifier.vala','plugin.vala','pluginmanager.vala'],
 	features  = 'c cprogram',
 	packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix config glib-2.0 gmodule-2.0 libnotify',
 	vapi_dirs = '../vapi',
@@ -26,7 +26,7 @@ bld.program(
 	)
 
 bld.shlib(
-	source = ['gui.vala','main.vala','config.vala','server.vala','mircparser.vala','servermanager.vala','irclogger.vala','prefwindow.vala','tabcompleter.vala','macromanager.vala','notifier.vala','plugin.vala'],
+	source = ['gui.vala','main.vala','config.vala','server.vala','mircparser.vala','servermanager.vala', 'irclogger.vala','prefwindow.vala','tabcompleter.vala','macromanager.vala','notifier.vala','plugin.vala','pluginmanager.vala'],
 	features  = 'c',
 	packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix config glib-2.0 gmodule-2.0 libnotify',
 	vapi_dirs = '../vapi',
