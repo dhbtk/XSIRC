@@ -133,6 +133,7 @@ namespace XSIRC {
 					Main.gui.update_gui(this);
 				} else if(sock_error) {
 					connecting = false;
+					Main.plugin_manager.on_connect_error(this);
 					add_to_view("<server>","ERROR: could not connect - %s".printf(error));
 					Main.server_manager.on_connect_error(this);
 					Main.gui.update_gui(this);
@@ -364,10 +365,12 @@ namespace XSIRC {
 						find_channel(message).in_channel = true;
 						send("NAMES %s".printf(message));
 						send("MODE "+message);
+						Main.plugin_manager.on_join(this,usernick,username,usermask,message);
 						add_to_view(message,"%s [%s@%s] has joined %s".printf(usernick,username,usermask,message));
 						break;
 					case "PART":
 						message = message == s ? "" : message;
+						Main.plugin_manager.on_part(this,usernick,username,usermask,message);
 						add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,split[2],message));
 						if(usernick.down() == nick.down()) {
 							channels.remove(find_channel(split[2].down()));
@@ -385,6 +388,7 @@ namespace XSIRC {
 							send("NAMES %s".printf(split[2]));
 						}
 						message = message == s ? "" : message;
+						Main.plugin_manager.on_kick(this,split[3],usernick,username,usermask,split[2],message);
 						add_to_view(find_channel(split[2]).title,"%s has kicked %s from %s [%s]".printf(split[3],usernick,split[2],message));
 						break;
 					case "NICK":
@@ -392,6 +396,7 @@ namespace XSIRC {
 							nick = message;
 							Main.gui.update_gui(this);
 						}
+						Main.plugin_manager.on_nick(this,message,usernick,username,usermask);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
 								add_to_view(channel.title,"%s is now known as %s.".printf(usernick,message));
@@ -410,6 +415,7 @@ namespace XSIRC {
 						add_to_view("<server>","%s has invited you to %s.".printf(usernick,split[3]));
 						break;
 					case "001":
+						Main.plugin_manager.on_connect(this);
 						Main.server_manager.on_connect(this);
 						nick_tries = 0;
 						nick = split[2];
@@ -430,6 +436,7 @@ namespace XSIRC {
 						add_to_view("<server>","Server info: %s are supported by this server".printf(supported.str));
 						break;
 					case "PRIVMSG":
+						Main.plugin_manager.on_privmsg(this,server,usernick,username,usermask,target,message);
 						if(message[0] == '\x01') {
 							message = message.replace(((char)1).to_string(),"");
 							string prefix = message.split(" ")[0];
@@ -465,6 +472,7 @@ namespace XSIRC {
 						if(split[2] == "AUTH") {
 							add_to_view("<server>","AUTH -- %s".printf(message));
 						} else {
+							Main.plugin_manager.on_notice(this,usernick,username,usermask,target,message);
 							if(message.has_prefix(((char)1).to_string())) {
 								message = message.replace(((char)1).to_string(),"");
 								string prefix = message.split(" ")[0];
@@ -484,6 +492,7 @@ namespace XSIRC {
 						}
 						break;
 					case "QUIT":
+						Main.plugin_manager.on_quit(this,usernick,username,usermask,message);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
 								add_to_view(channel.title,"%s has disconnected [%s]".printf(usernick,message));
@@ -494,14 +503,17 @@ namespace XSIRC {
 					case "MODE":
 						if(split[4] != null && !(/^[0-9]+$/.match(split[4]))) {
 							string targets = string.joinv(" ",split[4:(split.length-1)]);
+							Main.plugin_manager.on_chan_user_mode(this,usernick,username,usermask,split[2],split[3],targets);
 							add_to_view(split[2],"%s sets %s on %s".printf(usernick,split[3],targets));
 							send("NAMES %s".printf(split[2]));
 						} else if(split[2].has_prefix("#")) {
 							string targets = string.joinv(" ",split[3:(split.length-1)]);
+							Main.plugin_manager.on_chan_mode(this,usernick,username,usermask,split[2],targets);
 							add_to_view(split[2],"%s sets mode %s on %s".printf(usernick,targets,split[2]));
 							send("MODE %s".printf(split[2]));
 						} else {
-							add_to_view("<server>","Changing mode: %s".printf(split[3]));
+							Main.plugin_manager.on_mode(this,usernick,message);
+							add_to_view("<server>","Changing mode: %s".printf(message));
 						}
 						break;
 					case "TOPIC":
@@ -509,6 +521,7 @@ namespace XSIRC {
 						chan.topic.setter = usernick;
 						chan.topic.content = message;
 						chan.topic.time_set = time_t();
+						Main.plugin_manager.on_topic(this,usernick,username,usermask,chan.title,message);
 						add_to_view(split[2],"%s has set the topic to: %s".printf(usernick,message));
 						Main.gui.update_gui(this);
 						break;
