@@ -57,6 +57,7 @@ def configure(conf):
 	conf.define('GETTEXT_PACKAGE',APPNAME)
 	conf.define('PREFIX',conf.env['PREFIX'])
 	conf.write_config_header('config.h')
+	conf.env['PACKAGE'] = 'xsirc'
 	conf.env.append_value('VALAFLAGS','-g')
 	conf.env.append_value('CCFLAGS','-g')
 	conf.env.append_value('CCFLAGS','-Ivapi/')

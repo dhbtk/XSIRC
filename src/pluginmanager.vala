@@ -90,6 +90,7 @@ namespace XSIRC {
 			RegisterPluginFunc register_plugin = (RegisterPluginFunc)func;
 			
 			register_plugin(module);
+			module.make_resident();
 			return true;
 		}
 		
