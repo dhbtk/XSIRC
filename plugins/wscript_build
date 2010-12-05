@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+# wscript_build
+#
+# Copyright (c) 2010 Eduardo Niehues
+# Distributed under the New BSD License; see LICENSE for details.
+bld.shlib(
+	source = 'testplugin.vala',
+	features = 'c cshlib',
+	packages = 'xsirc',
+	vapi_dirs = '../src ../vapi',
+	includes = '../src',
+	target = 'test',
+	uselib = 'GMODULE GLIB',
+	use = 'xsirc',
+	install_path = bld.env['PREFIX']+'/lib/xsirc'
+)
