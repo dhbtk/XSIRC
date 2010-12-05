@@ -12,6 +12,7 @@ namespace XSIRC {
 		public string author;
 		public string version;
 		public int priority;
+		public bool enabled = true;
 		public Gtk.Widget prefs_widget;
 		
 		public virtual bool on_join(Server server,string usernick,string username,string usermask,string channel) {

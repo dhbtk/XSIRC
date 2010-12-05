@@ -1,3 +1,9 @@
+/*
+ * pluginmanager.vala
+ *
+ * Copyright (c) 2010 Eduardo Niehues
+ * Distributed under the New BSD License; see ../LICENSE for details.
+ */
 using Gee;
 namespace XSIRC {
 	public class PluginManager : Object {
@@ -88,134 +94,136 @@ namespace XSIRC {
 		}
 		
 		public void add_plugin(Plugin plugin) {
+			
 			plugins.add(plugin);
 			plugins.sort((CompareFunc)plugincmp);
 		}
 		
-		// APi goes here.
-		public internal void on_join(Server server,string usernick,string username,string usermask,string channel) {
+		// API goes here.
+		
+		internal void on_join(Server server,string usernick,string username,string usermask,string channel) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_join(server,usernick,username,usermask,channel)) {
+				if(plugin.enabled && !plugin.on_join(server,usernick,username,usermask,channel)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_part(Server server,string usernick,string username,string usermask,string channel,string message) {
+		internal void on_part(Server server,string usernick,string username,string usermask,string channel,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_part(server,usernick,username,usermask,channel,message)) {
+				if(plugin.enabled && !plugin.on_part(server,usernick,username,usermask,channel,message)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_kick(Server server,string kicker,string usernick,string username,string usermask,string channel,string message) {
+		internal void on_kick(Server server,string kicker,string usernick,string username,string usermask,string channel,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_kick(server,kicker,usernick,username,usermask,channel,message)) {
+				if(plugin.enabled && !plugin.on_kick(server,kicker,usernick,username,usermask,channel,message)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_nick(Server server,string new_nick,string usernick,string username,string usermask) {
+		internal void on_nick(Server server,string new_nick,string usernick,string username,string usermask) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_nick(server,new_nick,usernick,username,usermask)) {
+				if(plugin.enabled && !plugin.on_nick(server,new_nick,usernick,username,usermask)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_privmsg(Server server,string usernick,string username,string usermask,string target,string message) {
+		internal void on_privmsg(Server server,string usernick,string username,string usermask,string target,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_privmsg(server,usernick,username,usermask,target,message)) {
+				if(plugin.enabled && !plugin.on_privmsg(server,usernick,username,usermask,target,message)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_notice(Server server,string usernick,string username,string usermask,string target,string message) {
+		internal void on_notice(Server server,string usernick,string username,string usermask,string target,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_notice(server,usernick,username,usermask,target,message)) {
+				if(plugin.enabled && !plugin.on_notice(server,usernick,username,usermask,target,message)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_quit(Server server,string usernick,string username,string usermask,string message) {
+		internal void on_quit(Server server,string usernick,string username,string usermask,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_quit(server,usernick,username,usermask,message)) {
+				if(plugin.enabled && !plugin.on_quit(server,usernick,username,usermask,message)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_chan_user_mode(Server server,string usernick,string username,string usermask,string channel,string modes,string targets) {
+		internal void on_chan_user_mode(Server server,string usernick,string username,string usermask,string channel,string modes,string targets) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_chan_user_mode(server,usernick,username,usermask,channel,modes,targets)) {
+				if(plugin.enabled && !plugin.on_chan_user_mode(server,usernick,username,usermask,channel,modes,targets)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_chan_mode(Server server,string usernick,string username,string usermask,string channel,string modes) {
+		internal void on_chan_mode(Server server,string usernick,string username,string usermask,string channel,string modes) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_chan_mode(server,usernick,username,usermask,channel,modes)) {
+				if(plugin.enabled && !plugin.on_chan_mode(server,usernick,username,usermask,channel,modes)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_mode(Server server,string usernick,string mode) {
+		internal void on_mode(Server server,string usernick,string mode) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_mode(server,usernick,mode)) {
+				if(plugin.enabled && !plugin.on_mode(server,usernick,mode)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
+		internal void on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_topic(server,usernick,username,usermask,channel,topic)) {
+				if(plugin.enabled && !plugin.on_topic(server,usernick,username,usermask,channel,topic)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_startup() {
+		internal void on_startup() {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_startup()) {
+				if(plugin.enabled && !plugin.on_startup()) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_shutdown() {
+		internal void on_shutdown() {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_shutdown()) {
+				if(plugin.enabled && !plugin.on_shutdown()) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_connect(Server server) {
+		internal void on_connect(Server server) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_connect(server)) {
+				if(plugin.enabled && !plugin.on_connect(server)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_disconnect(Server server) {
+		internal void on_disconnect(Server server) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_disconnect(server)) {
+				if(plugin.enabled && !plugin.on_disconnect(server)) {
 					break;
 				}
 			}
 		}
 		
-		public internal void on_connect_error(Server server) {
+		internal void on_connect_error(Server server) {
 			foreach(Plugin plugin in plugins) {
-				if(!plugin.on_connect_error(server)) {
+				if(plugin.enabled && !plugin.on_connect_error(server)) {
 					break;
 				}
 			}

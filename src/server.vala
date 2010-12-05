@@ -370,7 +370,7 @@ namespace XSIRC {
 						break;
 					case "PART":
 						message = message == s ? "" : message;
-						Main.plugin_manager.on_part(this,usernick,username,usermask,message);
+						Main.plugin_manager.on_part(this,usernick,username,usermask,split[2],message);
 						add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,split[2],message));
 						if(usernick.down() == nick.down()) {
 							channels.remove(find_channel(split[2].down()));
@@ -436,7 +436,7 @@ namespace XSIRC {
 						add_to_view("<server>","Server info: %s are supported by this server".printf(supported.str));
 						break;
 					case "PRIVMSG":
-						Main.plugin_manager.on_privmsg(this,server,usernick,username,usermask,target,message);
+						Main.plugin_manager.on_privmsg(this,usernick,username,usermask,target,message);
 						if(message[0] == '\x01') {
 							message = message.replace(((char)1).to_string(),"");
 							string prefix = message.split(" ")[0];
