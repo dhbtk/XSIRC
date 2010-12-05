@@ -64,6 +64,7 @@ def configure(conf):
 	
 def build(bld):
 	bld.add_subdirs('src')
+	bld.add_subdirs('plugins')
 	#bld.add_subdirs('po')
 	bld.install_files(bld.env['PREFIX']+'/share/licenses/xsirc','LICENSE') # Arch Linux thing
 	# Icon
