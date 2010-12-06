@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=XSIRC
+GenericName=IRC Client
+Comment=Chat on IRC networks
+Icon=@PREFIX@/share/pixmaps/xsirc.png
+Exec=@PREFIX@/bin/xsirc
+Categories=Network;IRCClient
+StartupNotify=true
+Terminal=false
+Type=Application

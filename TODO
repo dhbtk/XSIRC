@@ -2,7 +2,6 @@
 * Clickable links?
 * A context menu for tabs
 * Improve command history
-* Plugin system (and a scripting plugin)
+* A scripting plugin
 * Internationalization
-* Highlights
 * Find out why the tags applied by the MIRCParser don't work
