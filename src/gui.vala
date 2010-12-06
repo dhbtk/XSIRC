@@ -730,6 +730,7 @@ namespace XSIRC {
 		}
 		
 		public static void spawn_about_cb(Gtk.Action action) {
+			Gtk.AboutDialog.set_url_hook((Gtk.AboutDialogActivateLinkFunc)open_browser);
 			Gtk.AboutDialog d = new Gtk.AboutDialog();
 			d.authors = {"Eduardo Niehues (NieXS) <neo.niexs@gmail.com>"};
 			d.copyright = "Copyright (c) 2010 Eduardo Niehues. All rights reserved.";
@@ -768,6 +769,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			d.website      = "http://xsirc.niexs.net";
 			d.response.connect(() => {d.destroy();});
 			d.show_all();
+		}
+		
+		// Link opener for the about dialog
+		public static void open_browser(Gtk.AboutDialog dialog,string link) {
+			try {
+				Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+link).split(" "),null,0,null,null);
+			} catch(SpawnError e) {
+				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
+				d.response.connect(() => {d.destroy();});
+				d.show_all();
+			}
 		}
 		// Dialogs
 		public void open_connect_dialog() {

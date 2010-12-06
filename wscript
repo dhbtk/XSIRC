@@ -7,7 +7,7 @@
 import os
 import Options
 APPNAME = "XSIRC"
-VERSION = "0.5.2"
+VERSION = "1.0"
 # Shamefully stolen from midori's wscript
 try:
 	git = Utils.cmd_output(['git','rev-parse','--short','HEAD'],silent=True)
@@ -73,3 +73,5 @@ def build(bld):
 	# Preferences ui
 	bld.install_files(bld.env['PREFIX']+'/share/xsirc','src/prefwindow.ui')
 	bld.install_files(bld.env['PREFIX']+'/share/xsirc','src/pluginprefwindow.ui')
+	bld.new_task_gen(features='subst',source='xsirc.desktop.in',target='xsirc.desktop')
+	bld.install_files(bld.env['PREFIX']+'/share/applications','xsirc.desktop')

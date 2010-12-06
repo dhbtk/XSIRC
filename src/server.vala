@@ -247,6 +247,7 @@ namespace XSIRC {
 			foreach(Channel channel in channels) {
 				channel.in_channel = false;
 			}
+			Main.plugin_manager.on_disconnect(this);
 			Main.gui.update_gui(this);
 		}
 		
