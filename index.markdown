@@ -14,11 +14,11 @@ XSIRC is a GTK+-based IRC client for Linux and Windows (partially functional). I
 <td>
 <a target='_blank' href='http://img87.imageshack.us/img87/4462/xsirccurrent.png'><img src='http://img87.imageshack.us/img87/4462/xsirccurrent.th.png' border='0'/></a></td>
 <td>
-<a target='_blank' href='http://img690.imageshack.us/img690/8237/xsircprefs.png'><img src='http://img690.imageshack.us/img690/8237/xsircprefs.th.png' border='0'/></a></td>
+<a target='_blank' href='http://img841.imageshack.us/img841/7480/xsircnotify.png'><img src='http://img841.imageshack.us/img841/7480/xsircnotify.th.png' border='0'/></a></td>
 <td>
-<a target='_blank' href='http://img802.imageshack.us/img802/8235/xsircpluginprefs.png'><img src='http://img802.imageshack.us/img802/8235/xsircpluginprefs.th.png' border='0'/></a></td>
+<a target='_blank' href='http://img59.imageshack.us/img59/8235/xsircpluginprefs.png'><img src='http://img59.imageshack.us/img59/8235/xsircpluginprefs.th.png' border='0'/></a></td>
 <td>
-<a target='_blank' href='http://img593.imageshack.us/img593/8223/xsircnetworkprefs.png'><img src='http://img593.imageshack.us/img593/8223/xsircnetworkprefs.th.png' border='0'/></a></td>
+<a target='_blank' href='http://img838.imageshack.us/img838/4231/xsircwin.png'><img src='http://img838.imageshack.us/img838/4231/xsircwin.th.png' border='0'/></a></td>
 </tr>
 </table>
 
