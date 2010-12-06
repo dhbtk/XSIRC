@@ -256,7 +256,6 @@ namespace XSIRC {
 			// Server-switching
 			servers_notebook.switch_page.connect((nb_page,page_num) => {
 				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)),null,true);
-				text_entry.grab_focus();
 			});
 			
 			// Servers thread

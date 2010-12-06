@@ -72,3 +72,4 @@ def build(bld):
 	bld.install_files(bld.env['PREFIX']+'/share/pixmaps','xsirc.png')
 	# Preferences ui
 	bld.install_files(bld.env['PREFIX']+'/share/xsirc','src/prefwindow.ui')
+	bld.install_files(bld.env['PREFIX']+'/share/xsirc','src/pluginprefwindow.ui')

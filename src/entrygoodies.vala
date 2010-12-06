@@ -1,5 +1,5 @@
 /*
- * tabcompleter.vala
+ * entrygoodies.vala
  *
  * Copyright (c) 2010 Eduardo Niehues
  * Distributed under the New BSD License; see ../LICENSE for details.
@@ -52,5 +52,9 @@ namespace XSIRC {
 				complete(server,view,entry);
 			}
 		}
+	}
+	
+	public class CommandHistory : Object {
+		
 	}
 }
