@@ -32,7 +32,8 @@ namespace XSIRC {
 			{"SettingsMenu",null,"S_ettings"},
 			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
 			{"AdvancedMenu",null,"_Advanced"},
-			{"MacroPreferences",null,"_Macros",null,null,spawn_macro_preferences_cb},
+			{"MacroPreferences",null,"_Macros...",null,null,spawn_macro_preferences_cb},
+			{"PluginPreferences",null,"_Plugins...",null,null,spawn_plugin_preferences_cb},
 			// View
 			{"ViewMenu",null,"_View"},
 			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><alt>comma",null,previous_server_cb},
@@ -110,6 +111,7 @@ namespace XSIRC {
 			<menuitem action="Preferences"/>
 			<menu action="AdvancedMenu">
 				<menuitem action="MacroPreferences"/>
+				<menuitem action="PluginPreferences"/>
 			</menu>
 		</menu>
 		<menu action="HelpMenu">
@@ -128,6 +130,7 @@ namespace XSIRC {
 		public Mutex gui_mutex = new Mutex();
 		private PrefWindow prefs_window;
 		private MacroManager.PrefWindow macro_prefs_window;
+		private PluginManager.PrefWindow plugin_prefs_window;
 		
 		public class View {
 			public string name;
@@ -527,6 +530,10 @@ namespace XSIRC {
 			Main.gui.create_macro_prefs_window();
 		}
 		
+		public static void spawn_plugin_preferences_cb(Gtk.Action action) {
+			Main.gui.create_plugin_prefs_window();
+		}
+		
 		public static void previous_server_cb(Gtk.Action action) {
 			Main.gui.servers_notebook.prev_page();
 		}
@@ -810,6 +817,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		
 		public void destroy_macro_prefs_window() {
 			macro_prefs_window = null;
+		}
+		
+		public void create_plugin_prefs_window() {
+			plugin_prefs_window = new PluginManager.PrefWindow();
+		}
+		
+		public void destroy_plugin_prefs_window() {
+			plugin_prefs_window = null;
 		}
 		// Misc
 		
