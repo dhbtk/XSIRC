@@ -27,7 +27,7 @@ Recent News
 
 <ul>
 {% for post in site.posts offset: 0 limit: 3 %}
-<li><a href="{{ post.url }}">{{ post.title }}</a> &bull; {{ post.date }}</li>
+<li><a href="{{ post.url }}">{{ post.title }}</a> &bull; {{ post.date | date_to_string }}</li>
 {% endfor %}
 </ul>
 
