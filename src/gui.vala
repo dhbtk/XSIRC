@@ -123,7 +123,7 @@ namespace XSIRC {
 		// Other stuff
 		private LinkedList<string> command_history = new LinkedList<string>();
 		private int command_history_index = 0;
-		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
+		public Gtk.TextTagTable global_tag_table;
 		private bool gui_updated = true;
 		private TabCompleter tab_completer = new TabCompleter();
 		//private unowned Thread server_threads;
@@ -199,7 +199,7 @@ namespace XSIRC {
 			vbox.pack_start(servers_notebook,true,true,0);
 			
 			// Creating tags.
-			set_up_text_tags();
+			global_tag_table = set_up_table_raw();
 			
 			// System view goes here.
 			
@@ -423,7 +423,7 @@ namespace XSIRC {
 		public View create_view(string name) {
 			Gtk.Label label = new Gtk.Label(Markup.escape_text(name));
 			label.use_markup = true;
-			Gtk.TextView text_view = new Gtk.TextView.with_buffer(new Gtk.TextBuffer(global_tag_table));
+			Gtk.TextView text_view = new Gtk.TextView();/*.with_buffer(new Gtk.TextBuffer(global_tag_table));*/
 			text_view.editable = false;
 			text_view.cursor_visible = false;
 			text_view.wrap_mode = Gtk.WrapMode.WORD;

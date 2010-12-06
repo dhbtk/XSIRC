@@ -12,6 +12,15 @@ if bld.env['windows'] == 'yes':
 else:
 	flags = ['-g']
 	to_use = ''
+bld.stlib(
+	source = 'tag_table.c',
+	uselib = 'GTK',
+	target = 'tag_table')
+# Bah
+bld.stlib(
+	source = 'tag_table_sh.c',
+	uselib = 'GTK',
+	target = 'tag_table_sh')
 bld.program(
 	source    = bld.path.ant_glob('*.vala'),
 	features  = 'c cprogram',
@@ -19,7 +28,7 @@ bld.program(
 	vapi_dirs = '../vapi',
 	includes  = '../vapi',
 	target    = 'xsirc',
-	use       = to_use,
+	use       = 'tag_table',
 	cflags    = ['-include','config.h','-g'],
 	linkflags = flags,
 	uselib    = 'GTK GLIB GIO GEE GMODULE NOTIFY',
@@ -32,7 +41,7 @@ bld.shlib(
 	vapi_dirs = '../vapi',
 	includes  = '../vapi',
 	target    = 'xsirc',
-	use       = to_use,
+	use       = 'tag_table_sh',
 	cflags    = ['-include','config.h','-g'],
 	linkflags = flags,
 	uselib    = 'GTK GLIB GIO GEE GMODULE NOTIFY',
