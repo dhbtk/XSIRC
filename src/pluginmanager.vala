@@ -48,6 +48,11 @@ namespace XSIRC {
 				
 				window.show_all();
 				window.response.connect(() => {
+					// The last plugin's widget is getting destroyed with the 
+					// window, it seems
+					if(current_widget != null) {
+						vbox.remove(current_widget);
+					}
 					window.destroy();
 					Main.gui.destroy_plugin_prefs_window();
 				});
