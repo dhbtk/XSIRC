@@ -20,6 +20,7 @@ bld.shlib(
 	packages = 'xsirc',
 	vapi_dirs = '../src ../vapi',
 	includes = '../src',
+	cflags = ['-include','config.h'],
 	target = 'highlights',
 	uselib = 'GMODULE GLIB',
 	use = 'xsirc',

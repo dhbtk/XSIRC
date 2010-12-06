@@ -7,6 +7,10 @@
 using Gee;
 namespace XSIRC {
 	public class PluginManager : Object {
+		public class PrefWindow : Object {
+			
+		}
+		
 		private ArrayList<Plugin> plugins = new ArrayList<Plugin>();
 		
 		private delegate void RegisterPluginFunc(Module module);
