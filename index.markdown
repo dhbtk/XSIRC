@@ -65,4 +65,4 @@ Uninstallation is also easy:
 Usage
 -----
 
-See [Usage](manual).
+See [the manual](manual).
