@@ -20,7 +20,7 @@ namespace XSIRC {
 			
 			public PrefWindow() {
 				window = new Gtk.Dialog.with_buttons("Macros",Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.STOCK_CLOSE,0,null);
-				
+				window.set_default_size(320,320);
 				macro_model = new Gtk.ListStore(MacroColumns.N_COLUMNS,typeof(string),typeof(string));
 				macro_tree = new Gtk.TreeView.with_model(macro_model);
 				
