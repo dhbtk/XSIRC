@@ -10,28 +10,28 @@ namespace XSIRC {
 		public Gtk.Notebook notebook;
 		public Gtk.Label label;
 		// Settings
-		public string server;
-		public int port;
-		public bool ssl;
-		public string password;
-		public ServerManager.Network network;
+		public string server {get; set;}
+		public int port {get; set;}
+		public bool ssl {get; set;}
+		public string password {get; set;}
+		public ServerManager.Network network {get; private set;}
 		// State
-		public LinkedList<Channel?> channels = new LinkedList<Channel?>();
-		public LinkedList<GUI.View?> views  = new LinkedList<GUI.View?>();
-		public string nick;
+		public LinkedList<Channel> channels {get; private set; default = new LinkedList<Channel>();}
+		public LinkedList<GUI.View> views {get; private set; default = new LinkedList<GUI.View>();}
+		public string nick {get; private set;}
 		private time_t last_recieved = time_t();
-		public bool connected = false;
-		public bool sock_error = false;
+		public bool connected {get; private set; default = false;}
+		public bool sock_error {get; private set; default = false;}
 		private LinkedList<OutgoingMessage?> output_queue = new LinkedList<OutgoingMessage?>();
-		public unowned Thread sender_thread;
+		private unowned Thread sender_thread;
 		private bool shutting_down = false;
-		public bool am_away;
+		public bool am_away {get; private set;}
 		private int nick_tries = 0;
 		private bool sent_ping = false;
 		// Socket
-		public SocketClient socket_client;
-		public SocketConnection socket_conn;
-		public DataInputStream socket_stream;
+		private SocketClient socket_client;
+		private SocketConnection socket_conn;
+		private DataInputStream socket_stream;
 		private bool connecting = false;
 		private string error = null;
 		private InetAddress address;
