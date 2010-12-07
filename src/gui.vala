@@ -9,15 +9,15 @@ namespace XSIRC {
 	public class GUI : Object {
 		public static const string link_regex = "([a-z]+://[a-zA-Z0-9\\-.]+(:[0-9]+)?(/[a-zA-Z0-9\\-_$.+\\[\\]!*\\(),;:@&=?/~#%]+){0,1})";
 		// GUI proper
-		public Gtk.Window main_window;
-		public Gtk.TreeView user_list;
-		public Gtk.Notebook servers_notebook;
-		public Gtk.Label nickname_label;
-		public Gtk.Entry text_entry;
-		public Gtk.Entry topic_view;
-		public Gtk.Statusbar status_bar;
-		public View system_view;
-		public bool destroyed = false;
+		public Gtk.Window main_window {get; private set;}
+		public Gtk.TreeView user_list {get; private set;}
+		public Gtk.Notebook servers_notebook {get; private set;}
+		public Gtk.Label nickname_label {get; private set;}
+		public Gtk.Entry text_entry {get; private set;}
+		public Gtk.Entry topic_view {get; private set;}
+		public Gtk.Statusbar status_bar {get; private set;}
+		public View system_view {get; private set;}
+		public bool destroyed {get; private set;default = false;}
 		private Gtk.MenuItem[] views_menu = new Gtk.MenuItem[9];
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
