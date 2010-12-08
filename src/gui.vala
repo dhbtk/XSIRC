@@ -13,7 +13,7 @@ namespace XSIRC {
 		public Gtk.TreeView user_list {get; private set;}
 		public Gtk.Notebook servers_notebook {get; private set;}
 		public Gtk.Label nickname_label {get; private set;}
-		public Gtk.Entry text_entry {get; private set;}
+		public IRCEntry text_entry {get; private set;}
 		public Gtk.Entry topic_view {get; private set;}
 		public Gtk.Statusbar status_bar {get; private set;}
 		public View system_view {get; private set;}
@@ -120,12 +120,8 @@ namespace XSIRC {
 		</menu>
 	</menubar>
 </ui>""";
-		// Other stuff
-		private LinkedList<string> command_history = new LinkedList<string>();
-		private int command_history_index = 0;
 		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
 		private bool gui_updated = true;
-		private TabCompleter tab_completer = new TabCompleter();
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
 		private PrefWindow prefs_window;
@@ -208,7 +204,7 @@ namespace XSIRC {
 			servers_notebook.show_all();
 			// Input entry
 			
-			text_entry = new Gtk.Entry();
+			text_entry = new IRCEntry();
 			//Gtk.ScrolledWindow te_scroll = new Gtk.ScrolledWindow(null,null);
 			//te_scroll.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 			//te_scroll.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
@@ -219,39 +215,6 @@ namespace XSIRC {
 			status_bar = new Gtk.Statusbar();
 			main_vbox.pack_start(status_bar,false,true,0);
 			main_window.show_all();
-
-			// Activate signal
-			text_entry.activate.connect(() => {
-				command_history.insert(0,text_entry.text);
-				foreach(string text in text_entry.text.split("\n")) {
-					parse_text(text);
-				}
-				text_entry.text = "";
-			});
-			// Command history, tab completion
-			text_entry.key_press_event.connect((key) => {
-				if(key.keyval == Gdk.keyval_from_name("Up")) {
-					tab_completer.reset();
-					command_history_index++;
-					if((command_history.size - 1) >= command_history_index) {
-						text_entry.text = command_history[command_history_index];
-					}
-					return true;
-				} else if(key.keyval == Gdk.keyval_from_name("Down")) {
-					tab_completer.reset();
-					command_history_index--;
-					if((command_history.size - 1) >= command_history_index && command_history_index > -1) {
-						text_entry.text = command_history[command_history_index];
-					}
-					return true;
-				} else if(key.keyval == Gdk.keyval_from_name("Tab")) {
-					tab_completer.complete(current_server(),current_server().current_view(),text_entry);
-					return true;
-				} else {
-					tab_completer.reset();
-				}
-				return false;
-			});
 			
 			// Server-switching
 			servers_notebook.switch_page.connect((nb_page,page_num) => {
@@ -282,9 +245,8 @@ namespace XSIRC {
 			}
 		}
 		
-		private void parse_text(string s) {
+		public void parse_text(string s) {
 			//stdout.printf("Calling GUI.parse_text with argument \"%s\"\n",s);
-			command_history_index = -1;
 			if(s.has_prefix("//")) {
 				// Send privmsg to current channel + /
 				string sent = s.substring(1);
