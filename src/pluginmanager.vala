@@ -231,9 +231,9 @@ namespace XSIRC {
 			}
 		}
 		
-		internal void on_kick(Server server,string kicker,string usernick,string username,string usermask,string channel,string message) {
+		internal void on_kick(Server server,string kicked,string usernick,string username,string usermask,string channel,string message) {
 			foreach(Plugin plugin in plugins) {
-				if(plugin.enabled && !plugin.on_kick(server,kicker,usernick,username,usermask,channel,message)) {
+				if(plugin.enabled && !plugin.on_kick(server,kicked,usernick,username,usermask,channel,message)) {
 					break;
 				}
 			}

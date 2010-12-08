@@ -390,7 +390,7 @@ namespace XSIRC {
 						}
 						message = message == s ? "" : message;
 						Main.plugin_manager.on_kick(this,split[3],usernick,username,usermask,split[2],message);
-						add_to_view(find_channel(split[2]).title,"%s has kicked %s from %s [%s]".printf(split[3],usernick,split[2],message));
+						add_to_view(find_channel(split[2]).title,"%s has kicked %s from %s [%s]".printf(usernick,split[3],split[2],message));
 						break;
 					case "NICK":
 						if(nick.down() == usernick.down()) {
