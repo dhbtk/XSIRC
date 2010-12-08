@@ -48,6 +48,7 @@ namespace XSIRC {
 			{MessageID.QUIT,"User disconnect","$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
 			{MessageID.CHANUSERMODE,"Channel user mode change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES, $TARGETS"},
 			{MessageID.CHANMODE,"Channel mode change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES"},
+			{MessageID.MODE,"User mode change","$NICK, $MODES"},
 			{MessageID.TOPIC,"Topic change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MESSAGE"}
 		};
 		
@@ -62,6 +63,7 @@ namespace XSIRC {
 			{MessageID.QUIT,"$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]"},
 			{MessageID.CHANUSERMODE,"$USERNICK sets mode $MODES on $TARGETS"},
 			{MessageID.CHANMODE,"$USERNICK sets $CHANNEL's mode: $MODES"},
+			{MessageID.MODE,"Changing mode: $MODES"},
 			{MessageID.TOPIC,"$USERNICK sets the topic to $MESSAGE"}
 		};
 		
@@ -181,10 +183,11 @@ namespace XSIRC {
 					}
 				}
 			}
+			string my_target = target.down() == server.nick.down() ? usernick : target;
 			if(message.has_prefix("\001ACTION") && message.has_suffix("\x01")) { // ACTION
-				message = message.replace("\x01","").substring(7);
+				string my_message = message.replace("\x01","").substring(7);
 				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE"};
-				string[] replacements = {usernick,username,usermask,message};
+				string[] replacements = {usernick,username,usermask,my_message};
 				int i = 0;
 				string result = messages[MessageID.ACTION];
 				foreach(string s in replaced) {
@@ -193,11 +196,11 @@ namespace XSIRC {
 					}
 					i++;
 				}
-				server.add_to_view(target,result);
+				server.add_to_view(my_target,result);
 			} else if(message.has_prefix("\x01") && message.has_suffix("\x01")) { // CTCPMSG
-				message = message.replace("\x01","");
+				string my_message = message.replace("\x01","");
 				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$REQUEST"};
-				string[] replacements = {usernick,username,usermask,message};
+				string[] replacements = {usernick,username,usermask,my_message};
 				int i = 0;
 				string result = messages[MessageID.CTCPMSG];
 				foreach(string s in replaced) {
@@ -218,114 +221,118 @@ namespace XSIRC {
 					}
 					i++;
 				}
-				server.add_to_view(target,result);
+				server.add_to_view(my_target,result);
 			}
 			return true;
 		}
 		
-		/*public override bool on_notice(Server server,string usernick,string username,string usermask,string target,string message) {
-			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
-			string[] replacements = {usernick,username,usermask,channel};
+		public override bool on_notice(Server server,string usernick,string username,string usermask,string target,string message) {
+			// This isn't the place for CTCP replies, they should be handled by someone else
+			if(message.has_prefix("\001")) {
+				return true;
+			}
+			string my_target = target.down() == server.nick.down() ? usernick : target;
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE"};
+			string[] replacements = {usernick,username,usermask,message};
 			int i = 0;
-			string result = messages[MessageType.JOIN];
+			string result = messages[MessageID.NOTICE];
 			foreach(string s in replaced) {
 				if(s in result) {
 					result = result.replace(s,replacements[i]);
 				}
 				i++;
+			}
+			if(server.find_view(my_target) != null) {
+				server.add_to_view(my_target,result);
+			} else {
+				server.add_to_view("<server>",result);
 			}
 			return true;
 		}
 		
 		public override bool on_quit(Server server,string usernick,string username,string usermask,string message) {
-			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
-			string[] replacements = {usernick,username,usermask,channel};
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE"};
+			string[] replacements = {usernick,username,usermask,message};
 			int i = 0;
-			string result = messages[MessageType.JOIN];
+			string result = messages[MessageID.QUIT];
 			foreach(string s in replaced) {
 				if(s in result) {
 					result = result.replace(s,replacements[i]);
 				}
 				i++;
+			}
+			foreach(Server.Channel channel in server.channels) {
+				if(usernick.down() in channel.users) {
+					server.add_to_view(channel.title,result);
+				}
+			}
+			foreach(GUI.View view in server.views) {
+				if(usernick.down() == view.name.down()) {
+					server.add_to_view(view.name,result);
+				}
 			}
 			return true;
 		}
 		
 		public override bool on_chan_user_mode(Server server,string usernick,string username,string usermask,string channel,string modes,string targets) {
-			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
-			string[] replacements = {usernick,username,usermask,channel};
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$MODES","$TARGETS"};
+			string[] replacements = {usernick,username,usermask,channel,modes,targets};
 			int i = 0;
-			string result = messages[MessageType.JOIN];
+			string result = messages[MessageID.CHANUSERMODE];
 			foreach(string s in replaced) {
 				if(s in result) {
 					result = result.replace(s,replacements[i]);
 				}
 				i++;
 			}
+			server.add_to_view(channel,result);
 			return true;
 		}
 		
 		public override bool on_chan_mode(Server server,string usernick,string username,string usermask,string channel,string modes) {
-			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
-			string[] replacements = {usernick,username,usermask,channel};
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$MODES"};
+			string[] replacements = {usernick,username,usermask,channel,modes};
 			int i = 0;
-			string result = messages[MessageType.JOIN];
+			string result = messages[MessageID.CHANMODE];
 			foreach(string s in replaced) {
 				if(s in result) {
 					result = result.replace(s,replacements[i]);
 				}
 				i++;
 			}
+			server.add_to_view(channel,result);
 			return true;
 		}
 		
 		public override bool on_mode(Server server,string usernick,string mode) {
-			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
-			string[] replacements = {usernick,username,usermask,channel};
+			string[] replaced = {"$NICK","$MODES"};
+			string[] replacements = {usernick,mode};
 			int i = 0;
-			string result = messages[MessageType.JOIN];
+			string result = messages[MessageID.MODE];
 			foreach(string s in replaced) {
 				if(s in result) {
 					result = result.replace(s,replacements[i]);
 				}
 				i++;
 			}
+			server.add_to_view("<server>",result);
 			return true;
 		}
 		
 		public override bool on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
-			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
-			string[] replacements = {usernick,username,usermask,channel};
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$TOPIC"};
+			string[] replacements = {usernick,username,usermask,channel,topic};
 			int i = 0;
-			string result = messages[MessageType.JOIN];
+			string result = messages[MessageID.JOIN];
 			foreach(string s in replaced) {
 				if(s in result) {
 					result = result.replace(s,replacements[i]);
 				}
 				i++;
 			}
+			server.add_to_view(channel,result);
 			return true;
 		}
-		
-		public override bool on_startup() {
-			return true;
-		}
-		
-		public override bool on_shutdown() {
-			return true;
-		}
-		
-		public override bool on_connect(Server server) {
-			return true;
-		}
-		
-		public override bool on_disconnect(Server server) {
-			return true;
-		}
-		
-		public override bool on_connect_error(Server server) {
-			return true;
-		}*/
 	}
 }
 
