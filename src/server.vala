@@ -367,12 +367,12 @@ namespace XSIRC {
 						send("NAMES %s".printf(message));
 						send("MODE "+message);
 						Main.plugin_manager.on_join(this,usernick,username,usermask,message);
-						add_to_view(message,"%s [%s@%s] has joined %s".printf(usernick,username,usermask,message));
+						//add_to_view(message,"%s [%s@%s] has joined %s".printf(usernick,username,usermask,message));
 						break;
 					case "PART":
 						message = message == s ? "" : message;
 						Main.plugin_manager.on_part(this,usernick,username,usermask,split[2],message);
-						add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,split[2],message));
+						//add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,split[2],message));
 						if(usernick.down() == nick.down()) {
 							channels.remove(find_channel(split[2].down()));
 							GUI.View view = find_view(split[2]);
@@ -390,7 +390,7 @@ namespace XSIRC {
 						}
 						message = message == s ? "" : message;
 						Main.plugin_manager.on_kick(this,split[3],usernick,username,usermask,split[2],message);
-						add_to_view(find_channel(split[2]).title,"%s has kicked %s from %s [%s]".printf(usernick,split[3],split[2],message));
+						//add_to_view(find_channel(split[2]).title,"%s has kicked %s from %s [%s]".printf(usernick,split[3],split[2],message));
 						break;
 					case "NICK":
 						if(nick.down() == usernick.down()) {
@@ -400,7 +400,7 @@ namespace XSIRC {
 						Main.plugin_manager.on_nick(this,message,usernick,username,usermask);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
-								add_to_view(channel.title,"%s is now known as %s.".printf(usernick,message));
+								//add_to_view(channel.title,"%s is now known as %s.".printf(usernick,message));
 								send("NAMES %s".printf(channel.title));
 							}
 						}
@@ -408,7 +408,7 @@ namespace XSIRC {
 							if(view.name.down() == usernick.down()) {
 								view.name = message;
 								view.label.label = message;
-								add_to_view(view.name,"%s is now known as %s.".printf(usernick,message));
+								//add_to_view(view.name,"%s is now known as %s.".printf(usernick,message));
 							}
 						}
 						break;
@@ -463,7 +463,7 @@ namespace XSIRC {
 									break;
 							}
 						} else {
-							add_to_view(target,"<%s> %s".printf(usernick,message));
+							//add_to_view(target,"<%s> %s".printf(usernick,message));
 						}
 						/*if(message.down().contains(nick.down())) {
 							Notifier.fire_notification(this,find_view(target),"<%s> %s".printf(usernick,message));

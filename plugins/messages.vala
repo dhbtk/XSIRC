@@ -41,7 +41,7 @@ namespace XSIRC {
 			{MessageID.PART,"User part","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MESSAGE"},
 			{MessageID.KICK,"User kicked","$KICKED, $USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
 			{MessageID.NICK,"User changed nick","$NEWNICK, $USERNICK, $USERNAME, $USERMASK"},
-			{MessageID.PRIVMSG,"Normal message","$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
+			{MessageID.PRIVMSG,"Normal message","$USERNICK, $USERNAME, $USERMASK, $MESSAGE, $USERRANK"},
 			{MessageID.ACTION,"User action (/me)","$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
 			{MessageID.CTCPMSG,"CTCP request","$USERNICK, $USERNAME, $USERMASK, $REQUEST"},
 			{MessageID.NOTICE,"Notice","$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
@@ -55,8 +55,8 @@ namespace XSIRC {
 			{MessageID.JOIN,"$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL"},
 			{MessageID.PART,"$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]"},
 			{MessageID.KICK,"$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]"},
-			{MessageID.PRIVMSG,"<$USERNICK> $MESSAGE"},
-			{MessageID.ACTION,"* $USERNICK $MESSAGE"},
+			{MessageID.PRIVMSG,"<$USERRANK$USERNICK> $MESSAGE"},
+			{MessageID.ACTION,"* $USERRANK$USERNICK $MESSAGE"},
 			{MessageID.CTCPMSG,"Got CTCP $REQUEST from $USERNICK"},
 			{MessageID.NOTICE,"-$USERNICK- $MESSAGE"},
 			{MessageID.QUIT,"$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]"},
@@ -102,46 +102,208 @@ namespace XSIRC {
 		}
 		
 		public override bool on_join(Server server,string usernick,string username,string usermask,string channel) {
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
+			string[] replacements = {usernick,username,usermask,channel};
+			int i = 0;
+			string result = messages[MessageID.JOIN];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
+			server.add_to_view(channel,result);
 			return true;
 		}
 		
 		public override bool on_part(Server server,string usernick,string username,string usermask,string channel,string message) {
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$MESSAGE"};
+			string[] replacements = {usernick,username,usermask,channel,message};
+			int i = 0;
+			string result = messages[MessageID.PART];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
+			server.add_to_view(channel,result);
 			return true;
 		}
 		
 		public override bool on_kick(Server server,string kicked,string usernick,string username,string usermask,string channel,string message) {
+			string[] replaced = {"$KICKED","$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$MESSAGE"};
+			string[] replacements = {kicked,usernick,username,usermask,channel,message};
+			int i = 0;
+			string result = messages[MessageID.KICK];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
+			server.add_to_view(channel,result);
 			return true;
 		}
 		
 		public override bool on_nick(Server server,string new_nick,string usernick,string username,string usermask) {
+			string[] replaced = {"$NEWNICK","$USERNICK","$USERNAME","$USERMASK"};
+			string[] replacements = {new_nick,usernick,username,usermask};
+			int i = 0;
+			string result = messages[MessageID.NICK];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
+			foreach(Server.Channel channel in server.channels) {
+				if(usernick.down() in channel.users) {
+					server.add_to_view(channel.title,result);
+				}
+			}
+			foreach(GUI.View view in server.views) {
+				if(view.name.down() == usernick.down()) {
+					server.add_to_view(view.name,result);
+				}
+			}
 			return true;
 		}
 		
 		public override bool on_privmsg(Server server,string usernick,string username,string usermask,string target,string message) {
+			// Finding the rank.
+			string userrank = " ";
+			if(server.find_channel(target) != null) {
+				foreach(string user in server.find_channel(target).raw_users) {
+					if(user.substring(1) == usernick) {
+						userrank = user[0:1];
+						break;
+					}
+				}
+			}
+			if(message.has_prefix("\001ACTION") && message.has_suffix("\x01")) { // ACTION
+				message = message.replace("\x01","").substring(7);
+				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE"};
+				string[] replacements = {usernick,username,usermask,message};
+				int i = 0;
+				string result = messages[MessageID.ACTION];
+				foreach(string s in replaced) {
+					if(s in result) {
+						result = result.replace(s,replacements[i]);
+					}
+					i++;
+				}
+				server.add_to_view(target,result);
+			} else if(message.has_prefix("\x01") && message.has_suffix("\x01")) { // CTCPMSG
+				message = message.replace("\x01","");
+				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$REQUEST"};
+				string[] replacements = {usernick,username,usermask,message};
+				int i = 0;
+				string result = messages[MessageID.CTCPMSG];
+				foreach(string s in replaced) {
+					if(s in result) {
+						result = result.replace(s,replacements[i]);
+					}
+					i++;
+				}
+				server.add_to_view("<server>",result);
+			} else { // PRIVMSG
+				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE","$USERRANK"};
+				string[] replacements = {usernick,username,usermask,message,userrank};
+				int i = 0;
+				string result = messages[MessageID.PRIVMSG];
+				foreach(string s in replaced) {
+					if(s in result) {
+						result = result.replace(s,replacements[i]);
+					}
+					i++;
+				}
+				server.add_to_view(target,result);
+			}
 			return true;
 		}
 		
-		public override bool on_notice(Server server,string usernick,string username,string usermask,string target,string message) {
+		/*public override bool on_notice(Server server,string usernick,string username,string usermask,string target,string message) {
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
+			string[] replacements = {usernick,username,usermask,channel};
+			int i = 0;
+			string result = messages[MessageType.JOIN];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
 			return true;
 		}
 		
 		public override bool on_quit(Server server,string usernick,string username,string usermask,string message) {
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
+			string[] replacements = {usernick,username,usermask,channel};
+			int i = 0;
+			string result = messages[MessageType.JOIN];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
 			return true;
 		}
 		
 		public override bool on_chan_user_mode(Server server,string usernick,string username,string usermask,string channel,string modes,string targets) {
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
+			string[] replacements = {usernick,username,usermask,channel};
+			int i = 0;
+			string result = messages[MessageType.JOIN];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
 			return true;
 		}
 		
 		public override bool on_chan_mode(Server server,string usernick,string username,string usermask,string channel,string modes) {
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
+			string[] replacements = {usernick,username,usermask,channel};
+			int i = 0;
+			string result = messages[MessageType.JOIN];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
 			return true;
 		}
 		
 		public override bool on_mode(Server server,string usernick,string mode) {
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
+			string[] replacements = {usernick,username,usermask,channel};
+			int i = 0;
+			string result = messages[MessageType.JOIN];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
 			return true;
 		}
 		
 		public override bool on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
+			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
+			string[] replacements = {usernick,username,usermask,channel};
+			int i = 0;
+			string result = messages[MessageType.JOIN];
+			foreach(string s in replaced) {
+				if(s in result) {
+					result = result.replace(s,replacements[i]);
+				}
+				i++;
+			}
 			return true;
 		}
 		
@@ -163,7 +325,7 @@ namespace XSIRC {
 		
 		public override bool on_connect_error(Server server) {
 			return true;
-		}
+		}*/
 	}
 }
 
