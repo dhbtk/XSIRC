@@ -367,12 +367,10 @@ namespace XSIRC {
 						send("NAMES %s".printf(message));
 						send("MODE "+message);
 						Main.plugin_manager.on_join(this,usernick,username,usermask,message);
-						//add_to_view(message,"%s [%s@%s] has joined %s".printf(usernick,username,usermask,message));
 						break;
 					case "PART":
 						message = message == s ? "" : message;
 						Main.plugin_manager.on_part(this,usernick,username,usermask,split[2],message);
-						//add_to_view(split[2],"%s [%s@%s] has left %s [%s]".printf(usernick,username,usermask,split[2],message));
 						if(usernick.down() == nick.down()) {
 							channels.remove(find_channel(split[2].down()));
 							GUI.View view = find_view(split[2]);
@@ -390,7 +388,6 @@ namespace XSIRC {
 						}
 						message = message == s ? "" : message;
 						Main.plugin_manager.on_kick(this,split[3],usernick,username,usermask,split[2],message);
-						//add_to_view(find_channel(split[2]).title,"%s has kicked %s from %s [%s]".printf(usernick,split[3],split[2],message));
 						break;
 					case "NICK":
 						if(nick.down() == usernick.down()) {
@@ -400,7 +397,6 @@ namespace XSIRC {
 						Main.plugin_manager.on_nick(this,message,usernick,username,usermask);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
-								//add_to_view(channel.title,"%s is now known as %s.".printf(usernick,message));
 								send("NAMES %s".printf(channel.title));
 							}
 						}
@@ -408,7 +404,6 @@ namespace XSIRC {
 							if(view.name.down() == usernick.down()) {
 								view.name = message;
 								view.label.label = message;
-								//add_to_view(view.name,"%s is now known as %s.".printf(usernick,message));
 							}
 						}
 						break;
@@ -438,36 +433,6 @@ namespace XSIRC {
 						break;
 					case "PRIVMSG":
 						Main.plugin_manager.on_privmsg(this,usernick,username,usermask,target,message);
-						if(message[0] == '\x01') {
-							message = message.replace(((char)1).to_string(),"");
-							string prefix = message.split(" ")[0];
-							message = message.substring(prefix.length);
-							switch(prefix) {
-								case "ACTION":
-									add_to_view(target,"* %s%s".printf(usernick,message));
-									break;
-								case "PING":
-									add_to_view("<server>","Got CTCP PING from %s".printf(usernick));
-									send("NOTICE "+target+" :\x01PING"+message+"\x01");
-									break;
-								case "VERSION":
-									add_to_view("<server>","Got CTCP VERSION from %s".printf(usernick));
-#if WINDOWS
-									send("NOTICE "+target+" :\x01VERSION "+"XSIRC:"+VERSION+":"+"Windows"+"\x01");
-#else
-									send("NOTICE "+target+" :\x01VERSION "+"XSIRC:"+VERSION+":"+"Unix-like"+"\x01");
-#endif
-									break;
-								default:
-									add_to_view("<server>","UNHANDLED CTCP MESSAGE -- PREFIX: %s; MESSAGE: %s".printf(prefix,message));
-									break;
-							}
-						} else {
-							//add_to_view(target,"<%s> %s".printf(usernick,message));
-						}
-						/*if(message.down().contains(nick.down())) {
-							Notifier.fire_notification(this,find_view(target),"<%s> %s".printf(usernick,message));
-						}*/
 						break;
 					case "NOTICE":
 						if(split[2] == "AUTH") {
@@ -484,11 +449,6 @@ namespace XSIRC {
 										break;
 								}
 							} else {
-								if(find_view(target) != null) {
-									add_to_view(target,"-%s- %s".printf(usernick,message));
-								} else {
-									add_to_view(current_view().name,"-%s- %s".printf(usernick,message));
-								}
 							}
 						}
 						break;
@@ -496,7 +456,6 @@ namespace XSIRC {
 						Main.plugin_manager.on_quit(this,usernick,username,usermask,message);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
-								add_to_view(channel.title,"%s has disconnected [%s]".printf(usernick,message));
 								send("NAMES %s".printf(channel.title));
 							}
 						}
@@ -505,16 +464,13 @@ namespace XSIRC {
 						if(split[4] != null && !(/^[0-9]+$/.match(split[4]))) {
 							string targets = string.joinv(" ",split[4:(split.length-1)]);
 							Main.plugin_manager.on_chan_user_mode(this,usernick,username,usermask,split[2],split[3],targets);
-							add_to_view(split[2],"%s sets %s on %s".printf(usernick,split[3],targets));
 							send("NAMES %s".printf(split[2]));
 						} else if(split[2].has_prefix("#")) {
 							string targets = string.joinv(" ",split[3:(split.length-1)]);
 							Main.plugin_manager.on_chan_mode(this,usernick,username,usermask,split[2],targets);
-							add_to_view(split[2],"%s sets mode %s on %s".printf(usernick,targets,split[2]));
 							send("MODE %s".printf(split[2]));
 						} else {
 							Main.plugin_manager.on_mode(this,usernick,message);
-							add_to_view("<server>","Changing mode: %s".printf(message));
 						}
 						break;
 					case "TOPIC":
@@ -523,7 +479,6 @@ namespace XSIRC {
 						chan.topic.content = message;
 						chan.topic.time_set = time_t();
 						Main.plugin_manager.on_topic(this,usernick,username,usermask,chan.title,message);
-						add_to_view(split[2],"%s has set the topic to: %s".printf(usernick,message));
 						Main.gui.update_gui(this);
 						break;
 					case "333":
@@ -925,7 +880,7 @@ namespace XSIRC {
 			}
 		}
 		
-		private GUI.View? find_view(string name) {
+		public GUI.View? find_view(string name) {
 			foreach(GUI.View view in views) {
 				if(view.name.down() == name.down()) {
 					return view;
