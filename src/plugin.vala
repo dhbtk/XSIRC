@@ -7,13 +7,13 @@
 using Gee;
 namespace XSIRC {
 	public class Plugin : Object {
-		public string name {get; private set;}
-		public string description {get; private set;}
-		public string author {get; private set;}
-		public string version {get; private set;}
-		public int priority {get; private set;}
-		public bool enabled {get; set; default = true;}
-		public Gtk.Widget prefs_widget {get; private set; default = null;}
+		public string name;
+		public string description;
+		public string author;
+		public string version;
+		public int priority = 0;
+		public bool enabled = true;
+		public Gtk.Widget prefs_widget = null;
 		
 		public virtual bool on_join(Server server,string usernick,string username,string usermask,string channel) {
 			return true;
