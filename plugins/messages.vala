@@ -56,6 +56,7 @@ namespace XSIRC {
 			{MessageID.JOIN,"$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL"},
 			{MessageID.PART,"$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]"},
 			{MessageID.KICK,"$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]"},
+			{MessageID.NICK,"$USERNICK is now known as $NEWNICK."},
 			{MessageID.PRIVMSG,"<$USERRANK$USERNICK> $MESSAGE"},
 			{MessageID.ACTION,"*  $USERNICK $MESSAGE"},
 			{MessageID.CTCPMSG,"Got CTCP $REQUEST from $USERNICK"},
@@ -83,19 +84,28 @@ namespace XSIRC {
 		
 		private void set_up_prefs() {
 			Gtk.VBox box = new Gtk.VBox(false,0);
+			LinkedList<Gtk.Entry> entries = new LinkedList<Gtk.Entry>();
 			prefs_widget = box;
 			foreach(MessageType message_type in message_types) {
-				box.pack_start(new Gtk.Label(message_type.name),false,false,0);
+				Gtk.Label label = new Gtk.Label(message_type.name);
 				Gtk.Entry entry = new Gtk.Entry();
+				box.pack_start(label,false,false,0);
 				entry.text = messages[message_type.id];
 				entry.tooltip_text = message_type.accepted_params;
-				entry.focus_out_event.connect(() => {
-					messages[message_type.id] = entry.text;
-					save_messages();
-					return false;
-				});
+				entries.add(entry);
 				box.pack_start(entry,false,false,0);
 			}
+			// Saving
+			Gtk.Button button = new Gtk.Button.from_stock(Gtk.STOCK_SAVE);
+			button.clicked.connect(() => {
+				int i = 0;
+				foreach(Gtk.Entry entry in entries) {
+					messages[(MessageID)i] = entry.text;
+					i++;
+				}
+				save_messages();
+			});
+			box.pack_start(button,false,false,0);
 		}
 		
 		private void load_default_messages() {
