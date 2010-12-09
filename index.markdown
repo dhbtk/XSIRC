@@ -34,7 +34,7 @@ Recent News
 Download
 --------
 
-The latest version is 1.0: ([.tar.gz](https://github.com/NieXS/XSIRC/tarball/v1.0) [.zip](https://github.com/NieXS/XSIRC/zipball/v1.0)).
+The latest version is 1.2: ([.tar.gz](https://github.com/NieXS/XSIRC/tarball/v1.2) [.zip](https://github.com/NieXS/XSIRC/zipball/v1.2)).
 
 You can download the bleeding edge git commit here: [.zip](https://github.com/NieXS/XSIRC/zipball/master) [.tar.gz](https://github.com/NieXS/XSIRC/tarball/master)
 
