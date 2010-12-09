@@ -41,6 +41,9 @@ namespace XSIRC {
 					}
 					return true;
 				} else if(key.keyval == Gdk.keyval_from_name("Tab")) {
+					if(Main.gui.current_server() != null && Main.gui.current_server().current_view() != null) {
+						complete(Main.gui.current_server(),Main.gui.current_server().current_view());
+					}
 					return true;
 				} else {
 					completion_reset();

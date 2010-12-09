@@ -57,7 +57,7 @@ namespace XSIRC {
 			{MessageID.PART,"$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]"},
 			{MessageID.KICK,"$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]"},
 			{MessageID.PRIVMSG,"<$USERRANK$USERNICK> $MESSAGE"},
-			{MessageID.ACTION,"* $USERRANK$USERNICK $MESSAGE"},
+			{MessageID.ACTION,"*  $USERNICK $MESSAGE"},
 			{MessageID.CTCPMSG,"Got CTCP $REQUEST from $USERNICK"},
 			{MessageID.NOTICE,"-$USERNICK- $MESSAGE"},
 			{MessageID.QUIT,"$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]"},
@@ -78,6 +78,24 @@ namespace XSIRC {
 			prefs_widget = null;
 			load_default_messages();
 			load_messages();
+			set_up_prefs();
+		}
+		
+		private void set_up_prefs() {
+			Gtk.VBox box = new Gtk.VBox(false,0);
+			prefs_widget = box;
+			foreach(MessageType message_type in message_types) {
+				box.pack_start(new Gtk.Label(message_type.name),false,false,0);
+				Gtk.Entry entry = new Gtk.Entry();
+				entry.text = messages[message_type.id];
+				entry.tooltip_text = message_type.accepted_params;
+				entry.focus_out_event.connect(() => {
+					messages[message_type.id] = entry.text;
+					save_messages();
+					return false;
+				});
+				box.pack_start(entry,false,false,0);
+			}
 		}
 		
 		private void load_default_messages() {
@@ -87,7 +105,7 @@ namespace XSIRC {
 		}
 		
 		private void load_messages() {
-			string[] names = {"JOIN","PART","KICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","TOPIC"};
+			string[] names = {"JOIN","PART","KICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC"};
 			try {
 				KeyFile conf = new KeyFile();
 				conf.load_from_file(Environment.get_user_config_dir()+"/xsirc/messages.conf",0);
@@ -98,6 +116,23 @@ namespace XSIRC {
 					}
 					i++;
 				}
+			} catch(Error e) {
+				
+			}
+		}
+		
+		private void save_messages() {
+			string[] names = {"JOIN","PART","KICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC"};
+			try {
+				KeyFile conf = new KeyFile();
+				int i = 0;
+				foreach(string name in names) {
+					if(messages[(MessageID)i] != null) {
+						conf.set_string("messages",name,messages[(MessageID)i]);
+					}
+					i++;
+				}
+				FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/messages.conf",conf.to_data());
 			} catch(Error e) {
 				
 			}
@@ -323,7 +358,7 @@ namespace XSIRC {
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$TOPIC"};
 			string[] replacements = {usernick,username,usermask,channel,topic};
 			int i = 0;
-			string result = messages[MessageID.JOIN];
+			string result = messages[MessageID.TOPIC];
 			foreach(string s in replaced) {
 				if(s in result) {
 					result = result.replace(s,replacements[i]);
