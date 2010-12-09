@@ -194,7 +194,7 @@ namespace XSIRC {
 				return false;
 			} else if(socket_conn.socket == null) {
 				return false;
-			} else if(socket_conn.socket.condition_check(IOCondition.IN) == IOCondition.IN) {
+			} else if((socket_conn.socket.condition_check(IOCondition.IN) & IOCondition.IN) > 0) {
 				return true;
 			} else {
 				return false;
@@ -294,6 +294,7 @@ namespace XSIRC {
 		}
 		
 		private void raw_send(owned string s) {
+			return_if_fail(connected);
 			stdout.printf(">> %s\n",s);
 			s = s + "\n";
 			try {
