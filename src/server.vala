@@ -285,11 +285,15 @@ namespace XSIRC {
 						add_to_view(target,"<%s> %s".printf(nick,msg));
 					}
 					OutgoingMessage outg = {prefix+i,priority};
-					output_queue.offer(outg);
+					lock(output_queue) {
+						output_queue.offer(outg);
+					}
 				}
 			} else {
 				OutgoingMessage outg = {s,priority};
-				output_queue.offer(outg);
+				lock(output_queue) {
+					output_queue.offer(outg);
+				}
 			}
 		}
 		
@@ -313,7 +317,9 @@ namespace XSIRC {
 			while(!shutting_down) {
 				OutgoingMessage message;
 				if(output_queue.size != 0) {
-					message = output_queue.poll();
+					lock(output_queue) {
+						message = output_queue.poll();
+					}
 					Posix.usleep(((int)message.priority*1000));
 					raw_send(message.message);
 				}
