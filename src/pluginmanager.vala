@@ -204,7 +204,7 @@ namespace XSIRC {
 			plugins.sort((CompareFunc)plugincmp);
 		}
 		
-		public Plugin find_plugin(string name) {
+		public Plugin? find_plugin(string name) {
 			foreach(Plugin plugin in plugins) {
 				if(plugin.name == name) {
 					return plugin;

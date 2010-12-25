@@ -39,23 +39,20 @@ namespace XSIRC {
 			public ArrayList<string> raw_users = new ArrayList<string>();
 			public ArrayList<string> users     = new ArrayList<string>();
 			public bool userlist_recieved = true;
-			public bool in_channel;
-			public string mode;
+			public bool in_channel = true;
+			public string mode = "";
 			public bool got_create_date = false;
 			public struct Topic {
 				public string content;
 				public string setter;
 				public time_t time_set;
 			}
-			public string title;
+			public string name = "";
 			public Channel() {
-				title = "";
 				topic = Topic();
 				topic.content  = "";
 				topic.setter   = "";
 				topic.time_set = (time_t)0;
-				in_channel = true;
-				mode = "";
 			}
 		}
 		
@@ -142,13 +139,9 @@ namespace XSIRC {
 				// Ping timeout
 				if(((int)time_t() - (int)last_recieved) >= 300) {
 					add_to_view("<server>","Ping timeout. Reconnecting...");
-					try {
-						last_recieved = time_t();
-						irc_disconnect();
-						irc_connect();
-					} catch(Error e) {
-						
-					}
+					last_recieved = time_t();
+					irc_disconnect();
+					irc_connect();
 				}
 			}
 		}
@@ -171,17 +164,25 @@ namespace XSIRC {
 		
 		private async void socket_connect_async() {
 			connecting = true;
+			add_to_view("<server>","CONNECTION: starting connection attempt");
 			Resolver resolver = Resolver.get_default();
-			GLib.List<InetAddress> addresses = yield resolver.lookup_by_name_async(server,null);
-			if(addresses.length() < 1) {
-				add_to_view("<server>","ERROR: could not look up host name.");
+			add_to_view("<server>","CONNECTION: resolving name %s...".printf(server));
+			bool error = false;
+			GLib.List<InetAddress> addresses = null;
+			try {
+				addresses = yield resolver.lookup_by_name_async(server,null);
+			} catch(Error ee) { // TODO: report this bug, can not have two GLib.Errors with the same name in the same async method
+				error = true;
+			}
+			if(error || addresses.length() < 1) {
+				add_to_view("<server>","CONNECTION ERROR: could not look up host name.");
 				connecting = false;
 				connected = false;
 				sock_error = true;
 				return;
 			}
 			InetAddress address = addresses.nth_data(0);
-			add_to_view("<server>","Resolved %s to %s".printf(server,address.to_string()));
+			add_to_view("<server>","CONNECTION: resolved %s to %s".printf(server,address.to_string()));
 			socket_client = new SocketClient();
 			try {
 				socket_conn = yield socket_client.connect_async(new InetSocketAddress(address,(uint16)port),null);
@@ -190,13 +191,13 @@ namespace XSIRC {
 			} catch(Error e) {
 				connected = false;
 				sock_error = true;
-				add_to_view("<server>","ERROR: could not connect -- %s".printf(e.message));
+				add_to_view("<server>","CONNECTION ERROR: could not connect -- %s".printf(e.message));
 				Main.server_manager.on_connect_error(this);
 				Main.plugin_manager.on_connect_error(this);
 				return;
 			}
 			connecting = false;
-			add_to_view("<server>","Connected through port %d".printf(port));
+			add_to_view("<server>","CONNECTION: connected through port %d".printf(port));
 			socket_stream = new DataInputStream(socket_conn.input_stream);
 	
 			raw_send("USER %s rocks hard :%s".printf(Main.config["core"]["username"],Main.config["core"]["realname"]));
@@ -204,13 +205,6 @@ namespace XSIRC {
 			if(password != "") {
 				send("PASS %s".printf(password));
 			}
-			foreach(Channel channel in channels) {
-				if(!channel.in_channel) {
-					send("JOIN %s".printf(channel.title));
-				}
-			}
-			Main.server_manager.on_connect(this);
-			Main.plugin_manager.on_connect(this);
 			Main.gui.update_gui(this);
 			last_recieved = time_t();
 		}
@@ -346,7 +340,7 @@ namespace XSIRC {
 						if(find_channel(message) == null) {
 							Channel channel = new Channel();
 							this.channels.add(channel);
-							channel.title = message;
+							channel.name = message;
 							open_view(message);
 						}
 						find_channel(message).in_channel = true;
@@ -383,7 +377,7 @@ namespace XSIRC {
 						Main.plugin_manager.on_nick(this,message,usernick,username,usermask);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
-								send("NAMES %s".printf(channel.title));
+								send("NAMES %s".printf(channel.name));
 							}
 						}
 						foreach(GUI.View view in views) {
@@ -397,6 +391,11 @@ namespace XSIRC {
 						add_to_view("<server>","%s has invited you to %s.".printf(usernick,split[3]));
 						break;
 					case "001":
+						foreach(Channel channel in channels) {
+							if(!channel.in_channel) {
+								send("JOIN %s".printf(channel.name));
+							}
+						}
 						Main.plugin_manager.on_connect(this);
 						Main.server_manager.on_connect(this);
 						nick_tries = 0;
@@ -442,7 +441,7 @@ namespace XSIRC {
 						Main.plugin_manager.on_quit(this,usernick,username,usermask,message);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
-								send("NAMES %s".printf(channel.title));
+								send("NAMES %s".printf(channel.name));
 							}
 						}
 						break;
@@ -464,18 +463,14 @@ namespace XSIRC {
 						chan.topic.setter = usernick;
 						chan.topic.content = message;
 						chan.topic.time_set = time_t();
-						Main.plugin_manager.on_topic(this,usernick,username,usermask,chan.title,message);
+						Main.plugin_manager.on_topic(this,usernick,username,usermask,chan.name,message);
 						Main.gui.update_gui(this);
 						break;
 					case "333":
 						Channel chan = find_channel(split[3]);
 						chan.topic.setter = split[4];
 						chan.topic.time_set = (time_t)split[5].to_int();
-#if WINDOWS
-						add_to_view(split[3],"Topic set by %s on %s".printf(split[4],localtime(chan.topic.time_set).format("%c")));
-#else
-						add_to_view(split[3],"Topic set by %s on %s".printf(split[4],Time.local(chan.topic.time_set).format("%c")));
-#endif
+						add_to_view(split[3],"Topic set by %s on %s".printf(split[4],gen_timestamp("%c",chan.topic.time_set)));
 						break;
 					/*case "305":
 						am_away = false;
@@ -687,11 +682,7 @@ namespace XSIRC {
 						break;
 					case "329":
 						if(find_channel(split[3]) != null && !find_channel(split[3]).got_create_date) {
-#if WINDOWS
-							add_to_view(split[3],"Channel was created %s".printf(localtime((time_t)split[4].to_int()).format("%c")));
-#else
-							add_to_view(split[3],"Channel was created %s".printf(Time.local((time_t)split[4].to_int()).format("%c")));
-#endif
+							add_to_view(split[3],"Channel was created %s".printf(gen_timestamp("%c",(time_t)split[4].to_int())));
 							find_channel(split[3]).got_create_date = true;
 						}
 						break;
@@ -830,7 +821,7 @@ namespace XSIRC {
 		// Misc utility
 		public Channel? find_channel(string s) {
 			foreach(Channel channel in this.channels) {
-				if(channel.title.down() == s.down()) {
+				if(channel.name.down() == s.down()) {
 					return channel;
 				}
 			}

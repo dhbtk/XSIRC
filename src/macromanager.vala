@@ -84,7 +84,7 @@ namespace XSIRC {
 				// Testing the regex for validity
 				try {
 					Regex test = new Regex(new_text);
-					test = test;
+					test.match("test",0,null);
 					// Checking for uniqueness
 					foreach(Macro macro in Main.macro_manager.macros) {
 						if(macro.regex == new_text) {
@@ -203,7 +203,7 @@ namespace XSIRC {
 					try {
 						// Testing if it compiles
 						Regex test =  new Regex(k);
-						test = test;
+						test.match("test",0,null);
 						macro.regex = k;
 					} catch(RegexError e) {
 						continue;
@@ -250,12 +250,8 @@ namespace XSIRC {
 			macros_file = new KeyFile();
 			int i = 0;
 			foreach(Macro macro in macros) {
-				try {
-					macros_file.set_string("macros","regex%d".printf(i),macro.regex);
-					macros_file.set_string("macros","result%d".printf(i),macro.result);
-				} catch(KeyFileError e) {
-					
-				}
+				macros_file.set_string("macros","regex%d".printf(i),macro.regex);
+				macros_file.set_string("macros","result%d".printf(i),macro.result);
 				i++;
 			}
 			try {

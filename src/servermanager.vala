@@ -180,11 +180,7 @@ namespace XSIRC {
 				server.ssl     = new_server.ssl;
 				server.password= new_server.password;
 				server.label.label = Markup.escape_text("%s - %s".printf(server.network.name,server.server));
-				try {
-					server.irc_connect();
-				} catch(Error e) {
-					on_connect_error(server);
-				}
+				server.irc_connect();
 			} else {
 				server.add_to_view("<server>","No more servers to connect to");
 			}
