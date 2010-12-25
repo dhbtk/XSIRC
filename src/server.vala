@@ -158,7 +158,7 @@ namespace XSIRC {
 				return false;
 			} else if(socket_conn.socket == null) {
 				return false;
-			} else if((socket_conn.socket.condition_check(IOCondition.IN) & IOCondition.IN) > 0) {
+			} else if(((socket_conn.socket.condition_check(IOCondition.IN) & IOCondition.IN) > 0) || ((socket_conn.socket.condition_check(IOCondition.PRI) & IOCondition.PRI) > 0)) {
 				return true;
 			} else {
 				return false;
@@ -212,6 +212,7 @@ namespace XSIRC {
 			Main.server_manager.on_connect(this);
 			Main.plugin_manager.on_connect(this);
 			Main.gui.update_gui(this);
+			last_recieved = time_t();
 		}
 		
 		public void irc_disconnect() {
