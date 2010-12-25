@@ -1,5 +1,8 @@
 #include <time.h>
 #include <string.h>
+#ifndef WINDOWS
+#include <stdlib.h>
+#endif
 
 /* Cross-platform timestamp generation, since Time.local uses localtime_r, which
    is not available under MinGW since Win32's localtime is thread-safe */
