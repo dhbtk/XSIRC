@@ -11,14 +11,11 @@ only stock GTK+ widgets.
 Installing
 ==========
 
-XSIRC depends on GTK+-2.10, libnotify-0.5 and libgee-0.5. It also requires python and vala for
-the compilation. Compilation is simple:
+XSIRC depends on GTK+-2.16, libnotify-0.5 and libgee-0.5. It also requires python
+and vala for the compilation. Installation is simple:
 
 	~/xsirc $ ./waf configure
-	~/xsirc $ ./waf
-
-Installation is also simple:
-
+	~/xsirc $ ./waf build
 	~/xsirc $ ./waf install
  
 XSIRC can be uninstalled by calling ./waf uninstall.
