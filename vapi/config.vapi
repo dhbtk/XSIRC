@@ -1,5 +1,5 @@
-[CCode (cname = "make_localtime", cheader_filename = "localtime_r_w32.h")]
-GLib.Time localtime(time_t time);
+[CCode (cname = "gen_timestamp", cheader_filename = "gen_timestamp.h")]
+string gen_timestamp(string format,time_t time);
 
 //[CCode (cprefix = "", lower_case_cprefix = "", cheader_filename = "config.h")]
 //namespace XSIRC {

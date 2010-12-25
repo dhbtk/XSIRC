@@ -5,13 +5,15 @@
 # Distributed under the New BSD License; see LICENSE for details.
 if bld.env['windows'] == 'yes':
 	flags = ['-g','-mingw32']
-	bld.stlib(
-		source = 'localtime_r_w32.c',
-		target = 'localtime_r')
-	to_use = 'localtime_r'
 else:
 	flags = ['-g']
-	to_use = ''
+bld.stlib(
+	source = 'gen_timestamp.c',
+	target = 'timestamp')
+bld.stlib(
+	source = 'gen_timestamp_shlib.c',
+	target = 'timestamp_shli')
+to_use = 'timestamp'
 bld.program(
 	source    = bld.path.ant_glob('*.vala'),
 	features  = 'c cprogram',
@@ -32,7 +34,7 @@ bld.shlib(
 	vapi_dirs = '../vapi',
 	includes  = '../vapi',
 	target    = 'xsirc',
-	use       = to_use,
+	use       = 'timestamp_shlib',
 	cflags    = ['-include','config.h','-g'],
 	linkflags = flags,
 	uselib    = 'GTK GLIB GIO GEE GMODULE NOTIFY',

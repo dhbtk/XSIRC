@@ -59,11 +59,7 @@ namespace XSIRC {
 		}
 		
 		private void save_bool(bool what,string section,string name) {
-			try {
-				raw_file.set_boolean(section,name,what);
-			} catch(KeyFileError e) {
-				
-			}
+			raw_file.set_boolean(section,name,what);
 		}
 		
 		private void load_bool(out bool what,string section,string name) {

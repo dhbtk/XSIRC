@@ -49,7 +49,7 @@ namespace XSIRC {
 			{MessageID.CHANUSERMODE,"Channel user mode change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES, $TARGETS"},
 			{MessageID.CHANMODE,"Channel mode change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES"},
 			{MessageID.MODE,"User mode change","$NICK, $MODES"},
-			{MessageID.TOPIC,"Topic change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MESSAGE"}
+			{MessageID.TOPIC,"Topic change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $TOPIC"}
 		};
 		
 		private const DefaultMessage[] default_messages = {
@@ -65,7 +65,7 @@ namespace XSIRC {
 			{MessageID.CHANUSERMODE,"$USERNICK sets mode $MODES on $TARGETS"},
 			{MessageID.CHANMODE,"$USERNICK sets $CHANNEL's mode: $MODES"},
 			{MessageID.MODE,"Changing mode: $MODES"},
-			{MessageID.TOPIC,"$USERNICK sets the topic to $MESSAGE"}
+			{MessageID.TOPIC,"$USERNICK sets the topic to $TOPIC"}
 		};
 		
 		private HashMap<MessageID,string> messages = new HashMap<MessageID,string>();
@@ -206,7 +206,7 @@ namespace XSIRC {
 			}
 			foreach(Server.Channel channel in server.channels) {
 				if(usernick.down() in channel.users) {
-					server.add_to_view(channel.title,result);
+					server.add_to_view(channel.name,result);
 				}
 			}
 			foreach(GUI.View view in server.views) {
@@ -308,7 +308,7 @@ namespace XSIRC {
 			}
 			foreach(Server.Channel channel in server.channels) {
 				if(usernick.down() in channel.users) {
-					server.add_to_view(channel.title,result);
+					server.add_to_view(channel.name,result);
 				}
 			}
 			foreach(GUI.View view in server.views) {

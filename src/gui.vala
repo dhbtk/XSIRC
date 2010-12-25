@@ -491,11 +491,7 @@ namespace XSIRC {
 		public static void reconnect_all_cb(Gtk.Action action) {
 			foreach(Server server in Main.server_manager.servers) {
 				server.irc_disconnect();
-				try {
-					server.irc_connect();
-				} catch(Error e) {
-					
-				}
+				server.irc_connect();
 			}
 		}
 		
@@ -604,11 +600,7 @@ namespace XSIRC {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
 				server.irc_disconnect();
-				try {
-					server.irc_connect();
-				} catch(Error e) {
-					
-				}
+				server.irc_connect();
 			}
 		}
 		
@@ -625,8 +617,8 @@ namespace XSIRC {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
 				foreach(Server.Channel channel in server.channels) {
-					server.send("PART %s".printf(channel.title));
-					server.send("JOIN %s".printf(channel.title));
+					server.send("PART %s".printf(channel.name));
+					server.send("JOIN %s".printf(channel.name));
 				}
 			}
 		}
@@ -836,11 +828,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		// Misc
 		
 		public string timestamp() {
-#if WINDOWS
-			return localtime(time_t()).format(Main.config["core"]["timestamp_format"]);
-#else
-			return Time.local(time_t()).format(Main.config["core"]["timestamp_format"]);
-#endif
+			return gen_timestamp(Main.config["core"]["timestamp_format"],time_t());
 		}
 	}
 }
