@@ -271,8 +271,28 @@ namespace XSIRC {
 		}
 		
 		private bool quit() {
-			// TODO
-			return false;
+			bool q = false;
+			int connected_networks = 0;
+			foreach(Server server in Main.server_manager.servers) {
+				if(server.connected && !server.sock_error) {
+					connected_networks++;
+				}
+			}
+			if(connected_networks > 0) {
+				Gtk.MessageDialog d = new Gtk.MessageDialog(main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.QUESTION,Gtk.ButtonsType.YES_NO,"Really quit? You are connected to %d IRC %s.".printf(connected_networks,connected_networks > 1 ? "networks" : "network"));
+				d.response.connect((id) => {
+					if(id == Gtk.ResponseType.YES) {
+						q = false;
+					} else {
+						q = true;
+					}
+					d.destroy();
+				});
+				d.run();
+				return q;
+			} else {
+				return false;
+			}
 		}
 		
 		/*private void* thread_func() {
@@ -338,7 +358,9 @@ namespace XSIRC {
 				} else {
 					title_string.append(server.server);
 				}
-				if(!server.connected) {
+				if(server.connecting) {
+					title_string.append(" (connecting)");
+				} else if(!server.connected) {
 					title_string.append(" (disconnected)");
 				}
 				if(server.current_view() != null) {
@@ -537,6 +559,13 @@ namespace XSIRC {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
 				Gtk.Dialog dialog = new Gtk.Dialog.with_buttons("Open view",Main.gui.main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
+				dialog.key_press_event.connect((key) => {
+					if(key.keyval == Gdk.keyval_from_name("Escape")) {
+						dialog.destroy();
+						return true;
+					}
+					return false;
+				});
 				Gtk.HBox box = new Gtk.HBox(false,0);
 				box.pack_start(new Gtk.Label("View name:"),false,false,0);
 				Gtk.Entry server_entry = new Gtk.Entry();
@@ -751,6 +780,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			server_entry.text = "irc://";
 			server_entry.activate.connect(() => {
 				dialog.response(Gtk.ResponseType.ACCEPT);
+			});
+			dialog.key_press_event.connect((key) => {
+				if(key.keyval == Gdk.keyval_from_name("Escape")) {
+					dialog.destroy();
+					return true;
+				}
+				return false;
 			});
 			box.pack_start(server_entry,false,false,0);
 			server_entry.grab_focus();
