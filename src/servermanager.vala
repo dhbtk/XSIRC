@@ -85,6 +85,10 @@ namespace XSIRC {
 				} catch(KeyFileError e) {
 					stderr.printf("Error loading network: %s\n",e.message);
 				}
+				// Iterator thing
+				IdleSource src = new IdleSource();
+				src.set_callback(server_manager_iterator);
+				src.attach(null);
 			}
 		}
 		
@@ -185,5 +189,11 @@ namespace XSIRC {
 				server.add_to_view("<server>","No more servers to connect to");
 			}
 		}
+	}
+	
+	// Iterator
+	bool server_manager_iterator() {
+		Main.server_manager.iterate();
+		return true;
 	}
 }

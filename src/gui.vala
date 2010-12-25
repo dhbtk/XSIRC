@@ -17,8 +17,6 @@ namespace XSIRC {
 		public Gtk.Entry topic_view {get; private set;}
 		public Gtk.Statusbar status_bar {get; private set;}
 		public View system_view {get; private set;}
-		public bool destroyed {get; private set;default = false;}
-		private Gtk.MenuItem[] views_menu = new Gtk.MenuItem[9];
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
 			{"ClientMenu",null,"_Client"},
@@ -140,7 +138,7 @@ namespace XSIRC {
 			main_window.title = "XSIRC";
 			main_window.set_default_size(640,320);
 			main_window.delete_event.connect(quit);
-			main_window.destroy.connect(()=>{destroyed=true;});
+			main_window.destroy.connect(()=>{Gtk.main_quit();});
 			
 			Gtk.VBox main_vbox = new Gtk.VBox(false,0); // Main VBox, holds menubar + userlist, server notebook, entry field + status bar
 			main_window.add(main_vbox);
@@ -480,7 +478,7 @@ namespace XSIRC {
 		}
 		
 		public static void quit_client_cb(Gtk.Action action) {
-			Main.gui.destroyed = true;
+			Gtk.main_quit();
 		}
 		
 		public static void spawn_preferences_cb(Gtk.Action action) {

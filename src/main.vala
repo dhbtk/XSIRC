@@ -11,13 +11,10 @@ namespace XSIRC {
 	
 	void main_loop() {
 		Main.plugin_manager.on_startup();
-		while(!Main.gui.destroyed) {
-			Main.gui.iterate();
-			Main.server_manager.iterate();
-			Posix.usleep(10);
-		}
+		Gtk.main();
 		Main.plugin_manager.on_shutdown();
 	}
+	
 	int main(string[] args) {
 		Gtk.init(ref args);
 		try {
