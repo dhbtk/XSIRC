@@ -13,6 +13,10 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	private bool highlight_on_notices = false;
 	private bool highlight_on_pms = true;
 	private bool highlight_on_all_privmsgs = false;
+	private bool blink_on_taskbar = false;
+	private bool blink_status_icon = false;
+	private bool pop_up_libnotify = true;
+	private bool add_to_server_view = true;
 	private Gtk.ListStore model = new Gtk.ListStore(1,typeof(string));
 	private Gtk.TreeView tree = new Gtk.TreeView();
 	private Gtk.StatusIcon icon;
@@ -54,8 +58,38 @@ public class HighlightsPlugin : XSIRC.Plugin {
 		});
 		h_on_all_pms.active = highlight_on_all_privmsgs;
 		vbox.pack_start(h_on_all_pms,false,false,0);
+		// Other stuff
+		vbox.pack_start(new Gtk.Label(_("When highlighting:")),false,false,0);
+		Gtk.CheckButton notify_taskbar = new Gtk.CheckButton.with_label(_("Blink on the taskbar"));
+		notify_taskbar.active = blink_on_taskbar;
+		notify_taskbar.toggled.connect(() => {
+			blink_on_taskbar = notify_taskbar.active;
+			save_settings();
+		});
+		vbox.pack_start(notify_taskbar,false,false,0);
+		Gtk.CheckButton notify_tray = new Gtk.CheckButton.with_label(_("Blink the tray icon"));
+		notify_tray.active = blink_status_icon;
+		notify_tray.toggled.connect(() => {
+			blink_status_icon = notify_tray.active;
+			save_settings();
+		});
+		vbox.pack_start(notify_tray,false,false,0);
+		Gtk.CheckButton notify_balloon = new Gtk.CheckButton.with_label(_("Pop up a notification balloon"));
+		notify_balloon.active = pop_up_libnotify;
+		notify_balloon.toggled.connect(() => {
+			pop_up_libnotify = notify_balloon.active;
+			save_settings();
+		});
+		vbox.pack_start(notify_balloon,false,false,0);
+		Gtk.CheckButton notify_server_view = new Gtk.CheckButton.with_label(_("Add message to server view"));
+		notify_server_view.active = add_to_server_view;
+		notify_server_view.toggled.connect(() => {
+			add_to_server_view = notify_server_view.active;
+			save_settings();
+		});
+		vbox.pack_start(notify_server_view,false,false);
 		// Tree View
-		vbox.pack_start(new Gtk.Label(_("Highlight on regexes:")),false,false,0);
+		vbox.pack_start(new Gtk.Label(_("Regexes to highlight on:")),false,false,0);
 		Gtk.CellRendererText renderer = new Gtk.CellRendererText();
 		renderer.editable = true;
 		renderer.edited.connect(regex_edited);
@@ -79,14 +113,8 @@ public class HighlightsPlugin : XSIRC.Plugin {
 		icon = new Gtk.StatusIcon.from_file(PREFIX+"/share/pixmaps/xsirc.png");
 		icon.activate.connect(() => {
 			XSIRC.Main.gui.main_window.present();
+			XSIRC.Main.gui.main_window.set_urgency_hint(false);
 			icon.blinking = false;
-		});
-		XSIRC.Main.gui.main_window.visibility_notify_event.connect((event) => {
-			if(event.visibility.state == Gdk.VisibilityState.UNOBSCURED || event.visibility.state == Gdk.VisibilityState.PARTIAL) {
-				XSIRC.Main.gui.main_window.set_urgency_hint(false);
-				icon.blinking = false;
-			}
-			return false;
 		});
 	}
 	
@@ -146,6 +174,18 @@ public class HighlightsPlugin : XSIRC.Plugin {
 				if(conf.has_key("XSIRC","highlight_on_all_privmsgs")) {
 					highlight_on_all_privmsgs = conf.get_boolean("XSIRC","highlight_on_all_privmsgs");
 				}
+				if(conf.has_key("XSIRC","blink_on_taskbar")) {
+					blink_on_taskbar = conf.get_boolean("XSIRC","blink_on_taskbar");
+				}
+				if(conf.has_key("XSIRC","blink_status_icon")) {
+					blink_status_icon = conf.get_boolean("XSIRC","blink_status_icon");
+				}
+				if(conf.has_key("XSIRC","pop_up_libnotify")) {
+					pop_up_libnotify = conf.get_boolean("XSIRC","pop_up_libnotify");
+				}
+				if(conf.has_key("XSIRC","add_to_server_view")) {
+					add_to_server_view = conf.get_boolean("XSIRC","add_to_server_view");
+				}
 				for(int i = 0;conf.has_key("XSIRC","regex%d".printf(i));i++) {
 					highlight_regexes.add(conf.get_string("XSIRC","regex%d".printf(i)));
 				}
@@ -162,6 +202,10 @@ public class HighlightsPlugin : XSIRC.Plugin {
 			conf.set_boolean("XSIRC","highlight_on_notices",highlight_on_notices);
 			conf.set_boolean("XSIRC","highlight_on_pms",highlight_on_pms);
 			conf.set_boolean("XSIRC","highlight_on_all_privmsgs",highlight_on_all_privmsgs);
+			conf.set_boolean("XSIRC","blink_on_taskbar",blink_on_taskbar);
+			conf.set_boolean("XSIRC","blink_status_icon",blink_status_icon);
+			conf.set_boolean("XSIRC","pop_up_libnotify",pop_up_libnotify);
+			conf.set_boolean("XSIRC","add_to_server_view",add_to_server_view);
 			int i = 0;
 			foreach(string regex in highlight_regexes) {
 				conf.set_string("XSIRC","regex%d".printf(i),regex);
@@ -202,12 +246,14 @@ public class HighlightsPlugin : XSIRC.Plugin {
 			} else {
 				my_message = "<%s:%s> %s".printf(my_target,usernick,my_message);
 			}
-			server.add_to_view(_("<server>"),my_message);
+			if(add_to_server_view) {
+				server.add_to_view(_("<server>"),my_message);
+			}
 			highlight(server.server+" - "+my_target,my_message);
 			return true;
 		}
 		foreach(string pattern in highlight_regexes) {
-			if(Regex.match_simple(pattern,message)) {
+			if(Regex.match_simple(pattern,message,RegexCompileFlags.CASELESS)) {
 				string my_message = message;
 				string my_target = target.down() == server.nick.down() ? usernick : target;
 				// Checking for ACTIONS
@@ -217,12 +263,14 @@ public class HighlightsPlugin : XSIRC.Plugin {
 				} else {
 					my_message = "<%s:%s> %s".printf(my_target,usernick,my_message);
 				}
-				server.add_to_view(_("<server>"),my_message);
+				if(add_to_server_view) {
+					server.add_to_view(_("<server>"),my_message);
+				}
 				highlight(server.server+" - "+my_target,my_message);
 				return true;
 			}
 		}
-		if(highlight_on_nick && Regex.match_simple("\\b"+Regex.escape_string(server.nick)+"\\b",message)) {
+		if(highlight_on_nick && Regex.match_simple("\\b"+Regex.escape_string(server.nick)+"\\b",message,RegexCompileFlags.CASELESS)) {
 			string my_message = message;
 			string my_target = target.down() == server.nick.down() ? usernick : target;
 			// Checking for ACTIONS
@@ -232,7 +280,9 @@ public class HighlightsPlugin : XSIRC.Plugin {
 			} else {
 				my_message = "<%s:%s> %s".printf(my_target,usernick,my_message);
 			}
-			server.add_to_view(_("<server>"),my_message);
+			if(add_to_server_view) {
+				server.add_to_view(_("<server>"),my_message);
+			}
 			highlight(server.server+" - "+my_target,my_message);
 			return true;
 		}
@@ -252,19 +302,35 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	}
 	
 	private void highlight(string title,string content) {
-		// Haven't figured out the API for Win32 balloons yet :/
-		icon.blinking = true;
-		XSIRC.Main.gui.main_window.set_urgency_hint(true);
-#if !WINDOWS
-		Notify.Notification notification = new Notify.Notification(title,Markup.escape_text(content),PREFIX+"/share/pixmaps/xsirc.png",null);
-		notification.set_timeout(5000);
-		notification.set_urgency(Notify.Urgency.CRITICAL);
-		try {
-			notification.show();
-		} catch(Error e) {
-			
+		if(XSIRC.Main.gui.main_window.is_active) {
+			return;
 		}
+		// Haven't figured out the API for Win32 balloons yet :/
+		if(blink_status_icon) {
+			icon.blinking = true;
+		}
+		if(blink_on_taskbar) {
+			XSIRC.Main.gui.main_window.set_urgency_hint(true);
+			TimeoutSource src = new TimeoutSource(5000);
+			src.set_callback(() => {
+				icon.blinking = false;
+				XSIRC.Main.gui.main_window.set_urgency_hint(false);
+				return true;
+			});
+			src.attach(null);
+		}
+		if(pop_up_libnotify) {
+#if !WINDOWS
+			Notify.Notification notification = new Notify.Notification(title,Markup.escape_text(content),PREFIX+"/share/pixmaps/xsirc.png",null);
+			notification.set_timeout(5000);
+			notification.set_urgency(Notify.Urgency.CRITICAL);
+			try {
+				notification.show();
+			} catch(Error e) {
+			
+			}
 #endif
+		}
 	}
 }
 

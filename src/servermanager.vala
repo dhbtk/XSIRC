@@ -86,7 +86,7 @@ namespace XSIRC {
 					stderr.printf("Error loading network: %s\n",e.message);
 				}
 				// Iterator thing
-				IdleSource src = new IdleSource();
+				TimeoutSource src = new TimeoutSource(100);
 				src.set_callback(server_manager_iterator);
 				src.attach(null);
 			}
