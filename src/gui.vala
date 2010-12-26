@@ -19,28 +19,29 @@ namespace XSIRC {
 		public View system_view {get; private set;}
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
-			{"ClientMenu",null,"_Client"},
-			{"Connect",Gtk.STOCK_CONNECT,"_Connect...","<control><shift>O","Connect to a server.",connect_server_cb},
-			{"DisconnectAll",Gtk.STOCK_DISCONNECT,"_Disconnect all",null,null,disconnect_all_cb},
-			{"ReconnectAll",Gtk.STOCK_NETWORK,"_Reconnect all",null,null,reconnect_all_cb},
-			{"OpenLastLink",null,"_Open last link","F2",null,open_last_link_cb},
-			{"OpenSLastLink",null,"O_pen sec-to-last link","<control>F2",null,open_sl_link_cb},
+			{"ClientMenu",null,N_("_Client")},
+			{"Connect",Gtk.STOCK_CONNECT,N_("_Connect..."),"<control><shift>O",N_("Connect to a server."),connect_server_cb},
+			{"DisconnectAll",Gtk.STOCK_DISCONNECT,N_("_Disconnect all"),null,null,disconnect_all_cb},
+			{"ReconnectAll",Gtk.STOCK_NETWORK,N_("_Reconnect all"),null,null,reconnect_all_cb},
+			{"OpenLastLink",null,N_("_Open last link"),"F2",null,open_last_link_cb},
+			{"OpenSLastLink",null,N_("O_pen sec-to-last link"),"<control>F2",null,open_sl_link_cb},
 			{"Exit",Gtk.STOCK_QUIT,null,null,null,quit_client_cb},
 			// Settings
-			{"SettingsMenu",null,"S_ettings"},
+			{"SettingsMenu",null,N_("S_ettings")},
 			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
-			{"AdvancedMenu",null,"_Advanced"},
-			{"MacroPreferences",null,"_Macros...",null,null,spawn_macro_preferences_cb},
-			{"PluginPreferences",null,"_Plugins...",null,null,spawn_plugin_preferences_cb},
+			{"AdvancedMenu",null,N_("_Advanced")},
+			{"MacroPreferences",null,N_("_Macros..."),null,null,spawn_macro_preferences_cb},
+			{"PluginPreferences",null,N_("_Plugins..."),null,null,spawn_plugin_preferences_cb},
 			// View
-			{"ViewMenu",null,"_View"},
-			{"PrevServer",Gtk.STOCK_GOTO_FIRST,"Previous server","<control><alt>comma",null,previous_server_cb},
-			{"NextServer",Gtk.STOCK_GOTO_LAST,"Next server","<control><alt>period",null,next_server_cb},
-			{"PrevView",Gtk.STOCK_GO_BACK,"Previous view","<control>comma",null,previous_view_cb},
-			{"NextView",Gtk.STOCK_GO_FORWARD,"Next view","<control>period",null,next_view_cb},
-			{"CloseView",Gtk.STOCK_CLOSE,"_Close view","<control>w",null,close_view_cb},
-			{"RejoinChannel",null,"Re_join channel",null,null,rejoin_chan_cb},
-			{"OpenView",Gtk.STOCK_OPEN,"_Open view...","<control>o",null,open_view_cb},
+			{"ViewMenu",null,N_("_View")},
+			{"PrevServer",Gtk.STOCK_GOTO_FIRST,N_("Previous server"),"<control><alt>comma",null,previous_server_cb},
+			{"NextServer",Gtk.STOCK_GOTO_LAST,N_("Next server"),"<control><alt>period",null,next_server_cb},
+			{"PrevView",Gtk.STOCK_GO_BACK,N_("Previous view"),"<control>comma",null,previous_view_cb},
+			{"NextView",Gtk.STOCK_GO_FORWARD,N_("Next view"),"<control>period",null,next_view_cb},
+			{"CloseView",Gtk.STOCK_CLOSE,N_("_Close view"),"<control>w",null,close_view_cb},
+			{"RejoinChannel",null,N_("Re_join channel"),null,null,rejoin_chan_cb},
+			{"OpenView",Gtk.STOCK_OPEN,N_("_Open view..."),"<control>o",null,open_view_cb},
+			// These names never see the light of day, so there's no need to translate them
 			{"View1",null,"View 1","<alt>1",null,change_view_cb},
 			{"View2",null,"View 2","<alt>2",null,change_view_cb},
 			{"View3",null,"View 3","<alt>3",null,change_view_cb},
@@ -52,15 +53,15 @@ namespace XSIRC {
 			{"View9",null,"View 9","<alt>9",null,change_view_cb},
 			{"View10",null,"View 10","<alt>0",null,change_view_cb},
 			// Server
-			{"ServerMenu",null,"_Server"},
-			{"Disconnect",Gtk.STOCK_DISCONNECT,"_Disconnect","<control><shift>d",null,disconnect_server_cb},
-			{"Reconnect",Gtk.STOCK_CONNECT,"_Reconnect","<control><shift>r",null,reconnect_server_cb},
-			{"CloseServer",Gtk.STOCK_CLOSE,"_Close","<control><shift>w",null,close_server_cb},
-			{"RejoinAll",null,"Re_join all",null,null,rejoin_all_cb},
-			{"GoAway",null,"_Mark as away","<control><shift>a",null,go_away_cb},
+			{"ServerMenu",null,N_("_Server")},
+			{"Disconnect",Gtk.STOCK_DISCONNECT,N_("_Disconnect"),"<control><shift>d",null,disconnect_server_cb},
+			{"Reconnect",Gtk.STOCK_CONNECT,N_("_Reconnect"),"<control><shift>r",null,reconnect_server_cb},
+			{"CloseServer",Gtk.STOCK_CLOSE,N_("_Close"),"<control><shift>w",null,close_server_cb},
+			{"RejoinAll",null,N_("Re_join all"),null,null,rejoin_all_cb},
+			{"GoAway",null,N_("_Mark as away"),"<control><shift>a",null,go_away_cb},
 			// Help
-			{"HelpMenu",null,"_Help"},
-			{"HelpContents",Gtk.STOCK_HELP,"_Contents","F1",null,spawn_help_cb},
+			{"HelpMenu",null,N_("_Help")},
+			{"HelpContents",Gtk.STOCK_HELP,N_("_Online help"),"F1",null,spawn_help_cb},
 			{"About",Gtk.STOCK_ABOUT,null,null,null,spawn_about_cb}
 		};
 		private Gtk.UIManager ui_manager;
@@ -179,7 +180,7 @@ namespace XSIRC {
 			main_hbox.add1(user_list_container);
 			
 			Gtk.CellRendererText renderer = new Gtk.CellRendererText();
-			Gtk.TreeViewColumn display_column = new Gtk.TreeViewColumn.with_attributes("Users",renderer,"text",0,null);
+			Gtk.TreeViewColumn display_column = new Gtk.TreeViewColumn.with_attributes(_("Users"),renderer,"text",0,null);
 			user_list.append_column(display_column);
 			
 			// Quick VBox for server notebook+input
@@ -279,7 +280,7 @@ namespace XSIRC {
 				}
 			}
 			if(connected_networks > 0) {
-				Gtk.MessageDialog d = new Gtk.MessageDialog(main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.QUESTION,Gtk.ButtonsType.YES_NO,"Really quit? You are connected to %d IRC %s.".printf(connected_networks,connected_networks > 1 ? "networks" : "network"));
+				Gtk.MessageDialog d = new Gtk.MessageDialog(main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.QUESTION,Gtk.ButtonsType.YES_NO,_("Really quit? You are connected to %d IRC %s.").printf(connected_networks,connected_networks > 1 ? _("networks") : _("network")));
 				d.response.connect((id) => {
 					if(id == Gtk.ResponseType.YES) {
 						q = false;
@@ -359,15 +360,15 @@ namespace XSIRC {
 					title_string.append(server.server);
 				}
 				if(server.connecting) {
-					title_string.append(" (connecting)");
+					title_string.append(_(" (connecting)"));
 				} else if(!server.connected) {
-					title_string.append(" (disconnected)");
+					title_string.append(_(" (disconnected)"));
 				}
 				if(server.current_view() != null) {
 					title_string.append(" - ").append(curr_view.name);
 					if(server.find_channel(curr_view.name) != null) {
 						if(!server.find_channel(curr_view.name).in_channel) {
-							title_string.append(" (kicked)");
+							title_string.append(_(" (out of channel)"));
 						}
 						title_string.append(" (").append(server.find_channel(curr_view.name).mode).append(")");
 						topic_view.text = server.find_channel(curr_view.name).topic.content;
@@ -391,7 +392,7 @@ namespace XSIRC {
 			} else {
 				(user_list.model as Gtk.ListStore).clear();
 				topic_view.text = "";
-				main_window.title = "XSIRC - Idle";
+				main_window.title = _("XSIRC - Idle");
 			}
 			//gui_mutex.unlock();
 		}
@@ -554,7 +555,7 @@ namespace XSIRC {
 		public static void open_view_cb(Gtk.Action action) {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
-				Gtk.Dialog dialog = new Gtk.Dialog.with_buttons("Open view",Main.gui.main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
+				Gtk.Dialog dialog = new Gtk.Dialog.with_buttons(_("Open view"),Main.gui.main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
 				dialog.key_press_event.connect((key) => {
 					if(key.keyval == Gdk.keyval_from_name("Escape")) {
 						dialog.destroy();
@@ -563,7 +564,7 @@ namespace XSIRC {
 					return false;
 				});
 				Gtk.HBox box = new Gtk.HBox(false,0);
-				box.pack_start(new Gtk.Label("View name:"),false,false,0);
+				box.pack_start(new Gtk.Label(_("View name:")),false,false,0);
 				Gtk.Entry server_entry = new Gtk.Entry();
 				server_entry.activate.connect(() => {
 					dialog.response(Gtk.ResponseType.ACCEPT);
@@ -655,7 +656,7 @@ namespace XSIRC {
 						try {
 							Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+info.fetch(1)).split(" "),null,0,null,null);
 						} catch(SpawnError e) {
-							Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
+							Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
 							d.response.connect(() => {d.destroy();});
 							d.show_all();
 						}
@@ -690,7 +691,7 @@ namespace XSIRC {
 						try {
 							Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+info.fetch(1)).split(" "),null,0,null,null);
 						} catch(SpawnError e) {
-							Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
+							Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
 							d.response.connect(() => {d.destroy();});
 							d.show_all();
 						}
@@ -704,7 +705,7 @@ namespace XSIRC {
 				try {
 					Process.spawn_async(null,(Main.config["core"]["web_browser"]+" http://xsirc.niexs.net/manual.html").split(" "),null,0,null,null);
 				} catch(SpawnError e) {
-					Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
+					Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
 					d.response.connect(() => {d.destroy();});
 					d.show_all();
 				}
@@ -714,7 +715,7 @@ namespace XSIRC {
 			Gtk.AboutDialog.set_url_hook((Gtk.AboutDialogActivateLinkFunc)open_browser);
 			Gtk.AboutDialog d = new Gtk.AboutDialog();
 			d.authors = {"Eduardo Niehues (NieXS) <neo.niexs@gmail.com>"};
-			d.copyright = "Copyright (c) 2010 Eduardo Niehues. All rights reserved.";
+			d.copyright = _("Copyright (c) 2010 Eduardo Niehues. All rights reserved.");
 			d.license = """Copyright (c) 2010, Eduardo Niehues.
 All rights reserved.
 
@@ -745,7 +746,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 				
 			}
 			d.program_name = "XSIRC";
-			d.comments = "GTK+ IRC Client";
+			d.comments = _("GTK+ IRC Client");
 			d.version      = VERSION;
 			d.website      = "http://xsirc.niexs.net";
 			d.response.connect(() => {d.destroy();});
@@ -757,7 +758,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			try {
 				Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+link).split(" "),null,0,null,null);
 			} catch(SpawnError e) {
-				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"Could not open web browser. Check your preferences.");
+				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
 				d.response.connect(() => {d.destroy();});
 				d.show_all();
 			}
@@ -765,9 +766,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		// Dialogs
 		public void open_connect_dialog() {
 			//gui_mutex.lock();
-			Gtk.Dialog dialog = new Gtk.Dialog.with_buttons("Connect to server",main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
+			Gtk.Dialog dialog = new Gtk.Dialog.with_buttons(_("Connect to server"),main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
 			Gtk.HBox box = new Gtk.HBox(false,0);
-			box.pack_start(new Gtk.Label("Server URL:"),false,false,0);
+			box.pack_start(new Gtk.Label(_("Server URL:")),false,false,0);
 			Gtk.Entry server_entry = new Gtk.Entry();
 			server_entry.text = "irc://";
 			server_entry.activate.connect(() => {

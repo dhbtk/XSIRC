@@ -69,7 +69,7 @@ namespace XSIRC {
 			notebook.tab_pos = Gtk.PositionType.BOTTOM;
 			label    = new Gtk.Label((network != null ? network.name+" - " : "")+server);
 			label.use_markup = true;
-			open_view("<server>");
+			open_view(_("<server>"));
 			// State stuff
 			this.server   = server;
 			this.port     = port;
@@ -102,7 +102,7 @@ namespace XSIRC {
 		
 		public void iterate() {
 			if(socket_ready() && connected && !sock_error) {
-				//add_to_view("<server>","DEBUG -- socket ready");
+				//add_to_view(_("<server>"),_("DEBUG -- socket ready");
 				string s = null;
 				try {
 					s = socket_stream.read_line(null,null);
@@ -110,7 +110,7 @@ namespace XSIRC {
 					connected = false;
 					sock_error = true;
 					Main.gui.update_gui(this);
-					add_to_view("<server>","ERROR: error fetching line: %s".printf(e.message));
+					add_to_view(_("<server>"),_("ERROR: error fetching line: %s").printf(e.message));
 				}
 				if(s == null) {
 					connected = false;
@@ -127,7 +127,7 @@ namespace XSIRC {
 					}
 				}
 				s = s.strip().replace("\r","").replace("\n","");
-				//add_to_view("<server>","DEBUG -- got: %s".printf(s));
+				//add_to_view(_("<server>"),_("DEBUG -- got: %s").printf(s));
 				handle_server_input(s);
 			}
 			if(connected && !sock_error) {
@@ -140,7 +140,7 @@ namespace XSIRC {
 				}
 				// Ping timeout
 				if(((int)time_t() - (int)last_recieved) >= 300) {
-					add_to_view("<server>","Ping timeout. Reconnecting...");
+					add_to_view(_("<server>"),_("Ping timeout. Reconnecting..."));
 					last_recieved = time_t();
 					irc_disconnect();
 					irc_connect();
@@ -166,9 +166,9 @@ namespace XSIRC {
 		
 		private async void socket_connect_async() {
 			connecting = true;
-			add_to_view("<server>","[Connection] Starting connection attempt...");
+			add_to_view(_("<server>"),_("[Connection] Starting connection attempt..."));
 			Resolver resolver = Resolver.get_default();
-			add_to_view("<server>","[Connection] Resolving name %s...".printf(server));
+			add_to_view(_("<server>"),_("[Connection] Resolving name %s...").printf(server));
 			bool error = false;
 			GLib.List<InetAddress> addresses = null;
 			try {
@@ -177,14 +177,14 @@ namespace XSIRC {
 				error = true;
 			}
 			if(error || addresses.length() < 1) {
-				add_to_view("<server>","[Connection] Error: could not look up host name.");
+				add_to_view(_("<server>"),_("[Connection] Error: could not look up host name."));
 				connecting = false;
 				connected = false;
 				sock_error = true;
 				return;
 			}
 			InetAddress address = addresses.nth_data(0);
-			add_to_view("<server>","[Connection] Resolved %s to %s.".printf(server,address.to_string()));
+			add_to_view(_("<server>"),_("[Connection] Resolved %s to %s.").printf(server,address.to_string()));
 			socket_client = new SocketClient();
 			try {
 				socket_conn = yield socket_client.connect_async(new InetSocketAddress(address,(uint16)port),null);
@@ -193,13 +193,13 @@ namespace XSIRC {
 			} catch(Error e) {
 				connected = false;
 				sock_error = true;
-				add_to_view("<server>","[Connection] Error: could not connect -- %s".printf(e.message));
+				add_to_view(_("<server>"),_("[Connection] Error: could not connect -- %s").printf(e.message));
 				Main.server_manager.on_connect_error(this);
 				Main.plugin_manager.on_connect_error(this);
 				return;
 			}
 			connecting = false;
-			add_to_view("<server>","[Connection] Connected! Sending USER, NICK and PASS.".printf(port));
+			add_to_view(_("<server>"),_("[Connection] Connected! Sending USER, NICK and PASS.").printf(port));
 			socket_stream = new DataInputStream(socket_conn.input_stream);
 	
 			raw_send("USER %s rocks hard :%s".printf(Main.config["core"]["username"],Main.config["core"]["realname"]));
@@ -253,11 +253,11 @@ namespace XSIRC {
 					if(s.down().has_prefix("notice")) {
 						add_to_view(target,"-%s- %s".printf(nick,msg));
 					} else if(msg.has_prefix("ACTION")) {
-						add_to_view(target,"* %s %s".printf(nick,msg.replace("","").substring(7)));
+						add_to_view(target,"*  %s %s".printf(nick,msg.replace("","").substring(7)));
 					} else if(msg.has_prefix("")) {
 						add_to_view(target,">%s< CTCP %s".printf(nick,msg.replace("","")));
 					} else {
-						add_to_view(target,"<%s> %s".printf(nick,msg));
+						add_to_view(target,"< %s> %s".printf(nick,msg));
 					}
 					OutgoingMessage outg = {prefix+i,priority};
 					lock(output_queue) {
@@ -284,7 +284,7 @@ namespace XSIRC {
 			try {
 				socket_conn.output_stream.write(s,s.size(),null);
 			} catch(Error e) {
-				add_to_view("<server>","Error sending line: %s".printf(e.message));
+				add_to_view(_("<server>"),_("Error sending line: %s").printf(e.message));
 			}
 		}
 		
@@ -390,7 +390,7 @@ namespace XSIRC {
 						}
 						break;
 					case "INVITE":
-						add_to_view("<server>","%s has invited you to %s.".printf(usernick,split[3]));
+						add_to_view(_("<server>"),_("%s has invited you to %s.").printf(usernick,split[3]));
 						break;
 					case "001":
 						foreach(Channel channel in channels) {
@@ -406,28 +406,28 @@ namespace XSIRC {
 						string raw_hostmask = split[split.length-1];
 						my_username = raw_hostmask.split("!")[1].split("@")[0];
 						my_hostmask = raw_hostmask.split("@")[1];
-						add_to_view("<server>","[Server info] Welcome to the Internet Relay Network "+"%s!%s@%s".printf(nick,my_username,my_hostmask));
+						add_to_view(_("<server>"),_("[Server info] Welcome to the Internet Relay Network ")+"%s!%s@%s".printf(nick,my_username,my_hostmask));
 						break;
 					case "002":
 					case "003":
-						add_to_view("<server>","[Server info] "+message);
+						add_to_view(_("<server>"),_("[Server info] ")+message);
 						break;
 					case "004":
-						add_to_view("<server>","[Server info] Your server is %s running %s. Available user modes: %s. Available channel modes: %s".printf(split[3],split[4],split[5],split[6]));
+						add_to_view(_("<server>"),_("[Server info] Your server is %s running %s. Available user modes: %s. Available channel modes: %s").printf(split[3],split[4],split[5],split[6]));
 						break;
 					case "005":
 						StringBuilder supported = new StringBuilder("");
 						for(int i = 3; !split[i].has_prefix(":"); i++) {
 							supported.append(split[i]).append(" ");
 						}
-						add_to_view("<server>","[Server info] %s are supported by this server".printf(supported.str));
+						add_to_view(_("<server>"),_("[Server info] %s are supported by this server").printf(supported.str));
 						break;
 					case "PRIVMSG":
 						Main.plugin_manager.on_privmsg(this,usernick,username,usermask,target,message);
 						break;
 					case "NOTICE":
 						if(split[2] == "AUTH") {
-							add_to_view("<server>","[Auth] %s".printf(message));
+							add_to_view(_("<server>"),_("[Auth] %s").printf(message));
 						} else {
 							Main.plugin_manager.on_notice(this,usernick,username,usermask,target,message);
 							if(message.has_prefix(((char)1).to_string())) {
@@ -436,7 +436,7 @@ namespace XSIRC {
 								message = message.substring(prefix.length);
 								switch(prefix) {
 									default:
-										add_to_view("<server>","UNHANDLED CTCP REPLY -- PREFIX: %s; SENDER: %s; MESSAGE: %s".printf(prefix,target,message));
+										add_to_view(_("<server>"),_("UNHANDLED CTCP REPLY -- PREFIX: %s; SENDER: %s; MESSAGE: %s").printf(prefix,target,message));
 										break;
 								}
 							} else {
@@ -476,7 +476,7 @@ namespace XSIRC {
 						Channel chan = find_channel(split[3]);
 						chan.topic.setter = split[4];
 						chan.topic.time_set = (time_t)split[5].to_int();
-						add_to_view(split[3],"Topic set by %s on %s".printf(split[4],gen_timestamp("%c",chan.topic.time_set)));
+						add_to_view(split[3],_("Topic set by %s on %s").printf(split[4],gen_timestamp("%c",chan.topic.time_set)));
 						break;
 					/*case "305":
 						am_away = false;
@@ -486,64 +486,64 @@ namespace XSIRC {
 						break;*/
 					// Error messages
 					case "401":
-						add_to_view("<server>","[Error:401] No such nickname/channel: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:401] No such nickname/channel: %s").printf(split[3]));
 						break;
 					case "402":
-						add_to_view("<server>","[Error:402] No such server: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:402] No such server: %s").printf(split[3]));
 						break;
 					case "403":
-						add_to_view("<server>","[Error:403] No such channel: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:403] No such channel: %s").printf(split[3]));
 						break;
 					case "404":
-						add_to_view("<server>","[Error:404] Cannot send to channel: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:404] Cannot send to channel: %s").printf(split[3]));
 						break;
 					case "405":
-						add_to_view("<server>","[Error:405] Cannot join %s: joined too many channels.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:405] Cannot join %s: joined too many channels.").printf(split[3]));
 						break;
 					case "406":
-						add_to_view("<server>","[Error:406] There was no such nickname: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:406] There was no such nickname: %s").printf(split[3]));
 						break;
 					case "407":
-						add_to_view("<server>","[Error:407] Too many targets for notice/message.");
+						add_to_view(_("<server>"),_("[Error:407] Too many targets for notice/message."));
 						break;
 					case "408":
-						add_to_view("<server>","[Error:408] No such service: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:408] No such service: %s").printf(split[3]));
 						break;
 					case "409":
-						add_to_view("<server>","[Error:409] No origin specified.");
+						add_to_view(_("<server>"),_("[Error:409] No origin specified."));
 						break;
 					case "411":
-						add_to_view("<server>","[Error:411] No recipient given for command.");
+						add_to_view(_("<server>"),_("[Error:411] No recipient given for command."));
 						break;
 					case "412":
-						add_to_view("<server>","[Error:412] No text to send.");
+						add_to_view(_("<server>"),_("[Error:412] No text to send."));
 						break;
 					case "413":
-						add_to_view("<server>","[Error:413] No toplevel domain specified for mask %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:413] No toplevel domain specified for mask %s").printf(split[3]));
 						break;
 					case "414":
-						add_to_view("<server>","[Error:414] Wildcard in toplevel domain in mask %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:414] Wildcard in toplevel domain in mask %s").printf(split[3]));
 						break;
 					case "415":
-						add_to_view("<server>","[Error:415] Bad server/host mask: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:415] Bad server/host mask: %s").printf(split[3]));
 						break;
 					case "421":
-						add_to_view("<server>","[Error:421] Unknown command: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:421] Unknown command: %s").printf(split[3]));
 						break;
 					case "422":
-						add_to_view("<server>","[MOTD] MOTD file missing");
+						add_to_view(_("<server>"),_("[MOTD] MOTD file missing"));
 						break;
 					case "423":
-						add_to_view("<server>","[Admin] No admin info available for server %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Admin] No admin info available for server %s").printf(split[3]));
 						break;
 					case "424":
-						add_to_view("<server>","[Error:424] File error.");
+						add_to_view(_("<server>"),_("[Error:424] File error."));
 						break;
 					case "431":
-						add_to_view("<server>","[Error:431] No nickname given.");
+						add_to_view(_("<server>"),_("[Error:431] No nickname given."));
 						break;
 					case "432":
-						add_to_view("<server>","[Error:432] Illegal nickname given.");
+						add_to_view(_("<server>"),_("[Error:432] Illegal nickname given."));
 						break;
 					case "433":
 						nick_tries++;
@@ -552,156 +552,156 @@ namespace XSIRC {
 							new_nick.append("_");
 						}
 						send("NICK %s".printf(new_nick.str));
-						add_to_view("<server>","[Error:433] Nickname %s already in use.".printf(nick));
+						add_to_view(_("<server>"),_("[Error:433] Nickname %s already in use.").printf(nick));
 						break;
 					case "436":
-						add_to_view("<server>","[Error:436] Nickname collision kill.");
+						add_to_view(_("<server>"),_("[Error:436] Nickname collision kill."));
 						break;
 					case "437":
-						add_to_view("<server>","[Error:437] Nick/channel temporarily unavailable: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:437] Nick/channel temporarily unavailable: %s").printf(split[3]));
 						break;
 					case "441":
-						add_to_view("<server>","[Error:441] %s isn't in channel %s.".printf(split[3],split[4]));
+						add_to_view(_("<server>"),_("[Error:441] %s isn't in channel %s.").printf(split[3],split[4]));
 						break;
 					case "442":
-						add_to_view("<server>","[Error:442] You're not in channel %s.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:442] You're not in channel %s.").printf(split[3]));
 						break;
 					case "443":
-						add_to_view("<server>","[Error:443] %s is already in channel %s.".printf(split[3],split[4]));
+						add_to_view(_("<server>"),_("[Error:443] %s is already in channel %s.").printf(split[3],split[4]));
 						break;
 					case "444":
-						add_to_view("<server>","[Error:444] User %s is not logged in.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:444] User %s is not logged in.").printf(split[3]));
 						break;
 					case "445":
-						add_to_view("<server>","[Error:445] SUMMON has been disabled.");
+						add_to_view(_("<server>"),_("[Error:445] SUMMON has been disabled."));
 						break;
 					case "446":
-						add_to_view("<server>","[Error:446] USERS has been disabled.");
+						add_to_view(_("<server>"),_("[Error:446] USERS has been disabled."));
 						break;
 					case "451":
-						add_to_view("<server>","[Error:451] You have not registered.");
+						add_to_view(_("<server>"),_("[Error:451] You have not registered."));
 						break;
 					case "461":
-						add_to_view("<server>","[Error:461] Not enough parameters for command %s.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:461] Not enough parameters for command %s.").printf(split[3]));
 						break;
 					case "462":
-						add_to_view("<server>","[Error:462] You have already registered.");
+						add_to_view(_("<server>"),_("[Error:462] You have already registered."));
 						break;
 					case "463":
-						add_to_view("<server>","[Error:463] Your host is not priviledged.");
+						add_to_view(_("<server>"),_("[Error:463] Your host is not priviledged."));
 						break;
 					case "464":
-						add_to_view("<server>","[Error:464] Password incorrect.");
+						add_to_view(_("<server>"),_("[Error:464] Password incorrect."));
 						break;
 					case "465":
-						add_to_view("<server>","[Error:465] You are banned from this server.");
+						add_to_view(_("<server>"),_("[Error:465] You are banned from this server."));
 						break;
 					case "466":
-						add_to_view("<server>","[Error:466] You will be banned from this server.");
+						add_to_view(_("<server>"),_("[Error:466] You will be banned from this server."));
 						break;
 					case "467":
-						add_to_view("<server>","[Error:467] The key for channel %s has already been set.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:467] The key for channel %s has already been set.").printf(split[3]));
 						break;
 					case "471":
-						add_to_view("<server>","[Error:471] Cannot join channel %s: channel is full (+l)".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:471] Cannot join channel %s: channel is full (+l)").printf(split[3]));
 						break;
 					case "472":
-						add_to_view("<server>","[Error:472] The server does not recognize the mode char %s.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:472] The server does not recognize the mode char %s.").printf(split[3]));
 						break;
 					case "473":
-						add_to_view("<server>","[Error:473] Cannot join channel %s: channel is invite-only (+i)".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:473] Cannot join channel %s: channel is invite-only (+i)").printf(split[3]));
 						break;
 					case "474":
-						add_to_view("<server>","[Error:474] Cannot join channel %s: you are banned (+b)".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:474] Cannot join channel %s: you are banned (+b)").printf(split[3]));
 						break;
 					case "475":
-						add_to_view("<server>","[Error:475] Cannot join channel %s: bad key.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:475] Cannot join channel %s: bad key.").printf(split[3]));
 						break;
 					case "476":
-						add_to_view("<server>","[Error:476] Bad channel mask for %s.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:476] Bad channel mask for %s.").printf(split[3]));
 						break;
 					case "477":
-						add_to_view("<server>","[Error:477] The channel %s does not support modes.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:477] The channel %s does not support modes.").printf(split[3]));
 						break;
 					case "478":
 						if(split[4] == "b") {
-							add_to_view("<server>","[Error:478] Channel %s's ban list is full.".printf(split[3]));
+							add_to_view(_("<server>"),_("[Error:478] Channel %s's ban list is full.").printf(split[3]));
 						} else {
-							add_to_view("<server>","[Error:478] Channel %s's exceptions list is full.".printf(split[3]));
+							add_to_view(_("<server>"),_("[Error:478] Channel %s's exceptions list is full.").printf(split[3]));
 						}
 						break;
 					case "481":
-						add_to_view("<server>","[Error:481] Permission denied: you are not an IRC operator.");
+						add_to_view(_("<server>"),_("[Error:481] Permission denied: you are not an IRC operator."));
 						break;
 					case "482":
-						add_to_view("<server>","[Error:482] You're not an operator in %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Error:482] You're not an operator in %s").printf(split[3]));
 						break;
 					case "483":
-						add_to_view("<server>","[Error:483] You cannot kill a server.");
+						add_to_view(_("<server>"),_("[Error:483] You cannot kill a server."));
 						break;
 					case "491":
-						add_to_view("<server>","[Error:491] No O-lines for your host.");
+						add_to_view(_("<server>"),_("[Error:491] No O-lines for your host."));
 						break;
 					case "501":
-						add_to_view("<server>","[Error:501] Unknown mode flag.");
+						add_to_view(_("<server>"),_("[Error:501] Unknown mode flag."));
 						break;
 					case "502":
-						add_to_view("<server>","[Error:502] Cannot view or set the mode for other users.");
+						add_to_view(_("<server>"),_("[Error:502] Cannot view or set the mode for other users."));
 						break;
 					// Command responses
 					case "302":
 						string name = message.split("=")[0];
-						add_to_view("<server>","[Userhost] %s: %s".printf(name,message));
+						add_to_view(_("<server>"),_("[Userhost] %s: %s").printf(name,message));
 						break;
 					case "303":
-						add_to_view("<server>","[ISON] %s is on".printf(message));
+						add_to_view(_("<server>"),_("[ISON] %s is on").printf(message));
 						break;
 					case "301":
-						add_to_view("<server>","[WHOIS] %s is away: %s".printf(split[3],message));
+						add_to_view(_("<server>"),_("[WHOIS] %s is away: %s").printf(split[3],message));
 						break;
 					case "305":
-						add_to_view("<server>","[Away] You are no longer marked as away.");
+						add_to_view(_("<server>"),_("[Away] You are no longer marked as away."));
 						am_away = false;
 						break;
 					case "306":
-						add_to_view("<server>","[Away] You are now marked as away.");
+						add_to_view(_("<server>"),_("[Away] You are now marked as away."));
 						am_away = true;
 						break;
 					case "311":
-						add_to_view("<server>","[WHOIS] %s: %s@%s: %s".printf(split[3],split[4],split[5],message));
+						add_to_view(_("<server>"),_("[WHOIS] %s: %s@%s: %s").printf(split[3],split[4],split[5],message));
 						break;
 					case "312":
-						add_to_view("<server>","[WHOIS] %s: in server %s: %s".printf(split[3],split[4],message));
+						add_to_view(_("<server>"),_("[WHOIS] %s: in server %s: %s").printf(split[3],split[4],message));
 						break;
 					case "313":
-						add_to_view("<server>","[WHOIS] %s: is an IRCop".printf(split[3]));
+						add_to_view(_("<server>"),_("[WHOIS] %s: is an IRCop").printf(split[3]));
 						break;
 					case "317":
-						add_to_view("<server>","[WHOIS] %s: %s seconds idle".printf(split[3],split[4]));
+						add_to_view(_("<server>"),_("[WHOIS] %s: %s seconds idle").printf(split[3],split[4]));
 						break;
 					case "318":
-						add_to_view("<server>","[WHOIS] %s: end of /WHOIS list.".printf(split[3]));
+						add_to_view(_("<server>"),_("[WHOIS] %s: end of /WHOIS list.").printf(split[3]));
 						break;
 					case "319":
-						add_to_view("<server>","[WHOIS] %s: in channels %s".printf(split[3],message));
+						add_to_view(_("<server>"),_("[WHOIS] %s: in channels %s").printf(split[3],message));
 						break;
 					case "307":
-						add_to_view("<server>","[WHOIS] %s: is a registered nickname".printf(split[3]));
+						add_to_view(_("<server>"),_("[WHOIS] %s: is a registered nickname").printf(split[3]));
 						break;
 					case "314":
-						add_to_view("<server>","[WHOWAS] %s: %s@%s: %s".printf(split[3],split[4],split[5],message));
+						add_to_view(_("<server>"),_("[WHOWAS] %s: %s@%s: %s").printf(split[3],split[4],split[5],message));
 						break;
 					case "369":
-						add_to_view("<server>","[WHOWAS] %s: end of /WHOWAS list.".printf(split[3]));
+						add_to_view(_("<server>"),_("[WHOWAS] %s: end of /WHOWAS list.").printf(split[3]));
 						break;
 					case "321":
-						add_to_view("<server>","[List] Channel (Users) Topic");
+						add_to_view(_("<server>"),_("[List] Channel (Users) Topic"));
 						break;
 					case "322":
-						add_to_view("<server>","[List] %s (%s) %s".printf(split[3],split[4],message));
+						add_to_view(_("<server>"),_("[List] %s (%s) %s").printf(split[3],split[4],message));
 						break;
 					case "323":
-						add_to_view("<server>","[List] end of /LIST.");
+						add_to_view(_("<server>"),_("[List] end of /LIST."));
 						break;
 					case "324":
 						Channel chan = find_channel(split[3]);
@@ -709,34 +709,34 @@ namespace XSIRC {
 						Main.gui.update_gui(this);
 						break;
 					case "331":
-						add_to_view(split[2],"No topic is set");
+						add_to_view(split[2],_("No topic is set"));
 						break;
 					case "329":
 						if(find_channel(split[3]) != null && !find_channel(split[3]).got_create_date) {
-							add_to_view(split[3],"Channel was created %s".printf(gen_timestamp("%c",(time_t)split[4].to_int())));
+							add_to_view(split[3],_("Channel was created %s").printf(gen_timestamp("%c",(time_t)split[4].to_int())));
 							find_channel(split[3]).got_create_date = true;
 						}
 						break;
 					case "332":
 						Channel chan = find_channel(split[3]);
 						chan.topic.content = message;
-						add_to_view(split[3],"The topic is: %s".printf(message));
+						add_to_view(split[3],_("The topic is: %s").printf(message));
 						Main.gui.update_gui(this);
 						break;
 					case "341":
-						add_to_view("<server>","[Invite] inviting %s to %s".printf(split[3],split[4]));
+						add_to_view(_("<server>"),_("[Invite] inviting %s to %s").printf(split[3],split[4]));
 						break;
 					case "342":
-						add_to_view("<server>","[Summon] summoning %s to IRC".printf(split[3]));
+						add_to_view(_("<server>"),_("[Summon] summoning %s to IRC").printf(split[3]));
 						break;
 					case "351":
-						add_to_view("<server>","Server version: %s; server software: %s; %s".printf(split[3],split[4],message));
+						add_to_view(_("<server>"),_("Server version: %s; server software: %s; %s").printf(split[3],split[4],message));
 						break;
 					case "352":
-						add_to_view("<server>","[WHO] %s: %s!%s@%s in server %s (%s) %s".printf(split[3],split[7],split[4],split[5],split[6],split[8],message));
+						add_to_view(_("<server>"),_("[WHO] %s: %s!%s@%s in server %s (%s) %s").printf(split[3],split[7],split[4],split[5],split[6],split[8],message));
 						break;
 					case "315":
-						add_to_view("<server>","[WHO] in %s: end of /WHO list.".printf(split[3]));
+						add_to_view(_("<server>"),_("[WHO] in %s: end of /WHO list.").printf(split[3]));
 						break;
 					case "353":
 						Channel channel = find_channel(split[4]);
@@ -766,84 +766,84 @@ namespace XSIRC {
 						Main.gui.update_gui(this);
 						break;
 					case "364":
-						add_to_view("<server>","[Links] %s %s :%s".printf(split[3],split[4],message));
+						add_to_view(_("<server>"),_("[Links] %s %s :%s").printf(split[3],split[4],message));
 						break;
 					case "365":
-						add_to_view("<server>","[Links] end of /LINKS list.");
+						add_to_view(_("<server>"),_("[Links] end of /LINKS list."));
 						break;
 					case "367":
-						add_to_view("<server>","[Banlist] %s: %s".printf(split[3],split[4]));
+						add_to_view(_("<server>"),_("[Banlist] %s: %s").printf(split[3],split[4]));
 						break;
 					case "368":
-						add_to_view("<server>","[Banlist] %s: end of ban (mode +b) list.");
+						add_to_view(_("<server>"),_("[Banlist] %s: end of ban (mode +b) list."));
 						break;
 					case "348":
-						add_to_view("<server>","[Exceptions] %s: %s".printf(split[3],split[4]));
+						add_to_view(_("<server>"),_("[Exceptions] %s: %s").printf(split[3],split[4]));
 						break;
 					case "349":
-						add_to_view("<server>","[Exceptions] %s: end of exceptions (mode +e) list.");
+						add_to_view(_("<server>"),_("[Exceptions] %s: end of exceptions (mode +e) list."));
 						break;
 					case "371":
-						add_to_view("<server>","[Info] %s".printf(message));
+						add_to_view(_("<server>"),_("[Info] %s").printf(message));
 						break;
 					case "374":
-						add_to_view("<server>","[Info] end of /INFO list.");
+						add_to_view(_("<server>"),_("[Info] end of /INFO list."));
 						break;
 					case "375":
-						add_to_view("<server>","[MOTD] %s:".printf(server));
+						add_to_view(_("<server>"),_("[MOTD] %s:").printf(server));
 						break;
 					case "372":
-						add_to_view("<server>","[MOTD] "+message);
+						add_to_view(_("<server>"),_("[MOTD] ")+message);
 						break;
 					case "376":
-						add_to_view("<server>","[MOTD] End of /MOTD command.");
+						add_to_view(_("<server>"),_("[MOTD] End of /MOTD command."));
 						break;
 					case "381":
-						add_to_view("<server>","[Oper] You are now an IRCop.");
+						add_to_view(_("<server>"),_("[Oper] You are now an IRCop."));
 						break;
 					case "382":
-						add_to_view("<server>","[Rehash] Rehashing config file %s.".printf(split[3]));
+						add_to_view(_("<server>"),_("[Rehash] Rehashing config file %s.").printf(split[3]));
 						break;
 					case "391":
-						add_to_view("<server>","[Time] Server's local time: %s".printf(message));
+						add_to_view(_("<server>"),_("[Time] Server's local time: %s").printf(message));
 						break;
 					/* TODO: implement 200, 201, 202, 203, 204, 205, 206, 208,
 					         261, 211, 212, 213, 214, 215, 216, 218, 219, 241,
 					         242, 243, 244 */
 					case "221":
-						add_to_view("<server>","[Mode] Your mode is: %s".printf(split[3]));
+						add_to_view(_("<server>"),_("[Mode] Your mode is: %s").printf(split[3]));
 						break;
 					case "251":
-						add_to_view("<server>","[Server info] %s".printf(message));
+						add_to_view(_("<server>"),_("[Server info] %s").printf(message));
 						break;
 					case "252":
-						add_to_view("<server>","[Server info] %s operator(s) online".printf(split[3]));
+						add_to_view(_("<server>"),_("[Server info] %s operator(s) online").printf(split[3]));
 						break;
 					case "253":
-						add_to_view("<server>","[Server info] %s unknown connection(s)".printf(split[3]));
+						add_to_view(_("<server>"),_("[Server info] %s unknown connection(s)").printf(split[3]));
 						break;
 					case "254":
-						add_to_view("<server>","[Server info] %s channels formed".printf(split[3]));
+						add_to_view(_("<server>"),_("[Server info] %s channels formed").printf(split[3]));
 						break;
 					case "255":
 					case "265":
 					case "266":
-						add_to_view("<server>","[Server info] %s".printf(message));
+						add_to_view(_("<server>"),_("[Server info] %s").printf(message));
 						break;
 					case "256":
-						add_to_view("<server>","[Admin] Administrative info for %s:".printf(split[3]));
+						add_to_view(_("<server>"),_("[Admin] Administrative info for %s:").printf(split[3]));
 						break;
 					case "257":
-						add_to_view("<server>","[Admin] "+message);
+						add_to_view(_("<server>"),_("[Admin] ")+message);
 						break;
 					case "258":
-						add_to_view("<server>","[Admin] "+message);
+						add_to_view(_("<server>"),_("[Admin] ")+message);
 						break;
 					case "259":
-						add_to_view("<server>","[Admin] "+message);
+						add_to_view(_("<server>"),_("[Admin] ")+message);
 						break;
 					default:
-						add_to_view("<server>","UNHANDLED MESSAGE: %s".printf(s));
+						add_to_view(_("<server>"),_("UNHANDLED MESSAGE: %s").printf(s));
 						break;
 				}
 			}
@@ -932,7 +932,7 @@ namespace XSIRC {
 			if(view == null) {
 				view = current_view();
 			}
-			if(view == null || view.name == "<server>") {
+			if(view == null || view.name == _("<server>")) {
 				return;
 			}
 			if(view.name.has_prefix("#") && (find_channel(view.name) != null) && find_channel(view.name).in_channel) {
@@ -954,8 +954,6 @@ namespace XSIRC {
 		string user_b = (string)b;
 		unichar prefix_a = user_a[0];
 		unichar prefix_b = user_b[0];
-		// Hacking this for display, since we can't easily reverse a Gee Linked
-		// List
 		if((comp_table.has_key(prefix_a)) && !(comp_table.has_key(prefix_b))) {
 			return -1;
 		} else if(!(comp_table.has_key(prefix_a)) && (comp_table.has_key(prefix_b))) {

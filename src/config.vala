@@ -17,11 +17,11 @@ namespace XSIRC {
 			config["core"]["nickname"]    = Environment.get_user_name();
 			config["core"]["username"]    = Environment.get_user_name();
 			config["core"]["realname"]    = Environment.get_user_name();
-			config["core"]["quit_msg"]    = "Leaving";
+			config["core"]["quit_msg"]    = _("Leaving");
 			config["core"]["web_browser"] = "/usr/bin/firefox";
 			config["core"]["font"]        = "Monospace 10";
 			config["core"]["timestamp_format"] = "[%H:%M:%S]";
-			config["core"]["away_msg"]    = "Away";
+			config["core"]["away_msg"]    = _("Away");
 			config["core"]["log_date_format"] = "%F";
 			IRCLogger.logging_enabled     = true;
 			

@@ -18,7 +18,7 @@ namespace XSIRC {
 			private Gtk.Label plugin_description;
 			private Gtk.Label plugin_author;
 			private Gtk.Label plugin_version;
-			private Gtk.Label default_widget = new Gtk.Label("No settings.");
+			private Gtk.Label default_widget = new Gtk.Label(_("No settings."));
 			private Gtk.VBox vbox;
 			private Gtk.Widget current_widget = null;
 			
@@ -40,7 +40,7 @@ namespace XSIRC {
 				vbox = ui_builder.get_object("vbox") as Gtk.VBox;
 				
 				// Setting up the tree view
-				plugin_tree.append_column(new Gtk.TreeViewColumn.with_attributes("Plugins",new Gtk.CellRendererText(),"text",0,null));
+				plugin_tree.append_column(new Gtk.TreeViewColumn.with_attributes(_("Plugins"),new Gtk.CellRendererText(),"text",0,null));
 				plugin_tree.model = plugin_model;
 				plugin_selection = plugin_tree.get_selection();
 				plugin_selection.changed.connect(plugin_changed);
@@ -83,8 +83,8 @@ namespace XSIRC {
 					Plugin plugin = Main.plugin_manager.find_plugin(plugin_name);
 					this.plugin_name.label = plugin_name;
 					plugin_description.label = plugin.description;
-					plugin_author.label = "Author: "+plugin.author;
-					plugin_version.label = "Version: "+plugin.version;
+					plugin_author.label = _("Author: ")+plugin.author;
+					plugin_version.label = _("Version: ")+plugin.version;
 					// Updating the settings
 					if(current_widget != null) {
 						vbox.remove(current_widget);
