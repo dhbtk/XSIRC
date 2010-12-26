@@ -19,7 +19,7 @@ namespace XSIRC {
 			}
 			
 			public PrefWindow() {
-				window = new Gtk.Dialog.with_buttons("Macros",Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.STOCK_CLOSE,0,null);
+				window = new Gtk.Dialog.with_buttons(_("Macros"),Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.STOCK_CLOSE,0,null);
 				window.set_default_size(320,320);
 				macro_model = new Gtk.ListStore(MacroColumns.N_COLUMNS,typeof(string),typeof(string));
 				macro_tree = new Gtk.TreeView.with_model(macro_model);
@@ -27,12 +27,12 @@ namespace XSIRC {
 				Gtk.CellRendererText regex_renderer = new Gtk.CellRendererText();
 				regex_renderer.editable = true;
 				regex_renderer.edited.connect(regex_edited);
-				macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes("Regex",regex_renderer,"text",MacroColumns.REGEX,null));
+				macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes(_("Regex"),regex_renderer,"text",MacroColumns.REGEX,null));
 				
 				Gtk.CellRendererText result_renderer = new Gtk.CellRendererText();
 				result_renderer.editable = true;
 				result_renderer.edited.connect(result_edited);
-				macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes("Result",result_renderer,"text",MacroColumns.RESULT,null));
+				macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes(_("Result"),result_renderer,"text",MacroColumns.RESULT,null));
 				
 				Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow(null,null);
 				scroll.add(macro_tree);
@@ -88,7 +88,7 @@ namespace XSIRC {
 					// Checking for uniqueness
 					foreach(Macro macro in Main.macro_manager.macros) {
 						if(macro.regex == new_text) {
-							Gtk.MessageDialog d = new Gtk.MessageDialog(window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,"The regular expression entered is not unique.");
+							Gtk.MessageDialog d = new Gtk.MessageDialog(window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,_("The regular expression entered is not unique."));
 							d.response.connect(() => {
 								d.destroy();
 							});
@@ -109,7 +109,7 @@ namespace XSIRC {
 						macro_model.set(iter,MacroColumns.REGEX,new_text,-1);
 					}
 				} catch(Error e) {
-					Gtk.MessageDialog d = new Gtk.MessageDialog(window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,"The string entered isn't a valid regular expression.");
+					Gtk.MessageDialog d = new Gtk.MessageDialog(window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,_("The string entered isn't a valid regular expression."));
 					d.response.connect(() => {
 						d.destroy();
 					});
@@ -181,7 +181,7 @@ namespace XSIRC {
 			try {
 				macros_file.load_from_file(Environment.get_user_config_dir()+"/xsirc/macros.conf",0);
 			} catch(KeyFileError e) {
-				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,"Could not parse the macros file. Loading default macros.");
+				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,_("Could not parse the macros file. Loading default macros."));
 				d.response.connect((id) => {
 					d.destroy();
 				});

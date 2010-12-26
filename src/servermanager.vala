@@ -174,7 +174,7 @@ namespace XSIRC {
 			if((server.network.servers.size - 1) >= server.network.server_index) {
 				server.irc_disconnect();
 				Network.ServerData new_server = server.network.servers[server.network.server_index];
-				server.add_to_view("<server>","Switching to server %s".printf(new_server.address));
+				server.add_to_view(_("<server>"),_("[Connection] Switching to server %s").printf(new_server.address));
 				server.server  = new_server.address;
 				server.port    = new_server.port;
 				server.ssl     = new_server.ssl;
@@ -182,7 +182,7 @@ namespace XSIRC {
 				server.label.label = Markup.escape_text("%s - %s".printf(server.network.name,server.server));
 				server.irc_connect();
 			} else {
-				server.add_to_view("<server>","No more servers to connect to");
+				server.add_to_view(_("<server>"),_("[Error] No more servers to connect to."));
 			}
 		}
 	}

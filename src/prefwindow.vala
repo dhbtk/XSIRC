@@ -51,7 +51,7 @@ namespace XSIRC {
 			Gtk.CellRendererText net_renderer = new Gtk.CellRendererText();
 			net_renderer.editable = true;
 			net_renderer.edited.connect(network_edited);
-			Gtk.TreeViewColumn network_col = new Gtk.TreeViewColumn.with_attributes("Networks",net_renderer,"text",0,null);
+			Gtk.TreeViewColumn network_col = new Gtk.TreeViewColumn.with_attributes(_("Networks"),net_renderer,"text",0,null);
 			network_tree.append_column(network_col);
 			network_tree.model = network_store;
 			Gtk.TreeSelection network_selection = network_tree.get_selection();
@@ -61,21 +61,21 @@ namespace XSIRC {
 			Gtk.CellRendererText server_renderer = new Gtk.CellRendererText();
 			server_renderer.editable = true;
 			server_renderer.edited.connect(server_edited);
-			Gtk.TreeViewColumn server_col  = new Gtk.TreeViewColumn.with_attributes("Servers",server_renderer,"text",0,null);
+			Gtk.TreeViewColumn server_col  = new Gtk.TreeViewColumn.with_attributes(_("Servers"),server_renderer,"text",0,null);
 			server_tree.append_column(server_col);
 			server_tree.model = server_store;
 			
 			Gtk.CellRendererText cmd_renderer = new Gtk.CellRendererText();
 			cmd_renderer.editable = true;
 			cmd_renderer.edited.connect(cmd_edited);
-			Gtk.TreeViewColumn cmd_col     = new Gtk.TreeViewColumn.with_attributes("Commands",cmd_renderer,"text",0,null);
+			Gtk.TreeViewColumn cmd_col     = new Gtk.TreeViewColumn.with_attributes(_("Commands"),cmd_renderer,"text",0,null);
 			cmd_tree.append_column(cmd_col);
 			cmd_tree.model = cmd_store;
 			
 			// Setting up the add/remove buttons for networks/servers/commands
 			((Gtk.Button)ui_builder.get_object("network_add")).clicked.connect(() => {
 				ServerManager.Network new_network = new ServerManager.Network();
-				new_network.name = "New Network";
+				new_network.name = _("New Network");
 				new_network.auto_connect = false;
 				Main.server_manager.networks.add(new_network);
 				init_network_tree();
@@ -87,7 +87,7 @@ namespace XSIRC {
 					                                            Gtk.DialogFlags.MODAL,
 					                                            Gtk.MessageType.QUESTION,
 					                                            Gtk.ButtonsType.YES_NO,
-					                                            "Are you sure? You cannot undo this.");
+					                                            _("Are you sure? You cannot undo this."));
 					d.response.connect((id) => {
 						if(id == Gtk.ResponseType.YES) {
 							Main.server_manager.networks.remove(network);
@@ -298,7 +298,7 @@ namespace XSIRC {
 				                                            Gtk.DialogFlags.MODAL,
 				                                            Gtk.MessageType.ERROR,
 				                                            Gtk.ButtonsType.CLOSE,
-				                                            "The string entered isn't a valid server URL.");
+				                                            _("The string entered isn't a valid server URL."));
 				d.response.connect((id) => {d.destroy();});
 				d.show_all();
 			}

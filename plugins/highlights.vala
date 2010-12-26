@@ -17,36 +17,36 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	private Gtk.TreeView tree = new Gtk.TreeView();
 	
 	public HighlightsPlugin() {
-		name = "Highlights";
-		description = "Adds support for configurable highlights.";
+		name = _("Highlights");
+		description = _("Adds support for configurable highlights.");
 		author = "NieXS";
 		version = "0.1";
 		priority = 0;
 		Gtk.VBox vbox = new Gtk.VBox(false,0);
 		prefs_widget = vbox;
 		load_settings();
-		Gtk.CheckButton h_on_nick = new Gtk.CheckButton.with_mnemonic("Highlight on _nickname");
+		Gtk.CheckButton h_on_nick = new Gtk.CheckButton.with_mnemonic(_("Highlight on _nickname"));
 		h_on_nick.toggled.connect(() => {
 			highlight_on_nick = h_on_nick.active;
 			save_settings();
 		});
 		h_on_nick.active = highlight_on_nick;
 		vbox.pack_start(h_on_nick,false,false,0);
-		Gtk.CheckButton h_on_notice = new Gtk.CheckButton.with_mnemonic("Highlight on n_otices");
+		Gtk.CheckButton h_on_notice = new Gtk.CheckButton.with_mnemonic(_("Highlight on n_otices"));
 		h_on_notice.toggled.connect(() => {
 			highlight_on_notices = h_on_notice.active;
 			save_settings();
 		});
 		h_on_notice.active = highlight_on_notices;
 		vbox.pack_start(h_on_notice,false,false,0);
-		Gtk.CheckButton h_on_pms = new Gtk.CheckButton.with_mnemonic("Highlight on _private messages");
+		Gtk.CheckButton h_on_pms = new Gtk.CheckButton.with_mnemonic(_("Highlight on _private messages"));
 		h_on_pms.toggled.connect(() => {
 			highlight_on_pms = h_on_pms.active;
 			save_settings();
 		});
 		h_on_pms.active = highlight_on_pms;
 		vbox.pack_start(h_on_pms,false,false,0);
-		Gtk.CheckButton h_on_all_pms = new Gtk.CheckButton.with_mnemonic("Highlight on _all messages");
+		Gtk.CheckButton h_on_all_pms = new Gtk.CheckButton.with_mnemonic(_("Highlight on _all messages"));
 		h_on_all_pms.toggled.connect(() => {
 			highlight_on_all_privmsgs = h_on_all_pms.active;
 			save_settings();
@@ -54,11 +54,11 @@ public class HighlightsPlugin : XSIRC.Plugin {
 		h_on_all_pms.active = highlight_on_all_privmsgs;
 		vbox.pack_start(h_on_all_pms,false,false,0);
 		// Tree View
-		vbox.pack_start(new Gtk.Label("Highlight on regexes:"),false,false,0);
+		vbox.pack_start(new Gtk.Label(_("Highlight on regexes:")),false,false,0);
 		Gtk.CellRendererText renderer = new Gtk.CellRendererText();
 		renderer.editable = true;
 		renderer.edited.connect(regex_edited);
-		tree.append_column(new Gtk.TreeViewColumn.with_attributes("Regex",renderer,"text",0,null));
+		tree.append_column(new Gtk.TreeViewColumn.with_attributes(_("Regex"),renderer,"text",0,null));
 		tree.model = model;
 		display_regexes();
 		Gtk.Button add_button = new Gtk.Button.from_stock(Gtk.STOCK_ADD);
@@ -188,7 +188,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 			} else {
 				my_message = "<%s:%s> %s".printf(my_target,usernick,my_message);
 			}
-			server.add_to_view("<server>",my_message);
+			server.add_to_view(_("<server>"),my_message);
 			highlight(server.server+" - "+my_target,my_message);
 			return true;
 		}
@@ -203,7 +203,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 				} else {
 					my_message = "<%s:%s> %s".printf(my_target,usernick,my_message);
 				}
-				server.add_to_view("<server>",my_message);
+				server.add_to_view(_("<server>"),my_message);
 				highlight(server.server+" - "+my_target,my_message);
 				return true;
 			}
@@ -218,7 +218,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 			} else {
 				my_message = "<%s:%s> %s".printf(my_target,usernick,my_message);
 			}
-			server.add_to_view("<server>",my_message);
+			server.add_to_view(_("<server>"),my_message);
 			highlight(server.server+" - "+my_target,my_message);
 			return true;
 		}

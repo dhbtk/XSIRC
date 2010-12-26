@@ -37,19 +37,19 @@ namespace XSIRC {
 		}
 		
 		private const MessageType[] message_types = {
-			{MessageID.JOIN,"User join","$USERNICK, $USERNAME, $USERMASK, $CHANNEL"},
-			{MessageID.PART,"User part","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MESSAGE"},
-			{MessageID.KICK,"User kicked","$KICKED, $USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
-			{MessageID.NICK,"User changed nick","$NEWNICK, $USERNICK, $USERNAME, $USERMASK"},
-			{MessageID.PRIVMSG,"Normal message","$USERNICK, $USERNAME, $USERMASK, $MESSAGE, $USERRANK"},
-			{MessageID.ACTION,"User action (/me)","$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
-			{MessageID.CTCPMSG,"CTCP request","$USERNICK, $USERNAME, $USERMASK, $REQUEST"},
-			{MessageID.NOTICE,"Notice","$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
-			{MessageID.QUIT,"User disconnect","$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
-			{MessageID.CHANUSERMODE,"Channel user mode change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES, $TARGETS"},
-			{MessageID.CHANMODE,"Channel mode change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES"},
-			{MessageID.MODE,"User mode change","$NICK, $MODES"},
-			{MessageID.TOPIC,"Topic change","$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $TOPIC"}
+			{MessageID.JOIN,N_("User join"),"$USERNICK, $USERNAME, $USERMASK, $CHANNEL"},
+			{MessageID.PART,N_("User part"),"$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MESSAGE"},
+			{MessageID.KICK,N_("User kicked"),"$KICKED, $USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
+			{MessageID.NICK,N_("User changed nick"),"$NEWNICK, $USERNICK, $USERNAME, $USERMASK"},
+			{MessageID.PRIVMSG,N_("Normal message"),"$USERNICK, $USERNAME, $USERMASK, $MESSAGE, $USERRANK"},
+			{MessageID.ACTION,N_("User action (/me)"),"$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
+			{MessageID.CTCPMSG,N_("CTCP request"),"$USERNICK, $USERNAME, $USERMASK, $REQUEST"},
+			{MessageID.NOTICE,N_("Notice"),"$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
+			{MessageID.QUIT,N_("User disconnect"),"$USERNICK, $USERNAME, $USERMASK, $MESSAGE"},
+			{MessageID.CHANUSERMODE,N_("Channel user mode change"),"$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES, $TARGETS"},
+			{MessageID.CHANMODE,N_("Channel mode change"),"$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES"},
+			{MessageID.MODE,N_("User mode change"),"$NICK, $MODES"},
+			{MessageID.TOPIC,N_("Topic change"),"$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $TOPIC"}
 		};
 		
 		private const DefaultMessage[] default_messages = {
@@ -71,8 +71,8 @@ namespace XSIRC {
 		private HashMap<MessageID,string> messages = new HashMap<MessageID,string>();
 		
 		public MessagesPlugin() {
-			name = "Messages";
-			description = "Customizable messages.";
+			name = _("Messages");
+			description = _("Customizable messages.");
 			author = "NieXS";
 			version = "0.1";
 			priority = int.MAX;
@@ -83,9 +83,11 @@ namespace XSIRC {
 		}
 		
 		private void set_up_prefs() {
+			Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow(null,null);
 			Gtk.VBox box = new Gtk.VBox(false,0);
+			scroll.add(box);
 			LinkedList<Gtk.Entry> entries = new LinkedList<Gtk.Entry>();
-			prefs_widget = box;
+			prefs_widget = scroll;
 			foreach(MessageType message_type in message_types) {
 				Gtk.Label label = new Gtk.Label(message_type.name);
 				Gtk.Entry entry = new Gtk.Entry();
