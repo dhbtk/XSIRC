@@ -820,7 +820,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		}
 		
 		public void create_plugin_prefs_window() {
-			plugin_prefs_window = new PluginManager.PrefWindow();
+			if(plugin_prefs_window == null) {
+				plugin_prefs_window = new PluginManager.PrefWindow();
+			} else {
+				plugin_prefs_window.window.present();
+			}
 		}
 		
 		public void destroy_plugin_prefs_window() {

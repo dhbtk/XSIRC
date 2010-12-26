@@ -15,6 +15,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	private bool highlight_on_all_privmsgs = false;
 	private Gtk.ListStore model = new Gtk.ListStore(1,typeof(string));
 	private Gtk.TreeView tree = new Gtk.TreeView();
+	private Gtk.StatusIcon icon;
 	
 	public HighlightsPlugin() {
 		name = _("Highlights");
@@ -74,6 +75,19 @@ public class HighlightsPlugin : XSIRC.Plugin {
 		tree_box.pack_start(scroll,true,true,0);
 		tree_box.pack_start(bbox,false,false,0);
 		vbox.pack_start(tree_box,true,true,0);
+		
+		icon = new Gtk.StatusIcon.from_file(PREFIX+"/share/pixmaps/xsirc.png");
+		icon.activate.connect(() => {
+			XSIRC.Main.gui.main_window.present();
+			icon.blinking = false;
+		});
+		XSIRC.Main.gui.main_window.visibility_notify_event.connect((event) => {
+			if(event.visibility.state == Gdk.VisibilityState.UNOBSCURED || event.visibility.state == Gdk.VisibilityState.PARTIAL) {
+				XSIRC.Main.gui.main_window.set_urgency_hint(false);
+				icon.blinking = false;
+			}
+			return false;
+		});
 	}
 	
 	private void display_regexes() {
@@ -238,6 +252,10 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	}
 	
 	private void highlight(string title,string content) {
+		// Haven't figured out the API for Win32 balloons yet :/
+		icon.blinking = true;
+		XSIRC.Main.gui.main_window.set_urgency_hint(true);
+#if !WINDOWS
 		Notify.Notification notification = new Notify.Notification(title,Markup.escape_text(content),PREFIX+"/share/pixmaps/xsirc.png",null);
 		notification.set_timeout(5000);
 		notification.set_urgency(Notify.Urgency.CRITICAL);
@@ -246,6 +264,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 		} catch(Error e) {
 			
 		}
+#endif
 	}
 }
 
