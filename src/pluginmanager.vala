@@ -9,7 +9,7 @@ namespace XSIRC {
 	public class PluginManager : Object {
 		
 		public class PrefWindow : Object {
-			private Gtk.Dialog window;
+			internal Gtk.Dialog window;
 			private Gtk.Builder ui_builder;
 			private Gtk.ListStore plugin_model = new Gtk.ListStore(1,typeof(string));
 			private Gtk.TreeView plugin_tree;
