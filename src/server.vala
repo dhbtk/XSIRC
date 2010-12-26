@@ -88,7 +88,6 @@ namespace XSIRC {
 			notebook.switch_page.connect((page,page_num) => {
 				Main.gui.update_gui(this,find_view_from_page_num((int)page_num));
 				find_view_from_page_num((int)page_num).label.label = Markup.escape_text(find_view_from_page_num((int)page_num).name);
-				Main.gui.text_entry.grab_focus();
 			});
 			notebook.page_removed.connect(() => {
 				Main.gui.queue_update_gui();
@@ -364,7 +363,7 @@ namespace XSIRC {
 						break;
 					case "KICK":
 						if(split[3].down() == nick.down()) {
-							find_channel(split[3]).in_channel = false;
+							find_channel(split[2]).in_channel = false;
 						} else {
 							send("NAMES %s".printf(split[2]));
 						}
