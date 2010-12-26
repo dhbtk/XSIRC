@@ -184,7 +184,7 @@ namespace XSIRC {
 				return;
 			}
 			InetAddress address = addresses.nth_data(0);
-			add_to_view("<server>","CONNECTION: Resolved %s to %s".printf(server,address.to_string()));
+			add_to_view("<server>","[Connection] Resolved %s to %s.".printf(server,address.to_string()));
 			socket_client = new SocketClient();
 			try {
 				socket_conn = yield socket_client.connect_async(new InetSocketAddress(address,(uint16)port),null);
@@ -236,7 +236,7 @@ namespace XSIRC {
 					StringBuilder str = new StringBuilder("");
 					int n = 1;
 					foreach(string i in split) {
-						if(str.str.length >= 380) break;
+						if(str.str.length >= 460) break;
 						str.append(i);
 						if(n < split.length) {
 							str.append(" ");
