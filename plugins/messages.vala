@@ -85,7 +85,7 @@ namespace XSIRC {
 		private void set_up_prefs() {
 			Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow(null,null);
 			Gtk.VBox box = new Gtk.VBox(false,0);
-			scroll.add(box);
+			scroll.add_with_viewport(box);
 			LinkedList<Gtk.Entry> entries = new LinkedList<Gtk.Entry>();
 			prefs_widget = scroll;
 			foreach(MessageType message_type in message_types) {
@@ -256,7 +256,7 @@ namespace XSIRC {
 					}
 					i++;
 				}
-				server.add_to_view("<server>",result);
+				server.add_to_view(_("<server>"),result);
 			} else { // PRIVMSG
 				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE","$USERRANK"};
 				string[] replacements = {usernick,username,usermask,message,userrank};
@@ -292,7 +292,7 @@ namespace XSIRC {
 			if(server.find_view(my_target) != null) {
 				server.add_to_view(my_target,result);
 			} else {
-				server.add_to_view("<server>",result);
+				server.add_to_view(_("<server>"),result);
 			}
 			return true;
 		}
@@ -362,7 +362,7 @@ namespace XSIRC {
 				}
 				i++;
 			}
-			server.add_to_view("<server>",result);
+			server.add_to_view(_("<server>"),result);
 			return true;
 		}
 		

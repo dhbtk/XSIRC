@@ -198,7 +198,7 @@ namespace XSIRC {
 			
 			// System view goes here.
 			
-			system_view = create_view("System");
+			system_view = create_view("XSIRC");
 			servers_notebook.append_page(system_view.scrolled_window,system_view.label);
 			servers_notebook.show_all();
 			// Input entry
