@@ -402,11 +402,7 @@ namespace XSIRC {
 						Main.server_manager.on_connect(this);
 						nick_tries = 0;
 						nick = split[2];
-						// Extracting our username and hostmask
-						string raw_hostmask = split[split.length-1];
-						my_username = raw_hostmask.split("!")[1].split("@")[0];
-						my_hostmask = raw_hostmask.split("@")[1];
-						add_to_view(_("<server>"),_("[Server info] Welcome to the Internet Relay Network ")+"%s!%s@%s".printf(nick,my_username,my_hostmask));
+						add_to_view(_("<server>"),_("[Server info] Welcome to the Internet Relay Network ")+nick);
 						break;
 					case "002":
 					case "003":
