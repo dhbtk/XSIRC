@@ -26,7 +26,7 @@ msgstr "Provê suporte a notificações personalizáveis"
 
 #: plugins/highlights.vala:28
 msgid "Highlight on _nickname"
-msgstr "Notificar no seu _nick"
+msgstr "Notificar no seu ap_elido"
 
 #: plugins/highlights.vala:35
 msgid "Highlight on n_otices"
@@ -337,113 +337,113 @@ msgstr "[Erro:402] O servidor %s não existe."
 #: src/server.vala:495
 #, c-format
 msgid "[Error:403] No such channel: %s"
-msgstr ""
+msgstr "[Erro:403] O canal %s não existe."
 
 #: src/server.vala:498
 #, c-format
 msgid "[Error:404] Cannot send to channel: %s"
-msgstr ""
+msgstr "[Erro:404] Não foi possível enviar para o canal %s."
 
 #: src/server.vala:501
 #, c-format
 msgid "[Error:405] Cannot join %s: joined too many channels."
-msgstr ""
+msgstr "[Erro:405] Não pôde entrar em %s: em canais demais."
 
 #: src/server.vala:504
 #, c-format
 msgid "[Error:406] There was no such nickname: %s"
-msgstr ""
+msgstr "[Erro:406] O apelido %s não existiu."
 
 #: src/server.vala:507
 msgid "[Error:407] Too many targets for notice/message."
-msgstr ""
+msgstr "[Erro:407] Alvos demais para NOTICE/PRIVMSG."
 
 #: src/server.vala:510
 #, c-format
 msgid "[Error:408] No such service: %s"
-msgstr ""
+msgstr "[Erro:408] O serviço %s não existe."
 
 #: src/server.vala:513
 msgid "[Error:409] No origin specified."
-msgstr ""
+msgstr "[Erro:409] Origem não especificada."
 
 #: src/server.vala:516
 msgid "[Error:411] No recipient given for command."
-msgstr ""
+msgstr "[Erro:411] Não foi dado um destinatário para o comando."
 
 #: src/server.vala:519
 msgid "[Error:412] No text to send."
-msgstr ""
+msgstr "[Erro:412] Nenhum texto para enviar."
 
 #: src/server.vala:522
 #, c-format
 msgid "[Error:413] No toplevel domain specified for mask %s"
-msgstr ""
+msgstr "[Erro:413] Nenhum domínio de topo especificado para a mask %s."
 
 #: src/server.vala:525
 #, c-format
 msgid "[Error:414] Wildcard in toplevel domain in mask %s"
-msgstr ""
+msgstr "[Erro:414] Wildcard em domínio de topo na mask %s."
 
 #: src/server.vala:528
 #, c-format
 msgid "[Error:415] Bad server/host mask: %s"
-msgstr ""
+msgstr "[Erro:415] Servidor/mask ruim: %s"
 
 #: src/server.vala:531
 #, c-format
 msgid "[Error:421] Unknown command: %s"
-msgstr ""
+msgstr "[Erro:421] Comando desconhecido: %s"
 
 #: src/server.vala:534
 msgid "[MOTD] MOTD file missing"
-msgstr ""
+msgstr "[MOTD] Arquivo MOTD não existe."
 
 #: src/server.vala:537
 #, c-format
 msgid "[Admin] No admin info available for server %s"
-msgstr ""
+msgstr "[ADMIN] Nenhuma informação administrativa para o servidor %s."
 
 #: src/server.vala:540
 msgid "[Error:424] File error."
-msgstr ""
+msgstr "[Erro:424] Erro de arquivo."
 
 #: src/server.vala:543
 msgid "[Error:431] No nickname given."
-msgstr ""
+msgstr "[Erro:431] Nenhum apelido foi fornecido."
 
 #: src/server.vala:546
 msgid "[Error:432] Illegal nickname given."
-msgstr ""
+msgstr "[Erro:432] Um apelido ilegal foi fornecido."
 
 #: src/server.vala:555
 #, c-format
 msgid "[Error:433] Nickname %s already in use."
-msgstr ""
+msgstr "[Erro:433] Apelido %s já está em uso."
 
 #: src/server.vala:558
 msgid "[Error:436] Nickname collision kill."
-msgstr ""
+msgstr "[Erro:436] KILL por colisão de apelidos."
 
 #: src/server.vala:561
 #, c-format
 msgid "[Error:437] Nick/channel temporarily unavailable: %s"
-msgstr ""
+msgstr "[Erro:437] Apelido/canal temporariamente indisponível."
 
 #: src/server.vala:564
 #, c-format
 msgid "[Error:441] %s isn't in channel %s."
-msgstr ""
+msgstr "[Erro:441] %s não está no canal %s."
 
 #: src/server.vala:567
 #, c-format
 msgid "[Error:442] You're not in channel %s."
-msgstr ""
+msgstr "[Erro:442] Você não está no canal %s."
 
 #: src/server.vala:570
 #, c-format
 msgid "[Error:443] %s is already in channel %s."
-msgstr ""
+msgstr "[Erro:443] %s já está no canal %s."
 
 #: src/server.vala:573
 #, c-format
@@ -972,52 +972,52 @@ msgstr "_Ajuda online"
 
 #: plugins/messages.vala:40
 msgid "User join"
-msgstr ""
+msgstr "Entrada de usuário"
 
 #: plugins/messages.vala:41
 msgid "User part"
-msgstr ""
+msgstr "Saída de usuário"
 
 #: plugins/messages.vala:42
 msgid "User kicked"
-msgstr ""
+msgstr "Usuário chutado"
 
 #: plugins/messages.vala:43
 msgid "User changed nick"
-msgstr ""
+msgstr "Usuário trocou de apelido"
 
 #: plugins/messages.vala:44
 msgid "Normal message"
-msgstr ""
+msgstr "Mensagem normal"
 
 #: plugins/messages.vala:45
 msgid "User action (/me)"
-msgstr ""
+msgstr "Ação de usuário (/me)"
 
 #: plugins/messages.vala:46
 msgid "CTCP request"
-msgstr ""
+msgstr "Requisição CTCP"
 
 #: plugins/messages.vala:47
 msgid "Notice"
-msgstr ""
+msgstr "NOTICE"
 
 #: plugins/messages.vala:48
 msgid "User disconnect"
-msgstr ""
+msgstr "Desconexão de usuário"
 
 #: plugins/messages.vala:49
 msgid "Channel user mode change"
-msgstr ""
+msgstr "Mudança de modo de usuário de canal"
 
 #: plugins/messages.vala:50
 msgid "Channel mode change"
-msgstr ""
+msgstr "Mudança de modo do canal"
 
 #: plugins/messages.vala:51
 msgid "User mode change"
-msgstr ""
+msgstr "Mudança de modo de usuário"
 
 #: plugins/messages.vala:52
 msgid "Topic change"
-msgstr ""
+msgstr "Mudança de tópico"
