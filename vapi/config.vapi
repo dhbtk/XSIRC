@@ -7,6 +7,7 @@ string gen_timestamp(string format,time_t time);
 	public const string APPNAME;
 	public const string VERSION;
 	public const string GETTEXT_PACKAGE;
+	public const string LOCALE_DIR;
 	public const string OS;
 	public const string PREFIX;
 //}

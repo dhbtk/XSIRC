@@ -30,9 +30,11 @@ def is_mingw (env):
 def options(opt):
 	opt.tool_options('compiler_c')
 	opt.tool_options('vala')
+	opt.load('gnu_dirs')
 
 def configure(conf):
 	conf.check_tool('compiler_c vala') # intltool later too
+	conf.load('gnu_dirs intltool')
 	if is_mingw(conf.env):
 		if not 'AR' in os.environ and not 'RANLIB' in os.environ:
 			conf.env['AR'] = os.environ['CC'][:-3] + 'ar'
@@ -51,11 +53,13 @@ def configure(conf):
 	conf.check_cfg(package='gmodule-2.0',uselib_store='GMODULE',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gee-1.0',uselib_store='GEE',atleast_version='0.5.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='libnotify',uselib_store='NOTIFY',atleast_version='0.5.0',mandatory=1,args='--cflags --libs')
-	conf.define('PACKAGE_NAME',APPNAME)
+	app = "xsirc"
+	conf.define('PACKAGE_NAME',app)
 	conf.define('APPNAME',APPNAME)
 	conf.define('VERSION',VERSION)
-	conf.define('GETTEXT_PACKAGE',APPNAME)
+	conf.define('GETTEXT_PACKAGE',app)
 	conf.define('PREFIX',conf.env['PREFIX'])
+	conf.define('LOCALE_DIR',conf.env['LOCALEDIR'])
 	conf.write_config_header('config.h')
 	conf.env['PACKAGE'] = 'xsirc'
 	conf.env.append_value('VALAFLAGS','-g')
@@ -66,7 +70,7 @@ def configure(conf):
 def build(bld):
 	bld.add_subdirs('src')
 	bld.add_subdirs('plugins')
-	#bld.add_subdirs('po')
+	bld(features='intltool_po',appname='xsirc',podir='po',install_path=bld.env['LOCALEDIR'])
 	bld.install_files(bld.env['PREFIX']+'/share/licenses/xsirc','LICENSE') # Arch Linux thing
 	# Icon
 	bld.install_files(bld.env['PREFIX']+'/share/pixmaps','xsirc.png')
