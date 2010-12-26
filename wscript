@@ -33,7 +33,7 @@ def options(opt):
 	opt.load('gnu_dirs')
 
 def configure(conf):
-	conf.check_tool('compiler_c vala') # intltool later too
+	conf.check_tool('compiler_c vala')
 	conf.load('gnu_dirs intltool')
 	if is_mingw(conf.env):
 		if not 'AR' in os.environ and not 'RANLIB' in os.environ:
@@ -45,6 +45,8 @@ def configure(conf):
 		conf.env["windows"] = 'yes'
 		conf.define('OS','win32')
 		conf.env.append_value('VALAFLAGS',['-D','WINDOWS'])
+		conf.env['PREFIX'] = '.' # hacky, I know
+		conf.env['LOCALEDIR'] = 'share/locale'
 	else:
 		conf.define('OS','unix')
 	conf.check_cfg(package='glib-2.0',uselib_store='GLIB',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
@@ -52,7 +54,8 @@ def configure(conf):
 	conf.check_cfg(package='gio-2.0',uselib_store='GIO',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gmodule-2.0',uselib_store='GMODULE',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gee-1.0',uselib_store='GEE',atleast_version='0.5.0',mandatory=1,args='--cflags --libs')
-	conf.check_cfg(package='libnotify',uselib_store='NOTIFY',atleast_version='0.5.0',mandatory=1,args='--cflags --libs')
+	if !is_mingw(conf.env):
+		conf.check_cfg(package='libnotify',uselib_store='NOTIFY',atleast_version='0.5.0',mandatory=1,args='--cflags --libs')
 	app = "xsirc"
 	conf.define('PACKAGE_NAME',app)
 	conf.define('APPNAME',APPNAME)
