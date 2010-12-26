@@ -14,15 +14,21 @@ bld.shlib(
 	use = 'xsirc',
 	install_path = bld.env['PREFIX']+'/lib/xsirc'
 )
+if conf.env['windows'] == 'yes':
+	packs = 'xsirc'
+	store = 'GMODULE GLIB'
+else:
+	packs = 'xsirc libnotify'
+	store = 'GMODULE GLIB NOTIFY'
 bld.shlib(
 	source = 'highlights.vala',
 	features = 'c cshlib',
-	packages = 'xsirc',
+	packages = packs,
 	vapi_dirs = '../src ../vapi',
 	includes = '../src',
 	cflags = ['-include','config.h'],
 	target = 'xsirchighlights',
-	uselib = 'GMODULE GLIB',
+	uselib = store,
 	use = 'xsirc',
 	install_path = bld.env['PREFIX']+'/lib/xsirc'
 )
