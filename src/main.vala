@@ -16,10 +16,10 @@ namespace XSIRC {
 	}
 	
 	int main(string[] args) {
+		Gtk.init(ref args);
 		Intl.textdomain(GETTEXT_PACKAGE);
 		Intl.bindtextdomain(GETTEXT_PACKAGE,LOCALE_DIR);
 		Environment.set_application_name(GETTEXT_PACKAGE);
-		Gtk.init(ref args);
 		try {
 			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file(PREFIX+"/share/pixmaps/xsirc.png"));
 		} catch(Error e) {

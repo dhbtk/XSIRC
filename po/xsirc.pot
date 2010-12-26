@@ -861,3 +861,163 @@ msgstr ""
 #: src/prefwindow.ui:459
 msgid "Auto-connect"
 msgstr ""
+
+#: src/gui.vala:22
+msgid "_Client"
+msgstr ""
+
+#: src/gui.vala:23
+msgid "_Connect..."
+msgstr ""
+
+#: src/gui.vala:23
+msgid "Connect to a server."
+msgstr ""
+
+#: src/gui.vala:24
+msgid "_Disconnect all"
+msgstr ""
+
+#: src/gui.vala:25
+msgid "_Reconnect all"
+msgstr ""
+
+#: src/gui.vala:26
+msgid "_Open last link"
+msgstr ""
+
+#: src/gui.vala:27
+msgid "O_pen sec-to-last link"
+msgstr ""
+
+#: src/gui.vala:30
+msgid "S_ettings"
+msgstr ""
+
+#: src/gui.vala:32
+msgid "_Advanced"
+msgstr ""
+
+#: src/gui.vala:33
+msgid "_Macros..."
+msgstr ""
+
+#: src/gui.vala:34
+msgid "_Plugins..."
+msgstr ""
+
+#: src/gui.vala:36
+msgid "_View"
+msgstr ""
+
+#: src/gui.vala:37
+msgid "Previous server"
+msgstr ""
+
+#: src/gui.vala:38
+msgid "Next server"
+msgstr ""
+
+#: src/gui.vala:39
+msgid "Previous view"
+msgstr ""
+
+#: src/gui.vala:40
+msgid "Next view"
+msgstr ""
+
+#: src/gui.vala:41
+msgid "_Close view"
+msgstr ""
+
+#: src/gui.vala:42
+msgid "Re_join channel"
+msgstr ""
+
+#: src/gui.vala:43
+msgid "_Open view..."
+msgstr ""
+
+#: src/gui.vala:56
+msgid "_Server"
+msgstr ""
+
+#: src/gui.vala:57
+msgid "_Disconnect"
+msgstr ""
+
+#: src/gui.vala:58
+msgid "_Reconnect"
+msgstr ""
+
+#: src/gui.vala:59
+msgid "_Close"
+msgstr ""
+
+#: src/gui.vala:60
+msgid "Re_join all"
+msgstr ""
+
+#: src/gui.vala:61
+msgid "_Mark as away"
+msgstr ""
+
+#: src/gui.vala:63
+msgid "_Help"
+msgstr ""
+
+#: src/gui.vala:64
+msgid "_Online help"
+msgstr ""
+
+#: plugins/messages.vala:40
+msgid "User join"
+msgstr ""
+
+#: plugins/messages.vala:41
+msgid "User part"
+msgstr ""
+
+#: plugins/messages.vala:42
+msgid "User kicked"
+msgstr ""
+
+#: plugins/messages.vala:43
+msgid "User changed nick"
+msgstr ""
+
+#: plugins/messages.vala:44
+msgid "Normal message"
+msgstr ""
+
+#: plugins/messages.vala:45
+msgid "User action (/me)"
+msgstr ""
+
+#: plugins/messages.vala:46
+msgid "CTCP request"
+msgstr ""
+
+#: plugins/messages.vala:47
+msgid "Notice"
+msgstr ""
+
+#: plugins/messages.vala:48
+msgid "User disconnect"
+msgstr ""
+
+#: plugins/messages.vala:49
+msgid "Channel user mode change"
+msgstr ""
+
+#: plugins/messages.vala:50
+msgid "Channel mode change"
+msgstr ""
+
+#: plugins/messages.vala:51
+msgid "User mode change"
+msgstr ""
+
+#: plugins/messages.vala:52
+msgid "Topic change"
+msgstr ""
