@@ -12,6 +12,8 @@ bld.shlib(
 	target = 'xsirctest',
 	uselib = 'GMODULE GLIB',
 	use = 'xsirc',
+	cflags = ['-g'],
+	linkflags = ['-g'],
 	install_path = bld.env['PREFIX']+'/lib/xsirc'
 )
 if conf.env['windows'] == 'yes':
@@ -29,6 +31,8 @@ bld.shlib(
 	cflags = ['-include','config.h'],
 	target = 'xsirchighlights',
 	uselib = store,
+	cflags = ['-g'],
+	linkflags = ['-g'],
 	use = 'xsirc',
 	install_path = bld.env['PREFIX']+'/lib/xsirc'
 )
@@ -41,6 +45,8 @@ bld.shlib(
 	cflags = ['-include','config.h'],
 	target = 'xsircmessages',
 	uselib = 'GMODULE GLIB',
+	cflags = ['-g'],
+	linkflags = ['-g'],
 	use = 'xsirc',
 	install_path = bld.env['PREFIX']+'/lib/xsirc'
 )
