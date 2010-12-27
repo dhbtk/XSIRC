@@ -154,7 +154,7 @@ namespace XSIRC {
 				stdout.printf("\tVersion: %s\n",plugin.version);
 				stdout.printf("\tAuthor: %s\n",plugin.author);
 			}
-#end
+#endif
 		}
 		
 		private LinkedList<string> load_plugins() {
