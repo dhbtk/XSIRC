@@ -1,5 +1,6 @@
 #include <time.h>
 #include <string.h>
+#include "config.h"
 #ifndef WINDOWS
 #include <stdlib.h>
 #endif

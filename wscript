@@ -47,6 +47,7 @@ def configure(conf):
 		conf.env.append_value('VALAFLAGS',['-D','WINDOWS'])
 		conf.env['PREFIX'] = '.' # hacky, I know
 		conf.env['LOCALEDIR'] = 'share/locale'
+		conf.define('WINDOWS')
 	else:
 		conf.define('OS','unix')
 	conf.check_cfg(package='glib-2.0',uselib_store='GLIB',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
