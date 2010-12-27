@@ -22,7 +22,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	private Gtk.StatusIcon icon;
 	
 	public HighlightsPlugin() {
-		name = _("Highlights");
+		name = "Highlights";
 		description = _("Adds support for configurable highlights.");
 		author = "NieXS";
 		version = "0.1";
