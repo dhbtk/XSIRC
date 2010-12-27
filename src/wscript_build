@@ -4,7 +4,7 @@
 # Copyright (c) 2010 Eduardo Niehues
 # Distributed under the New BSD License; see LICENSE for details.
 if bld.env['windows'] == 'yes':
-	flags = ['-g','-mingw32']
+	flags = ['-g','-mingw32','-mwindows']
 else:
 	flags = ['-g']
 bld.stlib(
