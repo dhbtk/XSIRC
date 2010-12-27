@@ -34,8 +34,7 @@ def options(opt):
 
 def configure(conf):
 	conf.check_tool('compiler_c vala')
-	if not is_mingw(conf):
-		conf.load('gnu_dirs intltool')
+	conf.load('gnu_dirs intltool')
 	if is_mingw(conf.env):
 		if not 'AR' in os.environ and not 'RANLIB' in os.environ:
 			conf.env['AR'] = os.environ['CC'][:-3] + 'ar'
