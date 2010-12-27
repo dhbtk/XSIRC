@@ -15,11 +15,6 @@ namespace XSIRC {
 		public bool enabled = true;
 		public Gtk.Widget prefs_widget = null;
 		
-		[CCode (cname = "G_MODULE_EXPORT xsirc_plugin_construct")]
-		construct {
-			
-		}
-		
 		public virtual bool on_join(Server server,string usernick,string username,string usermask,string channel) {
 			return true;
 		}

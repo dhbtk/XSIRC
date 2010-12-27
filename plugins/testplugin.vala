@@ -1,5 +1,9 @@
 public class TestPlugin : XSIRC.Plugin {
 	public TestPlugin() {
+		Object();
+	}
+	
+	construct {
 		name = "Test";
 		description = "Test";
 		author = "NieXS";
@@ -9,8 +13,7 @@ public class TestPlugin : XSIRC.Plugin {
 	}
 }
 
-[CCode (cname = "G_MODULE_EXPORT register_plugin")]
-void register_plugin(Module module) {
-	TestPlugin plugin = new TestPlugin();
-	XSIRC.Main.plugin_manager.add_plugin(plugin);
+//[ModuleInit]
+Type register_plugin(TypeModule module) {
+	return typeof(TestPlugin);
 }

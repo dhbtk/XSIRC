@@ -71,6 +71,10 @@ namespace XSIRC {
 		private HashMap<MessageID,string> messages = new HashMap<MessageID,string>();
 		
 		public MessagesPlugin() {
+			Object();
+		}
+		
+		construct {
 			name = _("Messages");
 			description = _("Customizable messages.");
 			author = "NieXS";
@@ -383,8 +387,7 @@ namespace XSIRC {
 	}
 }
 
-[CCode (cname = "G_MODULE_EXPORT register_plugin")]
-void register_plugin(Module module) {
-	XSIRC.MessagesPlugin plugin = new XSIRC.MessagesPlugin();
-	XSIRC.Main.plugin_manager.add_plugin(plugin);
+//[ModuleInit]
+Type register_plugin(TypeModule module) {
+	return typeof(XSIRC.MessagesPlugin);
 }
