@@ -336,6 +336,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	}
 }
 
+[CCode (cname = "G_MODULE_EXPORT register_plugin")]
 void register_plugin(Module module) {
 	HighlightsPlugin plugin = new HighlightsPlugin();
 	XSIRC.Main.plugin_manager.add_plugin(plugin);

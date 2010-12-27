@@ -383,6 +383,7 @@ namespace XSIRC {
 	}
 }
 
+[CCode (cname = "G_MODULE_EXPORT register_plugin")]
 void register_plugin(Module module) {
 	XSIRC.MessagesPlugin plugin = new XSIRC.MessagesPlugin();
 	XSIRC.Main.plugin_manager.add_plugin(plugin);
