@@ -653,6 +653,9 @@ namespace XSIRC {
 							//stderr.printf("Line doesn't match\n");
 							continue;
 						}
+#if WINDOWS
+						open_url_in_browser(info.fetch(1));
+#else
 						try {
 							Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+info.fetch(1)).split(" "),null,0,null,null);
 						} catch(SpawnError e) {
@@ -660,6 +663,7 @@ namespace XSIRC {
 							d.response.connect(() => {d.destroy();});
 							d.show_all();
 						}
+#endif
 						break;
 					}
 				}
@@ -688,6 +692,9 @@ namespace XSIRC {
 							first_match = false;
 							continue;
 						}
+#if WINDOWS
+						open_url_in_browser(info.fetch(1));
+#else
 						try {
 							Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+info.fetch(1)).split(" "),null,0,null,null);
 						} catch(SpawnError e) {
@@ -695,6 +702,7 @@ namespace XSIRC {
 							d.response.connect(() => {d.destroy();});
 							d.show_all();
 						}
+#endif
 						break;
 					}
 				}
@@ -702,13 +710,17 @@ namespace XSIRC {
 		}
 		
 		public static void spawn_help_cb(Gtk.Action action) {
-				try {
-					Process.spawn_async(null,(Main.config["core"]["web_browser"]+" http://xsirc.niexs.net/manual.html").split(" "),null,0,null,null);
-				} catch(SpawnError e) {
-					Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
-					d.response.connect(() => {d.destroy();});
-					d.show_all();
-				}
+#if WINDOWS
+			open_url_in_browser("http://xsirc.niexs.net/manual.html");
+#else
+			try {
+				Process.spawn_async(null,(Main.config["core"]["web_browser"]+" http://xsirc.niexs.net/manual.html").split(" "),null,0,null,null);
+			} catch(SpawnError e) {
+				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
+				d.response.connect(() => {d.destroy();});
+				d.show_all();
+			}
+#endif
 		}
 		
 		public static void spawn_about_cb(Gtk.Action action) {
@@ -755,6 +767,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		
 		// Link opener for the about dialog
 		public static void open_browser(Gtk.AboutDialog dialog,string link) {
+#if WINDOWS
+			open_url_in_browser(link);
+#else
 			try {
 				Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+link).split(" "),null,0,null,null);
 			} catch(SpawnError e) {
@@ -762,6 +777,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 				d.response.connect(() => {d.destroy();});
 				d.show_all();
 			}
+#endif
 		}
 		// Dialogs
 		public void open_connect_dialog() {
