@@ -3,6 +3,8 @@
 #include "config.h"
 #ifndef WINDOWS
 #include <stdlib.h>
+#else
+#include <shellapi.h>
 #endif
 
 /* Cross-platform timestamp generation, since Time.local uses localtime_r, which
@@ -23,3 +25,10 @@ char *gen_timestamp(char *format,time_t time) {
 	return result;
 #endif
 }
+
+#ifdef WINDOWS
+/* Opening a file never has been so easy! */
+void open_url_in_browser(char *url) {
+	ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOW);
+}
+#endif

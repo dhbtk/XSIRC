@@ -1,6 +1,10 @@
 [CCode (cname = "gen_timestamp", cheader_filename = "gen_timestamp.h")]
 string gen_timestamp(string format,time_t time);
 
+#if WINDOWS
+void open_url_in_browser(string url);
+#endif
+
 //[CCode (cprefix = "", lower_case_cprefix = "", cheader_filename = "config.h")]
 //namespace XSIRC {
 	public const string PACKAGE_NAME;
