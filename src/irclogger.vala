@@ -40,7 +40,7 @@ namespace XSIRC {
 				}
 				stream.put_byte('\n');
 			} catch(Error e) {
-				Main.gui.add_to_view(Main.gui.system_view,"Could not log: %s",e.message);
+				Main.gui.add_to_view(Main.gui.system_view,"Could not log: %s".printf(e.message));
 			}
 		}
 	}
