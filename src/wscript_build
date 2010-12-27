@@ -5,7 +5,7 @@
 # Distributed under the New BSD License; see LICENSE for details.
 if bld.env['windows'] == 'yes':
 	flags = ['-g','-mingw32','-mwindows']
-	source = bld.path.ant_glob('../plugins/*.vala')
+	source = bld.path.ant_glob('*.vala') + ['../plugins/testplugin.vala','../plugins/highlights.vala','../plugins/messages.vala']
 else:
 	flags = ['-g']
 	source = bld.path.ant_glob('*.vala')
