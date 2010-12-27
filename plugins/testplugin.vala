@@ -9,6 +9,7 @@ public class TestPlugin : XSIRC.Plugin {
 	}
 }
 
+[CCode (cname = "G_MODULE_EXPORT register_plugin")]
 void register_plugin(Module module) {
 	TestPlugin plugin = new TestPlugin();
 	XSIRC.Main.plugin_manager.add_plugin(plugin);
