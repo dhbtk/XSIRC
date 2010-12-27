@@ -28,11 +28,10 @@ bld.shlib(
 	packages = packs,
 	vapi_dirs = '../src ../vapi',
 	includes = '../src',
-	cflags = ['-include','config.h'],
+	cflags = ['-include','config.h','-g'],
 	target = 'xsirchighlights',
 	uselib = store,
 	use = 'xsirc',
-	cflags = ['-g'],
 	linkflags = ['-g'],
 	install_path = bld.env['PREFIX']+'/lib/xsirc'
 )
@@ -42,11 +41,10 @@ bld.shlib(
 	packages = 'xsirc',
 	vapi_dirs = '../src ../vapi',
 	includes = '../src',
-	cflags = ['-include','config.h'],
+	cflags = ['-include','config.h','-g'],
 	target = 'xsircmessages',
 	uselib = 'GMODULE GLIB',
 	use = 'xsirc',
-	cflags = ['-g'],
 	linkflags = ['-g'],
 	install_path = bld.env['PREFIX']+'/lib/xsirc'
 )
