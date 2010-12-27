@@ -73,9 +73,9 @@ def configure(conf):
 	
 def build(bld):
 	bld.add_subdirs('src')
-	if not 'windows' in conf.env:
+	if not 'windows' in bld.env:
 		bld.add_subdirs('plugins')
-		bld(features='intltool_po',appname='xsirc',podir='po',install_path=bld.env['LOCALEDIR'])
+	bld(features='intltool_po',appname='xsirc',podir='po',install_path=bld.env['LOCALEDIR'])
 	bld.install_files(bld.env['PREFIX']+'/share/licenses/xsirc','LICENSE') # Arch Linux thing
 	# Icon
 	bld.install_files(bld.env['PREFIX']+'/share/pixmaps','xsirc.png')
