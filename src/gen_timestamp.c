@@ -4,7 +4,7 @@
 #ifndef WINDOWS
 #include <stdlib.h>
 #else
-#include <shellapi.h>
+#include <windows.h>
 #endif
 
 /* Cross-platform timestamp generation, since Time.local uses localtime_r, which
