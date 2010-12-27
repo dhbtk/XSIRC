@@ -30,11 +30,13 @@ def is_mingw (env):
 def options(opt):
 	opt.tool_options('compiler_c')
 	opt.tool_options('vala')
-	opt.load('gnu_dirs')
+	if not is_mingw(opt):
+		opt.load('gnu_dirs')
 
 def configure(conf):
 	conf.check_tool('compiler_c vala')
-	conf.load('gnu_dirs intltool')
+	if not is_mingw(conf):
+		conf.load('gnu_dirs intltool')
 	if is_mingw(conf.env):
 		if not 'AR' in os.environ and not 'RANLIB' in os.environ:
 			conf.env['AR'] = os.environ['CC'][:-3] + 'ar'
@@ -75,7 +77,7 @@ def build(bld):
 	bld.add_subdirs('src')
 	if not 'windows' in bld.env:
 		bld.add_subdirs('plugins')
-	bld(features='intltool_po',appname='xsirc',podir='po',install_path=bld.env['LOCALEDIR'])
+		bld(features='intltool_po',appname='xsirc',podir='po',install_path=bld.env['LOCALEDIR'])
 	bld.install_files(bld.env['PREFIX']+'/share/licenses/xsirc','LICENSE') # Arch Linux thing
 	# Icon
 	bld.install_files(bld.env['PREFIX']+'/share/pixmaps','xsirc.png')
