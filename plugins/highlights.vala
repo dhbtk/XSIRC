@@ -6,6 +6,7 @@
  */
 using Gee;
 
+[CCode (cname = "G_MODULE_EXPORT HighlightsPlugin")]
 public class HighlightsPlugin : XSIRC.Plugin {
 	// TODO: make these customizable
 	private LinkedList<string> highlight_regexes = new LinkedList<string>();
@@ -22,7 +23,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	private Gtk.StatusIcon icon;
 	
 	public HighlightsPlugin() {
-		name = "Highlights";
+		name = _("Highlights");
 		description = _("Adds support for configurable highlights.");
 		author = "NieXS";
 		version = "0.1";
