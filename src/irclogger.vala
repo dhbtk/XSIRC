@@ -29,6 +29,7 @@ namespace XSIRC {
 #else
 			path.append("/").append(view.name.down()).append("-").append(gen_timestamp(Main.config["core"]["log_date_format"],time_t())).append(".log");
 #endif
+			Main.gui.add_to_view(Main.gui.system_view,path.str);
 			//stdout.printf("%s\n",path.str);
 			File f = File.new_for_path(path.str);
 			try {
