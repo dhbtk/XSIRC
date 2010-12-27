@@ -139,6 +139,11 @@ namespace XSIRC {
 		}
 		
 		public void startup() {
+#if WINDOWS
+			plugins.add(new HighlightsPlugin());
+			plugins.add(new TestPlugin());
+			plugins.add(new MessagesPlugin());
+#else
 			load_plugins();
 			
 			// Infodump for plugins, testing stuff
@@ -149,6 +154,7 @@ namespace XSIRC {
 				stdout.printf("\tVersion: %s\n",plugin.version);
 				stdout.printf("\tAuthor: %s\n",plugin.author);
 			}
+#end
 		}
 		
 		private LinkedList<string> load_plugins() {
