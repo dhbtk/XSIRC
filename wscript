@@ -30,8 +30,7 @@ def is_mingw (env):
 def options(opt):
 	opt.tool_options('compiler_c')
 	opt.tool_options('vala')
-	if not is_mingw(opt):
-		opt.load('gnu_dirs')
+	opt.load('gnu_dirs')
 
 def configure(conf):
 	conf.check_tool('compiler_c vala')
