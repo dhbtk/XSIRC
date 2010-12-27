@@ -9,6 +9,7 @@ else:
 	flags = ['-g']
 bld.stlib(
 	source = 'gen_timestamp.c',
+	includes = '.. .',
 	target = 'timestamp')
 bld.stlib(
 	source = 'gen_timestamp_shlib.c',
