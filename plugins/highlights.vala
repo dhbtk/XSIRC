@@ -6,7 +6,6 @@
  */
 using Gee;
 
-[CCode (cname = "G_MODULE_EXPORT HighlightsPlugin")]
 public class HighlightsPlugin : XSIRC.Plugin {
 	// TODO: make these customizable
 	private LinkedList<string> highlight_regexes = new LinkedList<string>();
