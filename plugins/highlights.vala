@@ -218,7 +218,9 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	}
 	
 	public override bool on_startup() {
+#if !WINDOWS
 		Notify.init("XSIRC");
+#endif
 		return true;
 	}
 	
