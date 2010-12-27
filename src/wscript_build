@@ -13,7 +13,7 @@ bld.stlib(
 	target = 'timestamp')
 bld.stlib(
 	source = 'gen_timestamp_shlib.c',
-	target = 'timestamp_shli')
+	target = 'timestamp_shlib')
 to_use = 'timestamp'
 bld.program(
 	source    = bld.path.ant_glob('*.vala'),
