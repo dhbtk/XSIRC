@@ -113,8 +113,11 @@ public class HighlightsPlugin : XSIRC.Plugin {
 		tree_box.pack_start(scroll,true,true,0);
 		tree_box.pack_start(bbox,false,false,0);
 		vbox.pack_start(tree_box,true,true,0);
-		
+#if WINDOWS
+		icon = new Gtk.StatusIcon.from_file("share/pixmaps/xsirc.png");
+#else
 		icon = new Gtk.StatusIcon.from_file(PREFIX+"/share/pixmaps/xsirc.png");
+#endif
 		icon.activate.connect(() => {
 			XSIRC.Main.gui.main_window.present();
 			XSIRC.Main.gui.main_window.set_urgency_hint(false);
@@ -340,7 +343,9 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	}
 }
 
+#if !WINDOWS
 //[ModuleInit]
 Type register_plugin(TypeModule module) {
 	return typeof(HighlightsPlugin);
 }
+#endif

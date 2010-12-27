@@ -13,7 +13,9 @@ public class TestPlugin : XSIRC.Plugin {
 	}
 }
 
+#if !WINDOWS
 //[ModuleInit]
 Type register_plugin(TypeModule module) {
 	return typeof(TestPlugin);
 }
+#endif
