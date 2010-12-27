@@ -7,6 +7,30 @@
 using Gee;
 namespace XSIRC {
 	public class PluginManager : Object {
+		private class PluginRegistrar : TypeModule {
+			private unowned Module module;
+			private delegate Type RegisterPluginFunc(TypeModule module);
+			
+			public PluginRegistrar(Module module) {
+				this.module = module;
+				module.make_resident();
+			}
+			
+			public override bool load() {
+				void* func;
+				module.symbol("register_plugin",out func);
+				RegisterPluginFunc register_plugin = (RegisterPluginFunc)func;
+				Type type = register_plugin((TypeModule)this);
+				Plugin obj = Object.new(type) as Plugin;
+				
+				Main.plugin_manager.plugins.add(obj);
+				return true;
+			}
+			
+			public override void unload() {
+				// Don't, ever
+			}
+		}
 		
 		public class PrefWindow : Object {
 			internal Gtk.Dialog window;
@@ -106,8 +130,7 @@ namespace XSIRC {
 		}
 		
 		internal ArrayList<Plugin> plugins = new ArrayList<Plugin>();
-		
-		private delegate void RegisterPluginFunc(Module module);
+		private ArrayList<PluginRegistrar> registrars = new ArrayList<PluginRegistrar>();
 		
 		public PluginManager() {
 			// If modules aren't supported, the client shouldn't even have
@@ -174,21 +197,14 @@ namespace XSIRC {
 		}
 		
 		private bool load_plugin(string filename) {
-			stdout.printf("Loading module %s\n",filename);
 			Module module = Module.open(filename,0);
 			if(module == null) {
 				stdout.printf("Failed to load module %s: %s\n",filename,Module.error());
 				return false;
 			}
-			
-			stdout.printf("Loaded module %s\n",filename);
-			
-			void* func;
-			module.symbol("register_plugin",out func);
-			RegisterPluginFunc register_plugin = (RegisterPluginFunc)func;
-			
-			register_plugin(module);
-			module.make_resident();
+			PluginRegistrar registrar = new PluginRegistrar(module);
+			registrar.load();
+			registrars.add(registrar);
 			return true;
 		}
 		

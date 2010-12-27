@@ -22,6 +22,10 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	private Gtk.StatusIcon icon;
 	
 	public HighlightsPlugin() {
+		Object();
+	}
+	
+	construct {
 		name = _("Highlights");
 		description = _("Adds support for configurable highlights.");
 		author = "NieXS";
@@ -336,8 +340,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	}
 }
 
-[CCode (cname = "G_MODULE_EXPORT register_plugin")]
-void register_plugin(Module module) {
-	HighlightsPlugin plugin = new HighlightsPlugin();
-	XSIRC.Main.plugin_manager.add_plugin(plugin);
+//[ModuleInit]
+Type register_plugin(TypeModule module) {
+	return typeof(HighlightsPlugin);
 }
