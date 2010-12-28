@@ -307,6 +307,7 @@ namespace XSIRC {
 		}
 		
 		private void handle_server_input(owned string s) {
+			sent_ping = false;
 			stdout.printf("%s\n",s);
 			last_recieved = time_t();
 			// Getting PING out of the way.
