@@ -56,6 +56,86 @@ namespace XSIRC {
 				topic.setter   = "";
 				topic.time_set = (time_t)0;
 			}
+			
+			public void update_user(string nick) {
+				string simple_nick = nick.down();
+				if(/^(%|@|\+|&)/.match(nick) {
+					simple_nick = simple_nick.substring(1);
+				}
+				
+				// Trying to find the nickname, searching the processed list first
+				bool found = false;
+				foreach(string u in users) {
+					if(u == simple_nick) {
+						found = true;
+						break;
+					}
+				}
+				
+				if(found) {
+					int index_raw = 0;
+					int index = 0;
+					foreach(string u in raw_users) {
+						string my_u = u;
+						if(/^(%|@|\+|&)/.match(my_u)) {
+							my_u = my_u.substring(1);
+						}
+						if(my_u.down() == simple_nick) {
+							break;
+						}
+						index_raw++;
+					}
+					foreach(string u in users) {
+						if(u == simple_nick) {
+							break;
+						}
+						index++;
+					}
+					raw_users[index_raw] = nick;
+					users[index] = simple_nick;
+				} else {
+					users.add(simple_nick);
+					raw_users.add(nick);
+				}
+			}
+			
+			public void remove_user(string nick) {
+				string simple_nick = nick.down();
+				if(/^(%|@|\+|&)/.match(nick) {
+					simple_nick = simple_nick.substring(1);
+				}
+				
+				bool found = false;
+				foreach(string u in users) {
+					if(u == simple_nick) {
+						found = true;
+						break;
+					}
+				}
+				
+				if(found) {
+					int index_raw = 0;
+					int index = 0;
+					foreach(string u in raw_users) {
+						string my_u = u;
+						if(/^(%|@|\+|&)/.match(my_u)) {
+							my_u = my_u.substring(1);
+						}
+						if(my_u.down() == simple_nick) {
+							break;
+						}
+						index_raw++;
+					}
+					foreach(string u in users) {
+						if(u == simple_nick) {
+							break;
+						}
+						index++;
+					}
+					raw_users.remove_at(index_raw);
+					users.remove_at(index);
+				}
+			}
 		}
 		
 		private struct OutgoingMessage {
