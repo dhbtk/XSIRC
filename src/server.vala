@@ -251,11 +251,7 @@ namespace XSIRC {
 			bool error = false;
 			GLib.List<InetAddress> addresses = null;
 			try {
-#if WINDOWS
-				addresses = resolver.lookup_by_name(server,null); // no async?
-#else
 				addresses = yield resolver.lookup_by_name_async(server,null);
-#endif
 			} catch(Error ee) { // TODO: report this bug, can not have two GLib.Errors with the same name in the same async method
 				error = true;
 			}
