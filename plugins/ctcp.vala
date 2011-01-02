@@ -22,7 +22,53 @@ public class CTCPPlugin : Plugin {
 		version = "0.1";
 		author = "NieXS";
 		priority = int.MAX - 1;
-		prefs_widget = null;
+		load_settings();
+	}
+	
+	private void load_settings() {
+		Gtk.CheckButton reply_button = new Gtk.CheckButton.with_label(_("Reply to CTCP messages"));
+		reply_button.xalign = 0;
+		reply_button.yalign = 0;
+		Gtk.VBox box = new Gtk.VBox(false,0);
+		box.pack_start(reply_button,false,false,0);
+		prefs_widget = box;
+		try {
+			KeyFile conf = new KeyFile();
+			conf.load_from_file(Environment.get_user_config_dir()+"/xsirc/ctcp.conf",0);
+			if(conf.has_key("CTCP","reply_to_ctcps")) {
+				reply_to_ctcps = conf.get_boolean("CTCP","reply_to_ctcps");
+			}
+		} catch(Error e) {
+			
+		}
+		reply_button.toggled.connect(() => {
+			if(!reply_button.active) {
+				foreach(Server server in Main.server_manager.servers) {
+					if(server.connected) {
+						server.send("MODE %s +T".printf(server.nick));
+					}
+				}
+			} else {
+				foreach(Server server in Main.server_manager.servers) {
+					if(server.connected) {
+						server.send("MODE %s -T".printf(server.nick));
+					}
+				}
+			}
+			reply_to_ctcps = reply_button.active;
+			save_settings();
+		});
+		reply_button.active = reply_to_ctcps;
+	}
+	
+	private void save_settings() {
+		try {
+			KeyFile conf = new KeyFile();
+			conf.set_boolean("CTCP","reply_to_ctcps",reply_to_ctcps);
+			FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/ctcp.conf",conf.to_data());
+		} catch(Error e) {
+			
+		}
 	}
 	
 	public override bool on_privmsg(Server server,string usernick,string username,string usermask,string target,string message) {
