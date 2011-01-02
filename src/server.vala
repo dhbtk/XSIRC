@@ -59,7 +59,7 @@ namespace XSIRC {
 			
 			public void update_user(string nick) {
 				string simple_nick = nick.down();
-				if(/^(%|@|\+|&)/.match(nick) {
+				if(/^(%|@|\+|&)/.match(nick)) {
 					simple_nick = simple_nick.substring(1);
 				}
 				
@@ -101,7 +101,7 @@ namespace XSIRC {
 			
 			public void remove_user(string nick) {
 				string simple_nick = nick.down();
-				if(/^(%|@|\+|&)/.match(nick) {
+				if(/^(%|@|\+|&)/.match(nick)) {
 					simple_nick = simple_nick.substring(1);
 				}
 				
@@ -427,9 +427,10 @@ namespace XSIRC {
 							this.channels.add(channel);
 							channel.name = message;
 							open_view(message);
+							send("NAMES %s".printf(message));
 						}
 						find_channel(message).in_channel = true;
-						send("NAMES %s".printf(message));
+						find_channel(message).update_user(usernick);
 						send("MODE "+message);
 						Main.plugin_manager.on_join(this,usernick,username,usermask,message);
 						break;
@@ -442,14 +443,14 @@ namespace XSIRC {
 							views.remove(view);
 							notebook.remove_page(notebook.page_num(view.scrolled_window));
 						} else {
-							send("NAMES %s".printf(split[2]));
+							find_channel(split[2]).remove_user(usernick);
 						}
 						break;
 					case "KICK":
 						if(split[3].down() == nick.down()) {
 							find_channel(split[2]).in_channel = false;
 						} else {
-							send("NAMES %s".printf(split[2]));
+							find_channel(split[2]).remove_user(split[3]);
 						}
 						message = message == s ? "" : message;
 						Main.plugin_manager.on_kick(this,split[3],usernick,username,usermask,split[2],message);
@@ -462,7 +463,8 @@ namespace XSIRC {
 						Main.plugin_manager.on_nick(this,message,usernick,username,usermask);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
-								send("NAMES %s".printf(channel.name));
+								channel.remove_user(usernick);
+								channel.update_user(usernick);
 							}
 						}
 						foreach(GUI.View view in views) {
@@ -526,7 +528,7 @@ namespace XSIRC {
 						Main.plugin_manager.on_quit(this,usernick,username,usermask,message);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
-								send("NAMES %s".printf(channel.name));
+								channel.remove_user(usernick);
 							}
 						}
 						break;
