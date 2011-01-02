@@ -132,6 +132,43 @@ namespace XSIRC {
 			public Gtk.ScrolledWindow scrolled_window;
 			public Gtk.TextView text_view;
 			public Gtk.Label label;
+			
+			public View(string name) {
+				this.name = name;
+				
+				label = new Gtk.Label(Markup.escape_text(name));
+				label.use_markup = true;
+				
+				// FIXME: until MIRCParser is fixed, no tags in the buffer
+				text_view = new Gtk.TextView();
+				text_view.editable = false;
+				text_view.cursor_visible = false;
+				text_view.wrap_mode = Gtk.WrapMode.WORD;
+				text_view.modify_font(Pango.FontDescription.from_string(Main.config["core"]["font"]));
+				
+				scrolled_window = new Gtk.ScrolledWindow(null,null);
+				scrolled_window.vscrollbar_policy = Gtk.PolicyType.ALWAYS;
+				scrolled_window.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
+				scrolled_window.add(text_view);
+			}
+			
+			public void add_text(string what) {
+				string text = Main.gui.timestamp() + " "+what+"\n";
+				
+				// FIXME: this will probably need work, since the tags applied
+				// by MIRCParser don't seem to actually /have/ attributes, which
+				// seems to be a bug in the Vala compiler somehow, so we either
+				// find a workaround or set attributes in an unconventional way
+				MIRCParser parser = new MIRCParser(text);
+				bool scrolled = (int)scrolled_window.vadjustment.value == (int)(scrolled_window.vadjustment.upper - 
+				                                                                scrolled_window.vadjustment.page_size);
+				parser.insert(text_view);
+				if(scrolled) {
+					Gtk.TextIter iter;
+					text_view.buffer.get_end_iter(out iter);
+					text_view.scroll_to_mark(text_view.buffer.create_mark(null,iter,false),0,true,0,1);
+				}
+			}
 		}
 		
 		public GUI() {
@@ -198,7 +235,7 @@ namespace XSIRC {
 			
 			// System view goes here.
 			
-			system_view = create_view("XSIRC");
+			system_view = new View("XSIRC");
 			servers_notebook.append_page(system_view.scrolled_window,system_view.label);
 			servers_notebook.show_all();
 			// Input entry
@@ -399,45 +436,6 @@ namespace XSIRC {
 		
 		public void queue_update_gui() {
 			gui_updated = false;
-		}
-		
-		// View creation and adding-to
-		
-		public View create_view(string name) {
-			Gtk.Label label = new Gtk.Label(Markup.escape_text(name));
-			label.use_markup = true;
-			Gtk.TextView text_view = new Gtk.TextView.with_buffer(new Gtk.TextBuffer(global_tag_table));
-			text_view.editable = false;
-			text_view.cursor_visible = false;
-			text_view.wrap_mode = Gtk.WrapMode.WORD;
-			text_view.modify_font(Pango.FontDescription.from_string(Main.config["core"]["font"]));
-			
-			Gtk.ScrolledWindow scrolled_window = new Gtk.ScrolledWindow(null,null);
-			scrolled_window.vscrollbar_policy = Gtk.PolicyType.ALWAYS;
-			scrolled_window.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
-			scrolled_window.add(text_view);
-			
-			View view = new View();
-			view.name = name;
-			view.scrolled_window = scrolled_window;
-			view.text_view = text_view;
-			view.label = label;
-			return view;
-		}
-		
-		public void add_to_view(View view,string what) {
-			//gui_mutex.lock();
-			string text = timestamp()+" "+what+"\n";
-			// Parsing text
-			MIRCParser parser = new MIRCParser(text);
-			bool scrolled = (int)view.scrolled_window.vadjustment.value == (int)(view.scrolled_window.vadjustment.upper - view.scrolled_window.vadjustment.page_size);
-			parser.insert(view.text_view);
-			if(scrolled) {
-				Gtk.TextIter scroll_iter;
-				view.text_view.buffer.get_end_iter(out scroll_iter);
-				view.text_view.scroll_to_mark(view.text_view.buffer.create_mark(null,scroll_iter,false),0,true,0,1);
-			}
-			//gui_mutex.unlock();
 		}
 		
 		// Network and view finding stuff

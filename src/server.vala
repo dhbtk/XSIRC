@@ -325,10 +325,8 @@ namespace XSIRC {
 					message = message.substring(str.str.length);
 					split_message += str.str;
 				}
-				foreach(string i in split_message) {
-					stdout.printf("%s\n",i);
+				foreach(string msg in split_message) {
 					string target = s.split(" ")[1];
-					string msg = i; // herp derp
 					if(s.down().has_prefix("notice")) {
 						add_to_view(target,"-%s- %s".printf(nick,msg));
 					} else if(msg.has_prefix("ACTION")) {
@@ -338,7 +336,7 @@ namespace XSIRC {
 					} else {
 						add_to_view(target,"< %s> %s".printf(nick,msg));
 					}
-					OutgoingMessage outg = {prefix+i,priority};
+					OutgoingMessage outg = {prefix+msg,priority};
 					lock(output_queue) {
 						output_queue.offer(outg);
 					}
@@ -942,7 +940,7 @@ namespace XSIRC {
 			if(find_view(name) != null) {
 				return;
 			}
-			GUI.View view = Main.gui.create_view(name);
+			GUI.View view = new GUI.View(name);
 			views.add(view);
 			notebook.append_page(view.scrolled_window,view.label);
 			notebook.set_tab_reorderable(view.scrolled_window,reordable);
@@ -955,7 +953,7 @@ namespace XSIRC {
 			GUI.View? view;
 			if((view = find_view(name)) != null) {
 				IRCLogger.log(this,view,text);
-				Main.gui.add_to_view(view,text);
+				view.add_text(text);
 				if(current_view() != view) {
 					view.label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text(view.name));
 				}
