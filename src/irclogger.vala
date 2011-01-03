@@ -44,7 +44,7 @@ namespace XSIRC {
 #endif
 				stream.put_byte('\n');
 			} catch(Error e) {
-				Main.gui.add_to_view(Main.gui.system_view,"Could not log: %s".printf(e.message));
+				Main.gui.system_view.add_text("Could not log: %s".printf(e.message));
 			}
 		}
 	}

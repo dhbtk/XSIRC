@@ -56,6 +56,86 @@ namespace XSIRC {
 				topic.setter   = "";
 				topic.time_set = (time_t)0;
 			}
+			
+			public void update_user(string nick) {
+				string simple_nick = nick.down();
+				if(/^(%|@|\+|&)/.match(nick)) {
+					simple_nick = simple_nick.substring(1);
+				}
+				
+				// Trying to find the nickname, searching the processed list first
+				bool found = false;
+				foreach(string u in users) {
+					if(u == simple_nick) {
+						found = true;
+						break;
+					}
+				}
+				
+				if(found) {
+					int index_raw = 0;
+					int index = 0;
+					foreach(string u in raw_users) {
+						string my_u = u;
+						if(/^(%|@|\+|&)/.match(my_u)) {
+							my_u = my_u.substring(1);
+						}
+						if(my_u.down() == simple_nick) {
+							break;
+						}
+						index_raw++;
+					}
+					foreach(string u in users) {
+						if(u == simple_nick) {
+							break;
+						}
+						index++;
+					}
+					raw_users[index_raw] = nick;
+					users[index] = simple_nick;
+				} else {
+					users.add(simple_nick);
+					raw_users.add(nick);
+				}
+			}
+			
+			public void remove_user(string nick) {
+				string simple_nick = nick.down();
+				if(/^(%|@|\+|&)/.match(nick)) {
+					simple_nick = simple_nick.substring(1);
+				}
+				
+				bool found = false;
+				foreach(string u in users) {
+					if(u == simple_nick) {
+						found = true;
+						break;
+					}
+				}
+				
+				if(found) {
+					int index_raw = 0;
+					int index = 0;
+					foreach(string u in raw_users) {
+						string my_u = u;
+						if(/^(%|@|\+|&)/.match(my_u)) {
+							my_u = my_u.substring(1);
+						}
+						if(my_u.down() == simple_nick) {
+							break;
+						}
+						index_raw++;
+					}
+					foreach(string u in users) {
+						if(u == simple_nick) {
+							break;
+						}
+						index++;
+					}
+					raw_users.remove_at(index_raw);
+					users.remove_at(index);
+				}
+			}
 		}
 		
 		private struct OutgoingMessage {
@@ -171,11 +251,7 @@ namespace XSIRC {
 			bool error = false;
 			GLib.List<InetAddress> addresses = null;
 			try {
-#if WINDOWS
-				addresses = resolver.lookup_by_name(server,null); // no async?
-#else
 				addresses = yield resolver.lookup_by_name_async(server,null);
-#endif
 			} catch(Error ee) { // TODO: report this bug, can not have two GLib.Errors with the same name in the same async method
 				error = true;
 			}
@@ -249,10 +325,8 @@ namespace XSIRC {
 					message = message.substring(str.str.length);
 					split_message += str.str;
 				}
-				foreach(string i in split_message) {
-					stdout.printf("%s\n",i);
+				foreach(string msg in split_message) {
 					string target = s.split(" ")[1];
-					string msg = i; // herp derp
 					if(s.down().has_prefix("notice")) {
 						add_to_view(target,"-%s- %s".printf(nick,msg));
 					} else if(msg.has_prefix("ACTION")) {
@@ -262,7 +336,7 @@ namespace XSIRC {
 					} else {
 						add_to_view(target,"< %s> %s".printf(nick,msg));
 					}
-					OutgoingMessage outg = {prefix+i,priority};
+					OutgoingMessage outg = {prefix+msg,priority};
 					lock(output_queue) {
 						output_queue.offer(outg);
 					}
@@ -348,9 +422,10 @@ namespace XSIRC {
 							this.channels.add(channel);
 							channel.name = message;
 							open_view(message);
+							send("NAMES %s".printf(message));
 						}
 						find_channel(message).in_channel = true;
-						send("NAMES %s".printf(message));
+						find_channel(message).update_user(usernick);
 						send("MODE "+message);
 						Main.plugin_manager.on_join(this,usernick,username,usermask,message);
 						break;
@@ -363,14 +438,14 @@ namespace XSIRC {
 							views.remove(view);
 							notebook.remove_page(notebook.page_num(view.scrolled_window));
 						} else {
-							send("NAMES %s".printf(split[2]));
+							find_channel(split[2]).remove_user(usernick);
 						}
 						break;
 					case "KICK":
 						if(split[3].down() == nick.down()) {
 							find_channel(split[2]).in_channel = false;
 						} else {
-							send("NAMES %s".printf(split[2]));
+							find_channel(split[2]).remove_user(split[3]);
 						}
 						message = message == s ? "" : message;
 						Main.plugin_manager.on_kick(this,split[3],usernick,username,usermask,split[2],message);
@@ -383,7 +458,8 @@ namespace XSIRC {
 						Main.plugin_manager.on_nick(this,message,usernick,username,usermask);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
-								send("NAMES %s".printf(channel.name));
+								channel.remove_user(usernick);
+								channel.update_user(usernick);
 							}
 						}
 						foreach(GUI.View view in views) {
@@ -447,7 +523,7 @@ namespace XSIRC {
 						Main.plugin_manager.on_quit(this,usernick,username,usermask,message);
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
-								send("NAMES %s".printf(channel.name));
+								channel.remove_user(usernick);
 							}
 						}
 						break;
@@ -865,7 +941,7 @@ namespace XSIRC {
 			if(find_view(name) != null) {
 				return;
 			}
-			GUI.View view = Main.gui.create_view(name);
+			GUI.View view = new GUI.View(name);
 			views.add(view);
 			notebook.append_page(view.scrolled_window,view.label);
 			notebook.set_tab_reorderable(view.scrolled_window,reordable);
@@ -878,7 +954,7 @@ namespace XSIRC {
 			GUI.View? view;
 			if((view = find_view(name)) != null) {
 				IRCLogger.log(this,view,text);
-				Main.gui.add_to_view(view,text);
+				view.add_text(text);
 				if(current_view() != view) {
 					view.label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text(view.name));
 				}

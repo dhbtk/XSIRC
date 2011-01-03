@@ -43,13 +43,13 @@ def configure(conf):
 		conf.env.append_value('CCFLAGS','-mms-bitfields')
 		conf.env.append_value ('CCFLAGS', '-mwindows')
 		conf.env["windows"] = 'yes'
-		conf.define('OS','win32')
+		conf.define('OS','Windows')
 		conf.env.append_value('VALAFLAGS',['-D','WINDOWS'])
 		conf.env['PREFIX'] = '.' # hacky, I know
 		conf.env['LOCALEDIR'] = 'share/locale'
 		conf.define('WINDOWS','WINDOWS')
 	else:
-		conf.define('OS','unix')
+		conf.define('OS','Linux') # Sorry, OS X users (if you exist at all)
 	conf.check_cfg(package='glib-2.0',uselib_store='GLIB',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gtk+-2.0',uselib_store='GTK',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gio-2.0',uselib_store='GIO',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
