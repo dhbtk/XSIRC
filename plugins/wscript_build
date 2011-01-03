@@ -48,3 +48,16 @@ bld.shlib(
 	linkflags = ['-g'],
 	install_path = bld.env['PREFIX']+'/lib/xsirc'
 )
+bld.shlib(
+	source = 'ctcp.vala',
+	features = 'c cshlib',
+	packages = 'xsirc config',
+	vapi_dirs = '../src ../vapi',
+	includes = '../src',
+	cflags = ['-include','config.h','-g'],
+	target = 'xsircctcp',
+	uselib = 'GMODULE GLIB',
+	use = 'xsirc',
+	linkflags = ['-g'],
+	install_path = bld.env['PREFIX']+'/lib/xsirc'
+)
