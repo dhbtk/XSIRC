@@ -44,17 +44,19 @@ namespace XSIRC {
 			public bool in_channel = true;
 			public string mode = "";
 			public bool got_create_date = false;
+			private Server server;
 			public struct Topic {
 				public string content;
 				public string setter;
 				public time_t time_set;
 			}
 			public string name = "";
-			public Channel() {
+			public Channel(Server server) {
 				topic = Topic();
 				topic.content  = "";
 				topic.setter   = "";
 				topic.time_set = (time_t)0;
+				this.server = server;
 			}
 			
 			public void update_user(string nick) {
@@ -76,11 +78,10 @@ namespace XSIRC {
 					int index_raw = 0;
 					int index = 0;
 					foreach(string u in raw_users) {
-						string my_u = u;
-						if(/^(%|@|\+|&)/.match(my_u)) {
-							my_u = my_u.substring(1);
+						if(/^(%|@|\+|&)/.match(u)) {
+							u = u.substring(1);
 						}
-						if(my_u.down() == simple_nick) {
+						if(u.down() == simple_nick) {
 							break;
 						}
 						index_raw++;
@@ -97,6 +98,9 @@ namespace XSIRC {
 					users.add(simple_nick);
 					raw_users.add(nick);
 				}
+				users.sort();
+				raw_users.sort((CompareFunc)ircusrcmp);
+				Main.gui.update_gui(server);
 			}
 			
 			public void remove_user(string nick) {
@@ -117,11 +121,10 @@ namespace XSIRC {
 					int index_raw = 0;
 					int index = 0;
 					foreach(string u in raw_users) {
-						string my_u = u;
-						if(/^(%|@|\+|&)/.match(my_u)) {
-							my_u = my_u.substring(1);
+						if(/^(%|@|\+|&)/.match(u)) {
+							u = u.substring(1);
 						}
-						if(my_u.down() == simple_nick) {
+						if(u.down() == simple_nick) {
 							break;
 						}
 						index_raw++;
@@ -135,6 +138,9 @@ namespace XSIRC {
 					raw_users.remove_at(index_raw);
 					users.remove_at(index);
 				}
+				users.sort();
+				raw_users.sort((CompareFunc)ircusrcmp);
+				Main.gui.update_gui(server);
 			}
 		}
 		
@@ -418,7 +424,7 @@ namespace XSIRC {
 						break;
 					case "JOIN":
 						if(find_channel(message) == null) {
-							Channel channel = new Channel();
+							Channel channel = new Channel(this);
 							this.channels.add(channel);
 							channel.name = message;
 							open_view(message);
@@ -459,7 +465,7 @@ namespace XSIRC {
 						foreach(Channel channel in channels) {
 							if(usernick.down() in channel.users) {
 								channel.remove_user(usernick);
-								channel.update_user(usernick);
+								channel.update_user(message);
 							}
 						}
 						foreach(GUI.View view in views) {
