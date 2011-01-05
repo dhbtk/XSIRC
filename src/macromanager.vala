@@ -157,6 +157,7 @@ namespace XSIRC {
 		private KeyFile macros_file;
 		private const DefaultMacro[] default_macros = {
 			{"^me (.+)$","PRIVMSG $CURR_VIEW :ACTION $1"},
+			{"^ctcp ([^ ]+) PING","PRIVMSG $1 :PING $TIME"},
 			{"^ctcp ([^ ]+) ([^ ]+) (.+)$","PRIVMSG $1 :$2 $3"},
 			{"^ctcp ([^ ]+) ([^ ]+)$","PRIVMSG $1 :$2"},
 			{"^msg ([^ ]+) (.+)$","PRIVMSG $1 :$2"},
@@ -231,12 +232,13 @@ namespace XSIRC {
 						string result = macro.result;
 						for(int i = 1; i <= 9 && i <= info.get_match_count(); i++) {
 							if(info.fetch(i) != null) {
-								result = (result.replace("$%d".printf(i),info.fetch(i)) ?? result);
+								result = result.replace("$%d".printf(i),info.fetch(i)) ?? result;
 							}
 						}
 						if(Main.gui.current_server() != null && Main.gui.current_server().current_view() != null) {
-							result = (result.replace("$CURR_VIEW",Main.gui.current_server().current_view().name) ?? result);
+							result = result.replace("$CURR_VIEW",Main.gui.current_server().current_view().name) ?? result;
 						}
+						result = result.replace("$TIME",((int)time_t()).to_string()) ?? result;
 						return result;
 					}
 				} catch(RegexError e) {

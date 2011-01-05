@@ -140,7 +140,7 @@ namespace XSIRC {
 				label.use_markup = true;
 				
 				// FIXME: until MIRCParser is fixed, no tags in the buffer
-				text_view = new Gtk.TextView();
+				text_view = new Gtk.TextView.with_buffer(new Gtk.TextBuffer(Main.gui.global_tag_table));
 				text_view.editable = false;
 				text_view.cursor_visible = false;
 				text_view.wrap_mode = Gtk.WrapMode.WORD;
@@ -233,11 +233,6 @@ namespace XSIRC {
 			// Creating tags.
 			set_up_text_tags();
 			
-			// System view goes here.
-			
-			system_view = new View("XSIRC");
-			servers_notebook.append_page(system_view.scrolled_window,system_view.label);
-			servers_notebook.show_all();
 			// Input entry
 			
 			text_entry = new IRCEntry();
@@ -269,6 +264,12 @@ namespace XSIRC {
 				create_prefs_window();
 			}
 		
+		}
+		
+		public void startup() {
+			system_view = new View("XSIRC");
+			servers_notebook.append_page(system_view.scrolled_window,system_view.label);
+			servers_notebook.show_all();
 		}
 		
 		public void iterate() {

@@ -83,10 +83,13 @@ public class CTCPPlugin : Plugin {
 					server.send("NOTICE %s :\x01VERSION %s\x01".printf(usernick,version_reply));
 					break;
 				case "PING":
-					server.send("NOTICE %s :\x01PING %s\x01".printf(usernick,msg)); // TODO: check this out, not sure if this is the right way
+					server.send("NOTICE %s :\x01PING %s\x01".printf(usernick,msg));
 					break;
 				case "TIME":
-					server.send("NOTICE %s :\x01TIME %d\x01".printf(usernick,(int)time_t()));
+					server.send("NOTICE %s :\x01TIME %s\x01".printf(usernick,gen_timestamp("%c",time_t())));
+					break;
+				case "SOURCE":
+					server.send("NOTICE %s :\x01SOURCE https://github.com/NieXS/XSIRC/archives/master\x01".printf(usernick));
 					break;
 				default:
 					foreach(string rpl in replies.keys) {
