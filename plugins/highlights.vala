@@ -236,7 +236,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 			string my_message = message;
 			string my_target = target.down() == server.nick.down() ? usernick : target;
 			// Checking for ACTIONS
-			if(my_message.has_prefix("\x01")) {
+			if(my_message.has_prefix("\001ACTION")) {
 				my_message = my_message.replace("\x01","").substring(7);
 				my_message = "%s * %s %s".printf(my_target,usernick,my_message);
 			} else {
@@ -249,7 +249,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 			string my_message = message;
 			string my_target = target.down() == server.nick.down() ? usernick : target;
 			// Checking for ACTIONS
-			if(my_message.has_prefix("\x01")) {
+			if(my_message.has_prefix("\001ACTION")) {
 				my_message = my_message.replace("\x01","").substring(7);
 				my_message = "%s * %s %s".printf(my_target,usernick,my_message);
 			} else {
@@ -266,7 +266,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 				string my_message = message;
 				string my_target = target.down() == server.nick.down() ? usernick : target;
 				// Checking for ACTIONS
-				if(my_message.has_prefix("\x01")) {
+				if(my_message.has_prefix("\001ACTION")) {
 					my_message = my_message.replace("\x01","").substring(7);
 					my_message = "%s * %s %s".printf(my_target,usernick,my_message);
 				} else {
