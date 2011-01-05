@@ -238,7 +238,9 @@ namespace XSIRC {
 						if(Main.gui.current_server() != null && Main.gui.current_server().current_view() != null) {
 							result = result.replace("$CURR_VIEW",Main.gui.current_server().current_view().name) ?? result;
 						}
-						result = result.replace("$TIME",((int)time_t()).to_string()) ?? result;
+						Posix.timeval tv = Posix.timeval();
+						tv.get_time_of_day();
+						result = result.replace("$TIME",((long)tv.tv_sec).to_string()+"."+tv.tv_usec.to_string()) ?? result;
 						return result;
 					}
 				} catch(RegexError e) {

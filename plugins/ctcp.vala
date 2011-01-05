@@ -103,6 +103,29 @@ public class CTCPPlugin : Plugin {
 		}
 		return true;
 	}
+	
+	public override bool on_notice(Server server,string usernick,string username,string usermask,string target,string message) {
+		if(message.has_prefix("\x01")) {
+			string prefix = message.replace("\x01","").split(" ")[0];
+			string msg    = message.replace("\x01","").substring(prefix.length).strip();
+			switch(prefix) {
+				case "PING": // The only special case
+					Posix.timeval current_time = Posix.timeval();
+					current_time.get_time_of_day();
+					Posix.timeval gotten_time = Posix.timeval();
+					gotten_time.tv_sec = msg.split(".")[0].to_long();
+					gotten_time.tv_usec = msg.split(".")[1].to_long();
+					long sec_diff = current_time.tv_sec - gotten_time.tv_sec;
+					long frac_diff = current_time.tv_usec - gotten_time.tv_usec;
+					server.add_to_view(_("<server>"),_("Latency to %s: %d.%2d seconds.").printf(usernick,sec_diff,frac_diff));
+					break;
+				default:
+					server.add_to_view(_("<server>"),_("%s reply from %s: %s").printf(prefix,usernick,msg));
+					break;
+			}
+		}
+		return true;
+	}
 }
 
 #if !WINDOWS

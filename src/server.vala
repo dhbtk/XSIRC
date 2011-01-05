@@ -512,17 +512,6 @@ namespace XSIRC {
 							add_to_view(_("<server>"),_("[Auth] %s").printf(message));
 						} else {
 							Main.plugin_manager.on_notice(this,usernick,username,usermask,target,message);
-							if(message.has_prefix(((char)1).to_string())) {
-								message = message.replace(((char)1).to_string(),"");
-								string prefix = message.split(" ")[0];
-								message = message.substring(prefix.length);
-								switch(prefix) {
-									default:
-										add_to_view(_("<server>"),_("UNHANDLED CTCP REPLY -- PREFIX: %s; SENDER: %s; MESSAGE: %s").printf(prefix,target,message));
-										break;
-								}
-							} else {
-							}
 						}
 						break;
 					case "QUIT":
