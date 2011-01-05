@@ -53,7 +53,7 @@ bld.shlib(
 	features = 'c cshlib',
 	packages = 'xsirc config',
 	vapi_dirs = '../src ../vapi',
-	includes = '../src',
+	includes = '../src ../vapi',
 	cflags = ['-include','config.h','-g'],
 	target = 'xsircctcp',
 	uselib = 'GMODULE GLIB',

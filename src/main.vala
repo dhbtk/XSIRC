@@ -36,6 +36,7 @@ namespace XSIRC {
 		Main.config = Main.config_manager.config;
 		Main.server_manager = new ServerManager();
 		Main.gui = new XSIRC.GUI();
+		Main.gui.startup();
 		Main.macro_manager = new MacroManager();
 		Main.server_manager.startup();
 		Main.plugin_manager = new PluginManager();
