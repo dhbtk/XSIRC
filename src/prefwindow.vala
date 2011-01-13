@@ -110,7 +110,7 @@ namespace XSIRC {
 			((Gtk.Button)ui_builder.get_object("server_add")).clicked.connect(() => {
 				ServerManager.Network network = null;
 				if(get_current_network() != null && (network = Main.server_manager.find_network(get_current_network())) != null) {
-					ServerManager.Network.ServerData server = ServerManager.Network.ServerData();
+					ServerManager.Network.ServerData server = new ServerManager.Network.ServerData();
 					server.address = "irc.example.org";
 					server.port    = 6667;
 					server.ssl     = false;
@@ -128,7 +128,7 @@ namespace XSIRC {
 					Gtk.TreeSelection sel = server_tree.get_selection();
 					if(sel.get_selected(out model,out iter)) {
 						model.get(iter,0,out server_address,-1);
-						ServerManager.Network.ServerData wanted_server = {};
+						ServerManager.Network.ServerData wanted_server = new ServerManager.Network.ServerData();
 						foreach(ServerManager.Network.ServerData server in network.servers) {
 							if(server.address == server_address.split(":")[1]) {
 								wanted_server = server;
