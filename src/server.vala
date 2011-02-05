@@ -321,7 +321,7 @@ namespace XSIRC {
 					StringBuilder str = new StringBuilder("");
 					int n = 1;
 					foreach(string i in split) {
-						if(str.str.length >= 460) break;
+						if(str.str.length >= 410) break;
 						str.append(i);
 						if(n < split.length) {
 							str.append(" ");
