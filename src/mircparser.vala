@@ -70,11 +70,11 @@ namespace XSIRC {
 					tags += c.foreground;
 				}
 				//stdout.printf("Tags: %s\n".printf(string.joinv(", ",tags)));
-				insert_with_tag_array(textview,c.contents,tags);
+				insert_with_tag_array(textview,c.contents,c);
 			}
 		}
 		
-		private void insert_with_tag_array(Gtk.TextView textview,char what,string[] tags) {
+		private void insert_with_tag_array(Gtk.TextView textview,char what,AttrChar c) {
 			Gtk.TextIter start_iter;
 			Gtk.TextIter end_iter;
 			textview.buffer.get_end_iter(out start_iter);
@@ -85,15 +85,11 @@ namespace XSIRC {
 			} catch(ConvertError e) {
 				added = what.to_string();
 			}
-			textview.buffer.insert(start_iter,added,(int)added.size());
+			Gtk.TextTag tag = textview.buffer.create_tag(null,"foreground",c.foreground,"background",c.background,"weight",c.bold ? Pango.Weight.BOLD : Pango.Weight.NORMAL,"underline",c.underlined ? Pango.Underline.SINGLE : Pango.Underline.NONE,"style",c.italic ? Pango.Style.ITALIC : Pango.Style.NORMAL,null);
+			textview.buffer.insert_with_tags(start_iter,added,(int)added.size(),tag,null);
 			end_iter = start_iter;
 			end_iter.forward_char();
 			//stdout.printf("end_iter offset: %d\n",end_iter.get_offset());
-			foreach(string tag in tags) {
-				warn_if_fail(textview.buffer.tag_table.lookup(tag) != null);
-				//stdout.printf("Applying tag %s\n",tag);
-				textview.buffer.apply_tag_by_name(tag,start_iter,end_iter);
-			}
 		}
 		
 		public AttrChar[] parse() {
@@ -153,7 +149,7 @@ namespace XSIRC {
 								parsing_color = false;
 								got_foreground = false;
 							}
-							AttrChar parsed_char = {c,bold,italic,underlined,(foreground != null ? mirc_colors[foreground.to_int()%16] : null),(background != null ? "back "+mirc_colors[background.to_int()%16] : null)};
+							AttrChar parsed_char = {c,bold,italic,underlined,(foreground != null ? mirc_colors[foreground.to_int()%16] : null),(background != null ? mirc_colors[background.to_int()%16] : null)};
 							parsed_string += parsed_char;
 						}
 						break;

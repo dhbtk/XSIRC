@@ -119,7 +119,6 @@ namespace XSIRC {
 		</menu>
 	</menubar>
 </ui>""";
-		public Gtk.TextTagTable global_tag_table = new Gtk.TextTagTable();
 		private bool gui_updated = true;
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
@@ -140,7 +139,7 @@ namespace XSIRC {
 				label.use_markup = true;
 				
 				// FIXME: until MIRCParser is fixed, no tags in the buffer
-				text_view = new Gtk.TextView.with_buffer(new Gtk.TextBuffer(Main.gui.global_tag_table));
+				text_view = new Gtk.TextView();
 				text_view.editable = false;
 				text_view.cursor_visible = false;
 				text_view.wrap_mode = Gtk.WrapMode.WORD;
@@ -154,11 +153,6 @@ namespace XSIRC {
 			
 			public void add_text(string what) {
 				string text = Main.gui.timestamp() + " "+what+"\n";
-				
-				// FIXME: this will probably need work, since the tags applied
-				// by MIRCParser don't seem to actually /have/ attributes, which
-				// seems to be a bug in the Vala compiler somehow, so we either
-				// find a workaround or set attributes in an unconventional way
 				MIRCParser parser = new MIRCParser(text);
 				bool scrolled = (int)scrolled_window.vadjustment.value == (int)(scrolled_window.vadjustment.upper - 
 				                                                                scrolled_window.vadjustment.page_size);
@@ -229,9 +223,6 @@ namespace XSIRC {
 			servers_notebook = new Gtk.Notebook();
 			servers_notebook.tab_pos = Gtk.PositionType.BOTTOM;
 			vbox.pack_start(servers_notebook,true,true,0);
-			
-			// Creating tags.
-			set_up_text_tags();
 			
 			// Input entry
 			
@@ -332,42 +323,6 @@ namespace XSIRC {
 			} else {
 				return false;
 			}
-		}
-		
-		/*private void* thread_func() {
-			while(!destroyed) {
-				foreach(Server server in servers) {
-					server.iterate();
-				}
-				Posix.usleep(1);
-			}
-			return null;
-		}*/
-		
-		private void set_up_text_tags() {
-			string[] colors = {"white","black","dark blue","green","red","dark red","purple","brown","yellow","light green","cyan","light cyan","blue","pink","grey","light grey"};
-			// Foregrounds
-			foreach(string color in colors) {
-				Gtk.TextTag tag = new Gtk.TextTag(color);
-				tag.foreground = color;
-				global_tag_table.add(tag);
-			}
-			// Backgrounds
-			foreach(string color in colors) {
-				Gtk.TextTag tag = new Gtk.TextTag("back "+color);
-				tag.background = color;
-				global_tag_table.add(tag);
-			}
-			// Bold, underlined, italics
-			Gtk.TextTag bold = new Gtk.TextTag("bold");
-			bold.weight = Pango.Weight.BOLD;
-			Gtk.TextTag underlined = new Gtk.TextTag("underlined");
-			underlined.underline = Pango.Underline.SINGLE;
-			Gtk.TextTag italic = new Gtk.TextTag("italic");
-			italic.style = Pango.Style.ITALIC;
-			global_tag_table.add(bold);
-			global_tag_table.add(underlined);
-			global_tag_table.add(italic);
 		}
 		
 		public void update_gui(Server? server,owned GUI.View? curr_view = null,bool force = false) {
