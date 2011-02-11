@@ -133,7 +133,7 @@ namespace XSIRC {
 									} else {
 										foreground = foreground + c.to_string();
 									}
-									got_foreground = true;
+									//got_foreground = true;
 								} else {
 									if(background == null) {
 										background = c.to_string();

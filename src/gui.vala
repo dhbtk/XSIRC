@@ -26,6 +26,13 @@ namespace XSIRC {
 			{"OpenLastLink",null,N_("_Open last link"),"F2",null,open_last_link_cb},
 			{"OpenSLastLink",null,N_("O_pen sec-to-last link"),"<control>F2",null,open_sl_link_cb},
 			{"Exit",Gtk.STOCK_QUIT,null,null,null,quit_client_cb},
+			// Edit
+			{"EditMenu",null,"_Edit"},
+			{"Bold",Gtk.STOCK_BOLD,null,"<control>B",null,bold_cb},
+			{"Italic",Gtk.STOCK_ITALIC,null,"<control>I",null,italic_cb},
+			{"Underlined",Gtk.STOCK_UNDERLINE,null,"<control>U",null,underlined_cb},
+			{"Color",Gtk.STOCK_COLOR_PICKER,"Color","<control>K",null,color_cb},
+			{"RemoveFormatting",null,"Remove formatting","<control>R",null,remove_cb},
 			// Settings
 			{"SettingsMenu",null,N_("S_ettings")},
 			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
@@ -76,6 +83,13 @@ namespace XSIRC {
 			<menuitem action="OpenSLastLink"/>
 			<separator/>
 			<menuitem action="Exit"/>
+		</menu>
+		<menu action="EditMenu">
+			<menuitem action="Bold"/>
+			<menuitem action="Italic"/>
+			<menuitem action="Underlined"/>
+			<menuitem action="Color"/>
+			<menuitem action="RemoveFormatting"/>
 		</menu>
 		<menu action="ViewMenu">
 			<menuitem action="PrevServer"/>
@@ -452,6 +466,26 @@ namespace XSIRC {
 		
 		public static void quit_client_cb(Gtk.Action action) {
 			Gtk.main_quit();
+		}
+		
+		public static void bold_cb(Gtk.Action action) {
+			Main.gui.text_entry.insert_bold();
+		}
+		
+		public static void italic_cb(Gtk.Action action) {
+			Main.gui.text_entry.insert_italic();
+		}
+		
+		public static void underlined_cb(Gtk.Action action) {
+			Main.gui.text_entry.insert_underlined();
+		}
+		
+		public static void color_cb(Gtk.Action action) {
+			Main.gui.text_entry.insert_color();
+		}
+		
+		public static void remove_cb(Gtk.Action action) {
+			Main.gui.text_entry.insert_remove();
 		}
 		
 		public static void spawn_preferences_cb(Gtk.Action action) {

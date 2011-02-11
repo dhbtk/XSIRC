@@ -90,8 +90,34 @@ namespace XSIRC {
 					matches.add(view.name);
 				}
 				completing = true;
+				matches.sort((CompareFunc)strcmp);
 				complete(server,view);
 			}
+		}
+		
+		public void insert_bold() {
+			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
+		}
+		
+		public void insert_italic() {
+			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
+		}
+		
+		public void insert_underlined() {
+			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
+		}
+		
+		public void insert_color() {
+			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
+		}
+		
+		public void insert_remove() {
+			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
 		}
 	}
 }
