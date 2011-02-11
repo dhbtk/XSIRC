@@ -340,7 +340,7 @@ namespace XSIRC {
 					} else if(msg.has_prefix("")) {
 						add_to_view(target,">%s< CTCP %s".printf(nick,msg.replace("","")));
 					} else {
-						add_to_view(target,"< %s> %s".printf(nick,msg));
+						add_to_view(target,"< %s> %s".printf(nick,msg));
 					}
 					OutgoingMessage outg = {prefix+msg,priority};
 					lock(output_queue) {
