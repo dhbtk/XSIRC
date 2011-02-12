@@ -76,7 +76,6 @@ namespace XSIRC {
 		
 		private void insert_with_tag_array(Gtk.TextView textview,char what,AttrChar c) {
 			Gtk.TextIter start_iter;
-			Gtk.TextIter end_iter;
 			textview.buffer.get_end_iter(out start_iter);
 			//stdout.printf("start_iter offset: %d\n",start_iter.get_offset());
 			string added = what.to_string();
@@ -85,10 +84,26 @@ namespace XSIRC {
 			} catch(ConvertError e) {
 				added = what.to_string();
 			}
-			Gtk.TextTag tag = textview.buffer.create_tag(null,"foreground",c.foreground,"background",c.background,"weight",c.bold ? Pango.Weight.BOLD : Pango.Weight.NORMAL,"underline",c.underlined ? Pango.Underline.SINGLE : Pango.Underline.NONE,"style",c.italic ? Pango.Style.ITALIC : Pango.Style.NORMAL,null);
-			textview.buffer.insert_with_tags(start_iter,added,(int)added.size(),tag,null);
-			end_iter = start_iter;
-			end_iter.forward_char();
+			if(c.foreground == null && c.background == null && !c.bold && !c.italic &&
+			   !c.underlined) {
+				textview.buffer.insert(start_iter,added,(int)added.size());
+			} else {
+				string tag_name = "%s%s%s%s%s".printf(c.foreground,
+				                                       c.background,
+				                                       c.bold ? "bold" : "normal",
+				                                       c.underlined ? "underlined" : "normal",
+				                                       c.italic ? "italic" : "normal");
+				Gtk.TextTag tag;
+				if((tag = textview.buffer.tag_table.lookup(tag_name)) == null) {
+					tag = textview.buffer.create_tag(tag_name,
+						                             "foreground",c.foreground,
+						                             "background",c.background,
+						                             "weight",c.bold ? Pango.Weight.BOLD : Pango.Weight.NORMAL,
+						                             "underline",c.underlined ? Pango.Underline.SINGLE : Pango.Underline.NONE,
+						                             "style",c.italic ? Pango.Style.ITALIC : Pango.Style.NORMAL,null);
+				}
+				textview.buffer.insert_with_tags(start_iter,added,(int)added.size(),tag,null);
+			}
 			//stdout.printf("end_iter offset: %d\n",end_iter.get_offset());
 		}
 		
@@ -122,6 +137,10 @@ namespace XSIRC {
 						break;
 					case 3: // Color
 						parsing_color = !parsing_color;
+						if(foreground != null || background != null) {
+							foreground = null;
+							background = null;
+						}
 						got_foreground = false;
 						break;
 					default:

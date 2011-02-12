@@ -232,6 +232,7 @@ namespace XSIRC {
 			var vbox = new Gtk.VBox(false,0);
 			main_hbox.add2(vbox);
 			
+			main_hbox.set_position(85);
 			// Server notebook
 			
 			servers_notebook = new Gtk.Notebook();
