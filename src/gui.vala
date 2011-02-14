@@ -34,7 +34,7 @@ namespace XSIRC {
 			{"Color",Gtk.STOCK_COLOR_PICKER,"Color","<control>K",null,color_cb},
 			{"RemoveFormatting",null,"Remove formatting","<control>R",null,remove_cb},
 			// Settings
-			{"SettingsMenu",null,N_("S_ettings")},
+			{"SettingsMenu",null,N_("Se_ttings")},
 			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
 			{"AdvancedMenu",null,N_("_Advanced")},
 			{"MacroPreferences",null,N_("_Macros..."),null,null,spawn_macro_preferences_cb},
@@ -258,9 +258,15 @@ namespace XSIRC {
 				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)),null,true);
 			});
 			
-			// Servers thread
-			
-			//server_threads = Thread.create(thread_func,true);
+			TimeoutSource src = new TimeoutSource(100);
+			src.set_callback(() => {
+				if(!gui_updated) {
+					update_gui(current_server());
+					gui_updated = true;
+				}
+				return true;
+			});
+			src.attach(null);
 			
 			// Ready to go!
 			text_entry.grab_focus();
@@ -379,6 +385,7 @@ namespace XSIRC {
 							title_string.append(_(" (out of channel)"));
 						}
 						title_string.append(" (").append(server.find_channel(curr_view.name).mode).append(")");
+						title_string.append(_(" (%d users)").printf(server.find_channel(curr_view.name).users.size));
 						topic_view.text = server.find_channel(curr_view.name).topic.content;
 					} else {
 						topic_view.text = "";
