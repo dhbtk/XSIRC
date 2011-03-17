@@ -9,7 +9,6 @@ GUI:
 	  main Settings menu.
 	* Use the status bar: Show highlights on it, and connection/disconnection/
 	  connection error messages.
-	* Fix the damn MIRCParser.
 Server:
 	* Improve unicode handling
 	* Treat non-RFC compliant servers better: networks like GIMPnet send the AUTH
