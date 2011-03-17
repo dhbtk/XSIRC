@@ -143,6 +143,8 @@ namespace XSIRC {
 			plugins.add(new HighlightsPlugin());
 			plugins.add(new TestPlugin());
 			plugins.add(new MessagesPlugin());
+			plugins.add(new CTCPPlugin());
+			plugins.add(new IgnorePlugin());
 #else
 			load_plugins();
 			
