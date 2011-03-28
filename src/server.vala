@@ -24,9 +24,6 @@ namespace XSIRC {
 		private time_t last_recieved = time_t();
 		public bool connected {get; private set; default = false;}
 		public bool sock_error {get; private set; default = false;}
-		private LinkedList<OutgoingMessage?> output_queue = new LinkedList<OutgoingMessage?>();
-		private unowned Thread sender_thread;
-		private bool shutting_down = false;
 		public bool am_away {get; private set;}
 		private int nick_tries = 0;
 		private bool sent_ping = false;
@@ -34,6 +31,7 @@ namespace XSIRC {
 		private SocketClient socket_client;
 		private SocketConnection socket_conn;
 		private DataInputStream socket_stream;
+		private DataOutputStream output_stream;
 		public bool connecting = false;
 		
 		public class Channel : Object {
@@ -144,11 +142,6 @@ namespace XSIRC {
 			}
 		}
 		
-		private struct OutgoingMessage {
-			public string message;
-			public float priority;
-		}
-		
 		public Server(string server,int port,bool ssl,string password,ServerManager.Network? network = null) {
 			// GUI
 			notebook = new Gtk.Notebook();
@@ -164,11 +157,6 @@ namespace XSIRC {
 			this.network  = network;
 			nick          = Main.config["core"]["nickname"];
 			// Connecting etc.
-			try {
-				sender_thread = Thread.create(thread_func,true);
-			} catch(ThreadError e) {
-				Posix.exit(Posix.EXIT_FAILURE); // We need threads.
-			}
 			irc_connect();
 			
 			notebook.switch_page.connect((page,page_num) => {
@@ -178,11 +166,6 @@ namespace XSIRC {
 			notebook.page_removed.connect(() => {
 				Main.gui.queue_update_gui();
 			});
-		}
-		
-		~Server() {
-			shutting_down = true;
-			sender_thread.join();
 		}
 		
 		public void iterate() {
@@ -205,7 +188,7 @@ namespace XSIRC {
 				}
 				if(!s.validate()) {
 					try {
-						s = convert(s,(ssize_t)s.size(),"UTF-8","ISO-8859-1");
+						s = convert(s,(ssize_t)s.length,"UTF-8","ISO-8859-1");
 						assert(s.validate()); // Kinda dangerous
 					} catch(ConvertError e) {
 						return;
@@ -286,6 +269,7 @@ namespace XSIRC {
 			connecting = false;
 			add_to_view(_("<server>"),_("[Connection] Connected! Sending USER, NICK and PASS.").printf(port));
 			socket_stream = new DataInputStream(socket_conn.input_stream);
+			output_stream = new DataOutputStream(socket_conn.output_stream);
 	
 			raw_send("USER %s rocks hard :%s".printf(Main.config["core"]["username"],Main.config["core"]["realname"]));
 			raw_send("NICK %s".printf(Main.config["core"]["nickname"]));
@@ -342,16 +326,20 @@ namespace XSIRC {
 					} else {
 						add_to_view(target,"< %s> %s".printf(nick,msg));
 					}
-					OutgoingMessage outg = {prefix+msg,priority};
-					lock(output_queue) {
-						output_queue.offer(outg);
-					}
+					TimeoutSource src = new TimeoutSource((int)(priority*1000));
+					src.set_callback(() => {
+						raw_send(prefix+msg);
+						return false;
+					});
+					src.attach(null);
 				}
 			} else {
-				OutgoingMessage outg = {s,priority};
-				lock(output_queue) {
-					output_queue.offer(outg);
-				}
+				TimeoutSource src = new TimeoutSource((int)(priority*1000));
+				src.set_callback(() => {
+					raw_send(s);
+					return false;
+				});
+				src.attach(null);
 			}
 		}
 		
@@ -360,30 +348,15 @@ namespace XSIRC {
 			stdout.printf(">> %s\n",s);
 			s = s + "\n";
 			try {
-				s = convert(s,(ssize_t)s.size(),"ISO-8859-1","UTF-8");
+				s = convert(s,(ssize_t)s.length,"ISO-8859-1","UTF-8");
 			} catch(ConvertError e) {
 				// Oh well. Sending as is.
 			}
 			try {
-				socket_conn.output_stream.write(s,s.size(),null);
+				output_stream.put_string(s,null);
 			} catch(Error e) {
 				add_to_view(_("<server>"),_("Error sending line: %s").printf(e.message));
 			}
-		}
-		
-		private void* thread_func() {
-			while(!shutting_down) {
-				OutgoingMessage message;
-				if(output_queue.size != 0) {
-					lock(output_queue) {
-						message = output_queue.poll();
-					}
-					Posix.usleep(((int)message.priority*1000));
-					raw_send(message.message);
-				}
-				Posix.usleep(10);
-			}
-			return null;
 		}
 		
 		private void handle_server_input(owned string s) {
@@ -546,7 +519,7 @@ namespace XSIRC {
 					case "333":
 						Channel chan = find_channel(split[3]);
 						chan.topic.setter = split[4];
-						chan.topic.time_set = (time_t)split[5].to_int();
+						chan.topic.time_set = (time_t)int.parse(split[5]);
 						add_to_view(split[3],_("Topic set by %s on %s").printf(split[4],gen_timestamp("%c",chan.topic.time_set)));
 						break;
 					/*case "305":
@@ -784,7 +757,7 @@ namespace XSIRC {
 						break;
 					case "329":
 						if(find_channel(split[3]) != null && !find_channel(split[3]).got_create_date) {
-							add_to_view(split[3],_("Channel was created %s").printf(gen_timestamp("%c",(time_t)split[4].to_int())));
+							add_to_view(split[3],_("Channel was created %s").printf(gen_timestamp("%c",(time_t)int.parse(split[4]))));
 							find_channel(split[3]).got_create_date = true;
 						}
 						break;
@@ -820,7 +793,7 @@ namespace XSIRC {
 						foreach(string user in users) {
 							channel.raw_users.add(user);
 							user = user.down();
-							if(/^(&|@|%|\+)/.match(user)) {
+							if(/^(&|@|%|\+|~)/.match(user)) {
 								user = user.substring(1);
 							}
 							channel.users.add(user);
@@ -1018,6 +991,7 @@ namespace XSIRC {
 		// Comparison table
 		HashMap<unichar,int> comp_table = new HashMap<unichar,int>();
 		comp_table['&'] = 10;
+		comp_table['~'] = 10;
 		comp_table['@'] =  8;
 		comp_table['%'] =  6;
 		comp_table['+'] =  2;

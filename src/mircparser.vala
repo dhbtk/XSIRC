@@ -43,7 +43,7 @@ namespace XSIRC {
 			mirc_colors[15] = "dark grey";
 			string s = str;
 			try {
-				s = convert(str,(ssize_t)str.size(),"ISO-8859-1","UTF-8");
+				s = convert(str,(ssize_t)str.length,"ISO-8859-1","UTF-8");
 			} catch(ConvertError e) {
 				s = str;
 			}
@@ -86,7 +86,7 @@ namespace XSIRC {
 			}
 			if(c.foreground == null && c.background == null && !c.bold && !c.italic &&
 			   !c.underlined) {
-				textview.buffer.insert(start_iter,added,(int)added.size());
+				textview.buffer.insert(start_iter,added,(int)added.length);
 			} else {
 				string tag_name = "%s%s%s%s%s".printf(c.foreground,
 				                                       c.background,
@@ -102,7 +102,7 @@ namespace XSIRC {
 						                             "underline",c.underlined ? Pango.Underline.SINGLE : Pango.Underline.NONE,
 						                             "style",c.italic ? Pango.Style.ITALIC : Pango.Style.NORMAL,null);
 				}
-				textview.buffer.insert_with_tags(start_iter,added,(int)added.size(),tag,null);
+				textview.buffer.insert_with_tags(start_iter,added,(int)added.length,tag,null);
 			}
 			//stdout.printf("end_iter offset: %d\n",end_iter.get_offset());
 		}
@@ -168,7 +168,7 @@ namespace XSIRC {
 								parsing_color = false;
 								got_foreground = false;
 							}
-							AttrChar parsed_char = {c,bold,italic,underlined,(foreground != null ? mirc_colors[foreground.to_int()%16] : null),(background != null ? mirc_colors[background.to_int()%16] : null)};
+							AttrChar parsed_char = {c,bold,italic,underlined,(foreground != null ? mirc_colors[int.parse(foreground)%16] : null),(background != null ? mirc_colors[int.parse(background)%16] : null)};
 							parsed_string += parsed_char;
 						}
 						break;

@@ -1,7 +1,7 @@
 /*
  * ignore.vala
  *
- * Copyright (c) 2010 Eduardo Niehues
+ * Copyright (c) 2010-11 Eduardo Niehues
  * Distributed under the New BSD License; see ../LICENSE for details.
  */
 using Gee;
@@ -39,6 +39,8 @@ public class IgnorePlugin : Plugin {
 	}
 }
 
+#if !WINDOWS
 Type register_type(TypeModule module) {
 	return typeof(IgnorePlugin);
 }
+#endif

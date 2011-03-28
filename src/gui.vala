@@ -295,7 +295,7 @@ namespace XSIRC {
 		}
 		
 		public void parse_text(string s) {
-			//stdout.printf("Calling GUI.parse_text with argument \"%s\"\n",s);
+			stdout.printf("Calling GUI.parse_text with argument \"%s\"\n",s);
 			if(s.has_prefix("//")) {
 				// Send privmsg to current channel + /
 				string sent = s.substring(1);
@@ -314,7 +314,7 @@ namespace XSIRC {
 					}
 				}
 			} else {
-				if(current_server() != null && current_server().current_view() != null && s.size() > 0) {
+				if(current_server() != null && current_server().current_view() != null && s.length > 0) {
 					current_server().send("PRIVMSG %s :%s".printf(current_server().current_view().name,s),(float)0.5,current_server().current_view().name);
 					//current_server().add_to_view(current_server().current_view().name,"<%s> %s".printf(current_server().nick,s));
 				}
@@ -579,7 +579,7 @@ namespace XSIRC {
 		}
 		
 		public static void change_view_cb(Gtk.Action action) {
-			int view_no = action.name.substring(4).to_int();
+			int view_no = int.parse(action.name.substring(4));
 			view_no--;
 			if(Main.gui.current_server() != null && Main.gui.current_server().notebook.get_n_pages() >= view_no) {
 				Main.gui.current_server().notebook.page = view_no;
@@ -804,7 +804,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 						string[] split_server_data = server_entry.text.split(":");
 						bool ssl = split_server_data[0] == "ircs";
 						string address = split_server_data[1].substring(2);
-						int port = split_server_data[2] != null ? split_server_data[2].to_int() : 6667;
+						int port = split_server_data[2] != null ? int.parse(split_server_data[2]) : 6667;
 						Main.server_manager.open_server(address,port,ssl,server_entry.text.substring(server_entry.text.split(" ")[0].length));
 						dialog.destroy();
 					}

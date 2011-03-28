@@ -182,7 +182,7 @@ namespace XSIRC {
 			} catch(Error e) {
 				
 			}
-			
+			/*
 			File user_plugin_dir = File.new_for_path(Environment.get_user_config_dir()+"/xsirc/plugins");
 			try {
 				FileEnumerator user_files = user_plugin_dir.enumerate_children("standard::name",0);
@@ -200,7 +200,7 @@ namespace XSIRC {
 			} catch(Error e) {
 				
 			}
-			
+			*/
 			return failed_plugins;
 		}
 		
