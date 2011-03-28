@@ -73,7 +73,7 @@ namespace XSIRC {
 						}
 						string[] split_server_data = Regex.split_simple("(:\\/\\/|:)",server_data);
 						server.ssl     = split_server_data[0] == "ircs";
-						server.port    = split_server_data[4].to_int();
+						server.port    = int.parse(split_server_data[4]);
 						server.address = split_server_data[2];
 						network.servers.add(server);
 					}

@@ -274,7 +274,7 @@ namespace XSIRC {
 				}
 				bool ssl = new_text.has_prefix("ircs://");
 				string address = raw_address.split(":")[1].substring(2);
-				int port = raw_address.split(":")[2].to_int();
+				int port = int.parse(raw_address.split(":")[2]);
 				
 				Gtk.TreeIter iter;
 				string old_server_address;

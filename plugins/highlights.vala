@@ -146,6 +146,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 	}
 	
 	private void add_regex() {
+		
 		highlight_regexes.add("regex");
 		display_regexes();
 		save_settings();
@@ -330,7 +331,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 		}
 		if(pop_up_libnotify) {
 #if !WINDOWS
-			Notify.Notification notification = new Notify.Notification(title,Markup.escape_text(content),PREFIX+"/share/pixmaps/xsirc.png",null);
+			Notify.Notification notification = new Notify.Notification(title,Markup.escape_text(content),PREFIX+"/share/pixmaps/xsirc.png");
 			notification.set_timeout(5000);
 			notification.set_urgency(Notify.Urgency.CRITICAL);
 			try {
