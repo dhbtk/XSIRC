@@ -79,7 +79,7 @@ namespace XSIRC {
 				if(view.name.has_prefix("#")) {
 					foreach(string user in server.find_channel(view.name).raw_users) {
 						string tested = user;
-						if(/^(&|@|%|\+|~)/.match(user)) {
+						if(irc_user_is_privileged(user)) {
 							tested = user.substring(1);
 						}
 						if(last_word.length == 0 || tested.down().has_prefix(last_word.down())) {

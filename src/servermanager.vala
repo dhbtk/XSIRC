@@ -146,7 +146,7 @@ namespace XSIRC {
 		
 		public void shutdown() {
 			foreach(Server server in servers) {
-				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
+				server.raw_send("QUIT :%s".printf(Main.config["core"]["quit_msg"])); // Event loop isn't running anymore
 				while(server.connected) {
 					server.iterate();
 				}
