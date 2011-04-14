@@ -1,5 +1,8 @@
 using Gee;
 namespace XSIRC {
+	bool irc_user_is_privileged(string user) {
+		return /^(&|@|%|\+|~)/.match(user);
+	}
 	public static class Main {
 		public static GUI gui;
 		public static ConfigManager config_manager;

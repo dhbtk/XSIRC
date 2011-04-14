@@ -59,7 +59,7 @@ namespace XSIRC {
 			
 			public void update_user(string nick) {
 				string simple_nick = nick.down();
-				if(/^(%|@|\+|&)/.match(nick)) {
+				if(irc_user_is_privileged(nick)) {
 					simple_nick = simple_nick.substring(1);
 				}
 				
@@ -76,7 +76,7 @@ namespace XSIRC {
 					int index_raw = 0;
 					int index = 0;
 					foreach(string u in raw_users) {
-						if(/^(%|@|\+|&)/.match(u)) {
+						if(irc_user_is_privileged(u)) {
 							u = u.substring(1);
 						}
 						if(u.down() == simple_nick) {
@@ -103,7 +103,7 @@ namespace XSIRC {
 			
 			public void remove_user(string nick) {
 				string simple_nick = nick.down();
-				if(/^(%|@|\+|&)/.match(nick)) {
+				if(irc_user_is_privileged(simple_nick)) {
 					simple_nick = simple_nick.substring(1);
 				}
 				
@@ -119,7 +119,7 @@ namespace XSIRC {
 					int index_raw = 0;
 					int index = 0;
 					foreach(string u in raw_users) {
-						if(/^(%|@|\+|&)/.match(u)) {
+						if(irc_user_is_privileged(u)) {
 							u = u.substring(1);
 						}
 						if(u.down() == simple_nick) {
@@ -299,7 +299,8 @@ namespace XSIRC {
 			if(s.down().has_prefix("privmsg ") || s.down().has_prefix("notice ")) {
 				string prefix = s.split(" :")[0] + " :";
 				string message = s.substring(prefix.length);
-				string[] split_message = {};
+				stdout.printf("Message: %s\n",message);
+				LinkedList<string> split_message = new LinkedList<string>(); // Totally overkill but fixes bug
 				while(message.length != 0) {
 					string[] split = message.split(" ");
 					StringBuilder str = new StringBuilder("");
@@ -313,7 +314,8 @@ namespace XSIRC {
 						n++;
 					}
 					message = message.substring(str.str.length);
-					split_message += str.str;
+					stdout.printf("str.str: %s\n",str.str);
+					split_message.add(str.str);
 				}
 				foreach(string msg in split_message) {
 					string target = s.split(" ")[1];
@@ -343,7 +345,7 @@ namespace XSIRC {
 			}
 		}
 		
-		private void raw_send(owned string s) {
+		public void raw_send(owned string s) {
 			return_if_fail(connected);
 			stdout.printf(">> %s\n",s);
 			s = s + "\n";
@@ -793,7 +795,7 @@ namespace XSIRC {
 						foreach(string user in users) {
 							channel.raw_users.add(user);
 							user = user.down();
-							if(/^(&|@|%|\+|~)/.match(user)) {
+							if(irc_user_is_privileged(user)) {
 								user = user.substring(1);
 							}
 							channel.users.add(user);
