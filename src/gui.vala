@@ -20,34 +20,34 @@ namespace XSIRC {
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
 			{"ClientMenu",null,N_("_Client")},
-			{"Connect",Gtk.STOCK_CONNECT,N_("_Connect..."),"<control><shift>O",N_("Connect to a server."),connect_server_cb},
-			{"DisconnectAll",Gtk.STOCK_DISCONNECT,N_("_Disconnect all"),null,null,disconnect_all_cb},
-			{"ReconnectAll",Gtk.STOCK_NETWORK,N_("_Reconnect all"),null,null,reconnect_all_cb},
+			{"Connect",Gtk.Stock.CONNECT,N_("_Connect..."),"<control><shift>O",N_("Connect to a server."),connect_server_cb},
+			{"DisconnectAll",Gtk.Stock.DISCONNECT,N_("_Disconnect all"),null,null,disconnect_all_cb},
+			{"ReconnectAll",Gtk.Stock.NETWORK,N_("_Reconnect all"),null,null,reconnect_all_cb},
 			{"OpenLastLink",null,N_("_Open last link"),"F2",null,open_last_link_cb},
 			{"OpenSLastLink",null,N_("O_pen sec-to-last link"),"<control>F2",null,open_sl_link_cb},
-			{"Exit",Gtk.STOCK_QUIT,null,null,null,quit_client_cb},
+			{"Exit",Gtk.Stock.QUIT,null,null,null,quit_client_cb},
 			// Edit
 			{"EditMenu",null,"_Edit"},
-			{"Bold",Gtk.STOCK_BOLD,null,"<control>B",null,bold_cb},
-			{"Italic",Gtk.STOCK_ITALIC,null,"<control>I",null,italic_cb},
-			{"Underlined",Gtk.STOCK_UNDERLINE,null,"<control>U",null,underlined_cb},
-			{"Color",Gtk.STOCK_COLOR_PICKER,"Color","<control>K",null,color_cb},
+			{"Bold",Gtk.Stock.BOLD,null,"<control>B",null,bold_cb},
+			{"Italic",Gtk.Stock.ITALIC,null,"<control>I",null,italic_cb},
+			{"Underlined",Gtk.Stock.UNDERLINE,null,"<control>U",null,underlined_cb},
+			{"Color",Gtk.Stock.COLOR_PICKER,"Color","<control>K",null,color_cb},
 			{"RemoveFormatting",null,"Remove formatting","<control>R",null,remove_cb},
 			// Settings
 			{"SettingsMenu",null,N_("Se_ttings")},
-			{"Preferences",Gtk.STOCK_PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
+			{"Preferences",Gtk.Stock.PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
 			{"AdvancedMenu",null,N_("_Advanced")},
 			{"MacroPreferences",null,N_("_Macros..."),null,null,spawn_macro_preferences_cb},
 			{"PluginPreferences",null,N_("_Plugins..."),null,null,spawn_plugin_preferences_cb},
 			// View
 			{"ViewMenu",null,N_("_View")},
-			{"PrevServer",Gtk.STOCK_GOTO_FIRST,N_("Previous server"),"<control><alt>comma",null,previous_server_cb},
-			{"NextServer",Gtk.STOCK_GOTO_LAST,N_("Next server"),"<control><alt>period",null,next_server_cb},
-			{"PrevView",Gtk.STOCK_GO_BACK,N_("Previous view"),"<control>comma",null,previous_view_cb},
-			{"NextView",Gtk.STOCK_GO_FORWARD,N_("Next view"),"<control>period",null,next_view_cb},
-			{"CloseView",Gtk.STOCK_CLOSE,N_("_Close view"),"<control>w",null,close_view_cb},
+			{"PrevServer",Gtk.Stock.GOTO_FIRST,N_("Previous server"),"<control><alt>comma",null,previous_server_cb},
+			{"NextServer",Gtk.Stock.GOTO_LAST,N_("Next server"),"<control><alt>period",null,next_server_cb},
+			{"PrevView",Gtk.Stock.GO_BACK,N_("Previous view"),"<control>comma",null,previous_view_cb},
+			{"NextView",Gtk.Stock.GO_FORWARD,N_("Next view"),"<control>period",null,next_view_cb},
+			{"CloseView",Gtk.Stock.CLOSE,N_("_Close view"),"<control>w",null,close_view_cb},
 			{"RejoinChannel",null,N_("Re_join channel"),null,null,rejoin_chan_cb},
-			{"OpenView",Gtk.STOCK_OPEN,N_("_Open view..."),"<control>o",null,open_view_cb},
+			{"OpenView",Gtk.Stock.OPEN,N_("_Open view..."),"<control>o",null,open_view_cb},
 			// These names never see the light of day, so there's no need to translate them
 			{"View1",null,"View 1","<alt>1",null,change_view_cb},
 			{"View2",null,"View 2","<alt>2",null,change_view_cb},
@@ -61,15 +61,15 @@ namespace XSIRC {
 			{"View10",null,"View 10","<alt>0",null,change_view_cb},
 			// Server
 			{"ServerMenu",null,N_("_Server")},
-			{"Disconnect",Gtk.STOCK_DISCONNECT,N_("_Disconnect"),"<control><shift>d",null,disconnect_server_cb},
-			{"Reconnect",Gtk.STOCK_CONNECT,N_("_Reconnect"),"<control><shift>r",null,reconnect_server_cb},
-			{"CloseServer",Gtk.STOCK_CLOSE,N_("_Close"),"<control><shift>w",null,close_server_cb},
+			{"Disconnect",Gtk.Stock.DISCONNECT,N_("_Disconnect"),"<control><shift>d",null,disconnect_server_cb},
+			{"Reconnect",Gtk.Stock.CONNECT,N_("_Reconnect"),"<control><shift>r",null,reconnect_server_cb},
+			{"CloseServer",Gtk.Stock.CLOSE,N_("_Close"),"<control><shift>w",null,close_server_cb},
 			{"RejoinAll",null,N_("Re_join all"),null,null,rejoin_all_cb},
 			{"GoAway",null,N_("_Mark as away"),"<control><shift>a",null,go_away_cb},
 			// Help
 			{"HelpMenu",null,N_("_Help")},
-			{"HelpContents",Gtk.STOCK_HELP,N_("_Online help"),"F1",null,spawn_help_cb},
-			{"About",Gtk.STOCK_ABOUT,null,null,null,spawn_about_cb}
+			{"HelpContents",Gtk.Stock.HELP,N_("_Online help"),"F1",null,spawn_help_cb},
+			{"About",Gtk.Stock.ABOUT,null,null,null,spawn_about_cb}
 		};
 		private Gtk.UIManager ui_manager;
 		private string ui_manager_xml = """
@@ -551,7 +551,7 @@ namespace XSIRC {
 		public static void open_view_cb(Gtk.Action action) {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
-				Gtk.Dialog dialog = new Gtk.Dialog.with_buttons(_("Open view"),Main.gui.main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
+				Gtk.Dialog dialog = new Gtk.Dialog.with_buttons(_("Open view"),Main.gui.main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.Stock.OK,Gtk.ResponseType.ACCEPT,Gtk.Stock.CANCEL,Gtk.ResponseType.REJECT,null);
 				dialog.key_press_event.connect((key) => {
 					if(key.keyval == Gdk.keyval_from_name("Escape")) {
 						dialog.destroy();
@@ -779,7 +779,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		// Dialogs
 		public void open_connect_dialog() {
 			//gui_mutex.lock();
-			Gtk.Dialog dialog = new Gtk.Dialog.with_buttons(_("Connect to server"),main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.STOCK_OK,Gtk.ResponseType.ACCEPT,Gtk.STOCK_CANCEL,Gtk.ResponseType.REJECT,null);
+			Gtk.Dialog dialog = new Gtk.Dialog.with_buttons(_("Connect to server"),main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.Stock.OK,Gtk.ResponseType.ACCEPT,Gtk.Stock.CANCEL,Gtk.ResponseType.REJECT,null);
 			Gtk.HBox box = new Gtk.HBox(false,0);
 			box.pack_start(new Gtk.Label(_("Server URL:")),false,false,0);
 			Gtk.Entry server_entry = new Gtk.Entry();

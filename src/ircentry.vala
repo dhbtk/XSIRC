@@ -66,7 +66,7 @@ namespace XSIRC {
 					string last_word = curr_text_words[0] != null ? curr_text_words[curr_text_words.length-1] : "";
 					int last_word_offset = (int)(curr_text.length-last_word.length);
 					this.buffer.delete_text(last_word_offset,-1);
-					this.buffer.insert_text(last_word_offset,matches[match_index],-1);
+					this.buffer.insert_text(last_word_offset,(uint8[])matches[match_index]);
 					this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,(int)matches[match_index].length,false);
 					match_index++;
 				}
@@ -96,27 +96,27 @@ namespace XSIRC {
 		}
 		
 		public void insert_bold() {
-			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.buffer.insert_text(this.cursor_position,(uint8[])"");
 			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
 		}
 		
 		public void insert_italic() {
-			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.buffer.insert_text(this.cursor_position,(uint8[])"");
 			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
 		}
 		
 		public void insert_underlined() {
-			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.buffer.insert_text(this.cursor_position,(uint8[])"");
 			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
 		}
 		
 		public void insert_color() {
-			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.buffer.insert_text(this.cursor_position,(uint8[])"");
 			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
 		}
 		
 		public void insert_remove() {
-			this.buffer.insert_text(this.cursor_position,"",-1);
+			this.buffer.insert_text(this.cursor_position,(uint8[])"");
 			this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,1,false);
 		}
 	}
