@@ -19,7 +19,7 @@ namespace XSIRC {
 			}
 			
 			public PrefWindow() {
-				window = new Gtk.Dialog.with_buttons(_("Macros"),Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.STOCK_CLOSE,0,null);
+				window = new Gtk.Dialog.with_buttons(_("Macros"),Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.Stock.CLOSE,0,null);
 				window.set_default_size(320,320);
 				macro_model = new Gtk.ListStore(MacroColumns.N_COLUMNS,typeof(string),typeof(string));
 				macro_tree = new Gtk.TreeView.with_model(macro_model);
@@ -40,10 +40,10 @@ namespace XSIRC {
 				
 				Gtk.HButtonBox bbox = new Gtk.HButtonBox();
 				window.vbox.pack_start(bbox,false,true,0);
-				Gtk.Button add_button = new Gtk.Button.from_stock(Gtk.STOCK_ADD);
+				Gtk.Button add_button = new Gtk.Button.from_stock(Gtk.Stock.ADD);
 				bbox.pack_start(add_button,true,true,0);
 				add_button.clicked.connect(add_macro);
-				Gtk.Button remove_button = new Gtk.Button.from_stock(Gtk.STOCK_REMOVE);
+				Gtk.Button remove_button = new Gtk.Button.from_stock(Gtk.Stock.REMOVE);
 				remove_button.clicked.connect(remove_macro);
 				bbox.pack_start(remove_button,true,true,0);
 				
