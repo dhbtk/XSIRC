@@ -25,9 +25,9 @@ namespace XSIRC {
 			//path.append(view.name.down());
 			DirUtils.create_with_parents(path.str,0755);
 #if WINDOWS
-			path.append("\\").append(view.name.down().replace("<","").replace(">","")).append("-").append(gen_timestamp(Main.config["core"]["log_date_format"],time_t())).append(".log");
+			path.append("\\").append(view.name.down().replace("<","").replace(">","")).append("-").append(gen_timestamp(Main.config.string["log_date_format"],time_t())).append(".log");
 #else
-			path.append("/").append(view.name.down()).append("-").append(gen_timestamp(Main.config["core"]["log_date_format"],time_t())).append(".log");
+			path.append("/").append(view.name.down()).append("-").append(gen_timestamp(Main.config.string["log_date_format"],time_t())).append(".log");
 #endif
 			//Main.gui.add_to_view(Main.gui.system_view,path.str);
 			//stdout.printf("%s\n",path.str);

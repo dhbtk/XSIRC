@@ -157,7 +157,7 @@ namespace XSIRC {
 				text_view.editable = false;
 				text_view.cursor_visible = false;
 				text_view.wrap_mode = Gtk.WrapMode.WORD;
-				text_view.modify_font(Pango.FontDescription.from_string(Main.config["core"]["font"]));
+				text_view.modify_font(Pango.FontDescription.from_string(Main.config.string["font"]));
 				
 				scrolled_window = new Gtk.ScrolledWindow(null,null);
 				scrolled_window.vscrollbar_policy = Gtk.PolicyType.ALWAYS;
@@ -461,7 +461,7 @@ namespace XSIRC {
 		
 		public static void disconnect_all_cb(Gtk.Action action) {
 			foreach(Server server in Main.server_manager.servers) {
-				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
+				server.send("QUIT :%s".printf(Main.config.string["quit_msg"]));
 			}
 		}
 
@@ -589,7 +589,7 @@ namespace XSIRC {
 		public static void disconnect_server_cb(Gtk.Action action) {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
-				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
+				server.send("QUIT :%s".printf(Main.config.string["quit_msg"]));
 			}
 		}
 		
@@ -604,7 +604,7 @@ namespace XSIRC {
 		public static void close_server_cb(Gtk.Action action) {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
-				server.send("QUIT :%s".printf(Main.config["core"]["quit_msg"]));
+				server.send("QUIT :%s".printf(Main.config.string["quit_msg"]));
 				Main.server_manager.servers.remove(server);
 				Main.gui.servers_notebook.remove_page(Main.gui.servers_notebook.page_num(server.notebook));
 			}
@@ -626,7 +626,7 @@ namespace XSIRC {
 				if(server.am_away) {
 					server.send("AWAY");
 				} else {
-					server.send("AWAY :%s".printf(Main.config["core"]["away_msg"]));
+					server.send("AWAY :%s".printf(Main.config.string["away_msg"]));
 				}
 			}
 		}
@@ -649,17 +649,7 @@ namespace XSIRC {
 							//stderr.printf("Line doesn't match\n");
 							continue;
 						}
-#if WINDOWS
-						open_url_in_browser(info.fetch(1));
-#else
-						try {
-							Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+info.fetch(1)).split(" "),null,0,null,null);
-						} catch(SpawnError e) {
-							Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
-							d.response.connect(() => {d.destroy();});
-							d.show_all();
-						}
-#endif
+						Main.gui.open_link(info.fetch(1));
 						break;
 					}
 				}
@@ -688,17 +678,7 @@ namespace XSIRC {
 							first_match = false;
 							continue;
 						}
-#if WINDOWS
-						open_url_in_browser(info.fetch(1));
-#else
-						try {
-							Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+info.fetch(1)).split(" "),null,0,null,null);
-						} catch(SpawnError e) {
-							Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
-							d.response.connect(() => {d.destroy();});
-							d.show_all();
-						}
-#endif
+						Main.gui.open_link(info.fetch(1));
 						break;
 					}
 				}
@@ -706,17 +686,7 @@ namespace XSIRC {
 		}
 		
 		public static void spawn_help_cb(Gtk.Action action) {
-#if WINDOWS
-			open_url_in_browser("http://xsirc.niexs.net/manual.html");
-#else
-			try {
-				Process.spawn_async(null,(Main.config["core"]["web_browser"]+" http://xsirc.niexs.net/manual.html").split(" "),null,0,null,null);
-			} catch(SpawnError e) {
-				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
-				d.response.connect(() => {d.destroy();});
-				d.show_all();
-			}
-#endif
+			Main.gui.open_link("http://xsirc.niexs.net/manual.html");
 		}
 		
 		public static void spawn_about_cb(Gtk.Action action) {
@@ -764,17 +734,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		
 		// Link opener for the about dialog
 		public static void open_browser(Gtk.AboutDialog dialog,string link) {
-#if WINDOWS
-			open_url_in_browser(link);
-#else
-			try {
-				Process.spawn_async(null,(Main.config["core"]["web_browser"]+" "+link).split(" "),null,0,null,null);
-			} catch(SpawnError e) {
-				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
-				d.response.connect(() => {d.destroy();});
-				d.show_all();
-			}
-#endif
+			Main.gui.open_link(link);
 		}
 		// Dialogs
 		public void open_connect_dialog() {
@@ -845,8 +805,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		}
 		// Misc
 		
+		public void open_link(string link) {
+#if WINDOWS
+			open_url_in_browser(link);
+#else
+			try {
+				Process.spawn_command_line_async(Main.config.string["web_browser"].printf(link));
+			} catch(SpawnError e) {
+				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
+				d.response.connect(() => {d.destroy();});
+				d.show_all();
+			}
+#endif
+		}
+		
 		public string timestamp() {
-			return gen_timestamp(Main.config["core"]["timestamp_format"],time_t());
+			return gen_timestamp(Main.config.string["timestamp_format"],time_t());
 		}
 	}
 }

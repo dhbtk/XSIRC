@@ -155,7 +155,7 @@ namespace XSIRC {
 			this.ssl      = ssl;
 			this.password = password;
 			this.network  = network;
-			nick          = Main.config["core"]["nickname"];
+			nick          = Main.config.string["nickname"];
 			// Connecting etc.
 			irc_connect();
 			
@@ -271,8 +271,8 @@ namespace XSIRC {
 			socket_stream = new DataInputStream(socket_conn.input_stream);
 			output_stream = new DataOutputStream(socket_conn.output_stream);
 	
-			raw_send("USER %s rocks hard :%s".printf(Main.config["core"]["username"],Main.config["core"]["realname"]));
-			raw_send("NICK %s".printf(Main.config["core"]["nickname"]));
+			raw_send("USER %s rocks hard :%s".printf(Main.config.string["username"],Main.config.string["realname"]));
+			raw_send("NICK %s".printf(Main.config.string["nickname"]));
 			if(password != "") {
 				send("PASS %s".printf(password));
 			}
