@@ -244,7 +244,20 @@ namespace XSIRC {
 			// Server notebook
 			
 			servers_notebook = new Gtk.Notebook();
-			servers_notebook.tab_pos = Gtk.PositionType.BOTTOM;
+			switch(Main.config.string["tab_pos"]) {
+				case "top":
+					servers_notebook.tab_pos = Gtk.PositionType.TOP;
+					break;
+				case "left":
+					servers_notebook.tab_pos = Gtk.PositionType.LEFT;
+					break;
+				case "right":
+					servers_notebook.tab_pos = Gtk.PositionType.RIGHT;
+					break;
+				default:
+					servers_notebook.tab_pos = Gtk.PositionType.BOTTOM;
+					break;
+			}
 			server_vbox.pack_start(servers_notebook,true,true,0);
 			
 			// Input entry
@@ -321,6 +334,32 @@ namespace XSIRC {
 				status_bar.visible = false;
 			} else {
 				status_bar.visible = true;
+			}
+			switch(Main.config.string["tab_pos"]) {
+				case "top":
+					servers_notebook.tab_pos = Gtk.PositionType.TOP;
+					foreach(Server server in Main.server_manager.servers) {
+						server.notebook.tab_pos = Gtk.PositionType.TOP;
+					}
+					break;
+				case "left":
+					servers_notebook.tab_pos = Gtk.PositionType.LEFT;
+					foreach(Server server in Main.server_manager.servers) {
+						server.notebook.tab_pos = Gtk.PositionType.LEFT;
+					}
+					break;
+				case "right":
+					servers_notebook.tab_pos = Gtk.PositionType.RIGHT;
+					foreach(Server server in Main.server_manager.servers) {
+						server.notebook.tab_pos = Gtk.PositionType.RIGHT;
+					}
+					break;
+				default:
+					servers_notebook.tab_pos = Gtk.PositionType.BOTTOM;
+					foreach(Server server in Main.server_manager.servers) {
+						server.notebook.tab_pos = Gtk.PositionType.RIGHT;
+					}
+					break;
 			}
 		}
 		
