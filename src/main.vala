@@ -6,7 +6,8 @@ namespace XSIRC {
 	public static class Main {
 		public static GUI gui;
 		public static ConfigManager config_manager;
-		public static HashMap<string,HashMap<string,string>> config;
+		public static ConfigManager.ConfigAcessor config;
+		public static KeyFile config_file;
 		public static ServerManager server_manager;
 		public static MacroManager macro_manager;
 		public static PluginManager plugin_manager;
@@ -36,7 +37,8 @@ namespace XSIRC {
 		}
 		// Starting up!
 		Main.config_manager = new ConfigManager();
-		Main.config = Main.config_manager.config;
+		Main.config_file = Main.config_manager.config;
+		Main.config = new ConfigManager.ConfigAcessor();
 		Main.server_manager = new ServerManager();
 		Main.gui = new XSIRC.GUI();
 		Main.gui.startup();
