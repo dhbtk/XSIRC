@@ -145,7 +145,20 @@ namespace XSIRC {
 		public Server(string server,int port,bool ssl,string password,ServerManager.Network? network = null) {
 			// GUI
 			notebook = new Gtk.Notebook();
-			notebook.tab_pos = Gtk.PositionType.BOTTOM;
+			switch(Main.config.string["tab_pos"]) {
+				case "top":
+					notebook.tab_pos = Gtk.PositionType.TOP;
+					break;
+				case "left":
+					notebook.tab_pos = Gtk.PositionType.LEFT;
+					break;
+				case "right":
+					notebook.tab_pos = Gtk.PositionType.RIGHT;
+					break;
+				default:
+					notebook.tab_pos = Gtk.PositionType.BOTTOM;
+					break;
+			}
 			label    = new Gtk.Label((network != null ? network.name+" - " : "")+server);
 			label.use_markup = true;
 			open_view(_("<server>"));
