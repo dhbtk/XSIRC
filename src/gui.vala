@@ -139,6 +139,9 @@ namespace XSIRC {
 		private PrefDialog preferences_dialog = null;
 		private MacroManager.PrefWindow macro_prefs_window;
 		private PluginManager.PrefWindow plugin_prefs_window;
+		private Gtk.VBox server_vbox;
+		private Gtk.HBox main_hbox;
+		private Gtk.ScrolledWindow user_list_container;
 		
 		public class View {
 			public string name;
@@ -166,7 +169,12 @@ namespace XSIRC {
 			}
 			
 			public void add_text(string what) {
-				string text = Main.gui.timestamp() + " "+what+"\n";
+				string text;
+				if(Main.config.bool["show_timestamps"]) {
+					text = Main.gui.timestamp() + " "+what+"\n";
+				} else {
+					text = what+"\n";
+				}
 				MIRCParser parser = new MIRCParser(text);
 				bool scrolled = (int)scrolled_window.vadjustment.value == (int)(scrolled_window.vadjustment.upper - 
 				                                                                scrolled_window.vadjustment.page_size);
@@ -215,29 +223,29 @@ namespace XSIRC {
 			});
 			
 			// Main HBox, users, servers notebook
-			Gtk.HPaned main_hbox = new Gtk.HPaned();
+			main_hbox = new Gtk.HBox(false,5);
 			main_vbox.pack_start(main_hbox,true,true,0);
 			
 			// User list
 			user_list = new Gtk.TreeView.with_model(new Gtk.ListStore(1,typeof(string)));
-			Gtk.ScrolledWindow user_list_container = new Gtk.ScrolledWindow(null,null);
+			user_list_container = new Gtk.ScrolledWindow(null,null);
 			user_list_container.add(user_list);
-			main_hbox.add1(user_list_container);
+			user_list_container.set_size_request(95,-1);
+			main_hbox.pack_start(user_list_container,false,true,0);
 			
 			Gtk.CellRendererText renderer = new Gtk.CellRendererText();
 			Gtk.TreeViewColumn display_column = new Gtk.TreeViewColumn.with_attributes(_("Users"),renderer,"text",0,null);
 			user_list.append_column(display_column);
 			
 			// Quick VBox for server notebook+input
-			var vbox = new Gtk.VBox(false,0);
-			main_hbox.add2(vbox);
+			server_vbox = new Gtk.VBox(false,0);
+			main_hbox.pack_start(server_vbox,true,true,0);
 			
-			main_hbox.set_position(85);
 			// Server notebook
 			
 			servers_notebook = new Gtk.Notebook();
 			servers_notebook.tab_pos = Gtk.PositionType.BOTTOM;
-			vbox.pack_start(servers_notebook,true,true,0);
+			server_vbox.pack_start(servers_notebook,true,true,0);
 			
 			// Input entry
 			
@@ -246,7 +254,7 @@ namespace XSIRC {
 			//te_scroll.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 			//te_scroll.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 			//te_scroll.add(text_entry);
-			vbox.pack_start(/*te_scroll*/text_entry,false,false,0);
+			server_vbox.pack_start(/*te_scroll*/text_entry,false,false,0);
 			
 			// Status bar
 			status_bar = new Gtk.Statusbar();
@@ -268,6 +276,9 @@ namespace XSIRC {
 			});
 			src.attach(null);
 			
+			// GUI settings
+			apply_settings();
+			
 			// Ready to go!
 			text_entry.grab_focus();
 			
@@ -282,6 +293,35 @@ namespace XSIRC {
 			system_view = new View("XSIRC");
 			servers_notebook.append_page(system_view.scrolled_window,system_view.label);
 			servers_notebook.show_all();
+		}
+		
+		public void apply_settings() {
+			if(!Main.config.bool["show_user_list"]) {
+				user_list_container.visible = false;
+			} else {
+				user_list_container.visible = true;
+			}
+			main_hbox.remove(user_list_container);
+			main_hbox.remove(server_vbox);
+			if(Main.config.string["userlist_pos"] == "left") {
+				main_hbox.pack_start(user_list_container,false,true,0);
+				main_hbox.pack_start(server_vbox,true,true,0);
+			} else {
+				main_hbox.pack_start(server_vbox,true,true,0);
+				main_hbox.pack_start(user_list_container,false,true,0);
+			}
+			
+			if(!Main.config.bool["show_topic_bar"]) {
+				((Gtk.Widget)topic_view).visible = false;
+			} else {
+				((Gtk.Widget)topic_view).visible = true;
+			}
+			
+			if(!Main.config.bool["show_status_bar"]) {
+				status_bar.visible = false;
+			} else {
+				status_bar.visible = true;
+			}
 		}
 		
 		public void iterate() {

@@ -46,7 +46,9 @@ namespace XSIRC {
 					}
 					return true;
 				} else {
-					completion_reset();
+					if(!/^Shift|Control|Meta|Alt|Super|Hyper|Caps/.match(Gdk.keyval_name(key.keyval))) {
+						completion_reset();
+					}
 					return false;
 				}
 			});

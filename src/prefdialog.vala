@@ -103,6 +103,8 @@ namespace XSIRC {
 			// The lone integer value
 			Main.config.integer["away_mins"] = (int)((Gtk.SpinButton)builder.get_object("away_mins")).value;
 			
+			Main.gui.apply_settings();
+			
 			Main.config_manager.save_settings();
 		}
 	}

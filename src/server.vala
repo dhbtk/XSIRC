@@ -594,8 +594,16 @@ namespace XSIRC {
 					case "433":
 						nick_tries++;
 						StringBuilder new_nick = new StringBuilder(nick);
-						for(int i = 0; i < nick_tries; i++) {
-							new_nick.append("_");
+						if(nick_tries < 3) {
+							if(nick_tries == 1) {
+								new_nick.append(Main.config.string["sec_nickname"]);
+							} else {
+								new_nick.append(Main.config.string["ter_nickname"]);
+							}
+						} else {
+							for(int i = 0; i < nick_tries; i++) {
+								new_nick.append("_");
+							}
 						}
 						send("NICK %s".printf(new_nick.str));
 						add_to_view(_("<server>"),_("[Error:433] Nickname %s already in use.").printf(nick));
