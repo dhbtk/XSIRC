@@ -40,7 +40,7 @@ namespace XSIRC {
 						this.text = command_history[command_history_index];
 					}
 					return true;
-				} else if(key.keyval == Gdk.keyval_from_name("Tab")) {
+				} else if(Main.config.bool["tab_completion_enabled"] && key.keyval == Gdk.keyval_from_name("Tab")) {
 					if(Main.gui.current_server() != null && Main.gui.current_server().current_view() != null) {
 						complete(Main.gui.current_server(),Main.gui.current_server().current_view());
 					}
@@ -66,7 +66,12 @@ namespace XSIRC {
 					string curr_text = this.text;
 					string[] curr_text_words = curr_text.split(" ");
 					string last_word = curr_text_words[0] != null ? curr_text_words[curr_text_words.length-1] : "";
-					int last_word_offset = (int)(curr_text.length-last_word.length);
+					int last_word_offset;
+					if(match_index <= 0) {
+						last_word_offset = (int)(curr_text.length-last_word.length);
+					} else {
+						last_word_offset = (int)(curr_text.length-matches[match_index-1].length);
+					}
 					this.buffer.delete_text(last_word_offset,-1);
 					this.buffer.insert_text(last_word_offset,(uint8[])matches[match_index]);
 					this.move_cursor(Gtk.MovementStep.VISUAL_POSITIONS,(int)matches[match_index].length,false);
@@ -78,6 +83,7 @@ namespace XSIRC {
 				string curr_text = this.text;
 				string[] curr_text_words = curr_text.split(" ");
 				string last_word = curr_text_words[0] != null ? curr_text_words[curr_text_words.length-1] : "";
+				bool suffixable = curr_text.length-last_word.length == 0;
 				if(view.name.has_prefix("#")) {
 					foreach(string user in server.find_channel(view.name).raw_users) {
 						string tested = user;
@@ -85,14 +91,18 @@ namespace XSIRC {
 							tested = user.substring(1);
 						}
 						if(last_word.length == 0 || tested.down().has_prefix(last_word.down())) {
-							matches.add(tested);
+							if(suffixable) {
+								matches.add(tested+Main.config.string["completion_suffix"]);
+							} else {
+								matches.add(tested);
+							}
 						}
 					}
 				} else {
 					matches.add(view.name);
 				}
 				completing = true;
-				matches.sort((CompareFunc)strcmp);
+				matches.sort((CompareFunc)strcasecmp);
 				complete(server,view);
 			}
 		}

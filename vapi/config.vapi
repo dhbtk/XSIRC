@@ -1,6 +1,9 @@
 [CCode (cname = "gen_timestamp", cheader_filename = "gen_timestamp.h")]
 string gen_timestamp(string format,time_t time);
 
+[CCode (cname = "strcasecmp", cheader_filename = "string.h")]
+int strcasecmp(string s1,string s2);
+
 #if WINDOWS
 void open_url_in_browser(string url);
 #endif

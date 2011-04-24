@@ -593,7 +593,7 @@ namespace XSIRC {
 						break;
 					case "433":
 						nick_tries++;
-						StringBuilder new_nick = new StringBuilder(nick);
+						StringBuilder new_nick = new StringBuilder();
 						if(nick_tries < 3) {
 							if(nick_tries == 1) {
 								new_nick.append(Main.config.string["sec_nickname"]);
@@ -601,6 +601,7 @@ namespace XSIRC {
 								new_nick.append(Main.config.string["ter_nickname"]);
 							}
 						} else {
+							new_nick.append(nick);
 							for(int i = 0; i < nick_tries; i++) {
 								new_nick.append("_");
 							}
