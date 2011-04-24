@@ -11,7 +11,7 @@ namespace XSIRC {
 			public class Bool : Object {
 				// No error checking, double-check the code
 				public new bool @get(string key) {
-					bool result;
+					bool result = false;
 					try {
 						result = Main.config_file.get_boolean("XSIRC",key);
 					} catch(Error e) {
@@ -27,7 +27,7 @@ namespace XSIRC {
 			public class Int : Object {
 				// Once again, no error checking
 				public new int @get(string key) {
-					int result;
+					int result = 0;
 					try {
 						result = Main.config_file.get_integer("XSIRC",key);
 					} catch(Error e) {
@@ -64,11 +64,11 @@ namespace XSIRC {
 				}
 			}
 			public Bool @bool;
-			public Int @int;
+			public Int integer;
 			public String @string;
 			public ConfigAcessor() {
 				@bool = new Bool();
-				@int = new Int();
+				integer = new Int();
 				@string = new String();
 			}
 		}

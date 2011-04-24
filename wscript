@@ -82,5 +82,6 @@ def build(bld):
 	# Preferences ui
 	bld.install_files(bld.env['PREFIX']+'/share/xsirc','src/prefwindow.ui')
 	bld.install_files(bld.env['PREFIX']+'/share/xsirc','src/pluginprefwindow.ui')
+	bld.install_files(bld.env['PREFIX']+'/share/xsirc','ui/preferences.ui')
 	bld.new_task_gen(features='subst',source='xsirc.desktop.in',target='xsirc.desktop')
 	bld.install_files(bld.env['PREFIX']+'/share/applications','xsirc.desktop')

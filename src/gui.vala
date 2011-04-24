@@ -136,7 +136,7 @@ namespace XSIRC {
 		private bool gui_updated = true;
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
-		private PrefWindow prefs_window;
+		private PrefDialog preferences_dialog = null;
 		private MacroManager.PrefWindow macro_prefs_window;
 		private PluginManager.PrefWindow plugin_prefs_window;
 		
@@ -273,7 +273,7 @@ namespace XSIRC {
 			
 			// Checking if it's a probable first run
 			if(!Main.config_manager.loaded_config) {
-				create_prefs_window();
+				create_prefs_dialog();
 			}
 		
 		}
@@ -497,7 +497,7 @@ namespace XSIRC {
 		}
 		
 		public static void spawn_preferences_cb(Gtk.Action action) {
-			Main.gui.create_prefs_window();
+			Main.gui.create_prefs_dialog();
 		}
 		
 		public static void spawn_macro_preferences_cb(Gtk.Action action) {
@@ -776,12 +776,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			//gui_mutex.unlock();
 		}
 		
-		public void create_prefs_window() {
-			prefs_window = new PrefWindow();
+		public void create_prefs_dialog() {
+			if(preferences_dialog != null) {
+				preferences_dialog.dialog.present();
+			} else {
+				preferences_dialog = new PrefDialog();
+			}
 		}
 		
-		public void destroy_prefs_window() {
-			prefs_window = null;
+		public void destroy_prefs_dialog() {
+			preferences_dialog = null;
 		}
 		
 		public void create_macro_prefs_window() {

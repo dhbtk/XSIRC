@@ -7,7 +7,7 @@ namespace XSIRC {
 		public static GUI gui;
 		public static ConfigManager config_manager;
 		public static ConfigManager.ConfigAcessor config;
-		public static KeyFile config_file;
+		public static unowned KeyFile config_file;
 		public static ServerManager server_manager;
 		public static MacroManager macro_manager;
 		public static PluginManager plugin_manager;

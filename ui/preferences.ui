@@ -278,7 +278,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="log_file_format">
+                      <object class="GtkEntry" id="log_file_name">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
@@ -291,7 +291,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="entry1">
+                      <object class="GtkEntry" id="log_folder">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
@@ -438,7 +438,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkCheckButton" id="show_userlist">
+                          <object class="GtkCheckButton" id="show_user_list">
                             <property name="label" translatable="yes">Show user list</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
@@ -615,7 +615,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="link_handler">
+                              <object class="GtkEntry" id="web_browser">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">&#x25CF;</property>
@@ -630,7 +630,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkCheckButton" id="enable_tab_completion">
+                          <object class="GtkCheckButton" id="tab_completion_enabled">
                             <property name="label" translatable="yes">Enable tab completion</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
