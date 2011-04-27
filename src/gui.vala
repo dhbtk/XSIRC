@@ -357,7 +357,7 @@ namespace XSIRC {
 				default:
 					servers_notebook.tab_pos = Gtk.PositionType.BOTTOM;
 					foreach(Server server in Main.server_manager.servers) {
-						server.notebook.tab_pos = Gtk.PositionType.RIGHT;
+						server.notebook.tab_pos = Gtk.PositionType.BOTTOM;
 					}
 					break;
 			}

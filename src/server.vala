@@ -29,7 +29,7 @@ namespace XSIRC {
 		private bool sent_ping = false;
 		// Socket
 		private SocketClient socket_client;
-		private SocketConnection socket_conn;
+		public SocketConnection socket_conn;
 		private DataInputStream socket_stream;
 		private DataOutputStream output_stream;
 		public bool connecting = false;
@@ -182,7 +182,7 @@ namespace XSIRC {
 		}
 		
 		public void iterate() {
-			if(socket_ready() && connected && !sock_error) {
+			/*if(socket_ready() && connected && !sock_error) {
 				//add_to_view(_("<server>"),_("DEBUG -- socket ready");
 				string s = null;
 				try {
@@ -210,7 +210,7 @@ namespace XSIRC {
 				s = s.strip().replace("\r","").replace("\n","");
 				//add_to_view(_("<server>"),_("DEBUG -- got: %s").printf(s));
 				handle_server_input(s);
-			}
+			}*/
 			if(connected && !sock_error) {
 				// Checking if almost timeouting
 				if(((int)time_t() - (int)last_recieved) >= 250) {
@@ -229,7 +229,37 @@ namespace XSIRC {
 			}
 		}
 		
-		private bool socket_ready() {
+		public bool recieve_data(Socket socket,IOCondition cond) {
+			string s = null;
+			try {
+				s = socket_stream.read_line(null,null);
+			} catch(Error e) {
+				connected = false;
+				sock_error = true;
+				Main.gui.update_gui(this);
+				add_to_view(_("<server>"),_("ERROR: error fetching line: %s").printf(e.message));
+			}
+			if(s == null) {
+				connected = false;
+				sock_error = false;
+				Main.gui.update_gui(this);
+				return true;
+			}
+			if(!s.validate()) {
+				try {
+					s = convert(s,(ssize_t)s.length,"UTF-8","ISO-8859-1");
+					assert(s.validate()); // Kinda dangerous
+				} catch(ConvertError e) {
+					return true;
+				}
+			}
+			s = s.strip().replace("\r","").replace("\n","");
+			//add_to_view(_("<server>"),_("DEBUG -- got: %s").printf(s));
+			handle_server_input(s);
+			return true;
+		}
+		
+		public bool socket_ready() {
 			if(!connected || sock_error) {
 				return false;
 			} else if(socket_conn.socket == null) {
@@ -291,6 +321,10 @@ namespace XSIRC {
 			}
 			Main.gui.update_gui(this);
 			last_recieved = time_t();
+			
+			SocketSource socket_source = socket_conn.socket.create_source(IOCondition.IN|IOCondition.PRI,null);
+			socket_source.set_callback(recieve_data);
+			socket_source.attach(null);
 		}
 		
 		public void irc_disconnect() {

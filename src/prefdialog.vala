@@ -10,6 +10,14 @@ namespace XSIRC {
 		public Gtk.Dialog dialog;
 		private Gtk.Builder builder;
 		
+		private Gtk.TreeView macro_tree;
+		private Gtk.ListStore macro_model;
+		private enum MacroColumns {
+			REGEX,
+			RESULT,
+			N_COLUMNS
+		}
+		
 		public PrefDialog() {
 			builder = new Gtk.Builder();
 			try {
@@ -60,7 +68,27 @@ namespace XSIRC {
 			// The lone integer value
 			((Gtk.SpinButton)builder.get_object("away_mins")).value = Main.config.integer["away_mins"];
 			
-			// Macros; TODO
+			// Macros
+			
+			macro_model = new Gtk.ListStore(MacroColumns.N_COLUMNS,typeof(string),typeof(string));
+			macro_tree = builder.get_object("macro_tree") as Gtk.TreeView;
+			macro_tree.model = macro_model;
+			
+			Gtk.CellRendererText regex_renderer = new Gtk.CellRendererText();
+			regex_renderer.editable = true;
+			regex_renderer.edited.connect(regex_edited);
+			macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes(_("Regex"),regex_renderer,"text",MacroColumns.REGEX,null));
+			
+			Gtk.CellRendererText result_renderer = new Gtk.CellRendererText();
+			result_renderer.editable = true;
+			result_renderer.edited.connect(result_edited);
+			macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes(_("Result"),result_renderer,"text",MacroColumns.RESULT,null));
+			
+			((Gtk.Button)builder.get_object("add_macro")).clicked.connect(add_macro);
+			((Gtk.Button)builder.get_object("remove_macro")).clicked.connect(remove_macro);
+			
+			load_macros();
+			
 			// Plugins; TODO
 			dialog.response.connect(() => {
 				save_settings();
@@ -106,6 +134,90 @@ namespace XSIRC {
 			Main.gui.apply_settings();
 			
 			Main.config_manager.save_settings();
+		}
+
+		private void add_macro() {
+			Main.macro_manager.macros.add(new MacroManager.Macro("regex","result"));
+			load_macros();
+		}
+		
+		private void remove_macro() {
+			Gtk.TreeIter iter;
+			Gtk.TreeModel model;
+			string regex;
+			string result;
+			Gtk.TreeSelection sel = macro_tree.get_selection();
+			if(sel.get_selected(out model,out iter)) {
+				model.get(iter,MacroColumns.REGEX,out regex,MacroColumns.RESULT,out result,-1);
+				foreach(MacroManager.Macro m in Main.macro_manager.macros) {
+					if(m.regex == regex) {
+						Main.macro_manager.macros.remove(m);
+						break;
+					}
+				}
+				load_macros();
+			}
+		}
+		
+		private void regex_edited(string path,string new_text) {
+			// Testing the regex for validity
+			try {
+				Regex test = new Regex(new_text);
+				test.match("test",0,null);
+				// Checking for uniqueness
+				foreach(MacroManager.Macro macro in Main.macro_manager.macros) {
+					if(macro.regex == new_text) {
+						Gtk.MessageDialog d = new Gtk.MessageDialog(dialog,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,_("The regular expression entered is not unique."));
+						d.response.connect(() => {
+							d.destroy();
+						});
+						d.show_all();
+						return;
+					}
+				}
+				Gtk.TreeIter iter;
+				string old_regex;
+				if(macro_model.get_iter_from_string(out iter,path)) {
+					macro_model.get(iter,MacroColumns.REGEX,out old_regex,-1);
+					foreach(MacroManager.Macro macro in Main.macro_manager.macros) {
+						if(macro.regex == old_regex) {
+							macro.regex = new_text;
+							break;
+						}
+					}
+					macro_model.set(iter,MacroColumns.REGEX,new_text,-1);
+				}
+			} catch(Error e) {
+				Gtk.MessageDialog d = new Gtk.MessageDialog(dialog,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,_("The string entered isn't a valid regular expression."));
+				d.response.connect(() => {
+					d.destroy();
+				});
+				d.show_all();
+			}
+		}
+		
+		private void result_edited(string path,string new_text) {
+			Gtk.TreeIter iter;
+			string regex;
+			if(macro_model.get_iter_from_string(out iter,path)) {
+				macro_model.get(iter,MacroColumns.REGEX,out regex,-1);
+				foreach(MacroManager.Macro macro in Main.macro_manager.macros) {
+					if(macro.regex == regex) {
+						macro.result = new_text;
+						break;
+					}
+				}
+				macro_model.set(iter,MacroColumns.RESULT,new_text,-1);
+			}
+		}
+		
+		private void load_macros() {
+			macro_model.clear();
+			Gtk.TreeIter iter;
+			foreach(MacroManager.Macro macro in Main.macro_manager.macros) {
+				macro_model.append(out iter);
+				macro_model.set(iter,MacroColumns.REGEX,macro.regex,MacroColumns.RESULT,macro.result);
+			}
 		}
 	}
 }

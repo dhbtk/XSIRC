@@ -45,6 +45,11 @@ namespace XSIRC {
 						complete(Main.gui.current_server(),Main.gui.current_server().current_view());
 					}
 					return true;
+				} else if(Main.config.bool["tab_completion_enabled"] && key.keyval == Gdk.keyval_from_name("ISO_Left_Tab")) {
+					if(Main.gui.current_server() != null && Main.gui.current_server().current_view() != null) {
+						complete(Main.gui.current_server(),Main.gui.current_server().current_view(),true);
+					}
+					return true;
 				} else {
 					if(!/^Shift|Control|Meta|Alt|Super|Hyper|Caps/.match(Gdk.keyval_name(key.keyval))) {
 						completion_reset();
@@ -60,9 +65,16 @@ namespace XSIRC {
 			match_index = 0;
 		}
 		
-		private void complete(Server server,GUI.View view) {
+		private void complete(Server server,GUI.View view,bool reverse = false) {
 			if(completing) {
-				if((matches.size - 1) >= match_index) {
+				if((matches.size - 1) < match_index) {
+					// We've reached the end of the list, wrapping around
+					match_index = 0;
+				} else if(match_index < 0) {
+					// Wrapping around again
+					match_index = matches.size - 1;
+				}
+				if((matches.size - 1) >= match_index) { // Prevents segfaults and the like
 					string curr_text = this.text;
 					string[] curr_text_words = curr_text.split(" ");
 					string last_word = curr_text_words[0] != null ? curr_text_words[curr_text_words.length-1] : "";
@@ -103,7 +115,7 @@ namespace XSIRC {
 				}
 				completing = true;
 				matches.sort((CompareFunc)strcasecmp);
-				complete(server,view);
+				complete(server,view,reverse);
 			}
 		}
 		
