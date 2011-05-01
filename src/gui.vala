@@ -155,7 +155,6 @@ namespace XSIRC {
 				label = new Gtk.Label(Markup.escape_text(name));
 				label.use_markup = true;
 				
-				// FIXME: until MIRCParser is fixed, no tags in the buffer
 				text_view = new Gtk.TextView();
 				text_view.editable = false;
 				text_view.cursor_visible = false;

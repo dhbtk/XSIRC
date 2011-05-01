@@ -12,6 +12,8 @@ namespace XSIRC {
 		
 		private Gtk.TreeView macro_tree;
 		private Gtk.ListStore macro_model;
+		private Gtk.TreeViewColumn regex_col;
+		private Gtk.TreeViewColumn result_col;
 		private enum MacroColumns {
 			REGEX,
 			RESULT,
@@ -77,12 +79,14 @@ namespace XSIRC {
 			Gtk.CellRendererText regex_renderer = new Gtk.CellRendererText();
 			regex_renderer.editable = true;
 			regex_renderer.edited.connect(regex_edited);
-			macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes(_("Regex"),regex_renderer,"text",MacroColumns.REGEX,null));
+			regex_col = new Gtk.TreeViewColumn.with_attributes(_("Regex"),regex_renderer,"text",MacroColumns.REGEX,null);
+			macro_tree.append_column(regex_col);
 			
 			Gtk.CellRendererText result_renderer = new Gtk.CellRendererText();
 			result_renderer.editable = true;
 			result_renderer.edited.connect(result_edited);
-			macro_tree.append_column(new Gtk.TreeViewColumn.with_attributes(_("Result"),result_renderer,"text",MacroColumns.RESULT,null));
+			result_col = new Gtk.TreeViewColumn.with_attributes(_("Result"),result_renderer,"text",MacroColumns.RESULT,null);
+			macro_tree.append_column(result_col);
 			
 			((Gtk.Button)builder.get_object("add_macro")).clicked.connect(add_macro);
 			((Gtk.Button)builder.get_object("remove_macro")).clicked.connect(remove_macro);
@@ -92,6 +96,7 @@ namespace XSIRC {
 			// Plugins; TODO
 			dialog.response.connect(() => {
 				save_settings();
+				save_macros();
 				dialog.destroy();
 				Main.gui.destroy_prefs_dialog();
 			});
@@ -137,8 +142,12 @@ namespace XSIRC {
 		}
 
 		private void add_macro() {
-			Main.macro_manager.macros.add(new MacroManager.Macro("regex","result"));
-			load_macros();
+			Gtk.TreeIter iter;
+			macro_model.append(out iter);
+			Gtk.TreeSelection sel = macro_tree.get_selection();
+			sel.unselect_all();
+			sel.select_iter(iter);
+			macro_tree.set_cursor(macro_model.get_path(iter),regex_col,true);
 		}
 		
 		private void remove_macro() {
@@ -164,17 +173,6 @@ namespace XSIRC {
 			try {
 				Regex test = new Regex(new_text);
 				test.match("test",0,null);
-				// Checking for uniqueness
-				foreach(MacroManager.Macro macro in Main.macro_manager.macros) {
-					if(macro.regex == new_text) {
-						Gtk.MessageDialog d = new Gtk.MessageDialog(dialog,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,_("The regular expression entered is not unique."));
-						d.response.connect(() => {
-							d.destroy();
-						});
-						d.show_all();
-						return;
-					}
-				}
 				Gtk.TreeIter iter;
 				string old_regex;
 				if(macro_model.get_iter_from_string(out iter,path)) {
@@ -219,5 +217,19 @@ namespace XSIRC {
 				macro_model.set(iter,MacroColumns.REGEX,macro.regex,MacroColumns.RESULT,macro.result);
 			}
 		}
+		
+		private void save_macros() {
+			Main.macro_manager.macros.clear();
+			// Saving the data from the model
+			macro_model.foreach((model,path,iter) => {
+				string regex;
+				string result;
+				model.get(iter,MacroColumns.REGEX,out regex,MacroColumns.RESULT,out result,-1);
+				MacroManager.Macro macro = new MacroManager.Macro(regex,result);
+				Main.macro_manager.macros.add(macro);
+				return false;
+			});
+		}
+	
 	}
 }
