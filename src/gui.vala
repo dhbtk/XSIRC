@@ -37,7 +37,6 @@ namespace XSIRC {
 			{"SettingsMenu",null,N_("Se_ttings")},
 			{"Preferences",Gtk.Stock.PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
 			{"AdvancedMenu",null,N_("_Advanced")},
-			{"MacroPreferences",null,N_("_Macros..."),null,null,spawn_macro_preferences_cb},
 			{"PluginPreferences",null,N_("_Plugins..."),null,null,spawn_plugin_preferences_cb},
 			// View
 			{"ViewMenu",null,N_("_View")},
@@ -137,7 +136,6 @@ namespace XSIRC {
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
 		private PrefDialog preferences_dialog = null;
-		private MacroManager.PrefWindow macro_prefs_window;
 		private PluginManager.PrefWindow plugin_prefs_window;
 		private Gtk.VBox server_vbox;
 		private Gtk.HBox main_hbox;
@@ -578,10 +576,6 @@ namespace XSIRC {
 			Main.gui.create_prefs_dialog();
 		}
 		
-		public static void spawn_macro_preferences_cb(Gtk.Action action) {
-			Main.gui.create_macro_prefs_window();
-		}
-		
 		public static void spawn_plugin_preferences_cb(Gtk.Action action) {
 			Main.gui.create_plugin_prefs_window();
 		}
@@ -864,14 +858,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		
 		public void destroy_prefs_dialog() {
 			preferences_dialog = null;
-		}
-		
-		public void create_macro_prefs_window() {
-			macro_prefs_window = new MacroManager.PrefWindow();
-		}
-		
-		public void destroy_macro_prefs_window() {
-			macro_prefs_window = null;
 		}
 		
 		public void create_plugin_prefs_window() {
