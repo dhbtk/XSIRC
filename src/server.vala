@@ -34,6 +34,7 @@ namespace XSIRC {
 		private DataOutputStream output_stream;
 		public bool connecting = false;
 		
+		
 		public class Channel : Object {
 			public Topic topic;
 			public ArrayList<string> raw_users = new ArrayList<string>();
