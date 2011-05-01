@@ -80,8 +80,7 @@ def build(bld):
 	# Icon
 	bld.install_files(bld.env['PREFIX']+'/share/pixmaps','xsirc.png')
 	# Preferences ui
-	bld.install_files(bld.env['PREFIX']+'/share/xsirc','src/prefwindow.ui')
-	bld.install_files(bld.env['PREFIX']+'/share/xsirc','src/pluginprefwindow.ui')
 	bld.install_files(bld.env['PREFIX']+'/share/xsirc','ui/preferences.ui')
+	bld.install_files(bld.env['PREFIX']+'/share/xsirc','ui/networks.ui')
 	bld.new_task_gen(features='subst',source='xsirc.desktop.in',target='xsirc.desktop')
 	bld.install_files(bld.env['PREFIX']+'/share/applications','xsirc.desktop')
