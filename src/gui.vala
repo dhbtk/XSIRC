@@ -1,7 +1,7 @@
 /*
  * gui.vala
  *
- * Copyright (c) 2010 Eduardo Niehues
+ * Copyright (c) 2011 Eduardo Niehues
  * Distributed under the New BSD License; see ../LICENSE for details.
  */
 using Gee;
@@ -20,6 +20,7 @@ namespace XSIRC {
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
 			{"ClientMenu",null,N_("_Client")},
+			{"Networks",Gtk.Stock.NETWORK,N_("Networks list"),"<control>N",null,open_network_list_cb},
 			{"Connect",Gtk.Stock.CONNECT,N_("_Connect..."),"<control><shift>O",N_("Connect to a server."),connect_server_cb},
 			{"DisconnectAll",Gtk.Stock.DISCONNECT,N_("_Disconnect all"),null,null,disconnect_all_cb},
 			{"ReconnectAll",Gtk.Stock.NETWORK,N_("_Reconnect all"),null,null,reconnect_all_cb},
@@ -32,12 +33,10 @@ namespace XSIRC {
 			{"Italic",Gtk.Stock.ITALIC,null,"<control>I",null,italic_cb},
 			{"Underlined",Gtk.Stock.UNDERLINE,null,"<control>U",null,underlined_cb},
 			{"Color",Gtk.Stock.COLOR_PICKER,"Color","<control>K",null,color_cb},
-			{"RemoveFormatting",null,"Remove formatting","<control>R",null,remove_cb},
+			{"RemoveFormatting",Gtk.Stock.CLEAR,"Remove formatting","<control>R",null,remove_cb},
 			// Settings
 			{"SettingsMenu",null,N_("Se_ttings")},
 			{"Preferences",Gtk.Stock.PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
-			{"AdvancedMenu",null,N_("_Advanced")},
-			{"PluginPreferences",null,N_("_Plugins..."),null,null,spawn_plugin_preferences_cb},
 			// View
 			{"ViewMenu",null,N_("_View")},
 			{"PrevServer",Gtk.Stock.GOTO_FIRST,N_("Previous server"),"<control><alt>comma",null,previous_server_cb},
@@ -45,7 +44,7 @@ namespace XSIRC {
 			{"PrevView",Gtk.Stock.GO_BACK,N_("Previous view"),"<control>comma",null,previous_view_cb},
 			{"NextView",Gtk.Stock.GO_FORWARD,N_("Next view"),"<control>period",null,next_view_cb},
 			{"CloseView",Gtk.Stock.CLOSE,N_("_Close view"),"<control>w",null,close_view_cb},
-			{"RejoinChannel",null,N_("Re_join channel"),null,null,rejoin_chan_cb},
+			{"RejoinChannel",Gtk.Stock.REFRESH,N_("Re_join channel"),null,null,rejoin_chan_cb},
 			{"OpenView",Gtk.Stock.OPEN,N_("_Open view..."),"<control>o",null,open_view_cb},
 			// These names never see the light of day, so there's no need to translate them
 			{"View1",null,"View 1","<alt>1",null,change_view_cb},
@@ -63,7 +62,7 @@ namespace XSIRC {
 			{"Disconnect",Gtk.Stock.DISCONNECT,N_("_Disconnect"),"<control><shift>d",null,disconnect_server_cb},
 			{"Reconnect",Gtk.Stock.CONNECT,N_("_Reconnect"),"<control><shift>r",null,reconnect_server_cb},
 			{"CloseServer",Gtk.Stock.CLOSE,N_("_Close"),"<control><shift>w",null,close_server_cb},
-			{"RejoinAll",null,N_("Re_join all"),null,null,rejoin_all_cb},
+			{"RejoinAll",Gtk.Stock.REFRESH,N_("Re_join all"),null,null,rejoin_all_cb},
 			{"GoAway",null,N_("_Mark as away"),"<control><shift>a",null,go_away_cb},
 			// Help
 			{"HelpMenu",null,N_("_Help")},
@@ -75,9 +74,12 @@ namespace XSIRC {
 <ui>
 	<menubar name="MainMenu">
 		<menu action="ClientMenu">
+			<menuitem action="Networks"/>
 			<menuitem action="Connect"/>
+			<separator/>
 			<menuitem action="DisconnectAll"/>
 			<menuitem action="ReconnectAll"/>
+			<separator/>
 			<menuitem action="OpenLastLink"/>
 			<menuitem action="OpenSLastLink"/>
 			<separator/>
@@ -121,10 +123,6 @@ namespace XSIRC {
 		</menu>
 		<menu action="SettingsMenu">
 			<menuitem action="Preferences"/>
-			<menu action="AdvancedMenu">
-				<menuitem action="MacroPreferences"/>
-				<menuitem action="PluginPreferences"/>
-			</menu>
 		</menu>
 		<menu action="HelpMenu">
 			<menuitem action="HelpContents"/>
@@ -136,7 +134,6 @@ namespace XSIRC {
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
 		private PrefDialog preferences_dialog = null;
-		private PluginManager.PrefWindow plugin_prefs_window;
 		private Gtk.VBox server_vbox;
 		private Gtk.HBox main_hbox;
 		private Gtk.ScrolledWindow user_list_container;
@@ -531,6 +528,10 @@ namespace XSIRC {
 		
 		// Menu callbacks
 		
+		public static void open_network_list_cb(Gtk.Action action) {
+			
+		}
+		
 		public static void connect_server_cb(Gtk.Action action) {
 			Main.gui.open_connect_dialog();
 		}
@@ -574,10 +575,6 @@ namespace XSIRC {
 		
 		public static void spawn_preferences_cb(Gtk.Action action) {
 			Main.gui.create_prefs_dialog();
-		}
-		
-		public static void spawn_plugin_preferences_cb(Gtk.Action action) {
-			Main.gui.create_plugin_prefs_window();
 		}
 		
 		public static void previous_server_cb(Gtk.Action action) {
@@ -860,17 +857,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			preferences_dialog = null;
 		}
 		
-		public void create_plugin_prefs_window() {
-			if(plugin_prefs_window == null) {
-				plugin_prefs_window = new PluginManager.PrefWindow();
-			} else {
-				plugin_prefs_window.window.present();
-			}
-		}
-		
-		public void destroy_plugin_prefs_window() {
-			plugin_prefs_window = null;
-		}
 		// Misc
 		
 		public void open_link(string link) {

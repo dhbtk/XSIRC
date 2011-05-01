@@ -14,6 +14,15 @@ namespace XSIRC {
 		private Gtk.ListStore macro_model;
 		private Gtk.TreeViewColumn regex_col;
 		private Gtk.TreeViewColumn result_col;
+		
+		private Gtk.Notebook notebook;
+		private LinkedList<PluginView> plugin_views = new LinkedList<PluginView>();
+		
+		private class PluginView {
+			public Gtk.Label label;
+			public string name;
+			public Gtk.Widget widget;
+		}
 		private enum MacroColumns {
 			REGEX,
 			RESULT,
@@ -28,6 +37,7 @@ namespace XSIRC {
 				Posix.exit(Posix.EXIT_FAILURE);
 			}
 			dialog = builder.get_object("dialog1") as Gtk.Dialog;
+			notebook = builder.get_object("notebook1") as Gtk.Notebook;
 			
 			// Saving some major typing
 			
@@ -94,7 +104,23 @@ namespace XSIRC {
 			load_macros();
 			
 			// Plugins; TODO
+			
+			foreach(Plugin plugin in Main.plugin_manager.plugins) {
+				if(plugin.prefs_widget != null) {
+					PluginView view = new PluginView();
+					view.name = plugin.name;
+					view.label = new Gtk.Label(plugin.name);
+					view.widget = plugin.prefs_widget;
+					notebook.append_page(view.widget,view.label);
+					notebook.show_all();
+					plugin_views.add(view);
+				}
+			}
+			
 			dialog.response.connect(() => {
+				foreach(PluginView view in plugin_views) {
+					notebook.remove_page(notebook.page_num(view.widget));
+				}
 				save_settings();
 				save_macros();
 				dialog.destroy();
