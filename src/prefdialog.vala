@@ -103,7 +103,7 @@ namespace XSIRC {
 			
 			load_macros();
 			
-			// Plugins; TODO
+			// Plugins
 			
 			foreach(Plugin plugin in Main.plugin_manager.plugins) {
 				if(plugin.prefs_widget != null) {
@@ -150,7 +150,6 @@ namespace XSIRC {
 			} else {
 				Main.config.string["userlist_pos"] = "right";
 			}
-			// TODO: apply these settings
 			
 			// Booleans
 			string[] bools = {"logging_enabled","show_user_list","show_topic_bar",

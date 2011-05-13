@@ -244,7 +244,7 @@ namespace XSIRC {
 				connected = false;
 				sock_error = false;
 				Main.gui.update_gui(this);
-				return true;
+				return false;
 			}
 			if(!s.validate()) {
 				try {
