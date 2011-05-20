@@ -134,6 +134,7 @@ namespace XSIRC {
 		//private unowned Thread server_threads;
 		public Mutex gui_mutex = new Mutex();
 		private PrefDialog preferences_dialog = null;
+		private NetworkList network_dialog = null;
 		private Gtk.VBox server_vbox;
 		private Gtk.HBox main_hbox;
 		private Gtk.ScrolledWindow user_list_container;
@@ -529,7 +530,7 @@ namespace XSIRC {
 		// Menu callbacks
 		
 		public static void open_network_list_cb(Gtk.Action action) {
-			
+			Main.gui.create_network_dialog();
 		}
 		
 		public static void connect_server_cb(Gtk.Action action) {
@@ -855,6 +856,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		
 		public void destroy_prefs_dialog() {
 			preferences_dialog = null;
+		}
+		
+		public void create_network_dialog() {
+			if(network_dialog != null) {
+				network_dialog.dialog.present();
+			} else {
+				network_dialog = new NetworkList();
+			}
+		}
+		
+		public void destroy_network_dialog() {
+			network_dialog = null;
 		}
 		
 		// Misc
