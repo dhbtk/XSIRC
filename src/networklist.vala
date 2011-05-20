@@ -21,6 +21,8 @@ namespace XSIRC {
 		private Gtk.ListStore network_model = new Gtk.ListStore(1,typeof(string));
 		private Gtk.ListStore command_model = new Gtk.ListStore(1,typeof(string));
 		private Gtk.ListStore server_model  = new Gtk.ListStore(1,typeof(string));
+		
+		private Gtk.CheckButton auto_connect;
 
 		public NetworkList() {
 			builder = new Gtk.Builder();
@@ -31,33 +33,235 @@ namespace XSIRC {
 			}
 			
 			dialog = builder.get_object("dialog1") as Gtk.Dialog;
-
-			network_tree = builder.get_object("network_tree") as Gtk.TreeView;
+			
+			// Network
+			
+			network_tree = builder.get_object("network_list") as Gtk.TreeView;
 			network_tree.model = network_model;
 
 			Gtk.CellRendererText network_renderer = new Gtk.CellRendererText();
 			network_renderer.editable = true;
 			network_renderer.edited.connect(network_edited);
-			network_col = new Gtk.TreeViewColumn.with_attributes(_("Networks"),network_renderer,"text",1,null);
+			network_col = new Gtk.TreeViewColumn.with_attributes(_("Networks"),network_renderer,"text",0,null);
 			network_tree.append_column(network_col);
-
-			command_tree = builder.get_object("command_tree") as Gtk.TreeView;
+			Gtk.TreeSelection network_sel = network_tree.get_selection();
+			network_sel.changed.connect(network_changed);
+			
+			// Commands
+			
+			command_tree = builder.get_object("command_list") as Gtk.TreeView;
 			command_tree.model = command_model;
 
 			Gtk.CellRendererText command_renderer = new Gtk.CellRendererText();
 			command_renderer.editable = true;
 			command_renderer.edited.connect(command_edited);
-			command_col = new Gtk.TreeViewColumn.with_attributes(_("Commands"),command_renderer,"text",1,null);
+			command_col = new Gtk.TreeViewColumn.with_attributes(_("Commands"),command_renderer,"text",0,null);
 			command_tree.append_column(command_col);
-
-			server_tree = builder.get_object("server_tree") as Gtk.TreeView;
+			
+			// Servers
+			
+			server_tree = builder.get_object("server_list") as Gtk.TreeView;
 			server_tree.model = server_model;
 
 			Gtk.CellRendererText server_renderer = new Gtk.CellRendererText();
 			server_renderer.editable = true;
 			server_renderer.edited.connect(server_edited);
-			server_col = new Gtk.TreeViewColumn.with_attributes(_("Servers"),server_renderer,"text",1,null);
+			server_col = new Gtk.TreeViewColumn.with_attributes(_("Servers"),server_renderer,"text",0,null);
 			server_tree.append_column(server_col);
+			
+			// Network add/remove/connect
+			
+			((Gtk.Button)builder.get_object("add_network")).clicked.connect(() => {
+				ServerManager.Network new_network = new ServerManager.Network();
+				new_network.name = _("New Network");
+				new_network.auto_connect = false;
+				Main.server_manager.networks.add(new_network);
+				Gtk.TreeIter iter;
+				network_model.append(out iter);
+				network_model.set(iter,0,new_network.name);
+				Gtk.TreeSelection sel = network_tree.get_selection();
+				sel.unselect_all();
+				sel.select_iter(iter);
+				network_tree.set_cursor(network_model.get_path(iter),network_col,true);
+			});
+			
+			((Gtk.Button)builder.get_object("remove_network")).clicked.connect(() => {
+				ServerManager.Network network = null;
+				if((get_current_network() != null) && (network = Main.server_manager.find_network(get_current_network())) != null) {
+					Gtk.MessageDialog d = new Gtk.MessageDialog(dialog,
+					                                            Gtk.DialogFlags.MODAL,
+					                                            Gtk.MessageType.QUESTION,
+					                                            Gtk.ButtonsType.YES_NO,
+					                                            _("Are you sure? You cannot undo this."));
+					d.response.connect((id) => {
+						if(id == Gtk.ResponseType.YES) {
+							Main.server_manager.networks.remove(network);
+							Gtk.TreeSelection sel = network_tree.get_selection();
+							Gtk.TreeModel model;
+							Gtk.TreeIter iter;
+							if(sel.get_selected(out model,out iter)) {
+								network_model.remove(iter);
+							}
+						}
+						d.destroy();
+					});
+					d.show_all();
+				}
+			});
+			
+			((Gtk.Button)builder.get_object("connect")).clicked.connect(() => {
+				ServerManager.Network network = null;
+				if(get_current_network() != null && (network = Main.server_manager.find_network(get_current_network())) != null) {
+					// TODO: use the currently selected server
+					if(network.servers.size != 0) {
+						ServerManager.Network.ServerData server = network.servers[0];
+						Main.server_manager.open_server(server.address,server.port,server.ssl,(server.password ?? ""),network);
+					}
+				}
+			});
+			
+			((Gtk.Button)builder.get_object("add_server")).clicked.connect(() => {
+				ServerManager.Network network = null;
+				if(get_current_network() != null && (network = Main.server_manager.find_network(get_current_network())) != null) {
+					ServerManager.Network.ServerData server = new ServerManager.Network.ServerData();
+					server.address  = "irc.example.org";
+					server.port     = 6667;
+					server.ssl      = false;
+					server.password = null;
+					network.servers.add(server);
+					Gtk.TreeIter iter;
+					server_model.append(out iter);
+					server_model.set(iter,0,"irc://irc.example.org:6667",-1);
+					Gtk.TreeSelection sel = server_tree.get_selection();
+					sel.unselect_all();
+					sel.select_iter(iter);
+					server_tree.set_cursor(server_model.get_path(iter),server_col,true);
+				}
+			});
+			
+			((Gtk.Button)builder.get_object("remove_server")).clicked.connect(() => {
+				ServerManager.Network network = null;
+				if(get_current_network() != null && (network = Main.server_manager.find_network(get_current_network())) != null) {
+					Gtk.TreeModel model;
+					Gtk.TreeIter  iter;
+					string        server_address;
+					Gtk.TreeSelection sel = server_tree.get_selection();
+					if(sel.get_selected(out model,out iter)) {
+						model.get(iter,0,out server_address,-1);
+						ServerManager.Network.ServerData wanted_server = new ServerManager.Network.ServerData();
+						foreach(ServerManager.Network.ServerData server in network.servers) {
+							if(server.address == server_address.split(":")[1]) {
+								wanted_server = server;
+								break;
+							}
+						}
+						network.servers.remove(wanted_server);
+						server_model.remove(iter);
+					}
+				}
+			});
+			
+			((Gtk.Button)builder.get_object("add_command")).clicked.connect(() => {
+				ServerManager.Network network = null;
+				if(get_current_network() != null && (network = Main.server_manager.find_network(get_current_network())) != null) {
+					network.commands.add(" ");
+					Gtk.TreeIter iter;
+					command_model.append(out iter);
+					command_model.set(iter,0," ",-1);
+					Gtk.TreeSelection sel = command_tree.get_selection();
+					sel.unselect_all();
+					sel.select_iter(iter);
+					command_tree.set_cursor(command_model.get_path(iter),command_col,true);
+				}
+			});
+			
+			((Gtk.Button)builder.get_object("remove_command")).clicked.connect(() => {
+				ServerManager.Network network = null;
+				if(get_current_network() != null && (network = Main.server_manager.find_network(get_current_network())) != null) {
+					Gtk.TreeModel model;
+					Gtk.TreeIter  iter;
+					string        command;
+					Gtk.TreeSelection sel = command_tree.get_selection();
+					if(sel.get_selected(out model,out iter)) {
+						model.get(iter,0,out command,-1);
+						network.commands.remove_at(network.commands.index_of(command));
+						command_model.remove(iter);
+					}
+				}
+			});
+			
+			auto_connect = builder.get_object("network_autoconnect") as Gtk.CheckButton;
+			
+			auto_connect.toggled.connect(() => {
+				if(get_current_network() != null) {
+					Main.server_manager.find_network(get_current_network()).auto_connect = auto_connect.active;
+				}
+			});
+			
+			load_networks();
+			dialog.show_all();
+			
+			dialog.response.connect(() => {
+				dialog.destroy();
+				Main.gui.destroy_network_dialog();
+			});
+		}
+		
+		private string? get_current_network() {
+			Gtk.TreeModel model;
+			Gtk.TreeIter  iter;
+			string        network_name;
+			Gtk.TreeSelection sel = network_tree.get_selection();
+			if(sel.get_selected(out model,out iter)) {
+				model.get(iter,0,out network_name,-1);
+				return network_name;
+			} else {
+				return null;
+			}
+		}
+		
+		private void load_networks() {
+			network_model.clear();
+			Gtk.TreeIter iter;
+			foreach(ServerManager.Network network in Main.server_manager.networks) {
+				network_model.append(out iter);
+				network_model.set(iter,0,network.name,-1);
+			}
+		}
+		
+		private void network_changed() {
+			Gtk.TreeModel model;
+			Gtk.TreeIter iter;
+			string network_name;
+			Gtk.TreeSelection sel = network_tree.get_selection();
+			if(sel.get_selected(out model,out iter)) {
+				model.get(iter,0,out network_name,-1);
+				ServerManager.Network? network = Main.server_manager.find_network(network_name);
+				return_if_fail(network != null);
+				server_model.clear();
+				command_model.clear();
+				Gtk.TreeIter s_iter;
+				foreach(ServerManager.Network.ServerData server in network.servers) {
+					StringBuilder server_str = new StringBuilder();
+					(server.ssl ? server_str.append("ircs://") : server_str.append("irc://"));
+					server_str.append(server.address).append(":").append(server.port.to_string());
+					if(server.password != null) {
+						server_str.append(" ").append(server.password);
+					}
+					server_model.append(out s_iter);
+					server_model.set(s_iter,0,server_str.str,-1);
+				}
+				Gtk.TreeIter c_iter;
+				foreach(string command in network.commands) {
+					command_model.append(out c_iter);
+					command_model.set(c_iter,0,command,-1);
+				}
+				auto_connect.active = network.auto_connect;
+			} else {
+				auto_connect.active = false;
+				server_model.clear();
+				command_model.clear();
+			}
 		}
 	}
 }
