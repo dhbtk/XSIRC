@@ -203,6 +203,7 @@ namespace XSIRC {
 			
 			dialog.response.connect(() => {
 				dialog.destroy();
+				Main.server_manager.save_networks();
 				Main.gui.destroy_network_dialog();
 			});
 		}
@@ -261,6 +262,75 @@ namespace XSIRC {
 				auto_connect.active = false;
 				server_model.clear();
 				command_model.clear();
+			}
+		}
+		
+		private void network_edited(string path,string new_text) {
+			Gtk.TreeIter iter;
+			string old_net_name;
+			if(network_model.get_iter_from_string(out iter,path)) {
+				network_model.get(iter,0,out old_net_name,-1);
+				foreach(ServerManager.Network network in Main.server_manager.networks) {
+					if(network.name == new_text && new_text != old_net_name) {
+						return;
+					}
+				}
+				ServerManager.Network network = Main.server_manager.find_network(old_net_name);
+				network.name = new_text;
+				network_model.set(iter,0,new_text,-1);
+			}
+		}
+		
+		private void server_edited(string path,string new_text) {
+			if(/^ircs?:\/\/[a-zA-Z0-9\-_.]+:[0-9]+( .+)?$/.match(new_text)) {
+				string[] split = new_text.split(" ");
+				string raw_address = split[0];
+				string password;
+				if(split.length > 1) {
+					password = string.joinv(" ",split[1:split.length-1]);
+				} else {
+					password = null;
+				}
+				bool ssl = new_text.has_prefix("ircs://");
+				string address = raw_address.split(":")[1].substring(2);
+				int port = int.parse(raw_address.split(":")[2]);
+				
+				Gtk.TreeIter iter;
+				string old_server_address;
+				if(server_model.get_iter_from_string(out iter,path)) {
+					server_model.get(iter,0,out old_server_address,-1);
+					old_server_address = old_server_address.split(":")[1].substring(2);
+					ServerManager.Network network = Main.server_manager.find_network(get_current_network());
+					foreach(ServerManager.Network.ServerData server in network.servers) {
+						if(server.address == old_server_address) {
+							server.address  = address;
+							server.ssl      = ssl;
+							server.port     = port;
+							server.password = password;
+							break;
+						}
+					}
+					server_model.set(iter,0,new_text,-1);
+				}	
+			} else {
+				Gtk.MessageDialog d = new Gtk.MessageDialog(dialog,
+				                                            Gtk.DialogFlags.MODAL,
+				                                            Gtk.MessageType.ERROR,
+				                                            Gtk.ButtonsType.CLOSE,
+				                                            _("The string entered isn't a valid server URL."));
+				d.response.connect((id) => {d.destroy();});
+				d.show_all();
+			}
+		}
+		
+		private void command_edited(string path,string new_text) {
+			Gtk.TreeIter iter;
+			string old_cmd;
+			if(command_model.get_iter_from_string(out iter,path)) {
+				command_model.get(iter,0,out old_cmd,-1);
+				ServerManager.Network network = Main.server_manager.find_network(get_current_network());
+				network.commands[network.commands.index_of(old_cmd)] = new_text;
+				command_model.set(iter,0,new_text,-1);
 			}
 		}
 	}
