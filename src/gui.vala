@@ -7,7 +7,7 @@
 using Gee;
 namespace XSIRC {
 	public class GUI : Object {
-		public static const string link_regex = "([a-z]+://[a-zA-Z0-9\\-.]+(:[0-9]+)?(/[a-zA-Z0-9\\-_$.+\\[\\]!*\\(),;:@&=?/~#%]+){0,1})";
+		public static const string link_regex = "([a-z]+://[a-zA-Z0-9\\-.]+(:[0-9]+)?(/[a-zA-Z0-9\\-_$.+\\[\\]!*\\(),;:@&=?/~#%]+)?)";
 		// GUI proper
 		public Gtk.Window main_window {get; private set;}
 		public Gtk.TreeView user_list {get; private set;}
