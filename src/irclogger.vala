@@ -37,7 +37,7 @@ namespace XSIRC {
 				MIRCParser parser = new MIRCParser(str);
 				MIRCParser.AttrChar[] chars  = parser.parse();
 				foreach(MIRCParser.AttrChar c in chars) {
-					stream.put_byte(c.contents);
+					stream.put_int32((int32)c.contents);
 				}
 #if WINDOWS
 				stream.put_byte('\r');

@@ -13,7 +13,7 @@ namespace XSIRC {
 		public static const string UNDERLINE = "";
 		public static const string COLOR     = "";
 		public struct AttrChar {
-			public char    contents;
+			public unichar contents;
 			public bool    bold;
 			public bool    italic;
 			public bool    underlined;
@@ -21,7 +21,7 @@ namespace XSIRC {
 			public string? background;
 		}
 		private HashMap<int,string> mirc_colors = new HashMap<int,string>();
-		private char[] data;
+		private unichar[] data;
 		
 		public MIRCParser(string str) {
 			// I kinda miss Ruby
@@ -41,13 +41,11 @@ namespace XSIRC {
 			mirc_colors[13] = "pink";
 			mirc_colors[14] = "grey";
 			mirc_colors[15] = "dark grey";
-			string s = str;
-			try {
-				s = convert(str,(ssize_t)str.length,"ISO-8859-1","UTF-8");
-			} catch(ConvertError e) {
-				s = str;
+			unichar c;
+			int i = 0;
+			while(str.get_next_char(ref i,out c)) {
+				data += c;
 			}
-			data = (char[])s.data;
 		}
 		
 		public void insert(Gtk.TextView textview) {
@@ -74,16 +72,11 @@ namespace XSIRC {
 			}
 		}
 		
-		private void insert_with_tag_array(Gtk.TextView textview,char what,AttrChar c) {
+		private void insert_with_tag_array(Gtk.TextView textview,unichar what,AttrChar c) {
 			Gtk.TextIter start_iter;
 			textview.buffer.get_end_iter(out start_iter);
 			//stdout.printf("start_iter offset: %d\n",start_iter.get_offset());
-			string added = what.to_string();
-			try {
-				added = convert(what.to_string(),(ssize_t)1,"UTF-8","ISO-8859-1");
-			} catch(ConvertError e) {
-				added = what.to_string();
-			}
+			string added = (new StringBuilder().append_unichar(what)).str;
 			if(c.foreground == null && c.background == null && !c.bold && !c.italic &&
 			   !c.underlined) {
 				textview.buffer.insert(start_iter,added,(int)added.length);
@@ -116,7 +109,7 @@ namespace XSIRC {
 			string? background = null;
 			bool parsing_color = false;
 			bool got_foreground = false;
-			foreach(char c in data) {
+			foreach(unichar c in data) {
 				switch(c) {
 					case 2: // Bold
 						bold = !bold;

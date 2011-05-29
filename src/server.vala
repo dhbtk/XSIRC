@@ -183,35 +183,6 @@ namespace XSIRC {
 		}
 		
 		public void iterate() {
-			/*if(socket_ready() && connected && !sock_error) {
-				//add_to_view(_("<server>"),_("DEBUG -- socket ready");
-				string s = null;
-				try {
-					s = socket_stream.read_line(null,null);
-				} catch(Error e) {
-					connected = false;
-					sock_error = true;
-					Main.gui.update_gui(this);
-					add_to_view(_("<server>"),_("ERROR: error fetching line: %s").printf(e.message));
-				}
-				if(s == null) {
-					connected = false;
-					sock_error = false;
-					Main.gui.update_gui(this);
-					return;
-				}
-				if(!s.validate()) {
-					try {
-						s = convert(s,(ssize_t)s.length,"UTF-8","ISO-8859-1");
-						assert(s.validate()); // Kinda dangerous
-					} catch(ConvertError e) {
-						return;
-					}
-				}
-				s = s.strip().replace("\r","").replace("\n","");
-				//add_to_view(_("<server>"),_("DEBUG -- got: %s").printf(s));
-				handle_server_input(s);
-			}*/
 			if(connected && !sock_error) {
 				// Checking if almost timeouting
 				if(((int)time_t() - (int)last_recieved) >= 250) {
@@ -239,6 +210,7 @@ namespace XSIRC {
 				sock_error = true;
 				Main.gui.update_gui(this);
 				add_to_view(_("<server>"),_("ERROR: error fetching line: %s").printf(e.message));
+				return false;
 			}
 			if(s == null) {
 				connected = false;
