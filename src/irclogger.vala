@@ -36,13 +36,15 @@ namespace XSIRC {
 				DataOutputStream stream = new DataOutputStream(f.append_to(FileCreateFlags.NONE,null));
 				MIRCParser parser = new MIRCParser(str);
 				MIRCParser.AttrChar[] chars  = parser.parse();
+				StringBuilder s = new StringBuilder();
 				foreach(MIRCParser.AttrChar c in chars) {
-					stream.put_int32((int32)c.contents);
+					s.append_unichar(c.contents);
 				}
 #if WINDOWS
-				stream.put_byte('\r');
+				s.append_c('\r');
 #endif
-				stream.put_byte('\n');
+				s.append_c('\n');
+				stream.put_string(s.str);
 			} catch(Error e) {
 				Main.gui.system_view.add_text("Could not log: %s".printf(e.message));
 			}
