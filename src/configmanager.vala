@@ -7,17 +7,15 @@ using Gee;
 namespace XSIRC {
 	public class ConfigManager : Object {
 		// This is just some syntatic sugar, saves some typing
-		public class ConfigAcessor : Object {
+		public class ConfigAccessor : Object {
 			public class Bool : Object {
 				// No error checking, double-check the code
 				public new bool @get(string key) {
-					bool result = false;
 					try {
-						result = Main.config_file.get_boolean("XSIRC",key);
+						return Main.config_file.get_boolean("XSIRC",key);
 					} catch(Error e) {
-						
+						return false;
 					}
-					return result;
 				}
 				
 				public new void @set(string key,bool val) {
@@ -27,13 +25,11 @@ namespace XSIRC {
 			public class Int : Object {
 				// Once again, no error checking
 				public new int @get(string key) {
-					int result = 0;
 					try {
-						result = Main.config_file.get_integer("XSIRC",key);
+						return Main.config_file.get_integer("XSIRC",key);
 					} catch(Error e) {
-						
+						return 0;
 					}
-					return result;
 				}
 				
 				public new void @set(string key,int val) {
@@ -41,22 +37,13 @@ namespace XSIRC {
 				}
 			}
 			public class String : Object {
-				// Returns null if not found
-				public new string? @get(string key) {
+				// Returns an empty string if not found
+				public new string @get(string key) {
 					try {
-						if(!Main.config_file.has_key("XSIRC",key)) {
-							return null;
-						}
+						return Main.config_file.get_string("XSIRC",key);
 					} catch(Error e) {
-						return null;
+						return "";
 					}
-					string result;
-					try {
-						result = Main.config_file.get_string("XSIRC",key);
-					} catch(Error e) {
-						return null;
-					}
-					return result;
 				}
 				
 				public new void @set(string key,string val) {
@@ -66,7 +53,7 @@ namespace XSIRC {
 			public Bool @bool;
 			public Int integer;
 			public String @string;
-			public ConfigAcessor() {
+			public ConfigAccessor() {
 				@bool = new Bool();
 				integer = new Int();
 				@string = new String();
@@ -116,53 +103,25 @@ namespace XSIRC {
 			bool_defaults["tab_completion_enabled"] = true;
 			
 			foreach(string key in string_defaults.keys) {
-				bool load_default = true;
 				try {
-					if(config.has_key("XSIRC",key)) {
-						try {
-							config.get_string("XSIRC",key);
-							load_default = false;
-						} catch(Error e) {
-							load_default = true; // Wrong type, etc
-						}
-					}
-				} catch(Error e) {}
-				if(load_default) {
+					config.get_string("XSIRC",key);
+				} catch(Error e) {
 					config.set_string("XSIRC",key,string_defaults[key]);
 				}
 			}
 			foreach(string key in int_defaults.keys) {
-				bool load_default = true;
 				try {
-					if(config.has_key("XSIRC",key)) {
-						try {
-							config.get_integer("XSIRC",key);
-							load_default = false;
-						} catch(Error e) {
-							load_default = true;
-						}
-					}
-				} catch(Error e) {}
-				if(load_default) {
+					config.get_integer("XSIRC",key);
+				} catch(Error e) {
 					config.set_integer("XSIRC",key,int_defaults[key]);
 				}
 			}
 			foreach(string key in bool_defaults.keys) {
-				bool load_default = true;
 				try {
-					if(config.has_key("XSIRC",key)) {
-						try {
-							config.get_boolean("XSIRC",key);
-							load_default = false;
-						} catch(Error e) {
-							load_default = true;
-						}
-					}
-				} catch(Error e) {}
-				if(load_default) {
+					config.get_boolean("XSIRC",key);
+				} catch(Error e) {
 					config.set_boolean("XSIRC",key,bool_defaults[key]);
 				}
-				
 			}
 			try {
 				IRCLogger.logging_enabled = config.get_boolean("XSIRC","logging_enabled");
