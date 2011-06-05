@@ -40,12 +40,12 @@ namespace XSIRC {
 		Main.config_file = Main.config_manager.config;
 		Main.config = new ConfigManager.ConfigAcessor();
 		Main.server_manager = new ServerManager();
+		Main.macro_manager = new MacroManager();
+		Main.plugin_manager = new PluginManager();
 		Main.gui = new XSIRC.GUI();
 		Main.gui.startup();
-		Main.macro_manager = new MacroManager();
-		Main.server_manager.startup();
-		Main.plugin_manager = new PluginManager();
 		Main.plugin_manager.startup();
+		Main.server_manager.startup();
 
 		main_loop();
 		Main.server_manager.shutdown();
