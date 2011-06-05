@@ -48,7 +48,7 @@ namespace XSIRC {
 			try {
 				macros_file.load_from_file(Environment.get_user_config_dir()+"/xsirc/macros.conf",0);
 			} catch(KeyFileError e) {
-				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,_("Could not parse the macros file. Loading default macros."));
+				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,"%s",_("Could not parse the macros file. Loading default macros."));
 				d.response.connect((id) => {
 					d.destroy();
 				});
