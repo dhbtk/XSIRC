@@ -217,7 +217,7 @@ namespace XSIRC {
 					macro_model.set(iter,MacroColumns.REGEX,new_text,-1);
 				}
 			} catch(Error e) {
-				Gtk.MessageDialog d = new Gtk.MessageDialog(dialog,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,_("The string entered isn't a valid regular expression."));
+				Gtk.MessageDialog d = new Gtk.MessageDialog(dialog,Gtk.DialogFlags.MODAL,Gtk.MessageType.ERROR,Gtk.ButtonsType.CLOSE,"%s",_("The string entered isn't a valid regular expression."));
 				d.response.connect(() => {
 					d.destroy();
 				});

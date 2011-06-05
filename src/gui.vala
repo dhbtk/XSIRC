@@ -404,7 +404,7 @@ namespace XSIRC {
 				}
 			}
 			if(connected_networks > 0) {
-				Gtk.MessageDialog d = new Gtk.MessageDialog(main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.QUESTION,Gtk.ButtonsType.YES_NO,_("Really quit? You are connected to %d IRC %s.").printf(connected_networks,connected_networks > 1 ? _("networks") : _("network")));
+				Gtk.MessageDialog d = new Gtk.MessageDialog(main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.QUESTION,Gtk.ButtonsType.YES_NO,_("Really quit? You are connected to %d IRC %s."),connected_networks,(connected_networks > 1 ? _("networks") : _("network")));
 				d.response.connect((id) => {
 					if(id == Gtk.ResponseType.YES) {
 						q = false;
@@ -879,7 +879,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			try {
 				Process.spawn_command_line_async(Main.config.string["web_browser"].printf(link));
 			} catch(SpawnError e) {
-				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,_("Could not open web browser. Check your preferences."));
+				Gtk.MessageDialog d = new Gtk.MessageDialog(Main.gui.main_window,0,Gtk.MessageType.ERROR,Gtk.ButtonsType.OK,"%s",_("Could not open web browser. Check your preferences."));
 				d.response.connect(() => {d.destroy();});
 				d.show_all();
 			}

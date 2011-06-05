@@ -113,8 +113,8 @@ public class CTCPPlugin : Plugin {
 					Posix.timeval current_time = Posix.timeval();
 					current_time.get_time_of_day();
 					Posix.timeval gotten_time = Posix.timeval();
-					gotten_time.tv_sec = msg.split(".")[0].to_long();
-					gotten_time.tv_usec = msg.split(".")[1].to_long();
+					gotten_time.tv_sec = long.parse(msg.split(".")[0]);
+					gotten_time.tv_usec = long.parse(msg.split(".")[1]);
 					long sec_diff = current_time.tv_sec - gotten_time.tv_sec;
 					long frac_diff = current_time.tv_usec - gotten_time.tv_usec;
 					server.add_to_view(_("<server>"),_("Latency to %s: %d.%2d seconds.").printf(usernick,sec_diff,frac_diff));

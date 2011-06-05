@@ -100,9 +100,9 @@ public class HighlightsPlugin : XSIRC.Plugin {
 		tree.append_column(new Gtk.TreeViewColumn.with_attributes(_("Regex"),renderer,"text",0,null));
 		tree.model = model;
 		display_regexes();
-		Gtk.Button add_button = new Gtk.Button.from_stock(Gtk.STOCK_ADD);
+		Gtk.Button add_button = new Gtk.Button.from_stock(Gtk.Stock.ADD);
 		add_button.clicked.connect(add_regex);
-		Gtk.Button remove_button = new Gtk.Button.from_stock(Gtk.STOCK_REMOVE);
+		Gtk.Button remove_button = new Gtk.Button.from_stock(Gtk.Stock.REMOVE);
 		remove_button.clicked.connect(remove_regex);
 		Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow(null,null);
 		Gtk.HButtonBox bbox = new Gtk.HButtonBox();
