@@ -33,12 +33,16 @@ namespace XSIRC {
 		if(!FileUtils.test(Environment.get_user_config_dir()+"/xsirc",FileTest.EXISTS)) {
 			DirUtils.create(Environment.get_user_config_dir()+"/xsirc",0755);
 			DirUtils.create(Environment.get_user_config_dir()+"/xsirc/plugins",0755);
-			DirUtils.create(Environment.get_user_config_dir()+"/xsirc/irclogs",0755);
+			//DirUtils.create(Environment.get_user_config_dir()+"/xsirc/irclogs",0755);
 		}
 		// Starting up!
 		Main.config_manager = new ConfigManager();
 		Main.config_file = Main.config_manager.config;
 		Main.config = new ConfigManager.ConfigAcessor();
+		// Log folder
+		if(!FileUtils.test(Main.config.string["log_folder"],FileTest.EXISTS)) {
+			DirUtils.create(Main.config.string["log_folder"],0755);
+		}
 		Main.server_manager = new ServerManager();
 		Main.macro_manager = new MacroManager();
 		Main.plugin_manager = new PluginManager();

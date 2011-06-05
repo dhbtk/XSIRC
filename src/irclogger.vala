@@ -13,9 +13,9 @@ namespace XSIRC {
 				return;
 			}
 #if WINDOWS
-			StringBuilder path = new StringBuilder(Environment.get_user_config_dir()+"\\xsirc\\irclogs\\");
+			StringBuilder path = new StringBuilder(Main.config.string["log_folder"].replace("/","\\")+"\\");
 #else
-			StringBuilder path = new StringBuilder(Environment.get_user_config_dir()+"/xsirc/irclogs/");
+			StringBuilder path = new StringBuilder(Main.config.string["log_folder"]+"/");
 #endif
 			if(server.network != null) {
 				path.append(server.network.name);

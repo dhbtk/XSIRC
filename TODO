@@ -1,16 +1,10 @@
 GUI:
-	* Make the GUI more customizable: let the user hide or move the userlist to
-	  the right, expose some vboxes to plugins, let the user change the placement
-	  of the tabs.
 	* Improve internationalization: Figure out why the menus aren't being checked
 	  out by gettext, and localize the default messages for JOINs, PARTs, etc.
-	* Move the Networks dialog out of preferences, probably to the client menu.
-	  Also move the Macros and Plugin preferences out of Advanced and into the
-	  main Settings menu.
 	* Use the status bar: Show highlights on it, and connection/disconnection/
 	  connection error messages.
+	* Implement the auto-away timer.
 Server:
-	* Improve unicode handling
 	* Treat non-RFC compliant servers better: networks like GIMPnet send the AUTH
 	  notices as "NOTICE AUTH :*** msg" instead of ":server NOTICE AUTH :***",
 	  causing it to be misparsed by the client.
