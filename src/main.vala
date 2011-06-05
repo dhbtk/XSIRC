@@ -6,7 +6,7 @@ namespace XSIRC {
 	public static class Main {
 		public static GUI gui;
 		public static ConfigManager config_manager;
-		public static ConfigManager.ConfigAcessor config;
+		public static ConfigManager.ConfigAccessor config;
 		public static unowned KeyFile config_file;
 		public static ServerManager server_manager;
 		public static MacroManager macro_manager;
@@ -38,7 +38,7 @@ namespace XSIRC {
 		// Starting up!
 		Main.config_manager = new ConfigManager();
 		Main.config_file = Main.config_manager.config;
-		Main.config = new ConfigManager.ConfigAcessor();
+		Main.config = new ConfigManager.ConfigAccessor();
 		// Log folder
 		if(!FileUtils.test(Main.config.string["log_folder"],FileTest.EXISTS)) {
 			DirUtils.create(Main.config.string["log_folder"],0755);
