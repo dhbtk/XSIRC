@@ -116,55 +116,53 @@ namespace XSIRC {
 			bool_defaults["tab_completion_enabled"] = true;
 			
 			foreach(string key in string_defaults.keys) {
-				bool load_default = false;
+				bool load_default = true;
 				try {
 					if(config.has_key("XSIRC",key)) {
 						try {
 							config.get_string("XSIRC",key);
+							load_default = false;
 						} catch(Error e) {
 							load_default = true; // Wrong type, etc
 						}
-					} else {
-						load_default = true;
-					}
-					if(load_default) {
-						config.set_string("XSIRC",key,string_defaults[key]);
 					}
 				} catch(Error e) {}
+				if(load_default) {
+					config.set_string("XSIRC",key,string_defaults[key]);
+				}
 			}
 			foreach(string key in int_defaults.keys) {
-				bool load_default = false;
+				bool load_default = true;
 				try {
 					if(config.has_key("XSIRC",key)) {
 						try {
 							config.get_integer("XSIRC",key);
+							load_default = false;
 						} catch(Error e) {
 							load_default = true;
 						}
-					} else {
-						load_default = true;
-					}
-					if(load_default) {
-						config.set_integer("XSIRC",key,int_defaults[key]);
 					}
 				} catch(Error e) {}
+				if(load_default) {
+					config.set_integer("XSIRC",key,int_defaults[key]);
+				}
 			}
 			foreach(string key in bool_defaults.keys) {
-				bool load_default = false;
+				bool load_default = true;
 				try {
 					if(config.has_key("XSIRC",key)) {
 						try {
 							config.get_boolean("XSIRC",key);
+							load_default = false;
 						} catch(Error e) {
 							load_default = true;
 						}
-					} else {
-						load_default = true;
-					}
-					if(load_default) {
-						config.set_boolean("XSIRC",key,bool_defaults[key]);
 					}
 				} catch(Error e) {}
+				if(load_default) {
+					config.set_boolean("XSIRC",key,bool_defaults[key]);
+				}
+				
 			}
 			try {
 				IRCLogger.logging_enabled = config.get_boolean("XSIRC","logging_enabled");
