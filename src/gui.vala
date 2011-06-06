@@ -20,6 +20,7 @@ namespace XSIRC {
 		public IRCEntry text_entry {get; private set;}
 		public Gtk.Entry topic_view {get; private set;}
 		//public View system_view {get; private set;}
+		public bool has_quit {get; private set;}
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
 			{"ClientMenu",null,N_("_Client")},
@@ -31,7 +32,7 @@ namespace XSIRC {
 			{"OpenSLastLink",null,N_("O_pen sec-to-last link"),"<control>F2",null,open_sl_link_cb},
 			{"Exit",Gtk.Stock.QUIT,null,null,null,quit_client_cb},
 			// Edit
-			{"EditMenu",null,"_Edit"},
+			{"EditMenu",null,N_("_Edit")},
 			{"Bold",Gtk.Stock.BOLD,null,"<control>B",null,bold_cb},
 			{"Italic",Gtk.Stock.ITALIC,null,"<control>I",null,italic_cb},
 			{"Underlined",Gtk.Stock.UNDERLINE,null,"<control>U",null,underlined_cb},
@@ -197,6 +198,11 @@ namespace XSIRC {
 			
 			// Menus
 			Gtk.ActionGroup action_group = new Gtk.ActionGroup("MenuActions");
+
+			// This makes translations work, at the expense of a warning. I'm
+			// not sure what the proper way of doing this is.
+			action_group.set_translation_domain(null);
+
 			action_group.add_actions(menu_actions,null);
 			ui_manager = new Gtk.UIManager();
 			ui_manager.insert_action_group(action_group,0);
@@ -416,20 +422,20 @@ namespace XSIRC {
 				}
 			}
 			if(connected_networks > 0) {
+				// l10n: The %d is the number of networks, %s is either "network" (singular) or "networks" (plural)
 				Gtk.MessageDialog d = new Gtk.MessageDialog(main_window,Gtk.DialogFlags.MODAL,Gtk.MessageType.QUESTION,Gtk.ButtonsType.YES_NO,_("Really quit? You are connected to %d IRC %s."),connected_networks,(connected_networks > 1 ? _("networks") : _("network")));
 				d.response.connect((id) => {
-					if(id == Gtk.ResponseType.YES) {
-						q = false;
-					} else {
+					if(id != Gtk.ResponseType.YES) {
 						q = true;
 					}
 					d.destroy();
 				});
 				d.run();
-				return q;
-			} else {
-				return false;
 			}
+			if(!q) {
+				has_quit = true;
+			}
+			return q;
 		}
 		
 		public void update_gui(Server? server,owned GUI.View? curr_view = null,bool force = false) {

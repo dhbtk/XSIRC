@@ -93,7 +93,7 @@ namespace XSIRC {
 			LinkedList<Gtk.Entry> entries = new LinkedList<Gtk.Entry>();
 			prefs_widget = scroll;
 			foreach(MessageType message_type in message_types) {
-				Gtk.Label label = new Gtk.Label(message_type.name);
+				Gtk.Label label = new Gtk.Label(_(message_type.name));
 				Gtk.Entry entry = new Gtk.Entry();
 				box.pack_start(label,false,false,0);
 				entry.text = messages[message_type.id];
