@@ -484,6 +484,11 @@ namespace XSIRC {
 				(user_list.model as Gtk.ListStore).clear();
 				topic_view.text = "";
 				main_window.title = _("XSIRC - Idle");
+				// Hiding the view shortcuts
+				for(int i = 1; i <= 10; i++) {
+					Gtk.MenuItem item = ui_manager.get_widget("/MainMenu/ViewMenu/View%d".printf(i)) as Gtk.MenuItem;
+					item.visible = false;
+				}
 			}
 			//gui_mutex.unlock();
 		}
