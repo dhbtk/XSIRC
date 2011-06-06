@@ -72,7 +72,7 @@ namespace XSIRC {
 			
 			// Booleans
 			string[] bools = {"logging_enabled","show_user_list","show_topic_bar",
-			                  "show_status_bar","show_timestamps","tab_completion_enabled"};
+			                  "show_timestamps","tab_completion_enabled"};
 			foreach(string b in bools) {
 				((Gtk.CheckButton)builder.get_object(b)).active = Main.config.bool[b];
 			}
@@ -153,7 +153,7 @@ namespace XSIRC {
 			
 			// Booleans
 			string[] bools = {"logging_enabled","show_user_list","show_topic_bar",
-			                  "show_status_bar","show_timestamps","tab_completion_enabled"};
+			                  "show_timestamps","tab_completion_enabled"};
 			foreach(string b in bools) {
 				Main.config.bool[b] = ((Gtk.CheckButton)builder.get_object(b)).active;
 			}

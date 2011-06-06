@@ -98,7 +98,6 @@ namespace XSIRC {
 			bool_defaults["logging_enabled"] = true;
 			bool_defaults["show_user_list"] = true;
 			bool_defaults["show_topic_bar"] = true;
-			bool_defaults["show_status_bar"] = true;
 			bool_defaults["show_timestamps"] = true;
 			bool_defaults["tab_completion_enabled"] = true;
 			
