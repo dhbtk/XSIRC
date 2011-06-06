@@ -66,7 +66,7 @@ def configure(conf):
 	conf.define('LOCALE_DIR',conf.env['LOCALEDIR'])
 	conf.write_config_header('config.h')
 	conf.env['PACKAGE'] = 'xsirc'
-	conf.env.append_value('VALAFLAGS','-g')
+	conf.env.append_value('VALAFLAGS',['-g','--enable-experimental'])
 	conf.env.append_value('CCFLAGS','-g')
 	conf.env.append_value('CCFLAGS','-Ivapi/')
 	conf.env.append_value('LDFLAGS','-g')
