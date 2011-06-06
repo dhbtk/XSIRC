@@ -11,6 +11,9 @@ namespace XSIRC {
 		// GUI proper
 		public Gtk.Window main_window {get; private set;}
 		public Gtk.TreeView user_list {get; private set;}
+		public Gtk.Label user_count {get; private set;}
+		public Gtk.Label nickname {get; private set;}
+		private Gtk.VBox user_list_box;
 		public Gtk.Notebook servers_notebook {get; private set;}
 		public Gtk.Label nickname_label {get; private set;}
 		public IRCEntry text_entry {get; private set;}
@@ -222,13 +225,19 @@ namespace XSIRC {
 			main_vbox.pack_start(main_hbox,true,true,0);
 			
 			// User list
+			user_list_box = new Gtk.VBox(false,0);
+			user_count = new Gtk.Label(Markup.escape_text(_("No users")));
+			user_count.use_markup = true;
+			user_list_box.pack_start(user_count,false,false,5);
 			user_list = new Gtk.TreeView.with_model(new Gtk.ListStore(1,typeof(string)));
+			user_list.headers_visible = false;
 			user_list_container = new Gtk.ScrolledWindow(null,null);
 			user_list_container.add(user_list);
 			user_list_container.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 			user_list_container.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 			user_list_container.set_size_request(120,-1);
-			main_hbox.pack_start(user_list_container,false,true,0);
+			user_list_box.pack_start(user_list_container,true,true,0);
+			main_hbox.pack_start(user_list_box,false,true,0);
 			
 			Gtk.CellRendererText renderer = new Gtk.CellRendererText();
 			Gtk.TreeViewColumn display_column = new Gtk.TreeViewColumn.with_attributes(_("Users"),renderer,"text",0,null);
@@ -258,13 +267,12 @@ namespace XSIRC {
 			server_vbox.pack_start(servers_notebook,true,true,0);
 			
 			// Input entry
-			
+			Gtk.HBox entry_box = new Gtk.HBox(false,0);
+			nickname = new Gtk.Label(Main.config.string["nickname"]);
+			entry_box.pack_start(nickname,false,false,5);
 			text_entry = new IRCEntry();
-			//Gtk.ScrolledWindow te_scroll = new Gtk.ScrolledWindow(null,null);
-			//te_scroll.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
-			//te_scroll.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
-			//te_scroll.add(text_entry);
-			server_vbox.pack_start(/*te_scroll*/text_entry,false,false,0);
+			entry_box.pack_start(text_entry,true,true,0);
+			server_vbox.pack_start(entry_box,false,false,0);
 			
 			// Status bar
 			status_bar = new Gtk.Statusbar();
@@ -307,18 +315,18 @@ namespace XSIRC {
 		
 		public void apply_settings() {
 			if(!Main.config.bool["show_user_list"]) {
-				user_list_container.visible = false;
+				user_list_box.visible = false;
 			} else {
-				user_list_container.visible = true;
+				user_list_box.visible = true;
 			}
-			main_hbox.remove(user_list_container);
+			main_hbox.remove(user_list_box);
 			main_hbox.remove(server_vbox);
 			if(Main.config.string["userlist_pos"] == "left") {
-				main_hbox.pack_start(user_list_container,false,true,0);
+				main_hbox.pack_start(user_list_box,false,true,0);
 				main_hbox.pack_start(server_vbox,true,true,0);
 			} else {
 				main_hbox.pack_start(server_vbox,true,true,0);
-				main_hbox.pack_start(user_list_container,false,true,0);
+				main_hbox.pack_start(user_list_box,false,true,0);
 			}
 			
 			if(!Main.config.bool["show_topic_bar"]) {
@@ -442,6 +450,7 @@ namespace XSIRC {
 						list.set(iter,0,user,-1);
 					}
 				}
+				nickname.label = server.nick;
 				StringBuilder title_string = new StringBuilder("XSIRC - ");
 				title_string.append(server.nick).append("@");
 				if(server.network != null) {
@@ -462,8 +471,10 @@ namespace XSIRC {
 						}
 						title_string.append(" (").append(server.find_channel(curr_view.name).mode).append(")");
 						title_string.append(_(" (%d users)").printf(server.find_channel(curr_view.name).users.size));
+						user_count.label = Markup.escape_text(_("%d users").printf(server.find_channel(curr_view.name).users.size));
 						topic_view.text = server.find_channel(curr_view.name).topic.content;
 					} else {
+						user_count.label = Markup.escape_text(_("No users"));
 						topic_view.text = "";
 					}
 				}
@@ -483,6 +494,7 @@ namespace XSIRC {
 			} else {
 				(user_list.model as Gtk.ListStore).clear();
 				topic_view.text = "";
+				nickname.label = Main.config.string["nickname"];
 				main_window.title = _("XSIRC - Idle");
 				// Hiding the view shortcuts
 				for(int i = 1; i <= 10; i++) {
