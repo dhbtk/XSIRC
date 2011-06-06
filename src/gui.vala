@@ -225,7 +225,9 @@ namespace XSIRC {
 			user_list = new Gtk.TreeView.with_model(new Gtk.ListStore(1,typeof(string)));
 			user_list_container = new Gtk.ScrolledWindow(null,null);
 			user_list_container.add(user_list);
-			user_list_container.set_size_request(95,-1);
+			user_list_container.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
+			user_list_container.hscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
+			user_list_container.set_size_request(120,-1);
 			main_hbox.pack_start(user_list_container,false,true,0);
 			
 			Gtk.CellRendererText renderer = new Gtk.CellRendererText();
