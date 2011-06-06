@@ -975,6 +975,58 @@ msgstr ""
 msgid "Topic change"
 msgstr ""
 
+#: plugins/messages.vala:56
+msgid "$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL"
+msgstr ""
+
+#: plugins/messages.vala:57
+msgid "$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]"
+msgstr ""
+
+#: plugins/messages.vala:58
+msgid "$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]"
+msgstr ""
+
+#: plugins/messages.vala:59
+msgid "$USERNICK is now known as $NEWNICK."
+msgstr ""
+
+#: plugins/messages.vala:60
+msgid "<$USERRANK$USERNICK> $MESSAGE"
+msgstr ""
+
+#: plugins/messages.vala:61
+msgid "*  $USERNICK $MESSAGE"
+msgstr ""
+
+#: plugins/messages.vala:62
+msgid "Got CTCP $REQUEST from $USERNICK"
+msgstr ""
+
+#: plugins/messages.vala:63
+msgid "-$USERNICK- $MESSAGE"
+msgstr ""
+
+#: plugins/messages.vala:64
+msgid "$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]"
+msgstr ""
+
+#: plugins/messages.vala:65
+msgid "$USERNICK sets mode $MODES on $TARGETS"
+msgstr ""
+
+#: plugins/messages.vala:66
+msgid "$USERNICK sets $CHANNEL's mode: $MODES"
+msgstr ""
+
+#: plugins/messages.vala:67
+msgid "Changing mode: $MODES"
+msgstr ""
+
+#: plugins/messages.vala:68
+msgid "$USERNICK sets the topic to $TOPIC"
+msgstr ""
+
 #: plugins/messages.vala:78
 msgid "Messages"
 msgstr ""

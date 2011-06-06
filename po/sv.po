@@ -29,8 +29,8 @@ msgid ""
 "No servers! Connect to a server using Ctrl-Shift-O, or open the network list "
 "with Ctrl-N."
 msgstr ""
-"Inga servrar! Anslut till en server med Ctrl-Shift-O, eller öppna nätverkslistan "
-"med Ctrl-N."
+"Inga servrar! Anslut till en server med Ctrl-Shift-O, eller öppna "
+"nätverkslistan med Ctrl-N."
 
 #: src/gui.vala:26
 msgid "_Client"
@@ -54,11 +54,11 @@ msgstr "_Koppla från alla"
 
 #: src/gui.vala:30
 msgid "_Reconnect all"
-msgstr "_Återanslut till alla"
+msgstr "Å_teranslut till alla"
 
 #: src/gui.vala:31
 msgid "_Open last link"
-msgstr "_Öppna senaste länk"
+msgstr "Öppna _senaste länk"
 
 #: src/gui.vala:32
 msgid "O_pen sec-to-last link"
@@ -70,11 +70,11 @@ msgstr "_Redigera"
 
 #: src/gui.vala:42
 msgid "Se_ttings"
-msgstr "_Inställningar"
+msgstr "_Verktyg"
 
 #: src/gui.vala:45
 msgid "_View"
-msgstr "_Vy"
+msgstr "V_y"
 
 #: src/gui.vala:46
 msgid "Previous server"
@@ -98,7 +98,7 @@ msgstr "_Stäng vy"
 
 #: src/gui.vala:51
 msgid "Re_join channel"
-msgstr "Å_teranslut till kanal"
+msgstr "Återanslut till _kanal"
 
 #: src/gui.vala:52
 msgid "_Open view..."
@@ -122,7 +122,7 @@ msgstr "_Stäng"
 
 #: src/gui.vala:69
 msgid "Re_join all"
-msgstr "Å_teranslut till alla"
+msgstr "Återanslut till _alla"
 
 #: src/gui.vala:70
 msgid "_Mark as away"
@@ -134,7 +134,7 @@ msgstr "_Hjälp"
 
 #: src/gui.vala:73
 msgid "_Online help"
-msgstr "_Online-hjälp"
+msgstr "Online-_hjälp"
 
 #: src/gui.vala:235 src/gui.vala:485
 msgid "No users"
@@ -325,7 +325,7 @@ msgstr "[Anslutning] Startar anslutningsförsök..."
 #: src/server.vala:255
 #, c-format
 msgid "[Connection] Resolving name %s..."
-msgstr "[Anslutning] Slår upp namn %s..."
+msgstr "[Anslutning] Slår upp %s..."
 
 #: src/server.vala:264
 msgid "[Connection] Error: could not look up host name."
@@ -888,7 +888,7 @@ msgstr "Avisera vid a_lias"
 
 #: plugins/highlights.vala:44
 msgid "Highlight on n_otices"
-msgstr "Avisera vid n_otiser"
+msgstr "Avisera vid _notiser"
 
 #: plugins/highlights.vala:51
 msgid "Highlight on _private messages"
@@ -982,6 +982,58 @@ msgstr "Användarläge ändras"
 msgid "Topic change"
 msgstr "Ämne ändras"
 
+#: plugins/messages.vala:56
+msgid "$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL"
+msgstr "$USERNICK [$USERNAME@$USERMASK] har kommit in i $CHANNEL."
+
+#: plugins/messages.vala:57
+msgid "$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]"
+msgstr "$USERNICK [$USERNAME@$USERMASK] har lämnat $CHANNEL [$MESSAGE]."
+
+#: plugins/messages.vala:58
+msgid "$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]"
+msgstr "$USERNICK har kickat $KICKED från $CHANNEL [$MESSAGE]."
+
+#: plugins/messages.vala:59
+msgid "$USERNICK is now known as $NEWNICK."
+msgstr "$USERNICK går nu under namnet $NEWNICK."
+
+#: plugins/messages.vala:60
+msgid "<$USERRANK$USERNICK> $MESSAGE"
+msgstr "<$USERRANK$USERNICK> $MESSAGE"
+
+#: plugins/messages.vala:61
+msgid "*  $USERNICK $MESSAGE"
+msgstr "*  $USERNICK $MESSAGE"
+
+#: plugins/messages.vala:62
+msgid "Got CTCP $REQUEST from $USERNICK"
+msgstr "Tog emot CTCP $REQUEST från $USERNICK."
+
+#: plugins/messages.vala:63
+msgid "-$USERNICK- $MESSAGE"
+msgstr "-$USERNICK- $MESSAGE"
+
+#: plugins/messages.vala:64
+msgid "$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]"
+msgstr "$USERNICK [$USERNAME@$USERMASK] har kopplat från [$MESSAGE]."
+
+#: plugins/messages.vala:65
+msgid "$USERNICK sets mode $MODES on $TARGETS"
+msgstr "$USERNICK sätter läge $MODES på $TARGETS."
+
+#: plugins/messages.vala:66
+msgid "$USERNICK sets $CHANNEL's mode: $MODES"
+msgstr "$USERNICK ändrar läge på $CHANNEL: $MODES"
+
+#: plugins/messages.vala:67
+msgid "Changing mode: $MODES"
+msgstr "Ändrar läge: $MODES"
+
+#: plugins/messages.vala:68
+msgid "$USERNICK sets the topic to $TOPIC"
+msgstr "$USERNICK ändrar ämnet: $TOPIC"
+
 #: plugins/messages.vala:78
 msgid "Messages"
 msgstr "Meddelanden"
@@ -1032,7 +1084,9 @@ msgstr "Vanligt bortameddelande:"
 
 #: ui/preferences.ui:198
 msgid "Default quit message:"
-msgstr "Vanligt avslutnings-\nmeddelande:"
+msgstr ""
+"Vanligt avslutnings-\n"
+"meddelande:"
 
 #: ui/preferences.ui:299
 msgid "Log file name format:"
