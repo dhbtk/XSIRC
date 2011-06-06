@@ -14,11 +14,12 @@ namespace XSIRC {
 		public Gtk.Label user_count {get; private set;}
 		public Gtk.Label nickname {get; private set;}
 		private Gtk.VBox user_list_box;
+		private Gtk.Label no_servers_warning = new Gtk.Label(_("No servers! Connect to a server using Ctrl-Shift-O, or open the network list with Ctrl-N."));
 		public Gtk.Notebook servers_notebook {get; private set;}
 		public Gtk.Label nickname_label {get; private set;}
 		public IRCEntry text_entry {get; private set;}
 		public Gtk.Entry topic_view {get; private set;}
-		public View system_view {get; private set;}
+		//public View system_view {get; private set;}
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
 			{"ClientMenu",null,N_("_Client")},
@@ -264,6 +265,7 @@ namespace XSIRC {
 					break;
 			}
 			server_vbox.pack_start(servers_notebook,true,true,0);
+			server_vbox.pack_start(no_servers_warning,false,false,5);
 			
 			// Input entry
 			Gtk.HBox entry_box = new Gtk.HBox(false,0);
@@ -277,6 +279,14 @@ namespace XSIRC {
 			// Server-switching
 			servers_notebook.switch_page.connect((nb_page,page_num) => {
 				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)),null,true);
+			});
+			servers_notebook.page_added.connect(() => {
+				no_servers_warning.visible = false;
+			});
+			servers_notebook.page_removed.connect(() => {
+				if(servers_notebook.get_n_pages() == 0) {
+					no_servers_warning.visible = true;
+				}
 			});
 			
 			main_window.show_all();
@@ -305,9 +315,9 @@ namespace XSIRC {
 		}
 		
 		public void startup() {
-			system_view = new View("XSIRC");
+			/*system_view = new View("XSIRC");
 			servers_notebook.append_page(system_view.scrolled_window,system_view.label);
-			servers_notebook.show_all();
+			servers_notebook.show_all();*/
 		}
 		
 		public void apply_settings() {
