@@ -426,6 +426,7 @@ namespace XSIRC {
 							send("NAMES %s".printf(message));
 						}
 						find_channel(message).in_channel = true;
+						Main.gui.update_gui(this);
 						find_channel(message).update_user(usernick);
 						send("MODE "+message);
 						Main.plugin_manager.on_join(this,usernick,username,usermask,message);
@@ -445,6 +446,7 @@ namespace XSIRC {
 					case "KICK":
 						if(split[3].down() == nick.down()) {
 							find_channel(split[2]).in_channel = false;
+							Main.gui.update_gui(this);
 						} else {
 							find_channel(split[2]).remove_user(split[3]);
 						}
