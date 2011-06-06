@@ -2,12 +2,11 @@
 # Copyright (C) 2010 Eduardo Niehues
 # This file is distributed under the same license as the XSIRC package.
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: XSIRC 1.2\n"
 "Report-Msgid-Bugs-To: neo.niexs@gmail.com\n"
-"POT-Creation-Date: 2010-12-26 00:01-0200\n"
+"POT-Creation-Date: 2011-06-06 01:06+0200\n"
 "PO-Revision-Date: 2010-12-26 00:30-0200\n"
 "Last-Translator: Eduardo Niehues neo.niexs@gmail.com\n"
 "Language-Team: <LL@li.org>\n"
@@ -16,959 +15,922 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: plugins/highlights.vala:20
-msgid "Highlights"
-msgstr "Notificações"
-
-#: plugins/highlights.vala:21
-msgid "Adds support for configurable highlights."
-msgstr "Provê suporte a notificações personalizáveis"
-
-#: plugins/highlights.vala:28
-msgid "Highlight on _nickname"
-msgstr "Notificar no seu ap_elido"
-
-#: plugins/highlights.vala:35
-msgid "Highlight on n_otices"
-msgstr "Notificar em N_OTICEs"
-
-#: plugins/highlights.vala:42
-msgid "Highlight on _private messages"
-msgstr "Notificar em mensagens _privadas"
-
-#: plugins/highlights.vala:49
-msgid "Highlight on _all messages"
-msgstr "Notificar em tod_as as mensagens"
-
-#: plugins/highlights.vala:57
-msgid "Highlight on regexes:"
-msgstr "Notificar nas regexes:"
-
-#: plugins/highlights.vala:61 src/macromanager.vala:30
-msgid "Regex"
-msgstr "Regex"
-
-#: plugins/highlights.vala:191 plugins/highlights.vala:206
-#: plugins/highlights.vala:221 src/servermanager.vala:177
-#: src/servermanager.vala:185 src/server.vala:72 src/server.vala:113
-#: src/server.vala:143 src/server.vala:169 src/server.vala:171
-#: src/server.vala:180 src/server.vala:187 src/server.vala:196
-#: src/server.vala:202 src/server.vala:287 src/server.vala:393
-#: src/server.vala:409 src/server.vala:413 src/server.vala:416
-#: src/server.vala:423 src/server.vala:430 src/server.vala:439
-#: src/server.vala:489 src/server.vala:492 src/server.vala:495
-#: src/server.vala:498 src/server.vala:501 src/server.vala:504
-#: src/server.vala:507 src/server.vala:510 src/server.vala:513
-#: src/server.vala:516 src/server.vala:519 src/server.vala:522
-#: src/server.vala:525 src/server.vala:528 src/server.vala:531
-#: src/server.vala:534 src/server.vala:537 src/server.vala:540
-#: src/server.vala:543 src/server.vala:546 src/server.vala:555
-#: src/server.vala:558 src/server.vala:561 src/server.vala:564
-#: src/server.vala:567 src/server.vala:570 src/server.vala:573
-#: src/server.vala:576 src/server.vala:579 src/server.vala:582
-#: src/server.vala:585 src/server.vala:588 src/server.vala:591
-#: src/server.vala:594 src/server.vala:597 src/server.vala:600
-#: src/server.vala:603 src/server.vala:606 src/server.vala:609
-#: src/server.vala:612 src/server.vala:615 src/server.vala:618
-#: src/server.vala:621 src/server.vala:624 src/server.vala:628
-#: src/server.vala:630 src/server.vala:634 src/server.vala:637
-#: src/server.vala:640 src/server.vala:643 src/server.vala:646
-#: src/server.vala:649 src/server.vala:654 src/server.vala:657
-#: src/server.vala:660 src/server.vala:663 src/server.vala:667
-#: src/server.vala:671 src/server.vala:674 src/server.vala:677
-#: src/server.vala:680 src/server.vala:683 src/server.vala:686
-#: src/server.vala:689 src/server.vala:692 src/server.vala:695
-#: src/server.vala:698 src/server.vala:701 src/server.vala:704
-#: src/server.vala:727 src/server.vala:730 src/server.vala:733
-#: src/server.vala:736 src/server.vala:739 src/server.vala:769
-#: src/server.vala:772 src/server.vala:775 src/server.vala:778
-#: src/server.vala:781 src/server.vala:784 src/server.vala:787
-#: src/server.vala:790 src/server.vala:793 src/server.vala:796
-#: src/server.vala:799 src/server.vala:802 src/server.vala:805
-#: src/server.vala:808 src/server.vala:814 src/server.vala:817
-#: src/server.vala:820 src/server.vala:823 src/server.vala:826
-#: src/server.vala:831 src/server.vala:834 src/server.vala:837
-#: src/server.vala:840 src/server.vala:843 src/server.vala:846
-#: src/server.vala:935
-msgid "<server>"
-msgstr "<servidor>"
-
-#: plugins/messages.vala:74
-msgid "Messages"
-msgstr "Mensagens"
-
-#: plugins/messages.vala:75
-msgid "Customizable messages."
-msgstr "Mensagens personalizáveis."
-
-#: src/config.vala:20
-msgid "Leaving"
-msgstr "Saindo"
-
-#: src/config.vala:24
+#: src/configmanager.vala:83
 msgid "Away"
-msgstr "Indisponível"
+msgstr "Ausente"
 
-#: src/gui.vala:183
+#: src/configmanager.vala:84
+msgid "Leaving."
+msgstr "Saindo."
+
+#: src/gui.vala:17
+msgid ""
+"No servers! Connect to a server using Ctrl-Shift-O, or open the network list "
+"with Ctrl-N."
+msgstr ""
+"Nenhum servidor! Conecte-se a um servidor pressionando Ctrl-Shift-O, ou abra "
+"a lista de redes pressionando Ctrl-N."
+
+#: src/gui.vala:26
+msgid "_Client"
+msgstr "_Cliente"
+
+#: src/gui.vala:27
+msgid "Networks list"
+msgstr "Redes"
+
+#: src/gui.vala:28
+msgid "_Connect..."
+msgstr "_Conectar..."
+
+#: src/gui.vala:28
+msgid "Connect to a server."
+msgstr "Conectar a um servidor."
+
+#: src/gui.vala:29
+msgid "_Disconnect all"
+msgstr "_Desconectar todos"
+
+#: src/gui.vala:30
+msgid "_Reconnect all"
+msgstr "_Reconectar todos"
+
+#: src/gui.vala:31
+msgid "_Open last link"
+msgstr "_Abrir último link"
+
+#: src/gui.vala:32
+msgid "O_pen sec-to-last link"
+msgstr "A_brir penúltimo link"
+
+#: src/gui.vala:35
+msgid "_Edit"
+msgstr "_Editar"
+
+#: src/gui.vala:42
+msgid "Se_ttings"
+msgstr "_Opções"
+
+#: src/gui.vala:45
+msgid "_View"
+msgstr "_Ver"
+
+#: src/gui.vala:46
+msgid "Previous server"
+msgstr "Servidor anterior"
+
+#: src/gui.vala:47
+msgid "Next server"
+msgstr "Próximo servidor"
+
+#: src/gui.vala:48
+msgid "Previous view"
+msgstr "Guia anterior"
+
+#: src/gui.vala:49
+msgid "Next view"
+msgstr "Próxima guia"
+
+#: src/gui.vala:50
+msgid "_Close view"
+msgstr "_Fechar guia"
+
+#: src/gui.vala:51
+msgid "Re_join channel"
+msgstr "Re_entrar no canal"
+
+#: src/gui.vala:52
+msgid "_Open view..."
+msgstr "_Abrir guia..."
+
+#: src/gui.vala:65
+msgid "_Server"
+msgstr "_Servidor"
+
+#: src/gui.vala:66
+msgid "_Disconnect"
+msgstr "_Desconectar"
+
+#: src/gui.vala:67
+msgid "_Reconnect"
+msgstr "_Reconectar"
+
+#: src/gui.vala:68
+msgid "_Close"
+msgstr "_Fechar"
+
+#: src/gui.vala:69
+msgid "Re_join all"
+msgstr "Re_entrar em todos"
+
+#: src/gui.vala:70
+msgid "_Mark as away"
+msgstr "_Marcar como ausente"
+
+#: src/gui.vala:72
+msgid "_Help"
+msgstr "_Ajuda"
+
+#: src/gui.vala:73
+msgid "_Online help"
+msgstr "_Ajuda online"
+
+#: src/gui.vala:235 src/gui.vala:485
+msgid "No users"
+msgstr "Sem usuários"
+
+#: src/gui.vala:249
 msgid "Users"
 msgstr "Usuários"
 
 # The %d is the number of networks, %s is either "network" (singular) or "networks"
 # (plural)
-#: src/gui.vala:283
+#. l10n: The %d is the number of networks, %s is either "network" (singular) or "networks" (plural)
+#: src/gui.vala:426
 #, c-format
 msgid "Really quit? You are connected to %d IRC %s."
 msgstr "Realmente sair? Você está connectado a %d %s de IRC."
 
 # See above
-#: src/gui.vala:283
+#: src/gui.vala:426
 msgid "networks"
 msgstr "redes"
 
 # See above
-#: src/gui.vala:283
+#: src/gui.vala:426
 msgid "network"
 msgstr "rede"
 
-#: src/gui.vala:363
+#: src/gui.vala:470
 msgid " (connecting)"
 msgstr " (conectando)"
 
-#: src/gui.vala:365
+#: src/gui.vala:472
 msgid " (disconnected)"
 msgstr " (desconectado)"
 
-#: src/gui.vala:371
+#: src/gui.vala:478
 msgid " (out of channel)"
 msgstr " (fora do canal)"
 
-#: src/gui.vala:395
+#: src/gui.vala:481
+#, c-format
+msgid " (%d users)"
+msgstr " (%d usuários)"
+
+#: src/gui.vala:482
+#, c-format
+msgid "%d users"
+msgstr "%d usuários"
+
+#: src/gui.vala:506
 msgid "XSIRC - Idle"
 msgstr "XSIRC - Parado"
 
-#: src/gui.vala:558
+#: src/gui.vala:687
 msgid "Open view"
 msgstr "Abrir guia"
 
-#: src/gui.vala:567
+#: src/gui.vala:696
 msgid "View name:"
 msgstr "Nome da guia:"
 
-#: src/gui.vala:659 src/gui.vala:694 src/gui.vala:708 src/gui.vala:761
-msgid "Could not open web browser. Check your preferences."
-msgstr "Não foi possível abrir o navegador. Cheque suas preferências."
+#: src/gui.vala:830
+msgid "Copyright (c) 2010-11 Eduardo Niehues. All rights reserved."
+msgstr "Copyright (c) 2010-11 Eduardo Niehues. Todos os direitos reservados."
 
-#: src/gui.vala:718
-msgid "Copyright (c) 2010 Eduardo Niehues. All rights reserved."
-msgstr "Copyright (c) 2010 Eduardo Niehues. Todos os direitos reservados."
-
-#: src/gui.vala:749
+#: src/gui.vala:861
 msgid "GTK+ IRC Client"
 msgstr "Cliente IRC baseado em GTK+"
 
-#: src/gui.vala:769
+#: src/gui.vala:875
 msgid "Connect to server"
 msgstr "Conectar a um servidor"
 
-#: src/gui.vala:771
+#: src/gui.vala:877
 msgid "Server URL:"
 msgstr "URL do servidor:"
 
-#: src/macromanager.vala:22
-msgid "Macros"
-msgstr "Macros"
+#: src/gui.vala:945
+msgid "Could not open web browser. Check your preferences."
+msgstr "Não foi possível abrir o navegador. Cheque suas preferências."
 
-#: src/macromanager.vala:35
-msgid "Result"
-msgstr "Resultado"
-
-#: src/macromanager.vala:91
-msgid "The regular expression entered is not unique."
-msgstr "A expressão regular inserida não é única."
-
-#: src/macromanager.vala:112
-msgid "The string entered isn't a valid regular expression."
-msgstr "A linha inserida não é uma expressão regular válida."
-
-#: src/macromanager.vala:184
+#: src/macromanager.vala:51
 msgid "Could not parse the macros file. Loading default macros."
 msgstr "Não foi possível ler o arquivo de macros. Carregando padrões."
 
-#: src/pluginmanager.vala:21
-msgid "No settings."
-msgstr "Sem configurações."
-
-#: src/pluginmanager.vala:43
-msgid "Plugins"
-msgstr "Plugins"
-
-#: src/pluginmanager.vala:86
-msgid "Author: "
-msgstr "Autor: "
-
-#: src/pluginmanager.vala:87
-msgid "Version: "
-msgstr "Versão: "
-
-#: src/prefwindow.vala:54
+#: src/networklist.vala:45
 msgid "Networks"
 msgstr "Redes"
 
-#: src/prefwindow.vala:64
-msgid "Servers"
-msgstr "Servidores"
-
-#: src/prefwindow.vala:71
+#: src/networklist.vala:58
 msgid "Commands"
 msgstr "Comandos"
 
-#: src/prefwindow.vala:78
+#: src/networklist.vala:69
+msgid "Servers"
+msgstr "Servidores"
+
+#: src/networklist.vala:76
 msgid "New Network"
 msgstr "Nova Rede"
 
-#: src/prefwindow.vala:90
+#: src/networklist.vala:96
 msgid "Are you sure? You cannot undo this."
 msgstr "Você tem certeza? Você não pode desfazer isso."
 
-#: src/prefwindow.vala:301
+#: src/networklist.vala:322
 msgid "The string entered isn't a valid server URL."
 msgstr "A linha inserida não é uma URL válida para um servidor."
 
-#: src/servermanager.vala:177
+#: src/prefdialog.vala:92 plugins/highlights.vala:100
+msgid "Regex"
+msgstr "Regex"
+
+#: src/prefdialog.vala:98
+msgid "Result"
+msgstr "Resultado"
+
+#: src/prefdialog.vala:220
+msgid "The string entered isn't a valid regular expression."
+msgstr "A linha inserida não é uma expressão regular válida."
+
+#: src/servermanager.vala:179 src/servermanager.vala:187 src/server.vala:165
+#: src/server.vala:196 src/server.vala:212 src/server.vala:253
+#: src/server.vala:255 src/server.vala:264 src/server.vala:271
+#: src/server.vala:280 src/server.vala:286 src/server.vala:380
+#: src/server.vala:476 src/server.vala:488 src/server.vala:492
+#: src/server.vala:495 src/server.vala:502 src/server.vala:509
+#: src/server.vala:557 src/server.vala:560 src/server.vala:563
+#: src/server.vala:566 src/server.vala:569 src/server.vala:572
+#: src/server.vala:575 src/server.vala:578 src/server.vala:581
+#: src/server.vala:584 src/server.vala:587 src/server.vala:590
+#: src/server.vala:593 src/server.vala:596 src/server.vala:599
+#: src/server.vala:602 src/server.vala:605 src/server.vala:608
+#: src/server.vala:611 src/server.vala:614 src/server.vala:632
+#: src/server.vala:635 src/server.vala:638 src/server.vala:641
+#: src/server.vala:644 src/server.vala:647 src/server.vala:650
+#: src/server.vala:653 src/server.vala:656 src/server.vala:659
+#: src/server.vala:662 src/server.vala:665 src/server.vala:668
+#: src/server.vala:671 src/server.vala:674 src/server.vala:677
+#: src/server.vala:680 src/server.vala:683 src/server.vala:686
+#: src/server.vala:689 src/server.vala:692 src/server.vala:695
+#: src/server.vala:698 src/server.vala:701 src/server.vala:705
+#: src/server.vala:707 src/server.vala:711 src/server.vala:714
+#: src/server.vala:717 src/server.vala:720 src/server.vala:723
+#: src/server.vala:726 src/server.vala:731 src/server.vala:734
+#: src/server.vala:737 src/server.vala:740 src/server.vala:744
+#: src/server.vala:748 src/server.vala:751 src/server.vala:754
+#: src/server.vala:757 src/server.vala:760 src/server.vala:763
+#: src/server.vala:766 src/server.vala:769 src/server.vala:772
+#: src/server.vala:775 src/server.vala:778 src/server.vala:781
+#: src/server.vala:805 src/server.vala:808 src/server.vala:811
+#: src/server.vala:814 src/server.vala:817 src/server.vala:847
+#: src/server.vala:850 src/server.vala:853 src/server.vala:856
+#: src/server.vala:859 src/server.vala:862 src/server.vala:865
+#: src/server.vala:868 src/server.vala:871 src/server.vala:874
+#: src/server.vala:877 src/server.vala:880 src/server.vala:883
+#: src/server.vala:886 src/server.vala:892 src/server.vala:895
+#: src/server.vala:898 src/server.vala:901 src/server.vala:904
+#: src/server.vala:909 src/server.vala:912 src/server.vala:915
+#: src/server.vala:918 src/server.vala:921 src/server.vala:924
+#: src/server.vala:1016 plugins/ctcp.vala:120 plugins/ctcp.vala:123
+#: plugins/highlights.vala:260 plugins/highlights.vala:277
+#: plugins/highlights.vala:294 plugins/messages.vala:263
+#: plugins/messages.vala:299 plugins/messages.vala:369
+msgid "<server>"
+msgstr "<servidor>"
+
+#: src/servermanager.vala:179
 #, c-format
 msgid "[Connection] Switching to server %s"
 msgstr "[Conexão] Trocando para o servidor %s"
 
-#: src/servermanager.vala:185
+#: src/servermanager.vala:187
 msgid "[Error] No more servers to connect to."
 msgstr "[Erro] Sem servidores adicionais para conectar-se."
 
-#: src/server.vala:113
+#: src/server.vala:196
+msgid "Ping timeout. Reconnecting..."
+msgstr "Tempo esgotado de resposta. Reconectando..."
+
+#: src/server.vala:212
 #, c-format
 msgid "ERROR: error fetching line: %s"
 msgstr "[Erro] Erro pegando linha: %s"
 
-#: src/server.vala:143
-msgid "Ping timeout. Reconnecting..."
-msgstr "Tempo esgotado de ping. Reconectando..."
-
-#: src/server.vala:169
+#: src/server.vala:253
 msgid "[Connection] Starting connection attempt..."
 msgstr "[Conexão] Começando tentativa de conexão..."
 
-#: src/server.vala:171
+#: src/server.vala:255
 #, c-format
 msgid "[Connection] Resolving name %s..."
 msgstr "[Conexão] Resolvendo nome %s..."
 
-#: src/server.vala:180
+#: src/server.vala:264
 msgid "[Connection] Error: could not look up host name."
 msgstr "[Conexão] Erro: não foi possível resolver o nome do servidor."
 
-#: src/server.vala:187
+#: src/server.vala:271
 #, c-format
 msgid "[Connection] Resolved %s to %s."
 msgstr "[Conexão] %s resolvido para %s."
 
-#: src/server.vala:196
+#: src/server.vala:280
 #, c-format
 msgid "[Connection] Error: could not connect -- %s"
 msgstr "[Conexão] Erro: não foi possível conectar -- %s"
 
-#: src/server.vala:202
+#: src/server.vala:286
 msgid "[Connection] Connected! Sending USER, NICK and PASS."
 msgstr "[Conexão] Conectado! Enviando USER, NICK e PASS."
 
-#: src/server.vala:287
+#: src/server.vala:380
 #, c-format
 msgid "Error sending line: %s"
 msgstr "Erro ao enviar linha: %s"
 
-#: src/server.vala:393
+#: src/server.vala:476
 #, c-format
 msgid "%s has invited you to %s."
 msgstr "%s lhe convidou para %s."
 
-#: src/server.vala:409
+#: src/server.vala:488
 msgid "[Server info] Welcome to the Internet Relay Network "
 msgstr "[Servidor] Bem-vindo a Internet Relay Network "
 
-#: src/server.vala:413
+#: src/server.vala:492
 msgid "[Server info] "
 msgstr "[Servidor] "
 
-#: src/server.vala:416
+#: src/server.vala:495
 #, c-format
 msgid ""
 "[Server info] Your server is %s running %s. Available user modes: %s. "
 "Available channel modes: %s"
-msgstr "[Servidor] Seu servidor é %s rodando %s. Modos de usuário disponíveis: %s. Modos de canal disponíveis: %s."
+msgstr ""
+"[Servidor] Seu servidor é %s rodando %s. Modos de usuário disponíveis: %s. "
+"Modos de canal disponíveis: %s."
 
-#: src/server.vala:423
+#: src/server.vala:502
 #, c-format
 msgid "[Server info] %s are supported by this server"
 msgstr "[Servidor] %s são suportados pelo servidor"
 
-#: src/server.vala:430
+#: src/server.vala:509
 #, c-format
 msgid "[Auth] %s"
 msgstr "[Auth] %s"
 
-#: src/server.vala:439
-#, c-format
-msgid "UNHANDLED CTCP REPLY -- PREFIX: %s; SENDER: %s; MESSAGE: %s"
-msgstr "RESPOSTA CTCP NÃO ENCAMINHADA -- PREFIXO: %s; REMETENTE: %s; MENSAGEM: %s"
-
-#: src/server.vala:479
+#: src/server.vala:547
 #, c-format
 msgid "Topic set by %s on %s"
 msgstr "Tópico enviado por %s em %s"
 
-#: src/server.vala:489
+#: src/server.vala:557
 #, c-format
 msgid "[Error:401] No such nickname/channel: %s"
 msgstr "[Erro:401] O usuário/canal %s não existe."
 
-#: src/server.vala:492
+#: src/server.vala:560
 #, c-format
 msgid "[Error:402] No such server: %s"
 msgstr "[Erro:402] O servidor %s não existe."
 
-#: src/server.vala:495
+#: src/server.vala:563
 #, c-format
 msgid "[Error:403] No such channel: %s"
 msgstr "[Erro:403] O canal %s não existe."
 
-#: src/server.vala:498
+#: src/server.vala:566
 #, c-format
 msgid "[Error:404] Cannot send to channel: %s"
 msgstr "[Erro:404] Não foi possível enviar para o canal %s."
 
-#: src/server.vala:501
+#: src/server.vala:569
 #, c-format
 msgid "[Error:405] Cannot join %s: joined too many channels."
 msgstr "[Erro:405] Não pôde entrar em %s: em canais demais."
 
-#: src/server.vala:504
+#: src/server.vala:572
 #, c-format
 msgid "[Error:406] There was no such nickname: %s"
 msgstr "[Erro:406] O apelido %s não existiu."
 
-#: src/server.vala:507
+#: src/server.vala:575
 msgid "[Error:407] Too many targets for notice/message."
 msgstr "[Erro:407] Alvos demais para NOTICE/PRIVMSG."
 
-#: src/server.vala:510
+#: src/server.vala:578
 #, c-format
 msgid "[Error:408] No such service: %s"
 msgstr "[Erro:408] O serviço %s não existe."
 
-#: src/server.vala:513
+#: src/server.vala:581
 msgid "[Error:409] No origin specified."
 msgstr "[Erro:409] Origem não especificada."
 
-#: src/server.vala:516
+#: src/server.vala:584
 msgid "[Error:411] No recipient given for command."
 msgstr "[Erro:411] Não foi dado um destinatário para o comando."
 
-#: src/server.vala:519
+#: src/server.vala:587
 msgid "[Error:412] No text to send."
 msgstr "[Erro:412] Nenhum texto para enviar."
 
-#: src/server.vala:522
+#: src/server.vala:590
 #, c-format
 msgid "[Error:413] No toplevel domain specified for mask %s"
 msgstr "[Erro:413] Nenhum domínio de topo especificado para a mask %s."
 
-#: src/server.vala:525
+#: src/server.vala:593
 #, c-format
 msgid "[Error:414] Wildcard in toplevel domain in mask %s"
 msgstr "[Erro:414] Wildcard em domínio de topo na mask %s."
 
-#: src/server.vala:528
+#: src/server.vala:596
 #, c-format
 msgid "[Error:415] Bad server/host mask: %s"
 msgstr "[Erro:415] Servidor/mask ruim: %s"
 
-#: src/server.vala:531
+#: src/server.vala:599
 #, c-format
 msgid "[Error:421] Unknown command: %s"
 msgstr "[Erro:421] Comando desconhecido: %s"
 
-#: src/server.vala:534
+#: src/server.vala:602
 msgid "[MOTD] MOTD file missing"
 msgstr "[MOTD] Arquivo MOTD não existe."
 
-#: src/server.vala:537
+#: src/server.vala:605
 #, c-format
 msgid "[Admin] No admin info available for server %s"
 msgstr "[ADMIN] Nenhuma informação administrativa para o servidor %s."
 
-#: src/server.vala:540
+#: src/server.vala:608
 msgid "[Error:424] File error."
 msgstr "[Erro:424] Erro de arquivo."
 
-#: src/server.vala:543
+#: src/server.vala:611
 msgid "[Error:431] No nickname given."
 msgstr "[Erro:431] Nenhum apelido foi fornecido."
 
-#: src/server.vala:546
+#: src/server.vala:614
 msgid "[Error:432] Illegal nickname given."
 msgstr "[Erro:432] Um apelido ilegal foi fornecido."
 
-#: src/server.vala:555
+#: src/server.vala:632
 #, c-format
 msgid "[Error:433] Nickname %s already in use."
 msgstr "[Erro:433] Apelido %s já está em uso."
 
-#: src/server.vala:558
+#: src/server.vala:635
 msgid "[Error:436] Nickname collision kill."
 msgstr "[Erro:436] KILL por colisão de apelidos."
 
-#: src/server.vala:561
+#: src/server.vala:638
 #, c-format
 msgid "[Error:437] Nick/channel temporarily unavailable: %s"
 msgstr "[Erro:437] Apelido/canal temporariamente indisponível."
 
-#: src/server.vala:564
+#: src/server.vala:641
 #, c-format
 msgid "[Error:441] %s isn't in channel %s."
 msgstr "[Erro:441] %s não está no canal %s."
 
-#: src/server.vala:567
+#: src/server.vala:644
 #, c-format
 msgid "[Error:442] You're not in channel %s."
 msgstr "[Erro:442] Você não está no canal %s."
 
-#: src/server.vala:570
+#: src/server.vala:647
 #, c-format
 msgid "[Error:443] %s is already in channel %s."
 msgstr "[Erro:443] %s já está no canal %s."
 
-#: src/server.vala:573
+#: src/server.vala:650
 #, c-format
 msgid "[Error:444] User %s is not logged in."
 msgstr "[Erro:444] O usuário %s não está conectado."
 
-#: src/server.vala:576
+#: src/server.vala:653
 msgid "[Error:445] SUMMON has been disabled."
 msgstr "[Erro:445] /SUMMON foi desabilitado."
 
-#: src/server.vala:579
+#: src/server.vala:656
 msgid "[Error:446] USERS has been disabled."
 msgstr "[Erro:446] /USERS foi desabilitado."
 
-#: src/server.vala:582
+#: src/server.vala:659
 msgid "[Error:451] You have not registered."
 msgstr "[Erro:451] Você não registrou."
 
-#: src/server.vala:585
+#: src/server.vala:662
 #, c-format
 msgid "[Error:461] Not enough parameters for command %s."
 msgstr "[Erro:461] Parâmetros insuficientes para o comando %s."
 
-#: src/server.vala:588
+#: src/server.vala:665
 msgid "[Error:462] You have already registered."
 msgstr "[Erro:462] Você já registrou."
 
-#: src/server.vala:591
+#: src/server.vala:668
 msgid "[Error:463] Your host is not priviledged."
 msgstr "[Erro:463] Seu host não é privilegiado."
 
-#: src/server.vala:594
+#: src/server.vala:671
 msgid "[Error:464] Password incorrect."
 msgstr "[Erro:464] Senha incorreta."
 
-#: src/server.vala:597
+#: src/server.vala:674
 msgid "[Error:465] You are banned from this server."
 msgstr "[Erro:465] Você está banido deste servidor."
 
-#: src/server.vala:600
+#: src/server.vala:677
 msgid "[Error:466] You will be banned from this server."
 msgstr "[Erro:466] Você será banido deste servidor."
 
-#: src/server.vala:603
+#: src/server.vala:680
 #, c-format
 msgid "[Error:467] The key for channel %s has already been set."
 msgstr "[Erro:467] A chave para o canal %s já foi definida."
 
-#: src/server.vala:606
+#: src/server.vala:683
 #, c-format
 msgid "[Error:471] Cannot join channel %s: channel is full (+l)"
 msgstr "[Erro:471] Não é possível entrar em %s: o canal está cheio (+l)"
 
-#: src/server.vala:609
+#: src/server.vala:686
 #, c-format
 msgid "[Error:472] The server does not recognize the mode char %s."
 msgstr "[Erro:472] O servidor não reconhece o caractere de modo %s."
 
-#: src/server.vala:612
+#: src/server.vala:689
 #, c-format
 msgid "[Error:473] Cannot join channel %s: channel is invite-only (+i)"
-msgstr "[Erro:473] Não é possível entrar em %s: o canal é somente para convidados (+i)"
+msgstr ""
+"[Erro:473] Não é possível entrar em %s: o canal é somente para convidados "
+"(+i)"
 
-#: src/server.vala:615
+#: src/server.vala:692
 #, c-format
 msgid "[Error:474] Cannot join channel %s: you are banned (+b)"
 msgstr "[Erro:474] Não é possível entrar em %s: você está banido (+b)"
 
-#: src/server.vala:618
+#: src/server.vala:695
 #, c-format
 msgid "[Error:475] Cannot join channel %s: bad key."
 msgstr "[Erro:475] Não é possível entrar em %s: chave errada."
 
-#: src/server.vala:621
+#: src/server.vala:698
 #, c-format
 msgid "[Error:476] Bad channel mask for %s."
 msgstr "[Erro:476] Mask de canal ruim para %s."
 
-#: src/server.vala:624
+#: src/server.vala:701
 #, c-format
 msgid "[Error:477] The channel %s does not support modes."
 msgstr "[Erro:477] O canal %s não suporta modos."
 
-#: src/server.vala:628
+#: src/server.vala:705
 #, c-format
 msgid "[Error:478] Channel %s's ban list is full."
 msgstr "[Erro:478] A lista de banidos de %s está cheia."
 
-#: src/server.vala:630
+#: src/server.vala:707
 #, c-format
 msgid "[Error:478] Channel %s's exceptions list is full."
 msgstr "[Erro:478] A lista de exceções de %s está cheia."
 
-#: src/server.vala:634
+#: src/server.vala:711
 msgid "[Error:481] Permission denied: you are not an IRC operator."
-msgstr "[Erro:481] Permissão negada: você não é um IRCop."
+msgstr "[Erro:481] Permissão negada: você não é um operador de IRC."
 
-#: src/server.vala:637
+#: src/server.vala:714
 #, c-format
 msgid "[Error:482] You're not an operator in %s"
 msgstr "[Erro:482] Você não é um operador em %s."
 
-#: src/server.vala:640
+#: src/server.vala:717
 msgid "[Error:483] You cannot kill a server."
 msgstr "[Erro:483] Você não pode usar /KILL em um servidor."
 
-#: src/server.vala:643
+#: src/server.vala:720
 msgid "[Error:491] No O-lines for your host."
 msgstr "[Erro:491] Não há linhas O para seu host."
 
-#: src/server.vala:646
+#: src/server.vala:723
 msgid "[Error:501] Unknown mode flag."
 msgstr "[Erro:501] Bandeira de modo desconhecida."
 
-#: src/server.vala:649
+#: src/server.vala:726
 msgid "[Error:502] Cannot view or set the mode for other users."
 msgstr "[Erro:502] Não é possível ver ou definir o modo de outros usuários."
 
-#: src/server.vala:654
+#: src/server.vala:731
 #, c-format
 msgid "[Userhost] %s: %s"
-msgstr "[USERHOST] %s: %s"
+msgstr "[Userhost] %s: %s"
 
-#: src/server.vala:657
+#: src/server.vala:734
 #, c-format
 msgid "[ISON] %s is on"
 msgstr "[ISON] %s está conectado"
 
-#: src/server.vala:660
+#: src/server.vala:737
 #, c-format
 msgid "[WHOIS] %s is away: %s"
 msgstr "[WHOIS] %s está indisponível: %s"
 
-#: src/server.vala:663
+#: src/server.vala:740
 msgid "[Away] You are no longer marked as away."
-msgstr "[Away] Você não está mais marcado como indisponível."
+msgstr "[Away] Você não está mais marcado como ausente."
 
-#: src/server.vala:667
+#: src/server.vala:744
 msgid "[Away] You are now marked as away."
-msgstr "[Away] Você agora está marcado como indisponível."
+msgstr "[Away] Você agora está marcado como ausente."
 
-#: src/server.vala:671
+#: src/server.vala:748
 #, c-format
 msgid "[WHOIS] %s: %s@%s: %s"
 msgstr "[WHOIS] %s: %s@%s: %s"
 
-#: src/server.vala:674
+#: src/server.vala:751
 #, c-format
 msgid "[WHOIS] %s: in server %s: %s"
 msgstr "[WHOIS] %s: no servidor %s: %s"
 
-#: src/server.vala:677
+#: src/server.vala:754
 #, c-format
 msgid "[WHOIS] %s: is an IRCop"
 msgstr "[WHOIS] %s: é um IRCop"
 
-#: src/server.vala:680
+#: src/server.vala:757
 #, c-format
 msgid "[WHOIS] %s: %s seconds idle"
 msgstr "[WHOIS] %s: inativo por %s segundo(s)"
 
-#: src/server.vala:683
+#: src/server.vala:760
 #, c-format
 msgid "[WHOIS] %s: end of /WHOIS list."
 msgstr "[WHOIS] %s: fim da lista /WHOIS."
 
-#: src/server.vala:686
+#: src/server.vala:763
 #, c-format
 msgid "[WHOIS] %s: in channels %s"
 msgstr "[WHOIS] %s: nos canais %s"
 
-#: src/server.vala:689
+#: src/server.vala:766
 #, c-format
 msgid "[WHOIS] %s: is a registered nickname"
 msgstr "[WHOIS] %s: é um usuário registrado"
 
-#: src/server.vala:692
+#: src/server.vala:769
 #, c-format
 msgid "[WHOWAS] %s: %s@%s: %s"
 msgstr "[WHOWAS] %s: %s@%s: %s"
 
-#: src/server.vala:695
+#: src/server.vala:772
 #, c-format
 msgid "[WHOWAS] %s: end of /WHOWAS list."
 msgstr "[WHOWAS] %s: fim da lista /WHOWAS."
 
-#: src/server.vala:698
+#: src/server.vala:775
 msgid "[List] Channel (Users) Topic"
 msgstr "[LIST] Canal (Usuários) Tópico"
 
-#: src/server.vala:701
+#: src/server.vala:778
 #, c-format
 msgid "[List] %s (%s) %s"
 msgstr "[LIST] %s (%s) %s"
 
-#: src/server.vala:704
+#: src/server.vala:781
 msgid "[List] end of /LIST."
 msgstr "[LIST] fim da lista de canais."
 
-#: src/server.vala:712
+#: src/server.vala:786
+#, c-format
+msgid "Channel mode is %s"
+msgstr "O modo do canal é %s"
+
+#: src/server.vala:790
 msgid "No topic is set"
 msgstr "Não há tópico definido."
 
-#: src/server.vala:716
+#: src/server.vala:794
 #, c-format
 msgid "Channel was created %s"
 msgstr "O canal foi criado %s"
 
-#: src/server.vala:723
+#: src/server.vala:801
 #, c-format
 msgid "The topic is: %s"
 msgstr "O tópico é: %s"
 
-#: src/server.vala:727
+#: src/server.vala:805
 #, c-format
 msgid "[Invite] inviting %s to %s"
 msgstr "[INVITE] convidando %s para %s"
 
-#: src/server.vala:730
+#: src/server.vala:808
 #, c-format
 msgid "[Summon] summoning %s to IRC"
 msgstr "[SUMMON] chamando %s para o IRC"
 
-#: src/server.vala:733
+#: src/server.vala:811
 #, c-format
 msgid "Server version: %s; server software: %s; %s"
 msgstr "Versão do servidor: %s; software do servidor: %s; %s"
 
-#: src/server.vala:736
+#: src/server.vala:814
 #, c-format
 msgid "[WHO] %s: %s!%s@%s in server %s (%s) %s"
 msgstr "[WHO] %s: %s!%s@%s no servidor %s (%s) %s"
 
-#: src/server.vala:739
+#: src/server.vala:817
 #, c-format
 msgid "[WHO] in %s: end of /WHO list."
 msgstr "[WHO] em %s: fim da lista /WHO."
 
-#: src/server.vala:769
+#: src/server.vala:847
 #, c-format
 msgid "[Links] %s %s :%s"
 msgstr "[LINKS] %s %s :%s"
 
-#: src/server.vala:772
+#: src/server.vala:850
 msgid "[Links] end of /LINKS list."
 msgstr "[LINKS] fim da lista /LINKS."
 
-#: src/server.vala:775
+#: src/server.vala:853
 #, c-format
 msgid "[Banlist] %s: %s"
 msgstr "[Banidos] %s: %s"
 
-#: src/server.vala:778
+#: src/server.vala:856
 #, c-format
 msgid "[Banlist] %s: end of ban (mode +b) list."
 msgstr "[Banidos] %s: fim da lista de banidos (mode +b)."
 
-#: src/server.vala:781
+#: src/server.vala:859
 #, c-format
 msgid "[Exceptions] %s: %s"
 msgstr "[Exceções] %s: %s"
 
-#: src/server.vala:784
+#: src/server.vala:862
 #, c-format
 msgid "[Exceptions] %s: end of exceptions (mode +e) list."
 msgstr "[Exceções] %s: fim da lista de exceções (mode +e)."
 
-#: src/server.vala:787
+#: src/server.vala:865
 #, c-format
 msgid "[Info] %s"
-msgstr "[INFO] %s"
+msgstr "[Info] %s"
 
-#: src/server.vala:790
+#: src/server.vala:868
 msgid "[Info] end of /INFO list."
-msgstr "[INFO] fim de lista /INFO."
+msgstr "[Info] fim de lista /INFO."
 
-#: src/server.vala:793
+#: src/server.vala:871
 #, c-format
 msgid "[MOTD] %s:"
 msgstr "[MOTD] %s:"
 
-#: src/server.vala:796
+#: src/server.vala:874
 msgid "[MOTD] "
 msgstr "[MOTD] "
 
-#: src/server.vala:799
+#: src/server.vala:877
 msgid "[MOTD] End of /MOTD command."
 msgstr "[MOTD] Fim do comando /MOTD."
 
-#: src/server.vala:802
+#: src/server.vala:880
 msgid "[Oper] You are now an IRCop."
-msgstr "[OPER] Você agora é um IRCop."
+msgstr "[Oper] Você agora é um IRCop."
 
-#: src/server.vala:805
+#: src/server.vala:883
 #, c-format
 msgid "[Rehash] Rehashing config file %s."
-msgstr "[REHASH] Fazendo rehash do arquivo %s."
+msgstr "[Rehash] Fazendo rehash do arquivo %s."
 
-#: src/server.vala:808
+#: src/server.vala:886
 #, c-format
 msgid "[Time] Server's local time: %s"
-msgstr "[TIME] Hora local do servidor: %s"
+msgstr "[Time] Hora local do servidor: %s"
 
-#: src/server.vala:814
+#: src/server.vala:892
 #, c-format
 msgid "[Mode] Your mode is: %s"
-msgstr "[MODE] Seu modo é: %s"
+msgstr "[Mode] Seu modo é: %s"
 
-#: src/server.vala:817 src/server.vala:831
+#: src/server.vala:895 src/server.vala:909
 #, c-format
 msgid "[Server info] %s"
 msgstr "[Servidor] %s"
 
-#: src/server.vala:820
+#: src/server.vala:898
 #, c-format
 msgid "[Server info] %s operator(s) online"
 msgstr "[Servidor] %s operador(es) online"
 
-#: src/server.vala:823
+#: src/server.vala:901
 #, c-format
 msgid "[Server info] %s unknown connection(s)"
 msgstr "[Servidor] %s conexões desconhecidas"
 
-#: src/server.vala:826
+#: src/server.vala:904
 #, c-format
 msgid "[Server info] %s channels formed"
 msgstr "[Servidor] %s canais formados"
 
-#: src/server.vala:834
+#: src/server.vala:912
 #, c-format
 msgid "[Admin] Administrative info for %s:"
-msgstr "[ADMIN] Informação administrativa para %s:"
+msgstr "[Admin] Informação administrativa para %s:"
 
-#: src/server.vala:837 src/server.vala:840 src/server.vala:843
+#: src/server.vala:915 src/server.vala:918 src/server.vala:921
 msgid "[Admin] "
-msgstr "[ADMIN] "
+msgstr "[Admin] "
 
-#: src/server.vala:846
+#: src/server.vala:924
 #, c-format
 msgid "UNHANDLED MESSAGE: %s"
 msgstr "MENSAGEM NÃO ENCAMINHADA: %s"
 
-#: src/pluginprefwindow.ui:7
-msgid "Plugin Preferences"
-msgstr ""
+#
+#: plugins/ctcp.vala:21
+msgid "Customizable CTCP replies."
+msgstr "Respostas CTCP personalizáveis."
 
-#: src/pluginprefwindow.ui:44
-msgid "Plugin"
-msgstr "Plugin"
+#: plugins/ctcp.vala:29
+msgid "Reply to CTCP messages"
+msgstr "Responder a mensagens CTCP"
 
-#: src/pluginprefwindow.ui:66
-msgid "Description"
-msgstr "Descrição"
+#: plugins/ctcp.vala:120
+#, c-format
+msgid "Latency to %s: %d.%2d seconds."
+msgstr "Latência para %s: %d.%2d segundos."
 
-#: src/prefwindow.ui:7
-msgid "Preferences"
-msgstr "Preferências"
+#: plugins/ctcp.vala:123
+#, c-format
+msgid "%s reply from %s: %s"
+msgstr "Resposta %s de %s: %s"
 
-#: src/prefwindow.ui:37
-msgid "Network"
-msgstr "Rede"
+#: plugins/highlights.vala:29
+msgid "Highlights"
+msgstr "Notificações"
 
-#: src/prefwindow.ui:59
-msgid "Nick name:"
-msgstr "Apelido:"
+#: plugins/highlights.vala:30
+msgid "Adds support for configurable highlights."
+msgstr "Provê suporte a notificações personalizáveis"
 
-#: src/prefwindow.ui:67
-msgid "User name:"
-msgstr "Nome de usuário:"
+#: plugins/highlights.vala:37
+msgid "Highlight on _nickname"
+msgstr "Notificar no seu ap_elido"
 
-#: src/prefwindow.ui:79
-msgid "Real name:"
-msgstr "Nome real:"
+#: plugins/highlights.vala:44
+msgid "Highlight on n_otices"
+msgstr "Notificar em N_OTICEs"
 
-#: src/prefwindow.ui:91
-msgid "Quit message:"
-msgstr "Mensagem de saída:"
+#: plugins/highlights.vala:51
+msgid "Highlight on _private messages"
+msgstr "Notificar em mensagens _privadas"
 
-#: src/prefwindow.ui:103
-msgid "Away message:"
-msgstr "Mensagem de indisponibilidade:"
+#: plugins/highlights.vala:58
+msgid "Highlight on _all messages"
+msgstr "Notificar em tod_as as mensagens"
 
-#: src/prefwindow.ui:185
-msgid "View"
-msgstr "Guia"
+#: plugins/highlights.vala:66
+msgid "When highlighting:"
+msgstr "Quando notificar:"
 
-#: src/prefwindow.ui:207
-msgid "Web browser:"
-msgstr "Navegador:"
+#: plugins/highlights.vala:67
+msgid "Blink on the taskbar"
+msgstr "Piscar na barra de tarefas"
 
-#: src/prefwindow.ui:214
-msgid "Font:"
-msgstr "Fonte:"
+#: plugins/highlights.vala:74
+msgid "Blink the tray icon"
+msgstr "Piscar o ícone da bandeja"
 
-#: src/prefwindow.ui:225
-msgid "Timestamp format:"
-msgstr "Formato da data/hora:"
+#: plugins/highlights.vala:81
+msgid "Pop up a notification balloon"
+msgstr "Criar um balão de notificação"
 
-#: src/prefwindow.ui:281
-msgid "Logging"
-msgstr "Registros"
+#: plugins/highlights.vala:88
+msgid "Add message to server view"
+msgstr "Adicionar mensagem à guia do servidor"
 
-#: src/prefwindow.ui:303
-msgid "Enabled:"
-msgstr "Ligado:"
+#: plugins/highlights.vala:96
+msgid "Regexes to highlight on:"
+msgstr "Notificar nestas regexes:"
 
-#: src/prefwindow.ui:322
-msgid "Log date format:"
-msgstr "Formato da data do registro:"
+#: plugins/ignore.vala:34
+msgid "Ignore"
+msgstr "Ignorar"
 
-#: src/prefwindow.ui:356
-msgid "General"
-msgstr "Geral"
-
-#: src/prefwindow.ui:459
-msgid "Auto-connect"
-msgstr "Auto-conectar"
-
-#: src/gui.vala:22
-msgid "_Client"
-msgstr "_Cliente"
-
-#: src/gui.vala:23
-msgid "_Connect..."
-msgstr "_Conectar..."
-
-#: src/gui.vala:23
-msgid "Connect to a server."
-msgstr "Conectar a um servidor."
-
-#: src/gui.vala:24
-msgid "_Disconnect all"
-msgstr "_Desconectar todos"
-
-#: src/gui.vala:25
-msgid "_Reconnect all"
-msgstr "_Reconectar todos"
-
-#: src/gui.vala:26
-msgid "_Open last link"
-msgstr "_Abrir último link"
-
-#: src/gui.vala:27
-msgid "O_pen sec-to-last link"
-msgstr "A_brir penúltimo link"
-
-#: src/gui.vala:30
-msgid "S_ettings"
-msgstr "C_onfigurações"
-
-#: src/gui.vala:32
-msgid "_Advanced"
-msgstr "_Avançado"
-
-#: src/gui.vala:33
-msgid "_Macros..."
-msgstr "_Macros..."
-
-#: src/gui.vala:34
-msgid "_Plugins..."
-msgstr "_Plugins..."
-
-#: src/gui.vala:36
-msgid "_View"
-msgstr "_Ver"
-
-#: src/gui.vala:37
-msgid "Previous server"
-msgstr "Servidor anterior"
-
-#: src/gui.vala:38
-msgid "Next server"
-msgstr "Próximo servidor"
-
-#: src/gui.vala:39
-msgid "Previous view"
-msgstr "Guia anterior"
-
-#: src/gui.vala:40
-msgid "Next view"
-msgstr "Próxima guia"
-
-#: src/gui.vala:41
-msgid "_Close view"
-msgstr "_Fechar guia"
-
-#: src/gui.vala:42
-msgid "Re_join channel"
-msgstr "Re_entrar no canal"
-
-#: src/gui.vala:43
-msgid "_Open view..."
-msgstr "_Abrir guia..."
-
-#: src/gui.vala:56
-msgid "_Server"
-msgstr "_Servidor"
-
-#: src/gui.vala:57
-msgid "_Disconnect"
-msgstr "_Desconectar"
-
-#: src/gui.vala:58
-msgid "_Reconnect"
-msgstr "_Reconectar"
-
-#: src/gui.vala:59
-msgid "_Close"
-msgstr "_Fechar"
-
-#: src/gui.vala:60
-msgid "Re_join all"
-msgstr "Re_entrar em todos"
-
-#: src/gui.vala:61
-msgid "_Mark as away"
-msgstr "_Marcar como indisponível"
-
-#: src/gui.vala:63
-msgid "_Help"
-msgstr "_Ajuda"
-
-#: src/gui.vala:64
-msgid "_Online help"
-msgstr "_Ajuda online"
+#: plugins/ignore.vala:35
+msgid "Selectively ignore messages."
+msgstr "Ignorar mensagens seletivamente."
 
 #: plugins/messages.vala:40
 msgid "User join"
@@ -1021,3 +983,191 @@ msgstr "Mudança de modo de usuário"
 #: plugins/messages.vala:52
 msgid "Topic change"
 msgstr "Mudança de tópico"
+
+#: plugins/messages.vala:56
+msgid "$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL"
+msgstr "$USERNICK [$USERNAME@$USERMASK] entrou em $CHANNEL"
+
+#: plugins/messages.vala:57
+msgid "$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]"
+msgstr "$USERNICK [$USERNAME@$USERMASK] saiu de $CHANNEL [$MESSAGE]"
+
+#: plugins/messages.vala:58
+msgid "$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]"
+msgstr "$KICKED foi chutado de $CHANNEL por $USERNICK [$MESSAGE]"
+
+#: plugins/messages.vala:59
+msgid "$USERNICK is now known as $NEWNICK."
+msgstr "$USERNICK agora é conhecido como $NEWNICK."
+
+#: plugins/messages.vala:60
+msgid "<$USERRANK$USERNICK> $MESSAGE"
+msgstr "<$USERRANK$USERNICK> $MESSAGE"
+
+#: plugins/messages.vala:61
+msgid "*  $USERNICK $MESSAGE"
+msgstr "*  $USERNICK $MESSAGE"
+
+#: plugins/messages.vala:62
+msgid "Got CTCP $REQUEST from $USERNICK"
+msgstr "Recebeu CTCP $REQUEST de $USERNICK"
+
+#: plugins/messages.vala:63
+msgid "-$USERNICK- $MESSAGE"
+msgstr "-$USERNICK- $MESSAGE"
+
+#: plugins/messages.vala:64
+msgid "$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]"
+msgstr "$USERNICK [$USERNAME@$USERMASK] desconectou [$MESSAGE]"
+
+#: plugins/messages.vala:65
+msgid "$USERNICK sets mode $MODES on $TARGETS"
+msgstr "$USERNICK põe modo $MODES em $TARGETS"
+
+#: plugins/messages.vala:66
+msgid "$USERNICK sets $CHANNEL's mode: $MODES"
+msgstr "$USERNICK muda o modo de $CHANNEL: $MODES"
+
+#: plugins/messages.vala:67
+msgid "Changing mode: $MODES"
+msgstr "Trocando modo: $MODES"
+
+#: plugins/messages.vala:68
+msgid "$USERNICK sets the topic to $TOPIC"
+msgstr "$USERNICK muda o tópico para: $TOPIC"
+
+#: plugins/messages.vala:78
+msgid "Messages"
+msgstr "Mensagens"
+
+#: plugins/messages.vala:79
+msgid "Customizable messages."
+msgstr "Mensagens personalizáveis."
+
+#: ui/networks.ui:146
+msgid "Auto-connect"
+msgstr "Auto-conectar"
+
+#: ui/preferences.ui:12
+msgid "Preferences"
+msgstr "Preferências"
+
+#: ui/preferences.ui:79
+msgid "Nickname:"
+msgstr "Apelido:"
+
+#: ui/preferences.ui:87
+msgid "Secondary nick:"
+msgstr "Apelido secundário:"
+
+#: ui/preferences.ui:99
+msgid "Tertiary nick:"
+msgstr "Apelido terciário:"
+
+#: ui/preferences.ui:111
+msgid "Username:"
+msgstr "Nome de usuário:"
+
+#: ui/preferences.ui:123
+msgid "Real name:"
+msgstr "Nome real:"
+
+#: ui/preferences.ui:135
+msgid "Set as away after"
+msgstr ""
+
+#: ui/preferences.ui:165
+msgid "minutes"
+msgstr ""
+
+#: ui/preferences.ui:186
+msgid "Auto-away message:"
+msgstr "Mensagem de ausência:"
+
+#: ui/preferences.ui:198
+msgid "Default quit message:"
+msgstr "Mensagem de saída:"
+
+#: ui/preferences.ui:299
+msgid "Log file name format:"
+msgstr "Formato da data do registro:"
+
+#: ui/preferences.ui:313
+msgid "Log file folder:"
+msgstr "Pasta de registros:"
+
+#: ui/preferences.ui:324
+msgid "Logging enabled"
+msgstr "Ligar registros"
+
+#: ui/preferences.ui:400
+msgid "IRC"
+msgstr "IRC"
+
+#: ui/preferences.ui:427
+msgid "Place tabs on:"
+msgstr "Posição das abas:"
+
+#: ui/preferences.ui:442
+msgid "Top"
+msgstr "Acima"
+
+#: ui/preferences.ui:458 ui/preferences.ui:568
+msgid "Right"
+msgstr "Direita"
+
+#: ui/preferences.ui:475
+msgid "Bottom"
+msgstr "Embaixo"
+
+#: ui/preferences.ui:492 ui/preferences.ui:552
+msgid "Left"
+msgstr "Esquerda"
+
+#: ui/preferences.ui:517
+msgid "Show user list"
+msgstr "Mostrar lista de usuários"
+
+#: ui/preferences.ui:537
+msgid "Place user list on:"
+msgstr "Mostrar lista à:"
+
+#: ui/preferences.ui:593
+msgid "Show topic bar"
+msgstr "Mostrar barra do tópico"
+
+#: ui/preferences.ui:624
+msgid "Show timestamps in chat"
+msgstr "Mostrar data/hora"
+
+#: ui/preferences.ui:647
+msgid "Timestamp format:"
+msgstr "Formato da data/hora:"
+
+#: ui/preferences.ui:684
+msgid "Font:"
+msgstr "Fonte:"
+
+#: ui/preferences.ui:698
+msgid "Select a font"
+msgstr "Selecione uma fonte"
+
+#: ui/preferences.ui:723
+msgid "Open links with:"
+msgstr "Abrir links com:"
+
+#: ui/preferences.ui:753
+msgid "Enable tab completion"
+msgstr "Habilitar completação de apelidos com Tab"
+
+#: ui/preferences.ui:777
+msgid "Completion suffix:"
+msgstr "Sufixo de completação"
+
+#: ui/preferences.ui:823
+msgid "Interface"
+msgstr "Interface"
+
+#: ui/preferences.ui:904
+msgid "Macros"
+msgstr "Macros"

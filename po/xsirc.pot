@@ -192,7 +192,7 @@ msgid "View name:"
 msgstr ""
 
 #: src/gui.vala:830
-msgid "Copyright (c) 2010 Eduardo Niehues. All rights reserved."
+msgid "Copyright (c) 2010-11 Eduardo Niehues. All rights reserved."
 msgstr ""
 
 #: src/gui.vala:861
