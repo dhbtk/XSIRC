@@ -102,7 +102,7 @@ namespace XSIRC {
 				box.pack_start(entry,false,false,0);
 			}
 			// Saving
-			Gtk.Button button = new Gtk.Button.from_stock(Gtk.STOCK_SAVE);
+			Gtk.Button button = new Gtk.Button.from_stock(Gtk.Stock.SAVE);
 			button.clicked.connect(() => {
 				int i = 0;
 				foreach(Gtk.Entry entry in entries) {
