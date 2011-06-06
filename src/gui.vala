@@ -18,7 +18,6 @@ namespace XSIRC {
 		public Gtk.Label nickname_label {get; private set;}
 		public IRCEntry text_entry {get; private set;}
 		public Gtk.Entry topic_view {get; private set;}
-		public Gtk.Statusbar status_bar {get; private set;}
 		public View system_view {get; private set;}
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
@@ -274,15 +273,13 @@ namespace XSIRC {
 			entry_box.pack_start(text_entry,true,true,0);
 			server_vbox.pack_start(entry_box,false,false,0);
 			
-			// Status bar
-			status_bar = new Gtk.Statusbar();
-			main_vbox.pack_start(status_bar,false,true,0);
-			main_window.show_all();
 			
 			// Server-switching
 			servers_notebook.switch_page.connect((nb_page,page_num) => {
 				update_gui(find_server_by_notebook(get_notebook_widget_by_page((int)page_num)),null,true);
 			});
+			
+			main_window.show_all();
 			
 			TimeoutSource src = new TimeoutSource(100);
 			src.set_callback(() => {
@@ -335,11 +332,6 @@ namespace XSIRC {
 				((Gtk.Widget)topic_view).visible = true;
 			}
 			
-			if(!Main.config.bool["show_status_bar"]) {
-				status_bar.visible = false;
-			} else {
-				status_bar.visible = true;
-			}
 			switch(Main.config.string["tab_pos"]) {
 				case "top":
 					servers_notebook.tab_pos = Gtk.PositionType.TOP;
