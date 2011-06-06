@@ -82,7 +82,7 @@ namespace XSIRC {
 			string_defaults["realname"] = Environment.get_user_name();
 			string_defaults["away_msg"] = _("Away");
 			string_defaults["quit_msg"] = _("Leaving.");
-			string_defaults["log_file_name"] = "%F";
+			string_defaults["log_date_format"] = "%F";
 			string_defaults["log_folder"] = Environment.get_home_dir()+"/irclogs";
 			string_defaults["timestamp_format"] = "%H:%M";
 			string_defaults["web_browser"] = "xdg-open %s";
