@@ -53,19 +53,19 @@ namespace XSIRC {
 		};
 		
 		private const DefaultMessage[] default_messages = {
-			{MessageID.JOIN,"$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL"},
-			{MessageID.PART,"$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]"},
-			{MessageID.KICK,"$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]"},
-			{MessageID.NICK,"$USERNICK is now known as $NEWNICK."},
-			{MessageID.PRIVMSG,"<$USERRANK$USERNICK> $MESSAGE"},
-			{MessageID.ACTION,"*  $USERNICK $MESSAGE"},
-			{MessageID.CTCPMSG,"Got CTCP $REQUEST from $USERNICK"},
-			{MessageID.NOTICE,"-$USERNICK- $MESSAGE"},
-			{MessageID.QUIT,"$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]"},
-			{MessageID.CHANUSERMODE,"$USERNICK sets mode $MODES on $TARGETS"},
-			{MessageID.CHANMODE,"$USERNICK sets $CHANNEL's mode: $MODES"},
-			{MessageID.MODE,"Changing mode: $MODES"},
-			{MessageID.TOPIC,"$USERNICK sets the topic to $TOPIC"}
+			{MessageID.JOIN,N_("$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL")},
+			{MessageID.PART,N_("$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]")},
+			{MessageID.KICK,N_("$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]")},
+			{MessageID.NICK,N_("$USERNICK is now known as $NEWNICK.")},
+			{MessageID.PRIVMSG,N_("<$USERRANK$USERNICK> $MESSAGE")},
+			{MessageID.ACTION,N_("*  $USERNICK $MESSAGE")},
+			{MessageID.CTCPMSG,N_("Got CTCP $REQUEST from $USERNICK")},
+			{MessageID.NOTICE,N_("-$USERNICK- $MESSAGE")},
+			{MessageID.QUIT,N_("$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]")},
+			{MessageID.CHANUSERMODE,N_("$USERNICK sets mode $MODES on $TARGETS")},
+			{MessageID.CHANMODE,N_("$USERNICK sets $CHANNEL's mode: $MODES")},
+			{MessageID.MODE,N_("Changing mode: $MODES")},
+			{MessageID.TOPIC,N_("$USERNICK sets the topic to $TOPIC")}
 		};
 		
 		private HashMap<MessageID,string> messages = new HashMap<MessageID,string>();
@@ -93,7 +93,7 @@ namespace XSIRC {
 			LinkedList<Gtk.Entry> entries = new LinkedList<Gtk.Entry>();
 			prefs_widget = scroll;
 			foreach(MessageType message_type in message_types) {
-				Gtk.Label label = new Gtk.Label(message_type.name);
+				Gtk.Label label = new Gtk.Label(_(message_type.name));
 				Gtk.Entry entry = new Gtk.Entry();
 				box.pack_start(label,false,false,0);
 				entry.text = messages[message_type.id];
@@ -116,7 +116,7 @@ namespace XSIRC {
 		
 		private void load_default_messages() {
 			foreach(DefaultMessage message in default_messages) {
-				messages[message.id] = message.message;
+				messages[message.id] = _(message.message);
 			}
 		}
 		
