@@ -490,6 +490,42 @@ namespace XSIRC {
 					item.visible = false;
 				}
 			}
+			// Updating labels
+			foreach(Server server_ in Main.server_manager.servers) {
+				if(!server_.connected) {
+					if(current_server() != server_ && server_.label.label.has_prefix("<span")) {
+						string color = server_.label.label.split("\"")[1];
+						server_.label.label = "<span foreground=\"%s\">(%s)</span>".printf(color,Markup.escape_text((server_.network != null ? server_.network.name+" - " : "")+server_.server));
+					} else {
+						server_.label.label = "(%s)".printf(Markup.escape_text((server_.network != null ? server_.network.name+" - " : "")+server_.server));
+					}
+				} else {
+					if(current_server() != server_ && server_.label.label.has_prefix("<span")) {
+						string color = server_.label.label.split("\"")[1];
+						server_.label.label = "<span foreground=\"%s\">%s</span>".printf(color,Markup.escape_text((server_.network != null ? server_.network.name+" - " : "")+server_.server));
+					} else {
+						server_.label.label = "%s".printf(Markup.escape_text((server_.network != null ? server_.network.name+" - " : "")+server_.server));
+					}
+				}
+				foreach(Server.Channel channel in server_.channels) {
+					View view = server_.find_view(channel.name);
+					if(!channel.in_channel) {
+						if(server_.current_view() != view && view.label.label.has_prefix("<span")) {
+							string color = view.label.label.split("\"")[1];
+							view.label.label = "<span foreground=\"%s\">(%s)</span>".printf(color,Markup.escape_text(channel.name));
+						} else {
+							view.label.label = "(%s)".printf(Markup.escape_text(channel.name));
+						}
+					} else {
+						if(server_.current_view() != view && view.label.label.has_prefix("<span")) {
+							string color = view.label.label.split("\"")[1];
+							view.label.label = "<span foreground=\"%s\">%s</span>".printf(color,Markup.escape_text(channel.name));
+						} else {
+							view.label.label = "%s".printf(Markup.escape_text(channel.name));
+						}
+					}
+				}
+			}
 			//gui_mutex.unlock();
 		}
 		
