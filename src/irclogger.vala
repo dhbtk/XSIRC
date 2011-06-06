@@ -46,7 +46,7 @@ namespace XSIRC {
 				s.append_c('\n');
 				stream.put_string(s.str);
 			} catch(Error e) {
-				Main.gui.system_view.add_text("Could not log: %s".printf(e.message));
+				stderr.printf("Could not log: %s",e.message);
 			}
 		}
 	}
