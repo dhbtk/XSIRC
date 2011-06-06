@@ -43,7 +43,7 @@ namespace XSIRC {
 			
 			// String things
 			string[] strings = {"nickname","sec_nickname","ter_nickname","username",
-			                    "realname","away_msg","quit_msg","log_file_name","log_folder",
+			                    "realname","away_msg","quit_msg","log_date_format","log_folder",
 			                    "timestamp_format","web_browser","completion_suffix"};
 			foreach(string str in strings) {
 				((Gtk.Entry)builder.get_object(str)).text = Main.config.string[str];
@@ -132,7 +132,7 @@ namespace XSIRC {
 		private void save_settings() {
 			// This is essentially the same as the init function, only reversed
 			string[] strings = {"nickname","sec_nickname","ter_nickname","username",
-			                    "realname","away_msg","quit_msg","log_file_name","log_folder",
+			                    "realname","away_msg","quit_msg","log_date_format","log_folder",
 			                    "timestamp_format","web_browser","completion_suffix"};
 			foreach(string str in strings) {
 				Main.config.string[str] = ((Gtk.Entry)builder.get_object(str)).text;
