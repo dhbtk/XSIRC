@@ -967,6 +967,9 @@ namespace XSIRC {
 		}
 		
 		public GUI.View? find_view(string name) {
+			if (Main.gui.has_quit) {
+				return null;
+			}
 			foreach(GUI.View view in views) {
 				if(view.name.down() == name.down()) {
 					return view;
