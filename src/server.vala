@@ -21,7 +21,7 @@ namespace XSIRC {
 		public string nick {get; private set;}
 		public string my_username {get; private set;}
 		public string my_hostmask {get; private set;}
-		private time_t last_recieved = time_t();
+		private time_t last_received = time_t();
 		public bool connected {get; private set; default = false;}
 		public bool sock_error {get; private set; default = false;}
 		public bool am_away {get; private set;}
@@ -39,7 +39,7 @@ namespace XSIRC {
 			public Topic topic;
 			public ArrayList<string> raw_users = new ArrayList<string>();
 			public ArrayList<string> users     = new ArrayList<string>();
-			public bool userlist_recieved = true;
+			public bool userlist_received = true;
 			public bool in_channel = true;
 			public string mode = "";
 			public bool got_create_date = false;
@@ -185,23 +185,23 @@ namespace XSIRC {
 		public void iterate() {
 			if(connected && !sock_error) {
 				// Checking if almost timeouting
-				if(((int)time_t() - (int)last_recieved) >= 250) {
+				if(((int)time_t() - (int)last_received) >= 250) {
 					if(!sent_ping) {
 						send("PING :lagcheck");
 						sent_ping = true;
 					}
 				}
 				// Ping timeout
-				if(((int)time_t() - (int)last_recieved) >= 300) {
+				if(((int)time_t() - (int)last_received) >= 300) {
 					add_to_view(_("<server>"),_("Ping timeout. Reconnecting..."));
-					last_recieved = time_t();
+					last_received = time_t();
 					irc_disconnect();
 					irc_connect();
 				}
 			}
 		}
 		
-		public bool recieve_data(Socket socket,IOCondition cond) {
+		public bool receive_data(Socket socket,IOCondition cond) {
 			string s = null;
 			try {
 				s = socket_stream.read_line(null,null);
@@ -293,10 +293,10 @@ namespace XSIRC {
 				send("PASS %s".printf(password));
 			}
 			Main.gui.update_gui(this);
-			last_recieved = time_t();
+			last_received = time_t();
 			
 			SocketSource socket_source = socket_conn.socket.create_source(IOCondition.IN|IOCondition.PRI,null);
-			socket_source.set_callback(recieve_data);
+			socket_source.set_callback(receive_data);
 			socket_source.attach(null);
 		}
 		
@@ -384,7 +384,7 @@ namespace XSIRC {
 		private void handle_server_input(owned string s) {
 			sent_ping = false;
 			stdout.printf("%s\n",s);
-			last_recieved = time_t();
+			last_received = time_t();
 			// Getting PING out of the way.
 			if(s.has_prefix("ERROR")) {
 				irc_disconnect();
@@ -816,7 +816,7 @@ namespace XSIRC {
 					case "353":
 						Channel channel = find_channel(split[4]);
 						return_if_fail(channel != null);
-						if(channel.userlist_recieved) {
+						if(channel.userlist_received) {
 							channel.users.clear();
 							channel.raw_users.clear();
 						}
@@ -829,12 +829,12 @@ namespace XSIRC {
 							}
 							channel.users.add(user);
 						}
-						channel.userlist_recieved = false;
+						channel.userlist_received = false;
 						break;
 					case "366":
 						Channel channel = find_channel(split[3]);
 						return_if_fail(channel != null);
-						channel.userlist_recieved = true;
+						channel.userlist_received = true;
 						channel.raw_users.sort((CompareFunc)ircusrcmp);
 						channel.users.sort();
 						// User list

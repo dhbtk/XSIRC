@@ -92,6 +92,7 @@ namespace XSIRC {
 					                                            Gtk.DialogFlags.MODAL,
 					                                            Gtk.MessageType.QUESTION,
 					                                            Gtk.ButtonsType.YES_NO,
+					                                            "%s",
 					                                            _("Are you sure? You cannot undo this."));
 					d.response.connect((id) => {
 						if(id == Gtk.ResponseType.YES) {
@@ -317,6 +318,7 @@ namespace XSIRC {
 				                                            Gtk.DialogFlags.MODAL,
 				                                            Gtk.MessageType.ERROR,
 				                                            Gtk.ButtonsType.CLOSE,
+				                                            "%s",
 				                                            _("The string entered isn't a valid server URL."));
 				d.response.connect((id) => {d.destroy();});
 				d.show_all();
