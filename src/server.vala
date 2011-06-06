@@ -781,6 +781,7 @@ namespace XSIRC {
 					case "324":
 						Channel chan = find_channel(split[3]);
 						chan.mode = string.joinv(" ",split[4:(split.length-1)]);
+						add_to_view(chan.name,_("Channel mode is %s").printf(chan.mode));
 						Main.gui.update_gui(this);
 						break;
 					case "331":
