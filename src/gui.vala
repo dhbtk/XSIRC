@@ -825,10 +825,10 @@ namespace XSIRC {
 		public static void spawn_about_cb(Gtk.Action action) {
 			Gtk.AboutDialog.set_url_hook((Gtk.AboutDialogActivateLinkFunc)open_browser);
 			Gtk.AboutDialog d = new Gtk.AboutDialog();
-			d.authors = {"Eduardo Niehues (NieXS) <neo.niexs@gmail.com>"};
+			d.authors = {"Eduardo Niehues (NieXS) <neo.niexs@gmail.com>","Simon Lindholm <simon.lindholdm10@gmail.com>"};
 			d.artists = {"MonkeyofDoom (found in Foonetic and xkcd fora)"};
-			d.copyright = _("Copyright (c) 2010 Eduardo Niehues. All rights reserved.");
-			d.license = """Copyright (c) 2010, Eduardo Niehues.
+			d.copyright = _("Copyright (c) 2010-11 Eduardo Niehues. All rights reserved.");
+			d.license = """Copyright (c) 2010-11, Eduardo Niehues.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
