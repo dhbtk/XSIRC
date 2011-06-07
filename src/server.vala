@@ -782,9 +782,11 @@ namespace XSIRC {
 						break;
 					case "324":
 						Channel chan = find_channel(split[3]);
-						chan.mode = string.joinv(" ",split[4:(split.length-1)]);
-						add_to_view(chan.name,_("Channel mode is %s").printf(chan.mode));
-						Main.gui.update_gui(this);
+						if(chan.mode != string.joinv(" ",split[4:(split.length-1)])) {
+							chan.mode = string.joinv(" ",split[4:(split.length-1)]);
+							add_to_view(chan.name,_("Channel mode is %s").printf(chan.mode));
+							Main.gui.update_gui(this);
+						}
 						break;
 					case "331":
 						add_to_view(split[2],_("No topic is set"));
