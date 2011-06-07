@@ -485,7 +485,7 @@ namespace XSIRC {
 						Main.server_manager.on_connect(this);
 						nick_tries = 0;
 						nick = split[2];
-						add_to_view(_("<server>"),_("[Server info] Welcome to the Internet Relay Network ")+nick);
+						add_to_view(_("<server>"),_("[Server info] Welcome to the Internet Relay Network %s").printf(nick));
 						break;
 					case "002":
 					case "003":
