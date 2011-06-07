@@ -825,7 +825,7 @@ namespace XSIRC {
 		public static void spawn_about_cb(Gtk.Action action) {
 			Gtk.AboutDialog.set_url_hook((Gtk.AboutDialogActivateLinkFunc)open_browser);
 			Gtk.AboutDialog d = new Gtk.AboutDialog();
-			d.authors = {"Diana Horbatiuk (NieXS) <diana@dianahorbatiuk.com>","Simon Lindholm <simon.lindholdm10@gmail.com>"};
+			d.authors = {"Diana Horbatiuk (NieXS) <diana@dianahorbatiuk.com>","Simon Lindholm (operator[]) <simon.lindholm10@gmail.com>"};
 			d.artists = {"MonkeyofDoom (found in Foonetic and xkcd fora)"};
 			d.copyright = _("Copyright (c) 2010-11 Diana Horbatiuk. All rights reserved.");
 			d.license = """Copyright (c) 2010-11, Diana Horbatiuk.
