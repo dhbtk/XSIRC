@@ -370,8 +370,8 @@ msgid "%s has invited you to %s."
 msgstr "%s te ha invitado a %s"
 
 #: src/server.vala:488
-msgid "[Server info] Welcome to the Internet Relay Network "
-msgstr "[Info del servidor] Bienvenido al Red de Internet"
+msgid "[Server info] Welcome to the Internet Relay Network %s"
+msgstr "[Info del servidor] Bienvenido al Red de Internet %s"
 
 #: src/server.vala:492
 msgid "[Server info] "
