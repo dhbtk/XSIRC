@@ -34,15 +34,15 @@ msgstr ""
 
 #: src/gui.vala:26
 msgid "_Client"
-msgstr "_Klient"
+msgstr "_Arkiv"
 
 #: src/gui.vala:27
 msgid "Networks list"
-msgstr "Nätverk"
+msgstr "N_ätverk"
 
 #: src/gui.vala:28
 msgid "_Connect..."
-msgstr "_Anslut..."
+msgstr "_Anslut till nytt nätverk"
 
 #: src/gui.vala:28
 msgid "Connect to a server."
@@ -74,7 +74,7 @@ msgstr "_Verktyg"
 
 #: src/gui.vala:45
 msgid "_View"
-msgstr "V_y"
+msgstr "V_isa"
 
 #: src/gui.vala:46
 msgid "Previous server"
@@ -114,7 +114,7 @@ msgstr "_Koppla från"
 
 #: src/gui.vala:67
 msgid "_Reconnect"
-msgstr "Å_teranslut"
+msgstr "_Återanslut"
 
 #: src/gui.vala:68
 msgid "_Close"
@@ -122,7 +122,7 @@ msgstr "_Stäng"
 
 #: src/gui.vala:69
 msgid "Re_join all"
-msgstr "Återanslut till _alla"
+msgstr "Återanslut _till kanaler"
 
 #: src/gui.vala:70
 msgid "_Mark as away"
@@ -166,7 +166,7 @@ msgstr " (ansluter)"
 
 #: src/gui.vala:472
 msgid " (disconnected)"
-msgstr " (kopplades från)"
+msgstr " (frånkopplad)"
 
 #: src/gui.vala:478
 msgid " (out of channel)"
@@ -195,8 +195,8 @@ msgid "View name:"
 msgstr "Visa namn:"
 
 #: src/gui.vala:830
-msgid "Copyright (c) 2010 Eduardo Niehues. All rights reserved."
-msgstr "Copyright (c) 2010 Eduardo Niehues. Alla rättigheter reserverade."
+msgid "Copyright (c) 2010-11 Eduardo Niehues. All rights reserved."
+msgstr "Copyright (c) 2010-11 Eduardo Niehues. Alla rättigheter reserverade."
 
 #: src/gui.vala:861
 msgid "GTK+ IRC Client"
@@ -208,7 +208,7 @@ msgstr "Anslut till server"
 
 #: src/gui.vala:877
 msgid "Server URL:"
-msgstr "Server-URL:"
+msgstr "URL:"
 
 #: src/gui.vala:945
 msgid "Could not open web browser. Check your preferences."
@@ -303,7 +303,7 @@ msgstr "<server>"
 #: src/servermanager.vala:179
 #, c-format
 msgid "[Connection] Switching to server %s"
-msgstr "[Anslutning] Byter till server %s"
+msgstr "[Anslutning] Byter till server %s."
 
 #: src/servermanager.vala:187
 msgid "[Error] No more servers to connect to."
@@ -316,7 +316,7 @@ msgstr "Ping överskred sin tidsgräns. Ansluter igen..."
 #: src/server.vala:212
 #, c-format
 msgid "ERROR: error fetching line: %s"
-msgstr "FEL: det gick inte att hämta raden: %s"
+msgstr "[Fel] Det gick inte att hämta raden: %s"
 
 #: src/server.vala:253
 msgid "[Connection] Starting connection attempt..."
@@ -356,8 +356,8 @@ msgid "%s has invited you to %s."
 msgstr "%s har inbjudit dig till %s."
 
 #: src/server.vala:488
-msgid "[Server info] Welcome to the Internet Relay Network "
-msgstr "[Serverinfo] Välkommen till IRC "
+msgid "[Server info] Welcome to the Internet Relay Network %s"
+msgstr "[Serverinfo] Välkommen till IRC, %s."
 
 #: src/server.vala:492
 msgid "[Server info] "
@@ -375,7 +375,7 @@ msgstr ""
 #: src/server.vala:502
 #, c-format
 msgid "[Server info] %s are supported by this server"
-msgstr "[Serverinfo] %s stöds av den här servern"
+msgstr "[Serverinfo] Servern stödjer: %s"
 
 #: src/server.vala:509
 #, c-format
@@ -385,7 +385,7 @@ msgstr "[Auth] %s"
 #: src/server.vala:547
 #, c-format
 msgid "Topic set by %s on %s"
-msgstr "Ämne satt av %s på %s"
+msgstr "Ämne satt av %s på %s."
 
 #: src/server.vala:557
 #, c-format
@@ -425,7 +425,7 @@ msgstr "[Fel: 407] För många mottagare för meddelande."
 #: src/server.vala:578
 #, c-format
 msgid "[Error:408] No such service: %s"
-msgstr "[Fel: 408] Ingen sådan tjänst: %s"
+msgstr "[Fel: 408] Tjänsten \"%s\" finns inte."
 
 #: src/server.vala:581
 msgid "[Error:409] No origin specified."
@@ -609,7 +609,7 @@ msgstr "[Fel: 481] Tillstånd nekat: du är inte en IRC-operatör."
 #: src/server.vala:714
 #, c-format
 msgid "[Error:482] You're not an operator in %s"
-msgstr "[Fel: 482] Du är inte en operatör i %s"
+msgstr "[Fel: 482] Du är inte en operatör i %s."
 
 #: src/server.vala:717
 msgid "[Error:483] You cannot kill a server."
@@ -876,31 +876,31 @@ msgstr "%s svar från %s: %s"
 
 #: plugins/highlights.vala:29
 msgid "Highlights"
-msgstr "Aviseringar"
+msgstr "Färgmarkeringar"
 
 #: plugins/highlights.vala:30
 msgid "Adds support for configurable highlights."
-msgstr "Lägger till stöd för konfigurerbara aviseringar."
+msgstr "Lägger till stöd för konfigurerbara färgmarkeringar."
 
 #: plugins/highlights.vala:37
 msgid "Highlight on _nickname"
-msgstr "Avisera vid a_lias"
+msgstr "Färgmarkera vid a_lias"
 
 #: plugins/highlights.vala:44
 msgid "Highlight on n_otices"
-msgstr "Avisera vid _notiser"
+msgstr "Färgmarkera vid _notiser"
 
 #: plugins/highlights.vala:51
 msgid "Highlight on _private messages"
-msgstr "Avisera vid _privata meddelanden"
+msgstr "Färgmarkera vid _privata meddelanden"
 
 #: plugins/highlights.vala:58
 msgid "Highlight on _all messages"
-msgstr "Avisera vid _alla meddelanden"
+msgstr "Färgmarkera för _alla meddelanden"
 
 #: plugins/highlights.vala:66
 msgid "When highlighting:"
-msgstr "Vid avisering:"
+msgstr "Vid färgmarkering:"
 
 #: plugins/highlights.vala:67
 msgid "Blink on the taskbar"
@@ -920,7 +920,7 @@ msgstr "Lägg till ett meddelande till servervyn"
 
 #: plugins/highlights.vala:96
 msgid "Regexes to highlight on:"
-msgstr "Reguljära uttryck att avisera vid:"
+msgstr "Reguljära uttryck att färgmarkera vid:"
 
 #: plugins/ignore.vala:34
 msgid "Ignore"

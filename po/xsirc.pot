@@ -353,7 +353,8 @@ msgid "%s has invited you to %s."
 msgstr ""
 
 #: src/server.vala:488
-msgid "[Server info] Welcome to the Internet Relay Network "
+#, c-format
+msgid "[Server info] Welcome to the Internet Relay Network %s"
 msgstr ""
 
 #: src/server.vala:492
