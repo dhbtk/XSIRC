@@ -61,10 +61,7 @@
                       <object class="GtkTreeView" id="network_list">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection" id="treeview-selection1"/>
-                        </child>
-                      </object>
+                                              </object>
                     </child>
                   </object>
                   <packing>
@@ -164,9 +161,6 @@
                       <object class="GtkTreeView" id="server_list">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection" id="treeview-selection2"/>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -230,9 +224,6 @@
                       <object class="GtkTreeView" id="command_list">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection" id="treeview-selection3"/>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">True</property>
