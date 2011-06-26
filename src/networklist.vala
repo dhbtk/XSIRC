@@ -27,7 +27,11 @@ namespace XSIRC {
 		public NetworkList() {
 			builder = new Gtk.Builder();
 			try {
+#if WINDOWS
+				builder.add_from_file("resources\\networks.ui");
+#else
 				builder.add_from_file(PREFIX+"/share/xsirc/networks.ui");
+#endif
 			} catch(Error e) {
 				Posix.exit(Posix.EXIT_FAILURE);
 			}
