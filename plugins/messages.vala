@@ -22,7 +22,11 @@ namespace XSIRC {
 			CHANUSERMODE,
 			CHANMODE,
 			MODE,
-			TOPIC
+			TOPIC,
+			SENT_NOTICE,
+			SENT_CTCP,
+			SENT_PRIVMSG,
+			SENT_ACTION
 		}
 		
 		private struct MessageType {
@@ -49,7 +53,11 @@ namespace XSIRC {
 			{MessageID.CHANUSERMODE,N_("Channel user mode change"),"$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES, $TARGETS"},
 			{MessageID.CHANMODE,N_("Channel mode change"),"$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $MODES"},
 			{MessageID.MODE,N_("User mode change"),"$NICK, $MODES"},
-			{MessageID.TOPIC,N_("Topic change"),"$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $TOPIC"}
+			{MessageID.TOPIC,N_("Topic change"),"$USERNICK, $USERNAME, $USERMASK, $CHANNEL, $TOPIC"},
+			{MessageID.SENT_NOTICE,N_("Sent NOTICE"),"$NICK, $MESSAGE"},
+			{MessageID.SENT_CTCP,N_("Sent CTCP messages"),"$NICK, $MESSAGE"},
+			{MessageID.SENT_PRIVMSG,N_("Sent messages"),"$RANK, $NICK, $MESSAGE"},
+			{MessageID.SENT_ACTION,N_("Sent actions"),"$NICK, $MESSAGE"}
 		};
 		
 		private const DefaultMessage[] default_messages = {
@@ -57,7 +65,7 @@ namespace XSIRC {
 			{MessageID.PART,N_("$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]")},
 			{MessageID.KICK,N_("$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]")},
 			{MessageID.NICK,N_("$USERNICK is now known as $NEWNICK.")},
-			{MessageID.PRIVMSG,N_("<$USERRANK$USERNICK> $MESSAGE")},
+			{MessageID.PRIVMSG,N_("<$$USERRANK$USERNICK> $MESSAGE")},
 			{MessageID.ACTION,N_("*  $USERNICK $MESSAGE")},
 			{MessageID.CTCPMSG,N_("Got CTCP $REQUEST from $USERNICK")},
 			{MessageID.NOTICE,N_("-$USERNICK- $MESSAGE")},
@@ -65,7 +73,11 @@ namespace XSIRC {
 			{MessageID.CHANUSERMODE,N_("$USERNICK sets mode $MODES on $TARGETS")},
 			{MessageID.CHANMODE,N_("$USERNICK sets $CHANNEL's mode: $MODES")},
 			{MessageID.MODE,N_("Changing mode: $MODES")},
-			{MessageID.TOPIC,N_("$USERNICK sets the topic to $TOPIC")}
+			{MessageID.TOPIC,N_("$USERNICK sets the topic to $TOPIC")},
+			{MessageID.SENT_NOTICE,N_("-$BOLD$NICK$BOLD- $MESSAGE")},
+			{MessageID.SENT_CTCP,N_(">> $BOLD$CTCP $MESSAGE$BOLD")},
+			{MessageID.SENT_PRIVMSG,N_("<$BOLD$RANK$NICK$BOLD> $MESSAGE")},
+			{MessageID.SENT_ACTION,N_("$BOLD*  $NICK$BOLD $MESSAGE")}
 		};
 		
 		private HashMap<MessageID,string> messages = new HashMap<MessageID,string>();
@@ -121,7 +133,7 @@ namespace XSIRC {
 		}
 		
 		private void load_messages() {
-			string[] names = {"JOIN","PART","KICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC"};
+			string[] names = {"JOIN","PART","KICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC","SENT_NOTICE","SENT_CTCP","SENT_PRIVMSG","SENT_ACTION"};
 			try {
 				KeyFile conf = new KeyFile();
 				conf.load_from_file(Environment.get_user_config_dir()+"/xsirc/messages.conf",0);
@@ -138,7 +150,7 @@ namespace XSIRC {
 		}
 		
 		private void save_messages() {
-			string[] names = {"JOIN","PART","KICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC"};
+			string[] names = {"JOIN","PART","KICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC","SENT_NOTICE","SENT_CTCP","SENT_PRIVMSG","SENT_ACTION"};
 			try {
 				KeyFile conf = new KeyFile();
 				int i = 0;
@@ -157,14 +169,7 @@ namespace XSIRC {
 		public override bool on_join(Server server,string usernick,string username,string usermask,string channel) {
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL"};
 			string[] replacements = {usernick,username,usermask,channel};
-			int i = 0;
-			string result = messages[MessageID.JOIN];
-			foreach(string s in replaced) {
-				if(s in result) {
-					result = result.replace(s,replacements[i]);
-				}
-				i++;
-			}
+			string result = apply_message_style(MessageID.JOIN,replaced,replacements);
 			server.add_to_view(channel,result);
 			return true;
 		}
@@ -172,14 +177,7 @@ namespace XSIRC {
 		public override bool on_part(Server server,string usernick,string username,string usermask,string channel,string message) {
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$MESSAGE"};
 			string[] replacements = {usernick,username,usermask,channel,message};
-			int i = 0;
-			string result = messages[MessageID.PART];
-			foreach(string s in replaced) {
-				if(s in result) {
-					result = result.replace(s,replacements[i]);
-				}
-				i++;
-			}
+			string result = apply_message_style(MessageID.PART,replaced,replacements);
 			server.add_to_view(channel,result);
 			return true;
 		}
@@ -187,14 +185,7 @@ namespace XSIRC {
 		public override bool on_kick(Server server,string kicked,string usernick,string username,string usermask,string channel,string message) {
 			string[] replaced = {"$KICKED","$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$MESSAGE"};
 			string[] replacements = {kicked,usernick,username,usermask,channel,message};
-			int i = 0;
-			string result = messages[MessageID.KICK];
-			foreach(string s in replaced) {
-				if(s in result) {
-					result = result.replace(s,replacements[i]);
-				}
-				i++;
-			}
+			string result = apply_message_style(MessageID.KICK,replaced,replacements);
 			server.add_to_view(channel,result);
 			return true;
 		}
@@ -202,14 +193,7 @@ namespace XSIRC {
 		public override bool on_nick(Server server,string new_nick,string usernick,string username,string usermask) {
 			string[] replaced = {"$NEWNICK","$USERNICK","$USERNAME","$USERMASK"};
 			string[] replacements = {new_nick,usernick,username,usermask};
-			int i = 0;
-			string result = messages[MessageID.NICK];
-			foreach(string s in replaced) {
-				if(s in result) {
-					result = result.replace(s,replacements[i]);
-				}
-				i++;
-			}
+			string result = apply_message_style(MessageID.NICK,replaced,replacements);
 			foreach(Server.Channel channel in server.channels) {
 				if(usernick.down() in channel.users) {
 					server.add_to_view(channel.name,result);
@@ -239,39 +223,18 @@ namespace XSIRC {
 				string my_message = message.replace("\x01","").substring(7);
 				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE"};
 				string[] replacements = {usernick,username,usermask,my_message};
-				int i = 0;
-				string result = messages[MessageID.ACTION];
-				foreach(string s in replaced) {
-					if(s in result) {
-						result = result.replace(s,replacements[i]);
-					}
-					i++;
-				}
+				string result = apply_message_style(MessageID.ACTION,replaced,replacements);
 				server.add_to_view(my_target,result);
 			} else if(message.has_prefix("\x01") && message.has_suffix("\x01")) { // CTCPMSG
 				string my_message = message.replace("\x01","");
 				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$REQUEST"};
 				string[] replacements = {usernick,username,usermask,my_message};
-				int i = 0;
-				string result = messages[MessageID.CTCPMSG];
-				foreach(string s in replaced) {
-					if(s in result) {
-						result = result.replace(s,replacements[i]);
-					}
-					i++;
-				}
+				string result = apply_message_style(MessageID.CTCPMSG,replaced,replacements);
 				server.add_to_view(_("<server>"),result);
 			} else { // PRIVMSG
 				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE","$USERRANK"};
 				string[] replacements = {usernick,username,usermask,message,userrank};
-				int i = 0;
-				string result = messages[MessageID.PRIVMSG];
-				foreach(string s in replaced) {
-					if(s in result) {
-						result = result.replace(s,replacements[i]);
-					}
-					i++;
-				}
+				string result = apply_message_style(MessageID.PRIVMSG,replaced,replacements);
 				server.add_to_view(my_target,result);
 			}
 			return true;
@@ -285,14 +248,7 @@ namespace XSIRC {
 			string my_target = target.down() == server.nick.down() ? usernick : target;
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE"};
 			string[] replacements = {usernick,username,usermask,message};
-			int i = 0;
-			string result = messages[MessageID.NOTICE];
-			foreach(string s in replaced) {
-				if(s in result) {
-					result = result.replace(s,replacements[i]);
-				}
-				i++;
-			}
+			string result = apply_message_style(MessageID.NOTICE,replaced,replacements);
 			if(server.find_view(my_target) != null) {
 				server.add_to_view(my_target,result);
 			} else {
@@ -304,14 +260,7 @@ namespace XSIRC {
 		public override bool on_quit(Server server,string usernick,string username,string usermask,string message) {
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE"};
 			string[] replacements = {usernick,username,usermask,message};
-			int i = 0;
-			string result = messages[MessageID.QUIT];
-			foreach(string s in replaced) {
-				if(s in result) {
-					result = result.replace(s,replacements[i]);
-				}
-				i++;
-			}
+			string result = apply_message_style(MessageID.QUIT,replaced,replacements);
 			foreach(Server.Channel channel in server.channels) {
 				if(usernick.down() in channel.users) {
 					server.add_to_view(channel.name,result);
@@ -328,14 +277,7 @@ namespace XSIRC {
 		public override bool on_chan_user_mode(Server server,string usernick,string username,string usermask,string channel,string modes,string targets) {
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$MODES","$TARGETS"};
 			string[] replacements = {usernick,username,usermask,channel,modes,targets};
-			int i = 0;
-			string result = messages[MessageID.CHANUSERMODE];
-			foreach(string s in replaced) {
-				if(s in result) {
-					result = result.replace(s,replacements[i]);
-				}
-				i++;
-			}
+			string result = apply_message_style(MessageID.CHANUSERMODE,replaced,replacements);;
 			server.add_to_view(channel,result);
 			return true;
 		}
@@ -343,14 +285,7 @@ namespace XSIRC {
 		public override bool on_chan_mode(Server server,string usernick,string username,string usermask,string channel,string modes) {
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$MODES"};
 			string[] replacements = {usernick,username,usermask,channel,modes};
-			int i = 0;
-			string result = messages[MessageID.CHANMODE];
-			foreach(string s in replaced) {
-				if(s in result) {
-					result = result.replace(s,replacements[i]);
-				}
-				i++;
-			}
+			string result = apply_message_style(MessageID.CHANMODE,replaced,replacements);
 			server.add_to_view(channel,result);
 			return true;
 		}
@@ -358,14 +293,7 @@ namespace XSIRC {
 		public override bool on_mode(Server server,string usernick,string mode) {
 			string[] replaced = {"$NICK","$MODES"};
 			string[] replacements = {usernick,mode};
-			int i = 0;
-			string result = messages[MessageID.MODE];
-			foreach(string s in replaced) {
-				if(s in result) {
-					result = result.replace(s,replacements[i]);
-				}
-				i++;
-			}
+			string result = apply_message_style(MessageID.MODE,replaced,replacements);
 			server.add_to_view(_("<server>"),result);
 			return true;
 		}
@@ -373,16 +301,67 @@ namespace XSIRC {
 		public override bool on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$TOPIC"};
 			string[] replacements = {usernick,username,usermask,channel,topic};
+			string result = apply_message_style(MessageID.TOPIC,replaced,replacements);
+			server.add_to_view(channel,result);
+			return true;
+		}
+		
+		public override bool on_sent_message(Server server,string nick,string target,string message,string raw_msg) {
+			// Finding our rank
+			string userrank = " ";
+			if(server.find_channel(target) != null) {
+				foreach(string user in server.find_channel(target).raw_users) {
+					if(user.substring(1).down() == nick.down()) {
+						userrank = user[0:1];
+						break;
+					}
+				}
+			}
+			if(raw_msg.down().has_prefix("notice")) {
+				string[] replaced = {"$NICK","$MESSAGE"};
+				string[] replacements = {nick,message};
+				string result = apply_message_style(MessageID.SENT_NOTICE,replaced,replacements);
+				server.add_to_view(target,result);
+			} else if(message.has_prefix("ACTION")) {
+				string[] replaced = {"$NICK","$MESSAGE"};
+				string[] replacements = {nick,message.replace("\x01","").substring(7)};
+				string result = apply_message_style(MessageID.SENT_ACTION,replaced,replacements);
+				server.add_to_view(target,result);
+			} else if(message.has_prefix("")) { // CTCP
+				string[] replaced = {"$NICK","$MESSAGE"};
+				string[] replacements = {nick,message.replace("\x01","")};
+				string result = apply_message_style(MessageID.SENT_CTCP,replaced,replacements);
+				server.add_to_view(target,result);
+			} else { // Normal messages
+				string[] replaced = {"$RANK","$NICK","$MESSAGE"};
+				string[] replacements = {userrank,nick,message};
+				string result = apply_message_style(MessageID.SENT_PRIVMSG,replaced,replacements);
+				server.add_to_view(target,result);
+			}
+			return true;
+		}
+		
+		private string apply_message_style(MessageID id,string[] replaced,string[] replacements) {
+			// We have to apply the formatting before adding the content, otherwise
+			// weird things are going to happen when someone says $COLOR in a channel
+			string[] format = {"$BOLD","$ITALIC","$UNDERLINE","$COLOR","$NORMAL"};
+			string[] codes  = {"\x02","\x16","\x1F","\x03","\x0F"};
+			string result = messages[id];
 			int i = 0;
-			string result = messages[MessageID.TOPIC];
+			foreach(string s in format) {
+				if(s in result) {
+					result = result.replace(s,codes[i]);
+				}
+				i++;
+			}
+			i = 0;
 			foreach(string s in replaced) {
 				if(s in result) {
 					result = result.replace(s,replacements[i]);
 				}
 				i++;
 			}
-			server.add_to_view(channel,result);
-			return true;
+			return result;
 		}
 	}
 }

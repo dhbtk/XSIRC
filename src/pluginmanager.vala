@@ -223,6 +223,14 @@ namespace XSIRC {
 			}
 		}
 		
+		internal void on_sent_message(Server server,string nick,string target,string message,string raw_msg) {
+			foreach(Plugin plugin in plugins) {
+				if(plugin.enabled && !plugin.on_sent_message(server,nick,target,message,raw_msg)) {
+					break;
+				}
+			}
+		}
+		
 		internal void on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
 			foreach(Plugin plugin in plugins) {
 				if(plugin.enabled && !plugin.on_topic(server,usernick,username,usermask,channel,topic)) {
