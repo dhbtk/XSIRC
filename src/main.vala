@@ -26,7 +26,7 @@ namespace XSIRC {
 		Environment.set_application_name(GETTEXT_PACKAGE);
 		try {
 #if WINDOWS
-			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file("resources\\xsirc.png");
+			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file("resources\\xsirc.png"));
 #else
 			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file(PREFIX+"/share/pixmaps/xsirc.png"));
 #endif
