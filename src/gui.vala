@@ -210,6 +210,7 @@ namespace XSIRC {
 			try {
 				ui_manager.add_ui_from_string(ui_manager_xml,-1);
 			} catch(Error e) {
+				stderr.printf("ui_manager.add_ui_from_string failed!\n");
 				Posix.exit(Posix.EXIT_FAILURE);
 			}
 			

@@ -65,7 +65,7 @@ namespace XSIRC {
 			{MessageID.PART,N_("$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]")},
 			{MessageID.KICK,N_("$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]")},
 			{MessageID.NICK,N_("$USERNICK is now known as $NEWNICK.")},
-			{MessageID.PRIVMSG,N_("<$$USERRANK$USERNICK> $MESSAGE")},
+			{MessageID.PRIVMSG,N_("<$USERRANK$USERNICK> $MESSAGE")},
 			{MessageID.ACTION,N_("*  $USERNICK $MESSAGE")},
 			{MessageID.CTCPMSG,N_("Got CTCP $REQUEST from $USERNICK")},
 			{MessageID.NOTICE,N_("-$USERNICK- $MESSAGE")},
