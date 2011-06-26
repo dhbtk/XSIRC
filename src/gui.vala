@@ -853,7 +853,11 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			try {
+#if WINDOWS
+				d.logo = new Gdk.Pixbuf.from_file("resources\\xsirc.png");
+#else
 				d.logo = new Gdk.Pixbuf.from_file(PREFIX+"/share/pixmaps/xsirc.png");
+#endif
 			} catch(Error e) {
 				
 			}

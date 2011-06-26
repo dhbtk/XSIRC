@@ -32,7 +32,11 @@ namespace XSIRC {
 		public PrefDialog() {
 			builder = new Gtk.Builder();
 			try {
+#if WINDOWS
+				builder.add_from_file("resources\\preferences.ui");
+#else
 				builder.add_from_file(PREFIX+"/share/xsirc/preferences.ui");
+#endif
 			} catch(Error e) {
 				Posix.exit(Posix.EXIT_FAILURE);
 			}

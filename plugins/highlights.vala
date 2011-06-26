@@ -114,7 +114,7 @@ public class HighlightsPlugin : XSIRC.Plugin {
 		tree_box.pack_start(bbox,false,false,0);
 		vbox.pack_start(tree_box,true,true,0);
 #if WINDOWS
-		icon = new Gtk.StatusIcon.from_file("share/pixmaps/xsirc.png");
+		icon = new Gtk.StatusIcon.from_file("resources\\xsirc.png");
 #else
 		icon = new Gtk.StatusIcon.from_file(PREFIX+"/share/pixmaps/xsirc.png");
 #endif
