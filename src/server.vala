@@ -339,15 +339,7 @@ namespace XSIRC {
 				}
 				foreach(string msg in split_message) {
 					string target = s.split(" ")[1];
-					if(s.down().has_prefix("notice")) {
-						add_to_view(target,"-%s- %s".printf(nick,msg));
-					} else if(msg.has_prefix("ACTION")) {
-						add_to_view(target,"*  %s %s".printf(nick,msg.replace("","").substring(7)));
-					} else if(msg.has_prefix("")) {
-						add_to_view(target,"-%s- CTCP %s".printf(nick,msg.replace("","")));
-					} else {
-						add_to_view(target,"< %s> %s".printf(nick,msg));
-					}
+					Main.plugin_manager.on_sent_message(this,nick,target,msg,s);
 					TimeoutSource src = new TimeoutSource((int)(priority*1000));
 					src.set_callback(() => {
 						raw_send(prefix+msg);

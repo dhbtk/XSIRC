@@ -1,9 +1,7 @@
 GUI:
-	* Improve internationalization: Figure out why the menus aren't being checked
-	  out by gettext, and localize the default messages for JOINs, PARTs, etc.
-	* Use the status bar: Show highlights on it, and connection/disconnection/
-	  connection error messages.
-	* Implement the auto-away timer.
+	* Add more colors: color server messages, JOINs, PARTs, etc and nicknames
+	 differently, so that text is easily identifiable at glance.
+	* Redo the Messages and Notifications preferences (they are terrifyingly ugly)
 Server:
 	* Treat non-RFC compliant servers better: networks like GIMPnet send the AUTH
 	  notices as "NOTICE AUTH :*** msg" instead of ":server NOTICE AUTH :***",
@@ -13,3 +11,6 @@ Misc:
 	  or nickname of sender, and let JOINs, PARTs, NICKs and QUITs be selectively
 	  hidden for each channel.
 	* Add Lua scripting support.
+	* Also, update the website, geez.
+	* And possibly release a new version soon.
+	* Fix CTCP PING

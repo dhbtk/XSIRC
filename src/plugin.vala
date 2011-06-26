@@ -59,6 +59,10 @@ namespace XSIRC {
 			return true;
 		}
 		
+		public virtual bool on_sent_message(Server server,string nick,string target,string message,string raw_msg) {
+			return true;
+		}
+		
 		public virtual bool on_startup() {
 			return true;
 		}
