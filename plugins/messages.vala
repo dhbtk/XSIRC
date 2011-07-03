@@ -65,19 +65,19 @@ namespace XSIRC {
 			{MessageID.PART,N_("$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]")},
 			{MessageID.KICK,N_("$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]")},
 			{MessageID.NICK,N_("$USERNICK is now known as $NEWNICK.")},
-			{MessageID.PRIVMSG,N_("<$USERRANK$USERNICK> $MESSAGE")},
-			{MessageID.ACTION,N_("*  $USERNICK $MESSAGE")},
+			{MessageID.PRIVMSG,"<$USERRANK$USERNICK> $MESSAGE"},
+			{MessageID.ACTION,"*  $USERNICK $MESSAGE"},
 			{MessageID.CTCPMSG,N_("Got CTCP $REQUEST from $USERNICK")},
-			{MessageID.NOTICE,N_("-$USERNICK- $MESSAGE")},
+			{MessageID.NOTICE,"-$USERNICK- $MESSAGE"},
 			{MessageID.QUIT,N_("$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]")},
 			{MessageID.CHANUSERMODE,N_("$USERNICK sets mode $MODES on $TARGETS")},
 			{MessageID.CHANMODE,N_("$USERNICK sets $CHANNEL's mode: $MODES")},
 			{MessageID.MODE,N_("Changing mode: $MODES")},
 			{MessageID.TOPIC,N_("$USERNICK sets the topic to $TOPIC")},
-			{MessageID.SENT_NOTICE,N_("-$BOLD$NICK$BOLD- $MESSAGE")},
-			{MessageID.SENT_CTCP,N_(">> $BOLD$CTCP $MESSAGE$BOLD")},
-			{MessageID.SENT_PRIVMSG,N_("<$BOLD$RANK$NICK$BOLD> $MESSAGE")},
-			{MessageID.SENT_ACTION,N_("$BOLD*  $NICK$BOLD $MESSAGE")}
+			{MessageID.SENT_NOTICE,"-$BOLD$NICK$BOLD- $MESSAGE"},
+			{MessageID.SENT_CTCP,">> $BOLD$CTCP $MESSAGE$BOLD"},
+			{MessageID.SENT_PRIVMSG,"<$BOLD$RANK$NICK$BOLD> $MESSAGE"},
+			{MessageID.SENT_ACTION,"$BOLD*  $NICK$BOLD $MESSAGE"}
 		};
 		
 		private HashMap<MessageID,string> messages = new HashMap<MessageID,string>();
