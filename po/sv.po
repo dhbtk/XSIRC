@@ -136,81 +136,81 @@ msgstr "_Hjälp"
 msgid "_Online help"
 msgstr "Online-_hjälp"
 
-#: src/gui.vala:235 src/gui.vala:485
+#: src/gui.vala:236 src/gui.vala:486
 msgid "No users"
 msgstr "Inga användare"
 
-#: src/gui.vala:249
+#: src/gui.vala:250
 msgid "Users"
 msgstr "Användare"
 
 #. l10n: The %d is the number of networks, %s is either "network" (singular) or "networks" (plural)
-#: src/gui.vala:426
+#: src/gui.vala:427
 #, c-format
 msgid "Really quit? You are connected to %d IRC %s."
 msgstr "Är du säker på att du vill avsluta? Du är ansluten till %d IRC-%s."
 
 # See above
-#: src/gui.vala:426
+#: src/gui.vala:427
 msgid "networks"
 msgstr "nätverk"
 
 # See above
-#: src/gui.vala:426
+#: src/gui.vala:427
 msgid "network"
 msgstr "nätverk"
 
-#: src/gui.vala:470
+#: src/gui.vala:471
 msgid " (connecting)"
 msgstr " (ansluter)"
 
-#: src/gui.vala:472
+#: src/gui.vala:473
 msgid " (disconnected)"
 msgstr " (frånkopplad)"
 
-#: src/gui.vala:478
+#: src/gui.vala:479
 msgid " (out of channel)"
 msgstr " (borta från kanal)"
 
-#: src/gui.vala:481
+#: src/gui.vala:482
 #, c-format
 msgid " (%d users)"
 msgstr " (%d användare)"
 
-#: src/gui.vala:482
+#: src/gui.vala:483
 #, c-format
 msgid "%d users"
 msgstr "%d användare"
 
-#: src/gui.vala:506
+#: src/gui.vala:507
 msgid "XSIRC - Idle"
 msgstr "XSIRC - Inaktiv"
 
-#: src/gui.vala:687
+#: src/gui.vala:688
 msgid "Open view"
 msgstr "Öppna vy"
 
-#: src/gui.vala:696
+#: src/gui.vala:697
 msgid "View name:"
 msgstr "Visa namn:"
 
-#: src/gui.vala:830
+#: src/gui.vala:831
 msgid "Copyright (c) 2010-11 Eduardo Niehues. All rights reserved."
 msgstr "Copyright (c) 2010-11 Eduardo Niehues. Alla rättigheter reserverade."
 
-#: src/gui.vala:861
+#: src/gui.vala:866
 msgid "GTK+ IRC Client"
 msgstr "GTK+ IRC-klient"
 
-#: src/gui.vala:875
+#: src/gui.vala:880
 msgid "Connect to server"
 msgstr "Anslut till server"
 
-#: src/gui.vala:877
+#: src/gui.vala:882
 msgid "Server URL:"
 msgstr "URL:"
 
-#: src/gui.vala:945
+#: src/gui.vala:950
 msgid "Could not open web browser. Check your preferences."
 msgstr "Kunde inte öppna webbläsare. Kolla igenom dina inställningar."
 
@@ -218,85 +218,85 @@ msgstr "Kunde inte öppna webbläsare. Kolla igenom dina inställningar."
 msgid "Could not parse the macros file. Loading default macros."
 msgstr "Kunde inte tolka macrofilen. Laddar standardmacron."
 
-#: src/networklist.vala:45
+#: src/networklist.vala:49
 msgid "Networks"
 msgstr "Nätverk"
 
-#: src/networklist.vala:58
+#: src/networklist.vala:62
 msgid "Commands"
 msgstr "Kommandon"
 
-#: src/networklist.vala:69
+#: src/networklist.vala:73
 msgid "Servers"
 msgstr "Servrar"
 
-#: src/networklist.vala:76
+#: src/networklist.vala:80
 msgid "New Network"
 msgstr "Nytt nätverk"
 
-#: src/networklist.vala:96
+#: src/networklist.vala:100
 msgid "Are you sure? You cannot undo this."
 msgstr "Är du säker? Du kan inte ångra det här."
 
-#: src/networklist.vala:322
+#: src/networklist.vala:326
 msgid "The string entered isn't a valid server URL."
 msgstr "Strängen du skrev inte är inte en giltig server-URL."
 
-#: src/prefdialog.vala:92 plugins/highlights.vala:100
+#: src/prefdialog.vala:96 plugins/highlights.vala:100
 msgid "Regex"
 msgstr "Reguljärt uttryck"
 
-#: src/prefdialog.vala:98
+#: src/prefdialog.vala:102
 msgid "Result"
 msgstr "Resultat"
 
-#: src/prefdialog.vala:220
+#: src/prefdialog.vala:224
 msgid "The string entered isn't a valid regular expression."
 msgstr "Strängen du skrev in är inte ett giltigt reguljärt uttryck."
 
 #: src/servermanager.vala:179 src/servermanager.vala:187 src/server.vala:165
 #: src/server.vala:196 src/server.vala:212 src/server.vala:253
 #: src/server.vala:255 src/server.vala:264 src/server.vala:271
-#: src/server.vala:280 src/server.vala:286 src/server.vala:380
-#: src/server.vala:476 src/server.vala:488 src/server.vala:492
-#: src/server.vala:495 src/server.vala:502 src/server.vala:509
-#: src/server.vala:557 src/server.vala:560 src/server.vala:563
-#: src/server.vala:566 src/server.vala:569 src/server.vala:572
-#: src/server.vala:575 src/server.vala:578 src/server.vala:581
-#: src/server.vala:584 src/server.vala:587 src/server.vala:590
-#: src/server.vala:593 src/server.vala:596 src/server.vala:599
-#: src/server.vala:602 src/server.vala:605 src/server.vala:608
-#: src/server.vala:611 src/server.vala:614 src/server.vala:632
-#: src/server.vala:635 src/server.vala:638 src/server.vala:641
-#: src/server.vala:644 src/server.vala:647 src/server.vala:650
-#: src/server.vala:653 src/server.vala:656 src/server.vala:659
-#: src/server.vala:662 src/server.vala:665 src/server.vala:668
-#: src/server.vala:671 src/server.vala:674 src/server.vala:677
-#: src/server.vala:680 src/server.vala:683 src/server.vala:686
-#: src/server.vala:689 src/server.vala:692 src/server.vala:695
-#: src/server.vala:698 src/server.vala:701 src/server.vala:705
-#: src/server.vala:707 src/server.vala:711 src/server.vala:714
-#: src/server.vala:717 src/server.vala:720 src/server.vala:723
-#: src/server.vala:726 src/server.vala:731 src/server.vala:734
-#: src/server.vala:737 src/server.vala:740 src/server.vala:744
-#: src/server.vala:748 src/server.vala:751 src/server.vala:754
-#: src/server.vala:757 src/server.vala:760 src/server.vala:763
-#: src/server.vala:766 src/server.vala:769 src/server.vala:772
-#: src/server.vala:775 src/server.vala:778 src/server.vala:781
-#: src/server.vala:805 src/server.vala:808 src/server.vala:811
-#: src/server.vala:814 src/server.vala:817 src/server.vala:847
-#: src/server.vala:850 src/server.vala:853 src/server.vala:856
-#: src/server.vala:859 src/server.vala:862 src/server.vala:865
-#: src/server.vala:868 src/server.vala:871 src/server.vala:874
-#: src/server.vala:877 src/server.vala:880 src/server.vala:883
-#: src/server.vala:886 src/server.vala:892 src/server.vala:895
-#: src/server.vala:898 src/server.vala:901 src/server.vala:904
-#: src/server.vala:909 src/server.vala:912 src/server.vala:915
-#: src/server.vala:918 src/server.vala:921 src/server.vala:924
-#: src/server.vala:1016 plugins/ctcp.vala:120 plugins/ctcp.vala:123
+#: src/server.vala:280 src/server.vala:286 src/server.vala:372
+#: src/server.vala:468 src/server.vala:480 src/server.vala:484
+#: src/server.vala:487 src/server.vala:494 src/server.vala:501
+#: src/server.vala:549 src/server.vala:552 src/server.vala:555
+#: src/server.vala:558 src/server.vala:561 src/server.vala:564
+#: src/server.vala:567 src/server.vala:570 src/server.vala:573
+#: src/server.vala:576 src/server.vala:579 src/server.vala:582
+#: src/server.vala:585 src/server.vala:588 src/server.vala:591
+#: src/server.vala:594 src/server.vala:597 src/server.vala:600
+#: src/server.vala:603 src/server.vala:606 src/server.vala:624
+#: src/server.vala:627 src/server.vala:630 src/server.vala:633
+#: src/server.vala:636 src/server.vala:639 src/server.vala:642
+#: src/server.vala:645 src/server.vala:648 src/server.vala:651
+#: src/server.vala:654 src/server.vala:657 src/server.vala:660
+#: src/server.vala:663 src/server.vala:666 src/server.vala:669
+#: src/server.vala:672 src/server.vala:675 src/server.vala:678
+#: src/server.vala:681 src/server.vala:684 src/server.vala:687
+#: src/server.vala:690 src/server.vala:693 src/server.vala:697
+#: src/server.vala:699 src/server.vala:703 src/server.vala:706
+#: src/server.vala:709 src/server.vala:712 src/server.vala:715
+#: src/server.vala:718 src/server.vala:723 src/server.vala:726
+#: src/server.vala:729 src/server.vala:732 src/server.vala:736
+#: src/server.vala:740 src/server.vala:743 src/server.vala:746
+#: src/server.vala:749 src/server.vala:752 src/server.vala:755
+#: src/server.vala:758 src/server.vala:761 src/server.vala:764
+#: src/server.vala:767 src/server.vala:770 src/server.vala:773
+#: src/server.vala:799 src/server.vala:802 src/server.vala:805
+#: src/server.vala:808 src/server.vala:811 src/server.vala:841
+#: src/server.vala:844 src/server.vala:847 src/server.vala:850
+#: src/server.vala:853 src/server.vala:856 src/server.vala:859
+#: src/server.vala:862 src/server.vala:865 src/server.vala:868
+#: src/server.vala:871 src/server.vala:874 src/server.vala:877
+#: src/server.vala:880 src/server.vala:886 src/server.vala:889
+#: src/server.vala:892 src/server.vala:895 src/server.vala:898
+#: src/server.vala:903 src/server.vala:906 src/server.vala:909
+#: src/server.vala:912 src/server.vala:915 src/server.vala:918
+#: src/server.vala:1010 plugins/ctcp.vala:120 plugins/ctcp.vala:123
 #: plugins/highlights.vala:260 plugins/highlights.vala:277
-#: plugins/highlights.vala:294 plugins/messages.vala:263
-#: plugins/messages.vala:299 plugins/messages.vala:369
+#: plugins/highlights.vala:294 plugins/messages.vala:233
+#: plugins/messages.vala:255 plugins/messages.vala:297
 msgid "<server>"
 msgstr "<server>"
 
@@ -345,25 +345,26 @@ msgstr "[Anslutning] Fel: kunde inte ansluta -- %s"
 msgid "[Connection] Connected! Sending USER, NICK and PASS."
 msgstr "[Anslutning] Ansluten! Skickar USER, NICK och PASS."
 
-#: src/server.vala:380
+#: src/server.vala:372
 #, c-format
 msgid "Error sending line: %s"
 msgstr "Ett fel uppstod med att skicka raden: %s"
 
-#: src/server.vala:476
+#: src/server.vala:468
 #, c-format
 msgid "%s has invited you to %s."
 msgstr "%s har inbjudit dig till %s."
 
-#: src/server.vala:488
+#: src/server.vala:480
+#, c-format
 msgid "[Server info] Welcome to the Internet Relay Network %s"
 msgstr "[Serverinfo] Välkommen till IRC, %s."
 
-#: src/server.vala:492
+#: src/server.vala:484
 msgid "[Server info] "
 msgstr "[Serverinfo] "
 
-#: src/server.vala:495
+#: src/server.vala:487
 #, c-format
 msgid ""
 "[Server info] Your server is %s running %s. Available user modes: %s. "
@@ -372,486 +373,486 @@ msgstr ""
 "[Serverinfo] Din server är %s och kör %s. Tillgängliga användarlägen: %s. "
 "Tillgängliga kanallägen: %s"
 
-#: src/server.vala:502
+#: src/server.vala:494
 #, c-format
 msgid "[Server info] %s are supported by this server"
 msgstr "[Serverinfo] Servern stödjer: %s"
 
-#: src/server.vala:509
+#: src/server.vala:501
 #, c-format
 msgid "[Auth] %s"
 msgstr "[Auth] %s"
 
-#: src/server.vala:547
+#: src/server.vala:539
 #, c-format
 msgid "Topic set by %s on %s"
 msgstr "Ämne satt av %s på %s."
 
-#: src/server.vala:557
+#: src/server.vala:549
 #, c-format
 msgid "[Error:401] No such nickname/channel: %s"
 msgstr "[Fel: 401] Aliaset eller kanalen %s finns inte."
 
-#: src/server.vala:560
+#: src/server.vala:552
 #, c-format
 msgid "[Error:402] No such server: %s"
 msgstr "[Fel: 402] Servern %s finns inte."
 
-#: src/server.vala:563
+#: src/server.vala:555
 #, c-format
 msgid "[Error:403] No such channel: %s"
 msgstr "[Fel: 403] Kanalen %s finns inte."
 
-#: src/server.vala:566
+#: src/server.vala:558
 #, c-format
 msgid "[Error:404] Cannot send to channel: %s"
 msgstr "[Fel: 404] Kan inte skicka ett meddelande till kanal %s."
 
-#: src/server.vala:569
+#: src/server.vala:561
 #, c-format
 msgid "[Error:405] Cannot join %s: joined too many channels."
 msgstr ""
 "[Fel: 405] Kan inte ansluta till %s: du är ansluten till för många kanaler."
 
-#: src/server.vala:572
+#: src/server.vala:564
 #, c-format
 msgid "[Error:406] There was no such nickname: %s"
 msgstr "[Fel: 406] Aliaset %s fanns inte."
 
-#: src/server.vala:575
+#: src/server.vala:567
 msgid "[Error:407] Too many targets for notice/message."
 msgstr "[Fel: 407] För många mottagare för meddelande."
 
-#: src/server.vala:578
+#: src/server.vala:570
 #, c-format
 msgid "[Error:408] No such service: %s"
 msgstr "[Fel: 408] Tjänsten \"%s\" finns inte."
 
-#: src/server.vala:581
+#: src/server.vala:573
 msgid "[Error:409] No origin specified."
 msgstr "[Fel: 409] Inget ursprung angivet."
 
-#: src/server.vala:584
+#: src/server.vala:576
 msgid "[Error:411] No recipient given for command."
 msgstr "[Fel: 411] Ingen mottagare angiven för kommando."
 
-#: src/server.vala:587
+#: src/server.vala:579
 msgid "[Error:412] No text to send."
 msgstr "[Fel: 412] Inget meddelande att skicka."
 
-#: src/server.vala:590
+#: src/server.vala:582
 #, c-format
 msgid "[Error:413] No toplevel domain specified for mask %s"
 msgstr "[Fel: 413] Ingen topnivådomän angiven för mask %s."
 
-#: src/server.vala:593
+#: src/server.vala:585
 #, c-format
 msgid "[Error:414] Wildcard in toplevel domain in mask %s"
 msgstr "[Fel: 414] Jokertecken i topnivådomän i mask %s."
 
-#: src/server.vala:596
+#: src/server.vala:588
 #, c-format
 msgid "[Error:415] Bad server/host mask: %s"
 msgstr "[Fel: 415] Dålig server- eller värdmask: %s"
 
-#: src/server.vala:599
+#: src/server.vala:591
 #, c-format
 msgid "[Error:421] Unknown command: %s"
 msgstr "[Fel: 421] Okänt kommando: %s"
 
-#: src/server.vala:602
+#: src/server.vala:594
 msgid "[MOTD] MOTD file missing"
 msgstr "[MOTD] MOTD-fil saknas"
 
-#: src/server.vala:605
+#: src/server.vala:597
 #, c-format
 msgid "[Admin] No admin info available for server %s"
 msgstr "[Admin] Ingen admininformation finns för servern %s."
 
-#: src/server.vala:608
+#: src/server.vala:600
 msgid "[Error:424] File error."
 msgstr "[Fel: 424] Fel i filoperation."
 
-#: src/server.vala:611
+#: src/server.vala:603
 msgid "[Error:431] No nickname given."
 msgstr "[Fel: 431] Inget alias angivet."
 
-#: src/server.vala:614
+#: src/server.vala:606
 msgid "[Error:432] Illegal nickname given."
 msgstr "[Fel: 432] Ogiltigt alias angivet."
 
-#: src/server.vala:632
+#: src/server.vala:624
 #, c-format
 msgid "[Error:433] Nickname %s already in use."
 msgstr "[Fel: 433] Aliaset %s används redan."
 
-#: src/server.vala:635
+#: src/server.vala:627
 msgid "[Error:436] Nickname collision kill."
 msgstr "[Fel: 436] Dödad p.g.a. namnkollision."
 
-#: src/server.vala:638
+#: src/server.vala:630
 #, c-format
 msgid "[Error:437] Nick/channel temporarily unavailable: %s"
 msgstr "[Fel: 437] Alias/kanal är för tillfället inte tillgänglig: %s"
 
-#: src/server.vala:641
+#: src/server.vala:633
 #, c-format
 msgid "[Error:441] %s isn't in channel %s."
 msgstr "[Fel: 441] %s finns inte i kanalen %s."
 
-#: src/server.vala:644
+#: src/server.vala:636
 #, c-format
 msgid "[Error:442] You're not in channel %s."
 msgstr "[Fel: 442] Du är inte med i kanalen %s."
 
-#: src/server.vala:647
+#: src/server.vala:639
 #, c-format
 msgid "[Error:443] %s is already in channel %s."
 msgstr "[Fel: 443] %s är redan med i kanalen %s."
 
-#: src/server.vala:650
+#: src/server.vala:642
 #, c-format
 msgid "[Error:444] User %s is not logged in."
 msgstr "[Fel: 444] Användaren %s är inte inloggad."
 
-#: src/server.vala:653
+#: src/server.vala:645
 msgid "[Error:445] SUMMON has been disabled."
 msgstr "[Fel: 445] SUMMON har inaktiverats."
 
-#: src/server.vala:656
+#: src/server.vala:648
 msgid "[Error:446] USERS has been disabled."
 msgstr "[Fel: 446] USERS har inaktiverats."
 
-#: src/server.vala:659
+#: src/server.vala:651
 msgid "[Error:451] You have not registered."
 msgstr "[Fel: 451] Du har inte registrerat dig."
 
-#: src/server.vala:662
+#: src/server.vala:654
 #, c-format
 msgid "[Error:461] Not enough parameters for command %s."
 msgstr "[Fel: 461] Inte tillräckligt många parametrar för kommando %s."
 
-#: src/server.vala:665
+#: src/server.vala:657
 msgid "[Error:462] You have already registered."
 msgstr "[Fel: 462] Du har redan registrerat dig."
 
-#: src/server.vala:668
+#: src/server.vala:660
 msgid "[Error:463] Your host is not priviledged."
 msgstr "[Fel: 463] Din värd är inte priviligerad."
 
-#: src/server.vala:671
+#: src/server.vala:663
 msgid "[Error:464] Password incorrect."
 msgstr "[Fel: 464] Felaktigt lösenord."
 
-#: src/server.vala:674
+#: src/server.vala:666
 msgid "[Error:465] You are banned from this server."
 msgstr "[Fel: 465] Du är bannlyst från servern."
 
-#: src/server.vala:677
+#: src/server.vala:669
 msgid "[Error:466] You will be banned from this server."
 msgstr "[Fel: 466] Du kommer att bli bannlyst från servern."
 
-#: src/server.vala:680
+#: src/server.vala:672
 #, c-format
 msgid "[Error:467] The key for channel %s has already been set."
 msgstr "[Fel: 467] Lösenordet för kanalen %s har redan satts."
 
-#: src/server.vala:683
+#: src/server.vala:675
 #, c-format
 msgid "[Error:471] Cannot join channel %s: channel is full (+l)"
 msgstr "[Fel: 471] Kan inte ansluta till kanal %s: kanalen är full (+l)."
 
-#: src/server.vala:686
+#: src/server.vala:678
 #, c-format
 msgid "[Error:472] The server does not recognize the mode char %s."
 msgstr "[Fel: 472] Servern känner inte igen lägesbokstaven %s."
 
-#: src/server.vala:689
+#: src/server.vala:681
 #, c-format
 msgid "[Error:473] Cannot join channel %s: channel is invite-only (+i)"
 msgstr ""
 "[Fel: 473] Kan inte ansluta till kanal %s: den är bara för inbjudna (+i)."
 
-#: src/server.vala:692
+#: src/server.vala:684
 #, c-format
 msgid "[Error:474] Cannot join channel %s: you are banned (+b)"
 msgstr "[Fel: 474] Kan inte ansluta till kanal %s: du är bannlyst (+b)."
 
-#: src/server.vala:695
+#: src/server.vala:687
 #, c-format
 msgid "[Error:475] Cannot join channel %s: bad key."
 msgstr "[Fel: 475] Kan inte ansluta till kanal %s: felaktigt lösenord (+k)."
 
-#: src/server.vala:698
+#: src/server.vala:690
 #, c-format
 msgid "[Error:476] Bad channel mask for %s."
 msgstr "[Fel: 476] Dålig kanalmask för %s."
 
-#: src/server.vala:701
+#: src/server.vala:693
 #, c-format
 msgid "[Error:477] The channel %s does not support modes."
 msgstr "[Fel: 477] Kanalen %s stödjer inte lägen."
 
-#: src/server.vala:705
+#: src/server.vala:697
 #, c-format
 msgid "[Error:478] Channel %s's ban list is full."
 msgstr "[Fel: 478] Banlistan är full i kanalen %s."
 
-#: src/server.vala:707
+#: src/server.vala:699
 #, c-format
 msgid "[Error:478] Channel %s's exceptions list is full."
 msgstr "[Fel: 478] Undantagslistan är full i kanalen %s."
 
-#: src/server.vala:711
+#: src/server.vala:703
 msgid "[Error:481] Permission denied: you are not an IRC operator."
 msgstr "[Fel: 481] Tillstånd nekat: du är inte en IRC-operatör."
 
-#: src/server.vala:714
+#: src/server.vala:706
 #, c-format
 msgid "[Error:482] You're not an operator in %s"
 msgstr "[Fel: 482] Du är inte en operatör i %s."
 
-#: src/server.vala:717
+#: src/server.vala:709
 msgid "[Error:483] You cannot kill a server."
 msgstr "[Fel: 483] Du kan inte döda en server."
 
-#: src/server.vala:720
+#: src/server.vala:712
 msgid "[Error:491] No O-lines for your host."
 msgstr "[Fel: 491] Saknar O-rader för din värd."
 
-#: src/server.vala:723
+#: src/server.vala:715
 msgid "[Error:501] Unknown mode flag."
 msgstr "[Fel: 501] Okänd lägesflagga."
 
-#: src/server.vala:726
+#: src/server.vala:718
 msgid "[Error:502] Cannot view or set the mode for other users."
 msgstr "[Fel: 502] Kan inte se eller ändra läget för andra användare."
 
-#: src/server.vala:731
+#: src/server.vala:723
 #, c-format
 msgid "[Userhost] %s: %s"
 msgstr "[USERHOST] %s: %s"
 
-#: src/server.vala:734
+#: src/server.vala:726
 #, c-format
 msgid "[ISON] %s is on"
 msgstr "[ISON] %s är på."
 
-#: src/server.vala:737
+#: src/server.vala:729
 #, c-format
 msgid "[WHOIS] %s is away: %s"
 msgstr "[WHOIS] %s är borta: %s"
 
-#: src/server.vala:740
+#: src/server.vala:732
 msgid "[Away] You are no longer marked as away."
 msgstr "[Borta] Du är inte längre markerad som borta."
 
-#: src/server.vala:744
+#: src/server.vala:736
 msgid "[Away] You are now marked as away."
 msgstr "[Borta] Du är nu markerad som borta."
 
-#: src/server.vala:748
+#: src/server.vala:740
 #, c-format
 msgid "[WHOIS] %s: %s@%s: %s"
 msgstr "[WHOIS] %s: %s@%s: %s"
 
-#: src/server.vala:751
+#: src/server.vala:743
 #, c-format
 msgid "[WHOIS] %s: in server %s: %s"
 msgstr "[WHOIS] %s: på servern %s: %s"
 
-#: src/server.vala:754
+#: src/server.vala:746
 #, c-format
 msgid "[WHOIS] %s: is an IRCop"
 msgstr "[WHOIS] %s: är en IRCop."
 
-#: src/server.vala:757
+#: src/server.vala:749
 #, c-format
 msgid "[WHOIS] %s: %s seconds idle"
 msgstr "[WHOIS] %s: Inaktiv i %s sekunder."
 
-#: src/server.vala:760
+#: src/server.vala:752
 #, c-format
 msgid "[WHOIS] %s: end of /WHOIS list."
 msgstr "[WHOIS] %s: slut på /WHOIS-lista."
 
-#: src/server.vala:763
+#: src/server.vala:755
 #, c-format
 msgid "[WHOIS] %s: in channels %s"
 msgstr "[WHOIS] %s: i kanaler %s"
 
-#: src/server.vala:766
+#: src/server.vala:758
 #, c-format
 msgid "[WHOIS] %s: is a registered nickname"
 msgstr "[WHOIS] %s: är ett registrerat alias."
 
-#: src/server.vala:769
+#: src/server.vala:761
 #, c-format
 msgid "[WHOWAS] %s: %s@%s: %s"
 msgstr "[WHOWAS] %s: %s@%s: %s"
 
-#: src/server.vala:772
+#: src/server.vala:764
 #, c-format
 msgid "[WHOWAS] %s: end of /WHOWAS list."
 msgstr "[WHOWAS] %s: slut på /WHOWAS-lista."
 
-#: src/server.vala:775
+#: src/server.vala:767
 msgid "[List] Channel (Users) Topic"
 msgstr "[Lista] Kanal (Användare) Ämne"
 
-#: src/server.vala:778
+#: src/server.vala:770
 #, c-format
 msgid "[List] %s (%s) %s"
 msgstr "[Lista] %s (%s) %s"
 
-#: src/server.vala:781
+#: src/server.vala:773
 msgid "[List] end of /LIST."
 msgstr "[Lista] slut på /LIST."
 
-#: src/server.vala:786
+#: src/server.vala:779
 #, c-format
 msgid "Channel mode is %s"
 msgstr "Kanalläget är %s."
 
-#: src/server.vala:790
+#: src/server.vala:784
 msgid "No topic is set"
 msgstr "Inget ämne är satt."
 
-#: src/server.vala:794
+#: src/server.vala:788
 #, c-format
 msgid "Channel was created %s"
 msgstr "Kanalen skapades %s."
 
-#: src/server.vala:801
+#: src/server.vala:795
 #, c-format
 msgid "The topic is: %s"
 msgstr "Ämnet är: %s"
 
-#: src/server.vala:805
+#: src/server.vala:799
 #, c-format
 msgid "[Invite] inviting %s to %s"
 msgstr "[Inbjudan] bjuder in %s till %s."
 
-#: src/server.vala:808
+#: src/server.vala:802
 #, c-format
 msgid "[Summon] summoning %s to IRC"
 msgstr "[Tillkallan] tillkallar %s till IRC."
 
-#: src/server.vala:811
+#: src/server.vala:805
 #, c-format
 msgid "Server version: %s; server software: %s; %s"
 msgstr "Serverversion: %s; servermjukvara: %s; %s"
 
-#: src/server.vala:814
+#: src/server.vala:808
 #, c-format
 msgid "[WHO] %s: %s!%s@%s in server %s (%s) %s"
 msgstr "[WHO] %s: %s!%s@%s på server %s (%s) %s"
 
-#: src/server.vala:817
+#: src/server.vala:811
 #, c-format
 msgid "[WHO] in %s: end of /WHO list."
 msgstr "[WHO] i %s: slut på /WHO-lista."
 
-#: src/server.vala:847
+#: src/server.vala:841
 #, c-format
 msgid "[Links] %s %s :%s"
 msgstr "[Länkar] %s %s :%s"
 
-#: src/server.vala:850
+#: src/server.vala:844
 msgid "[Links] end of /LINKS list."
 msgstr "[Länkar] slut på /LINKS-lista."
 
-#: src/server.vala:853
+#: src/server.vala:847
 #, c-format
 msgid "[Banlist] %s: %s"
 msgstr "[Banlista] %s: %s"
 
-#: src/server.vala:856
+#: src/server.vala:850
 #, c-format
 msgid "[Banlist] %s: end of ban (mode +b) list."
 msgstr "[Banlista] %s: slut på banlista (läge +b)."
 
-#: src/server.vala:859
+#: src/server.vala:853
 #, c-format
 msgid "[Exceptions] %s: %s"
 msgstr "[Undantag] %s: %s"
 
-#: src/server.vala:862
+#: src/server.vala:856
 #, c-format
 msgid "[Exceptions] %s: end of exceptions (mode +e) list."
 msgstr "[Undantag] %s slut på undantagslista (läge +e)."
 
-#: src/server.vala:865
+#: src/server.vala:859
 #, c-format
 msgid "[Info] %s"
 msgstr "[Info] %s"
 
-#: src/server.vala:868
+#: src/server.vala:862
 msgid "[Info] end of /INFO list."
 msgstr "[Info] slut på /INFO-lista."
 
-#: src/server.vala:871
+#: src/server.vala:865
 #, c-format
 msgid "[MOTD] %s:"
 msgstr "[MOTD] %s:"
 
-#: src/server.vala:874
+#: src/server.vala:868
 msgid "[MOTD] "
 msgstr "[MOTD] "
 
-#: src/server.vala:877
+#: src/server.vala:871
 msgid "[MOTD] End of /MOTD command."
 msgstr "[MOTD] slut på /MOTD-kommando."
 
-#: src/server.vala:880
+#: src/server.vala:874
 msgid "[Oper] You are now an IRCop."
 msgstr "[Oper] Du är nu en IRCop."
 
-#: src/server.vala:883
+#: src/server.vala:877
 #, c-format
 msgid "[Rehash] Rehashing config file %s."
 msgstr "[Rehash] Hashar om konfigurationsfilen %s."
 
-#: src/server.vala:886
+#: src/server.vala:880
 #, c-format
 msgid "[Time] Server's local time: %s"
 msgstr "[Tid] Serverns lokala tid är %s."
 
-#: src/server.vala:892
+#: src/server.vala:886
 #, c-format
 msgid "[Mode] Your mode is: %s"
 msgstr "[Läge] Ditt läge är: %s"
 
-#: src/server.vala:895 src/server.vala:909
+#: src/server.vala:889 src/server.vala:903
 #, c-format
 msgid "[Server info] %s"
 msgstr "[Serverinfo] %s"
 
-#: src/server.vala:898
+#: src/server.vala:892
 #, c-format
 msgid "[Server info] %s operator(s) online"
 msgstr "[Serverinfo] %s operatörer online."
 
-#: src/server.vala:901
+#: src/server.vala:895
 #, c-format
 msgid "[Server info] %s unknown connection(s)"
 msgstr "[Serverinfo] %s okända anslutningar."
 
-#: src/server.vala:904
+#: src/server.vala:898
 #, c-format
 msgid "[Server info] %s channels formed"
 msgstr "[Serverinfo] %s kanaler skapade."
 
-#: src/server.vala:912
+#: src/server.vala:906
 #, c-format
 msgid "[Admin] Administrative info for %s:"
 msgstr "[Admin] Administratörsinformation för %s:"
 
-#: src/server.vala:915 src/server.vala:918 src/server.vala:921
+#: src/server.vala:909 src/server.vala:912 src/server.vala:915
 msgid "[Admin] "
 msgstr "[Admin] "
 
-#: src/server.vala:924
+#: src/server.vala:918
 #, c-format
 msgid "UNHANDLED MESSAGE: %s"
 msgstr "OHANTERAT MEDDELANDE: %s"
@@ -876,31 +877,31 @@ msgstr "%s svar från %s: %s"
 
 #: plugins/highlights.vala:29
 msgid "Highlights"
-msgstr "Färgmarkeringar"
+msgstr "Notifikationer"
 
 #: plugins/highlights.vala:30
 msgid "Adds support for configurable highlights."
-msgstr "Lägger till stöd för konfigurerbara färgmarkeringar."
+msgstr "Lägger till stöd för konfigurerbara notifikationer."
 
 #: plugins/highlights.vala:37
 msgid "Highlight on _nickname"
-msgstr "Färgmarkera vid a_lias"
+msgstr "Notifiera vid a_lias"
 
 #: plugins/highlights.vala:44
 msgid "Highlight on n_otices"
-msgstr "Färgmarkera vid _notiser"
+msgstr "Notifiera vid _notiser"
 
 #: plugins/highlights.vala:51
 msgid "Highlight on _private messages"
-msgstr "Färgmarkera vid _privata meddelanden"
+msgstr "Notifiera vid _privata meddelanden"
 
 #: plugins/highlights.vala:58
 msgid "Highlight on _all messages"
-msgstr "Färgmarkera för _alla meddelanden"
+msgstr "Notifiera för _alla meddelanden"
 
 #: plugins/highlights.vala:66
 msgid "When highlighting:"
-msgstr "Vid färgmarkering:"
+msgstr "Vid notifikation:"
 
 #: plugins/highlights.vala:67
 msgid "Blink on the taskbar"
@@ -920,7 +921,7 @@ msgstr "Lägg till ett meddelande till servervyn"
 
 #: plugins/highlights.vala:96
 msgid "Regexes to highlight on:"
-msgstr "Reguljära uttryck att färgmarkera vid:"
+msgstr "Reguljära uttryck att notifiera vid:"
 
 #: plugins/ignore.vala:34
 msgid "Ignore"
@@ -930,119 +931,123 @@ msgstr "Ignorera"
 msgid "Selectively ignore messages."
 msgstr "Selektivt ignorera meddelanden."
 
-#: plugins/messages.vala:40
+#: plugins/messages.vala:44
 msgid "User join"
 msgstr "Någon ansluter"
 
-#: plugins/messages.vala:41
+#: plugins/messages.vala:45
 msgid "User part"
 msgstr "Någon lämnar"
 
-#: plugins/messages.vala:42
+#: plugins/messages.vala:46
 msgid "User kicked"
 msgstr "Någon kickas"
 
-#: plugins/messages.vala:43
+#: plugins/messages.vala:47
 msgid "User changed nick"
 msgstr "Någon byter alias"
 
-#: plugins/messages.vala:44
+#: plugins/messages.vala:48
 msgid "Normal message"
 msgstr "Vanligt meddelande"
 
-#: plugins/messages.vala:45
+#: plugins/messages.vala:49
 msgid "User action (/me)"
 msgstr "Användarhändelse (/me)"
 
-#: plugins/messages.vala:46
+#: plugins/messages.vala:50
 msgid "CTCP request"
 msgstr "CTCP-förfrågan"
 
-#: plugins/messages.vala:47
+#: plugins/messages.vala:51
 msgid "Notice"
 msgstr "Notis"
 
-#: plugins/messages.vala:48
+#: plugins/messages.vala:52
 msgid "User disconnect"
 msgstr "Någon kopplar från"
 
-#: plugins/messages.vala:49
+#: plugins/messages.vala:53
 msgid "Channel user mode change"
 msgstr "Kanal ändrar användarläge"
 
-#: plugins/messages.vala:50
+#: plugins/messages.vala:54
 msgid "Channel mode change"
 msgstr "Kanal ändrar läge"
 
-#: plugins/messages.vala:51
+#: plugins/messages.vala:55
 msgid "User mode change"
 msgstr "Användarläge ändras"
 
-#: plugins/messages.vala:52
+#: plugins/messages.vala:56
 msgid "Topic change"
 msgstr "Ämne ändras"
 
-#: plugins/messages.vala:56
+#: plugins/messages.vala:57
+msgid "Sent NOTICE"
+msgstr "Skickade notiser"
+
+#: plugins/messages.vala:58
+msgid "Sent CTCP messages"
+msgstr "Skickade CTCP-meddelanden"
+
+#: plugins/messages.vala:59
+msgid "Sent messages"
+msgstr "Skickade meddelanden"
+
+#: plugins/messages.vala:60
+msgid "Sent actions"
+msgstr "Skickade handlingar"
+
+#: plugins/messages.vala:64
 msgid "$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL"
 msgstr "$USERNICK [$USERNAME@$USERMASK] har kommit in i $CHANNEL."
 
-#: plugins/messages.vala:57
+#: plugins/messages.vala:65
 msgid "$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]"
 msgstr "$USERNICK [$USERNAME@$USERMASK] har lämnat $CHANNEL [$MESSAGE]."
 
-#: plugins/messages.vala:58
+#: plugins/messages.vala:66
 msgid "$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]"
 msgstr "$USERNICK har kickat $KICKED från $CHANNEL [$MESSAGE]."
 
-#: plugins/messages.vala:59
+#: plugins/messages.vala:67
 msgid "$USERNICK is now known as $NEWNICK."
 msgstr "$USERNICK går nu under namnet $NEWNICK."
 
-#: plugins/messages.vala:60
-msgid "<$USERRANK$USERNICK> $MESSAGE"
-msgstr "<$USERRANK$USERNICK> $MESSAGE"
-
-#: plugins/messages.vala:61
-msgid "*  $USERNICK $MESSAGE"
-msgstr "*  $USERNICK $MESSAGE"
-
-#: plugins/messages.vala:62
+#: plugins/messages.vala:70
 msgid "Got CTCP $REQUEST from $USERNICK"
 msgstr "Tog emot CTCP $REQUEST från $USERNICK."
 
-#: plugins/messages.vala:63
-msgid "-$USERNICK- $MESSAGE"
-msgstr "-$USERNICK- $MESSAGE"
-
-#: plugins/messages.vala:64
+#: plugins/messages.vala:72
 msgid "$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]"
 msgstr "$USERNICK [$USERNAME@$USERMASK] har kopplat från [$MESSAGE]."
 
-#: plugins/messages.vala:65
+#: plugins/messages.vala:73
 msgid "$USERNICK sets mode $MODES on $TARGETS"
 msgstr "$USERNICK sätter läge $MODES på $TARGETS."
 
-#: plugins/messages.vala:66
+#: plugins/messages.vala:74
 msgid "$USERNICK sets $CHANNEL's mode: $MODES"
 msgstr "$USERNICK ändrar läge på $CHANNEL: $MODES"
 
-#: plugins/messages.vala:67
+#: plugins/messages.vala:75
 msgid "Changing mode: $MODES"
 msgstr "Ändrar läge: $MODES"
 
-#: plugins/messages.vala:68
+#: plugins/messages.vala:76
 msgid "$USERNICK sets the topic to $TOPIC"
 msgstr "$USERNICK ändrar ämnet: $TOPIC"
 
-#: plugins/messages.vala:78
+#: plugins/messages.vala:90
 msgid "Messages"
 msgstr "Meddelanden"
 
-#: plugins/messages.vala:79
+#: plugins/messages.vala:91
 msgid "Customizable messages."
 msgstr "Anpassningsbara meddelanden."
 
-#: ui/networks.ui:146
+#: ui/networks.ui:143
 msgid "Auto-connect"
 msgstr "Anslut automatiskt"
 
@@ -1168,6 +1173,6 @@ msgstr "Kompletteringssuffix:"
 msgid "Interface"
 msgstr "Gränssnitt"
 
-#: ui/preferences.ui:904
+#: ui/preferences.ui:901
 msgid "Macros"
 msgstr "Macron"
