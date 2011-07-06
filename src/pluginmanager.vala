@@ -23,7 +23,7 @@ namespace XSIRC {
 				Type type = register_plugin((TypeModule)this);
 				Plugin obj = Object.new(type) as Plugin;
 				
-				Main.plugin_manager.plugins.add(obj);
+				Main.plugin_manager.add_plugin(obj);
 				return true;
 			}
 			
@@ -44,11 +44,11 @@ namespace XSIRC {
 		
 		public void startup() {
 #if WINDOWS
-			plugins.add(new HighlightsPlugin());
-			plugins.add(new TestPlugin());
-			plugins.add(new MessagesPlugin());
-			plugins.add(new CTCPPlugin());
-			plugins.add(new IgnorePlugin());
+			add_plugin(new HighlightsPlugin());
+			add_plugin(new TestPlugin());
+			add_plugin(new MessagesPlugin());
+			add_plugin(new CTCPPlugin());
+			add_plugin(new IgnorePlugin());
 #else
 			load_plugins();
 			
@@ -129,6 +129,12 @@ namespace XSIRC {
 				}
 			}
 			plugins.add(plugin);
+
+			// Keep the plugins sorted. Completely sorting them after every
+			// insertion is technically O(N^2 log N) for N insertions and
+			// suboptimal to an O(N log N) solution of sorting the plugins
+			// only after inserting all of them, or using a heap, but this
+			// doesn't matter in practice since N is about 10.
 			plugins.sort((CompareFunc)plugincmp);
 		}
 		

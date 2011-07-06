@@ -603,7 +603,7 @@ namespace XSIRC {
 		
 		public static void disconnect_all_cb(Gtk.Action action) {
 			foreach(Server server in Main.server_manager.servers) {
-				server.send("QUIT :%s".printf(Main.config.string["quit_msg"]));
+				server.send_quit_message();
 			}
 		}
 
@@ -723,7 +723,7 @@ namespace XSIRC {
 		public static void disconnect_server_cb(Gtk.Action action) {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
-				server.send("QUIT :%s".printf(Main.config.string["quit_msg"]));
+				server.send_quit_message();
 			}
 		}
 		
@@ -738,7 +738,7 @@ namespace XSIRC {
 		public static void close_server_cb(Gtk.Action action) {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
-				server.send("QUIT :%s".printf(Main.config.string["quit_msg"]));
+				server.send_quit_message();
 				Main.server_manager.servers.remove(server);
 				Main.gui.servers_notebook.remove_page(Main.gui.servers_notebook.page_num(server.notebook));
 			}
