@@ -1,5 +1,5 @@
 /* configmanager.vala
- * 
+ *
  * Copyright (c) 2011 Eduardo Niehues
  * Distributed under the New BSD License; see ../LICENSE for details.
  */

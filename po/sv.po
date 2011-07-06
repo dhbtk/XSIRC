@@ -68,6 +68,14 @@ msgstr "Öppna _näst senaste länk"
 msgid "_Edit"
 msgstr "_Redigera"
 
+#: src/gui.vala:39
+msgid "_Color"
+msgstr "F_ärga"
+
+#: src/gui.vala:40
+msgid "_Remove formatting"
+msgstr "_Ta bort formatering"
+
 #: src/gui.vala:42
 msgid "Se_ttings"
 msgstr "_Verktyg"

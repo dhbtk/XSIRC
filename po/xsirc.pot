@@ -67,6 +67,14 @@ msgstr ""
 msgid "_Edit"
 msgstr ""
 
+#: src/gui.vala:39
+msgid "_Color"
+msgstr ""
+
+#: src/gui.vala:40
+msgid "_Remove formatting"
+msgstr ""
+
 #: src/gui.vala:42
 msgid "Se_ttings"
 msgstr ""

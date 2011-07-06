@@ -36,8 +36,8 @@ namespace XSIRC {
 			{"Bold",Gtk.Stock.BOLD,null,"<control>B",null,bold_cb},
 			{"Italic",Gtk.Stock.ITALIC,null,"<control>I",null,italic_cb},
 			{"Underlined",Gtk.Stock.UNDERLINE,null,"<control>U",null,underlined_cb},
-			{"Color",Gtk.Stock.COLOR_PICKER,"Color","<control>K",null,color_cb},
-			{"RemoveFormatting",Gtk.Stock.CLEAR,"Remove formatting","<control>R",null,remove_cb},
+			{"Color",Gtk.Stock.COLOR_PICKER,N_("_Color"),"<control>K",null,color_cb},
+			{"RemoveFormatting",Gtk.Stock.CLEAR,N_("_Remove formatting"),"<control>R",null,remove_cb},
 			// Settings
 			{"SettingsMenu",null,N_("Se_ttings")},
 			{"Preferences",Gtk.Stock.PREFERENCES,null,"<control><alt>P",null,spawn_preferences_cb},
@@ -175,7 +175,7 @@ namespace XSIRC {
 					text = what+"\n";
 				}
 				MIRCParser parser = new MIRCParser(text);
-				bool scrolled = (int)scrolled_window.vadjustment.value == (int)(scrolled_window.vadjustment.upper - 
+				bool scrolled = (int)scrolled_window.vadjustment.value == (int)(scrolled_window.vadjustment.upper -
 				                                                                scrolled_window.vadjustment.page_size);
 				parser.insert(text_view);
 				if(scrolled) {
