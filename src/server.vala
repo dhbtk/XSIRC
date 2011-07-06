@@ -183,39 +183,39 @@ namespace XSIRC {
 		}
 		
 		public void iterate() {
-			if(connected && !sock_error) {
-				// Checking if almost timeouting
-				if(((int)time_t() - (int)last_received) >= 250) {
-					if(!sent_ping) {
-						send("PING :lagcheck");
-						sent_ping = true;
-					}
+			if(!connected || sock_error) {
+				return;
+			}
+			// Checking if almost timeouting
+			if(((int)time_t() - (int)last_received) >= 250) {
+				if(!sent_ping) {
+					send("PING :lagcheck");
+					sent_ping = true;
 				}
-				// Ping timeout
-				if(((int)time_t() - (int)last_received) >= 300) {
-					add_to_view(_("<server>"),_("Ping timeout. Reconnecting..."));
-					last_received = time_t();
-					irc_disconnect();
-					irc_connect();
-				}
+			}
+			// Ping timeout
+			if(((int)time_t() - (int)last_received) >= 300) {
+				add_to_view(_("<server>"),_("Ping timeout. Reconnecting..."));
+				last_received = time_t();
+				irc_disconnect();
+				irc_connect();
 			}
 		}
 		
 		public bool receive_data(Socket socket,IOCondition cond) {
+			if (!connected || socket != socket_conn.socket) {
+				return false;
+			}
 			string s = null;
 			try {
 				s = socket_stream.read_line(null,null);
 			} catch(Error e) {
-				connected = false;
-				sock_error = true;
-				Main.gui.update_gui(this);
+				irc_disconnect();
 				add_to_view(_("<server>"),_("ERROR: error fetching line: %s").printf(e.message));
 				return false;
 			}
 			if(s == null) {
-				connected = false;
-				sock_error = false;
-				Main.gui.update_gui(this);
+				irc_disconnect();
 				return false;
 			}
 			if(!s.validate()) {
@@ -272,8 +272,6 @@ namespace XSIRC {
 			socket_client = new SocketClient();
 			try {
 				socket_conn = yield socket_client.connect_async(new InetSocketAddress(address,(uint16)port),null);
-				connected = true;
-				sock_error = false;
 			} catch(Error e) {
 				connected = false;
 				sock_error = true;
@@ -283,6 +281,8 @@ namespace XSIRC {
 				return;
 			}
 			connecting = false;
+			connected = true;
+			sock_error = false;
 			add_to_view(_("<server>"),_("[Connection] Connected! Sending USER, NICK and PASS.").printf(port));
 			socket_stream = new DataInputStream(socket_conn.input_stream);
 			output_stream = new DataOutputStream(socket_conn.output_stream);
@@ -300,14 +300,38 @@ namespace XSIRC {
 			socket_source.attach(null);
 		}
 		
+		public void shutdown() {
+			if(!connected) {
+				return;
+			}
+			raw_send("QUIT :%s".printf(Main.config.string["quit_msg"])); // Event loop isn't running anymore
+			while(connected) {
+				if(socket_ready()) {
+					receive_data(socket_conn.socket,IOCondition.IN);
+				}
+			}
+		}
+
+		public void send_quit_message() {
+			send("QUIT :%s".printf(Main.config.string["quit_msg"]));
+		}
+
 		public void irc_disconnect() {
+			if (!connected) {
+				return;
+			}
+
 			try {
 				socket_conn.socket.close();
+				socket_conn.close();
 			} catch(Error e) {
-				
+				stderr.printf("Failed to close socket: %s\n", e.message);
 			}
 			connected = false;
 			sock_error = false;
+			socket_conn = null;
+			socket_stream = null;
+			output_stream = null;
 			foreach(Channel channel in channels) {
 				channel.in_channel = false;
 			}
@@ -380,8 +404,7 @@ namespace XSIRC {
 			// Getting PING out of the way.
 			if(s.has_prefix("ERROR")) {
 				irc_disconnect();
-			}
-			if(s.has_prefix("PING :")) {
+			} else if(s.has_prefix("PING :")) {
 				send("PONG :"+s.split(" :")[1]);
 			} else {
 				string[] split = s.split(" ");

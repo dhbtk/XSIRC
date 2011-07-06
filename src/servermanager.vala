@@ -146,12 +146,7 @@ namespace XSIRC {
 		
 		public void shutdown() {
 			foreach(Server server in servers) {
-				server.raw_send("QUIT :%s".printf(Main.config.string["quit_msg"])); // Event loop isn't running anymore
-				while(server.connected) {
-					if(server.socket_ready()) {
-						server.receive_data(server.socket_conn.socket,IOCondition.IN);
-					}
-				}
+				server.shutdown();
 			}
 		}
 		
