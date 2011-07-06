@@ -1,5 +1,5 @@
 /* configmanager.vala
- * 
+ *
  * Copyright (c) 2011 Diana Horbatiuk
  * Distributed under the New BSD License; see ../LICENSE for details.
  */
