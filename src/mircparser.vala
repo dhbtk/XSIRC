@@ -14,14 +14,73 @@ namespace XSIRC {
 		public static const unichar DEFAULT   = 15;
 		public static const unichar COLOR     = 3;
 		public static const unichar HEX_COLOR = 4;
+
+		public abstract class ColorRep {
+			protected string str = "";
+			public void add(unichar c) {
+				str += c.to_string();
+			}
+			public bool empty {
+				get {
+					return (str == "");
+				}
+			}
+			public abstract string serialize();
+			public abstract string? get_color();
+			public abstract bool accept_end();
+			public abstract bool accept(unichar c);
+			public abstract ColorRep create();
+		}
+
+		public class DecColorRep : ColorRep {
+			private int getValue() {
+				return int.parse(str) % 16;
+			}
+			public override string serialize() {
+				return (empty ? "-" : string.nfill(1, (char)('g' + getValue())));
+			}
+			public override string? get_color() {
+				return (empty ? null : mirc_colors[getValue()]);
+			}
+			public override bool accept_end() {
+				return true;
+			}
+			public override bool accept(unichar c) {
+				return (str.length < 2 && c.isdigit());
+			}
+			public override ColorRep create() {
+				return new DecColorRep();
+			}
+		}
+
+		public class HexColorRep : ColorRep {
+			private bool valid() {
+				return (str.length == 6);
+			}
+			public override string serialize() {
+				return (valid() ? str : "-");
+			}
+			public override string? get_color() {
+				return (valid() ? "#" + str : null);
+			}
+			public override bool accept_end() {
+				return valid();
+			}
+			public override bool accept(unichar c) {
+				return (str.length < 6 && (c.isdigit() || ('A' <= c && c <= 'F')));
+			}
+			public override ColorRep create() {
+				return new HexColorRep();
+			}
+		}
+
 		public struct AttrChar {
-			public unichar contents;
-			public bool    bold;
-			public bool    italic;
-			public bool    underlined;
-			public string? foreground;
-			public string? background;
-			public string? hex_color;
+			public unichar  contents;
+			public bool     bold;
+			public bool     italic;
+			public bool     underlined;
+			public ColorRep foreground;
+			public ColorRep background;
 		}
 		public static HashMap<int,string> mirc_colors;
 		private unichar[] data;
@@ -37,123 +96,113 @@ namespace XSIRC {
 		public void insert(Gtk.TextView textview) {
 			AttrChar[] parsed = parse();
 			foreach(AttrChar c in parsed) {
-				//stdout.printf("Tags: %s\n".printf(string.joinv(", ",tags)));
-				insert_with_tag_array(textview,c.contents,c);
+				insert_with_tag_array(textview, c);
 			}
 		}
 		
-		private void insert_with_tag_array(Gtk.TextView textview,unichar what,AttrChar c) {
+		private void insert_with_tag_array(Gtk.TextView textview, AttrChar c) {
+			unichar what = c.contents;
+
 			Gtk.TextIter start_iter;
 			textview.buffer.get_end_iter(out start_iter);
-			//stdout.printf("start_iter offset: %d\n",start_iter.get_offset());
+
 			string added = (new StringBuilder().append_unichar(what)).str;
-			if(c.foreground == null && c.background == null && !c.bold && !c.italic &&
-			   !c.underlined && c.hex_color == null) {
+
+			if(c.foreground.empty && c.background.empty &&
+			   !c.bold && !c.italic && !c.underlined) {
 				textview.buffer.insert(start_iter,added,(int)added.length);
 			} else {
-				string tag_name = "%s%s%s%s%s%s".printf(c.foreground,
-				                                       c.background,
-				                                       c.bold ? "bold" : "normal",
-				                                       c.underlined ? "underlined" : "normal",
-				                                       c.italic ? "italic" : "normal",
-				                                       c.hex_color);
+				string tag_name = "%s%s%c".printf(c.foreground.serialize(),
+				                                  c.background.serialize(),
+				                                  (c.bold?1:0) + (c.underlined?2:0) + (c.italic?4:0) + 'a');
 				Gtk.TextTag tag;
 				if((tag = textview.buffer.tag_table.lookup(tag_name)) == null) {
 					tag = textview.buffer.create_tag(tag_name,
-						                             "foreground",c.hex_color != null ? c.hex_color : c.foreground,
-						                             "background",c.background,
-						                             "weight",c.bold ? Pango.Weight.BOLD : Pango.Weight.NORMAL,
-						                             "underline",c.underlined ? Pango.Underline.SINGLE : Pango.Underline.NONE,
-						                             "style",c.italic ? Pango.Style.ITALIC : Pango.Style.NORMAL,null);
+						                             "foreground", c.foreground.get_color(),
+						                             "background", c.background.get_color(),
+						                             "weight", (c.bold ? Pango.Weight.BOLD : Pango.Weight.NORMAL),
+						                             "underline", (c.underlined ? Pango.Underline.SINGLE : Pango.Underline.NONE),
+						                             "style", (c.italic ? Pango.Style.ITALIC : Pango.Style.NORMAL),
+													 null);
 				}
 				textview.buffer.insert_with_tags(start_iter,added,(int)added.length,tag,null);
 			}
-			//stdout.printf("end_iter offset: %d\n",end_iter.get_offset());
 		}
 		
 		public AttrChar[] parse() {
 			AttrChar[] parsed_string = {};
-			bool bold              = false;
-			bool italic            = false;
-			bool underlined        = false;
-			string? foreground     = null;
-			string? background     = null;
-			string? hex_color      = null;
-			bool parsing_color     = false;
-			bool got_foreground    = false;
-			bool parsing_hex_color = false;
+			bool bold           = false;
+			bool italic         = false;
+			bool underlined     = false;
+			bool parsing_color  = false;
+			bool got_foreground = false;
+			ColorRep foreground = new DecColorRep();
+			ColorRep background = new DecColorRep();
 			foreach(unichar c in data) {
 				switch(c) {
 					case BOLD:
 						bold = !bold;
 						break;
+
 					case ITALIC:
 						italic = !italic;
 						break;
+
 					case UNDERLINE:
 						underlined = !underlined;
 						break;
+
 					case DEFAULT:
 						bold = false;
 						italic = false;
 						underlined = false;
-						foreground = null;
-						background = null;
-						hex_color = null;
+						foreground = new DecColorRep();
+						background = new DecColorRep();
 						parsing_color = false;
-						parsing_hex_color = false;
 						break;
-					case COLOR:
-						parsing_color = !parsing_color;
-						if(foreground != null || background != null) {
-							foreground = null;
-							background = null;
+
+					case COLOR: case HEX_COLOR:
+						if (parsing_color && !got_foreground && foreground.empty) {
+							// Two consecutive color markers, clear colors.
+							background = new DecColorRep();
+						}
+						parsing_color = true;
+						if (c == HEX_COLOR) {
+							foreground = new HexColorRep();
+						} else {
+							foreground = new DecColorRep();
 						}
 						got_foreground = false;
 						break;
-					case HEX_COLOR:
-						parsing_hex_color = !parsing_hex_color;
-						if(hex_color != null) {
-							hex_color = null;
-						}
-						break;
+
 					default:
-						if(parsing_color && (c.isdigit() || c == ',')) {
-							if(c.isdigit()) {
-								if(!got_foreground) {
-									if(foreground == null) {
-										foreground = c.to_string();
-									} else {
-										foreground = foreground + c.to_string();
-									}
-									//got_foreground = true;
+						if (parsing_color) {
+							if (got_foreground) {
+								if (background.accept(c)) {
+									background.add(c);
 								} else {
-									if(background == null) {
-										background = c.to_string();
-									} else {
-										background = background + c.to_string();
+									parsing_color = false;
+								}
+							} else {
+								if (c == ',' && foreground.accept_end()) {
+									got_foreground = true;
+									background = foreground.create();
+								} else if (foreground.accept(c)) {
+									foreground.add(c);
+								} else {
+									parsing_color = false;
+									if (foreground.empty) {
+										// A single ^C without digits after; clear colors.
+										background = new DecColorRep();
 									}
 								}
-							} else if(c == ',') {
-								got_foreground = true;
 							}
-						} else if(parsing_hex_color && c == '#' && hex_color == null) {
-							hex_color = "#";
-						} else if(parsing_hex_color && (c.isdigit() || (c >= 'A' && c <= 'F')) && hex_color != null && hex_color.length < 7) {
-							hex_color = hex_color + c.to_string();
-						} else {
-							if(parsing_color && !(c.isdigit() || c == ',')) {
-								parsing_color = false;
-								got_foreground = false;
-							}
-							if(parsing_hex_color && (!(c >= 'A' && c <= 'F'))) {
-								parsing_hex_color = false;
-								if(hex_color != null && hex_color.length < 7) {
-									hex_color = null;
-								}
-							}
-							
-							AttrChar parsed_char = {c,bold,italic,underlined,(foreground != null ? mirc_colors[int.parse(foreground)%16] : null),(background != null ? mirc_colors[int.parse(background)%16] : null),hex_color};
+						}
+
+						if (!parsing_color) {
+							AttrChar parsed_char = {
+								c, bold, italic, underlined, foreground, background
+							};
 							parsed_string += parsed_char;
 						}
 						break;
