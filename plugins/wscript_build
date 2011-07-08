@@ -3,61 +3,32 @@
 #
 # Copyright (c) 2010 Eduardo Niehues
 # Distributed under the New BSD License; see LICENSE for details.
-bld.shlib(
-	source = 'testplugin.vala',
-	features = 'c cshlib',
-	packages = 'xsirc',
-	vapi_dirs = '../src ../vapi',
-	includes = '../src',
-	target = 'xsirctest',
-	uselib = 'GMODULE GLIB',
-	use = 'xsirc',
-	cflags = ['-g'],
-	linkflags = ['-g'],
-	install_path = bld.env['PREFIX']+'/lib/xsirc'
-)
-if conf.env['windows'] == 'yes':
-	packs = 'xsirc'
-	store = 'GMODULE GLIB'
-else:
-	packs = 'xsirc libnotify'
-	store = 'GMODULE GLIB NOTIFY'
-bld.shlib(
-	source = 'highlights.vala',
-	features = 'c cshlib',
-	packages = packs,
-	vapi_dirs = '../src ../vapi',
-	includes = '../src',
-	cflags = ['-include','config.h','-g'],
-	target = 'xsirchighlights',
-	uselib = store,
-	use = 'xsirc',
-	linkflags = ['-g'],
-	install_path = bld.env['PREFIX']+'/lib/xsirc'
-)
-bld.shlib(
-	source = 'messages.vala',
-	features = 'c cshlib',
-	packages = 'xsirc',
-	vapi_dirs = '../src ../vapi',
-	includes = '../src',
-	cflags = ['-include','config.h','-g'],
-	target = 'xsircmessages',
-	uselib = 'GMODULE GLIB',
-	use = 'xsirc',
-	linkflags = ['-g'],
-	install_path = bld.env['PREFIX']+'/lib/xsirc'
-)
-bld.shlib(
-	source = 'ctcp.vala',
-	features = 'c cshlib',
-	packages = 'xsirc config',
-	vapi_dirs = '../src ../vapi',
-	includes = '../src ../vapi',
-	cflags = ['-include','config.h','-g'],
-	target = 'xsircctcp',
-	uselib = 'GMODULE GLIB',
-	use = 'xsirc',
-	linkflags = ['-g'],
-	install_path = bld.env['PREFIX']+'/lib/xsirc'
-)
+
+plugins = [
+	{'source': 'testplugin.vala', 'target': 'xsirctest'},
+	{'source': 'highlights.vala', 'target': 'xsirchighlights', 'notify': True},
+	{'source': 'messages.vala', 'target': 'xsircmessages'},
+	{'source': 'ctcp.vala', 'target': 'xsircctcp'},
+]
+
+for plugin in plugins:
+	opt = {
+		'features': 'c cshlib',
+		'packages': ['xsirc'],
+		'vapi_dirs': ['../src', '../vapi'],
+		'includes': ['../src', '../vapi'],
+		'cflags': ['-include','config.h','-g'],
+		'uselib': ['GMODULE', 'GLIB'],
+		'use': 'xsirc',
+		'linkflags': ['-g'],
+		'install_path': bld.env['PREFIX']+'/lib/xsirc'
+	}
+
+	if 'notify' in plugin and conf.env['windows'] != 'yes':
+		opt['packages'].append('libnotify')
+		opt['uselib'].append('NOTIFY')
+	
+	opt['source'] = plugin['source']
+	opt['target'] = plugin['target']
+
+	bld.shlib(**opt)
