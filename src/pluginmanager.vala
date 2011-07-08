@@ -49,6 +49,7 @@ namespace XSIRC {
 			add_plugin(new MessagesPlugin());
 			add_plugin(new CTCPPlugin());
 			add_plugin(new IgnorePlugin());
+			add_plugin(new AchievementsPlugin());
 #else
 			load_plugins();
 			

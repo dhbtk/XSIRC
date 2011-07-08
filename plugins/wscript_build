@@ -9,6 +9,7 @@ plugins = [
 	{'source': 'highlights.vala', 'target': 'xsirchighlights', 'notify': True},
 	{'source': 'messages.vala', 'target': 'xsircmessages'},
 	{'source': 'ctcp.vala', 'target': 'xsircctcp'},
+	{'source': 'achievements.vala', 'target': 'xsircachievements', 'notify': True},
 ]
 
 for plugin in plugins:
