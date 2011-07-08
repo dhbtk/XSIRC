@@ -160,6 +160,7 @@ namespace XSIRC {
 				text_view.cursor_visible = false;
 				text_view.wrap_mode = Gtk.WrapMode.WORD;
 				text_view.modify_font(Pango.FontDescription.from_string(Main.config.string["font"]));
+				text_view.indent = -20;
 				
 				scrolled_window = new Gtk.ScrolledWindow(null,null);
 				scrolled_window.vscrollbar_policy = Gtk.PolicyType.ALWAYS;
