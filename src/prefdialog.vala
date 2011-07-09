@@ -110,6 +110,7 @@ namespace XSIRC {
 					PluginView view = new PluginView();
 					view.name = plugin.name;
 					view.label = new Gtk.Label(plugin.name);
+					view.label.justify = Gtk.Justification.CENTER;
 					view.widget = plugin.prefs_widget;
 					notebook.append_page(view.widget,view.label);
 					notebook.show_all();
