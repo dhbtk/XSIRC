@@ -30,8 +30,8 @@ namespace XSIRC {
 		// Socket
 		private SocketClient socket_client;
 		public SocketConnection socket_conn;
-		private DataInputStream socket_stream;
-		private DataOutputStream output_stream;
+		private Source socket_source;
+		private IOChannel io_channel;
 		public bool connecting = false;
 		
 		
@@ -202,21 +202,29 @@ namespace XSIRC {
 			}
 		}
 		
-		public bool receive_data(Socket socket,IOCondition cond) {
-			if (!connected || socket != socket_conn.socket) {
+		public bool receive_data() {
+			if (!connected) {
 				return false;
 			}
-			string s = null;
+			string s;
+			IOStatus status;
 			try {
-				s = socket_stream.read_line(null,null);
+				status = io_channel.read_line(out s,null,null);
 			} catch(Error e) {
 				irc_disconnect();
 				add_to_view(_("<server>"),_("ERROR: error fetching line: %s").printf(e.message));
 				return false;
 			}
-			if(s == null) {
-				irc_disconnect();
+			stdout.printf("%d\n",status);
+			if((status & IOStatus.NORMAL) <= 0) {
 				return false;
+			} else {
+				if((status & IOStatus.AGAIN) > 0) {
+					return true; // try again
+				}
+			}
+			if(s == null) {
+				return true; // No data in socket
 			}
 			if(!s.validate()) {
 				try {
@@ -284,20 +292,29 @@ namespace XSIRC {
 			connected = true;
 			sock_error = false;
 			add_to_view(_("<server>"),_("[Connection] Connected! Sending USER, NICK and PASS.").printf(port));
-			socket_stream = new DataInputStream(socket_conn.input_stream);
-			output_stream = new DataOutputStream(socket_conn.output_stream);
+#if WINDOWS
+			io_channel = new IOChannel.win32_socket(socket_conn.socket.fd);
+#else
+			io_channel = new IOChannel.unix_new(socket_conn.socket.fd);
+#endif
 	
 			raw_send("USER %s rocks hard :%s".printf(Main.config.string["username"],Main.config.string["realname"]));
 			raw_send("NICK %s".printf(Main.config.string["nickname"]));
 			if(password != "") {
-				send("PASS %s".printf(password));
+				raw_send("PASS %s".printf(password));
 			}
 			Main.gui.update_gui(this);
 			last_received = time_t();
 			
+			/*
 			SocketSource socket_source = socket_conn.socket.create_source(IOCondition.IN|IOCondition.PRI,null);
 			socket_source.set_callback(receive_data);
 			socket_source.attach(null);
+			*/
+			socket_source = new TimeoutSource(10);
+			socket_source.set_callback(receive_data);
+			socket_source.attach(null);
+			
 		}
 		
 		public void shutdown() {
@@ -305,11 +322,7 @@ namespace XSIRC {
 				return;
 			}
 			raw_send("QUIT :%s".printf(Main.config.string["quit_msg"])); // Event loop isn't running anymore
-			while(connected) {
-				if(socket_ready()) {
-					receive_data(socket_conn.socket,IOCondition.IN);
-				}
-			}
+			while(receive_data());
 		}
 
 		public void send_quit_message() {
@@ -330,8 +343,8 @@ namespace XSIRC {
 			connected = false;
 			sock_error = false;
 			socket_conn = null;
-			socket_stream = null;
-			output_stream = null;
+			socket_source.destroy();
+			assert(socket_source.is_destroyed());
 			foreach(Channel channel in channels) {
 				channel.in_channel = false;
 			}
@@ -391,7 +404,7 @@ namespace XSIRC {
 				// Oh well. Sending as is.
 			}
 			try {
-				output_stream.put_string(s,null);
+				io_channel.write_chars((char[])s,null);
 			} catch(Error e) {
 				add_to_view(_("<server>"),_("Error sending line: %s").printf(e.message));
 			}
