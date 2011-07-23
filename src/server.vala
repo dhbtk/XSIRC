@@ -404,6 +404,7 @@ namespace XSIRC {
 					stdout.printf("%d\n",(int)written);
 				}
 				stdout.printf("%d\n",(int)written);
+				while(io_channel.flush() != IOStatus.NORMAL);
 			} catch(Error e) {
 				add_to_view(_("<server>"),_("Error sending line: %s").printf(e.message));
 			}
