@@ -215,16 +215,11 @@ namespace XSIRC {
 				add_to_view(_("<server>"),_("ERROR: error fetching line: %s").printf(e.message));
 				return false;
 			}
-			stdout.printf("%d\n",status);
-			if((status & IOStatus.NORMAL) <= 0) {
+			if(status == IOStatus.AGAIN) {
+				return true;
+			} else if(status == IOStatus.EOF || status == IOStatus.ERROR) {
+				irc_disconnect();
 				return false;
-			} else {
-				if((status & IOStatus.AGAIN) > 0) {
-					return true; // try again
-				}
-			}
-			if(s == null) {
-				return true; // No data in socket
 			}
 			if(!s.validate()) {
 				try {
@@ -404,7 +399,11 @@ namespace XSIRC {
 				// Oh well. Sending as is.
 			}
 			try {
-				io_channel.write_chars((char[])s,null);
+				size_t written;
+				while(io_channel.write_chars((char[])s,out written) != IOStatus.NORMAL) {
+					stdout.printf("%d\n",(int)written);
+				}
+				stdout.printf("%d\n",(int)written);
 			} catch(Error e) {
 				add_to_view(_("<server>"),_("Error sending line: %s").printf(e.message));
 			}
