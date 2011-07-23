@@ -292,7 +292,11 @@ namespace XSIRC {
 #else
 			io_channel = new IOChannel.unix_new(socket_conn.socket.fd);
 #endif
-	
+			try {
+				io_channel.set_encoding(null);
+			} catch(Error fe) {
+				
+			}
 			raw_send("USER %s rocks hard :%s".printf(Main.config.string["username"],Main.config.string["realname"]));
 			raw_send("NICK %s".printf(Main.config.string["nickname"]));
 			if(password != "") {
