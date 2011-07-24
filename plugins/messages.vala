@@ -344,8 +344,8 @@ namespace XSIRC {
 		private string apply_message_style(MessageID id,string[] replaced,string[] replacements) {
 			// We have to apply the formatting before adding the content, otherwise
 			// weird things are going to happen when someone says $COLOR in a channel
-			string[] format = {"$BOLD","$ITALIC","$UNDERLINE","$COLOR","$NORMAL"};
-			string[] codes  = {"\x02","\x16","\x1F","\x03","\x0F"};
+			string[] format = {"$BOLD","$ITALIC","$UNDERLINE","$COLOR","$HEX","$NORMAL"};
+			string[] codes  = {"\x02","\x16","\x1F","\x03","\x04","\x0F"};
 			string result = messages[id];
 			int i = 0;
 			foreach(string s in format) {

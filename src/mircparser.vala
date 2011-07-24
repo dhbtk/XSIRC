@@ -28,22 +28,23 @@ namespace XSIRC {
 		
 		public MIRCParser(string str) {
 			// I kinda miss Ruby
-			mirc_colors[0]  = "white";
-			mirc_colors[1]  = "black";
-			mirc_colors[2]  = "dark blue";
-			mirc_colors[3]  = "green";
-			mirc_colors[4]  = "red";
-			mirc_colors[5]  = "dark red";
-			mirc_colors[6]  = "purple";
-			mirc_colors[7]  = "brown";
-			mirc_colors[8]  = "yellow";
-			mirc_colors[9]  = "light green";
-			mirc_colors[10] = "cyan";
-			mirc_colors[11] = "light cyan";
-			mirc_colors[12] = "blue";
-			mirc_colors[13] = "pink";
-			mirc_colors[14] = "grey";
-			mirc_colors[15] = "dark grey";
+			// Palette totally stolen from XChat
+			mirc_colors[0]  = "#cccccccccccc"; // white
+			mirc_colors[1]  = "black"; // black
+			mirc_colors[2]  = "#35c235c2b332"; // dark blue
+			mirc_colors[3]  = "#2a3d8ccc2a3d"; // green
+			mirc_colors[4]  = "#c3c33b3b3b3b"; // red
+			mirc_colors[5]  = "#c7c732323232"; // light red
+			mirc_colors[6]  = "#800026667fff"; // purple
+			mirc_colors[7]  = "#666636361f1f"; // orange
+			mirc_colors[8]  = "#d999a6d34147"; // yellow
+			mirc_colors[9]  = "#3d70cccc3d70"; // light green
+			mirc_colors[10] = "#199a55555555"; // aqua
+			mirc_colors[11] = "#2eef8ccc74df"; // light aqua
+			mirc_colors[12] = "#451e451ee666"; // blue
+			mirc_colors[13] = "#b0b03737b0b0"; // light purple
+			mirc_colors[14] = "#4c4c4c4c4c4c"; // grey
+			mirc_colors[15] = "#959595959595"; // light grey
 			unichar c;
 			int i = 0;
 			while(str.get_next_char(ref i,out c)) {
@@ -155,7 +156,7 @@ namespace XSIRC {
 							}
 						} else if(parsing_hex_color && c == '#' && hex_color == null) {
 							hex_color = "#";
-						} else if(parsing_hex_color && (c.isdigit() || (c >= 'A' && c <= 'F')) && hex_color.length < 7) {
+						} else if(parsing_hex_color && (c.isdigit() || (c >= 'A' && c <= 'F')) && hex_color != null && hex_color.length < 7) {
 							hex_color = hex_color + c.to_string();
 						} else {
 							if(parsing_color && !(c.isdigit() || c == ',')) {
@@ -164,7 +165,7 @@ namespace XSIRC {
 							}
 							if(parsing_hex_color && (!(c >= 'A' && c <= 'F'))) {
 								parsing_hex_color = false;
-								if(hex_color.length < 7) {
+								if(hex_color != null && hex_color.length < 7) {
 									hex_color = null;
 								}
 							}
