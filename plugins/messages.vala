@@ -61,9 +61,9 @@ namespace XSIRC {
 		};
 		
 		private const DefaultMessage[] default_messages = {
-			{MessageID.JOIN,N_("$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL")},
-			{MessageID.PART,N_("$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]")},
-			{MessageID.KICK,N_("$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]")},
+			{MessageID.JOIN,N_("$BOLD->$BOLD $COLOR3$USERNICK [$USERNAME@$USERMASK] has joined $CHANNEL")},
+			{MessageID.PART,N_("$BOLD<-$BOLD $COLOR4$USERNICK [$USERNAME@$USERMASK] has left $CHANNEL [$MESSAGE]")},
+			{MessageID.KICK,N_("$BOLD-!-$BOLD $COLOR4$USERNICK has kicked $KICKED from $CHANNEL [$MESSAGE]")},
 			{MessageID.NICK,N_("$USERNICK is now known as $NEWNICK.")},
 			{MessageID.PRIVMSG,"<$USERRANK$USERNICK> $MESSAGE"},
 			{MessageID.ACTION,"*  $USERNICK $MESSAGE"},
@@ -81,6 +81,7 @@ namespace XSIRC {
 		};
 		
 		private HashMap<MessageID,string> messages = new HashMap<MessageID,string>();
+		private bool colored_nicks = true; // TODO: make configurable
 		
 		public MessagesPlugin() {
 			Object();
@@ -133,7 +134,7 @@ namespace XSIRC {
 		}
 		
 		private void load_messages() {
-			string[] names = {"JOIN","PART","KICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC","SENT_NOTICE","SENT_CTCP","SENT_PRIVMSG","SENT_ACTION"};
+			string[] names = {"JOIN","PART","KICK","NICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC","SENT_NOTICE","SENT_CTCP","SENT_PRIVMSG","SENT_ACTION"};
 			try {
 				KeyFile conf = new KeyFile();
 				conf.load_from_file(Environment.get_user_config_dir()+"/xsirc/messages.conf",0);
@@ -150,7 +151,7 @@ namespace XSIRC {
 		}
 		
 		private void save_messages() {
-			string[] names = {"JOIN","PART","KICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC","SENT_NOTICE","SENT_CTCP","SENT_PRIVMSG","SENT_ACTION"};
+			string[] names = {"JOIN","PART","KICK","NICK","PRIVMSG","ACTION","CTCPMSG","NOTICE","QUIT","CHANUSERMODE","CHANMODE","MODE","TOPIC","SENT_NOTICE","SENT_CTCP","SENT_PRIVMSG","SENT_ACTION"};
 			try {
 				KeyFile conf = new KeyFile();
 				int i = 0;
