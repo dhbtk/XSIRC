@@ -7,11 +7,13 @@
 using Gee;
 namespace XSIRC {
 	public class MIRCParser : Object {
-		public static const string CTCP_CHAR = "";
-		public static const string BOLD      = "";
-		public static const string ITALIC    = "";
-		public static const string UNDERLINE = "";
-		public static const string COLOR     = "";
+		public static const unichar CTCP_CHAR = 1;
+		public static const unichar BOLD      = 2;
+		public static const unichar ITALIC    = 0x16;
+		public static const unichar UNDERLINE = 0x1F;
+		public static const unichar DEFAULT   = 15;
+		public static const unichar COLOR     = 3;
+		public static const unichar HEX_COLOR = 4;
 		public struct AttrChar {
 			public unichar contents;
 			public bool    bold;
@@ -19,6 +21,7 @@ namespace XSIRC {
 			public bool    underlined;
 			public string? foreground;
 			public string? background;
+			public string? hex_color;
 		}
 		private HashMap<int,string> mirc_colors = new HashMap<int,string>();
 		private unichar[] data;
@@ -51,22 +54,6 @@ namespace XSIRC {
 		public void insert(Gtk.TextView textview) {
 			AttrChar[] parsed = parse();
 			foreach(AttrChar c in parsed) {
-				string[] tags = {};
-				if(c.bold) {
-					tags += "bold";
-				}
-				if(c.italic) {
-					tags += "italic";
-				}
-				if(c.underlined) {
-					tags += "underlined";
-				}
-				if(c.background != null) {
-					tags += c.background;
-				}
-				if(c.foreground != null) {
-					tags += c.foreground;
-				}
 				//stdout.printf("Tags: %s\n".printf(string.joinv(", ",tags)));
 				insert_with_tag_array(textview,c.contents,c);
 			}
@@ -78,18 +65,19 @@ namespace XSIRC {
 			//stdout.printf("start_iter offset: %d\n",start_iter.get_offset());
 			string added = (new StringBuilder().append_unichar(what)).str;
 			if(c.foreground == null && c.background == null && !c.bold && !c.italic &&
-			   !c.underlined) {
+			   !c.underlined && c.hex_color == null) {
 				textview.buffer.insert(start_iter,added,(int)added.length);
 			} else {
-				string tag_name = "%s%s%s%s%s".printf(c.foreground,
+				string tag_name = "%s%s%s%s%s%s".printf(c.foreground,
 				                                       c.background,
 				                                       c.bold ? "bold" : "normal",
 				                                       c.underlined ? "underlined" : "normal",
-				                                       c.italic ? "italic" : "normal");
+				                                       c.italic ? "italic" : "normal",
+				                                       c.hex_color);
 				Gtk.TextTag tag;
 				if((tag = textview.buffer.tag_table.lookup(tag_name)) == null) {
 					tag = textview.buffer.create_tag(tag_name,
-						                             "foreground",c.foreground,
+						                             "foreground",c.hex_color != null ? c.hex_color : c.foreground,
 						                             "background",c.background,
 						                             "weight",c.bold ? Pango.Weight.BOLD : Pango.Weight.NORMAL,
 						                             "underline",c.underlined ? Pango.Underline.SINGLE : Pango.Underline.NONE,
@@ -102,39 +90,48 @@ namespace XSIRC {
 		
 		public AttrChar[] parse() {
 			AttrChar[] parsed_string = {};
-			bool bold = false;
-			bool italic = false;
-			bool underlined = false;
-			string? foreground = null;
-			string? background = null;
-			bool parsing_color = false;
-			bool got_foreground = false;
+			bool bold              = false;
+			bool italic            = false;
+			bool underlined        = false;
+			string? foreground     = null;
+			string? background     = null;
+			string? hex_color      = null;
+			bool parsing_color     = false;
+			bool got_foreground    = false;
+			bool parsing_hex_color = false;
 			foreach(unichar c in data) {
 				switch(c) {
-					case 2: // Bold
+					case BOLD:
 						bold = !bold;
 						break;
-					case 22: // Italics / reversed
+					case ITALIC:
 						italic = !italic;
 						break;
-					case 31: // Underline
+					case UNDERLINE:
 						underlined = !underlined;
 						break;
-					case 15: // Original
+					case DEFAULT:
 						bold = false;
 						italic = false;
 						underlined = false;
 						foreground = null;
 						background = null;
+						hex_color = null;
 						parsing_color = false;
 						break;
-					case 3: // Color
+					case COLOR:
 						parsing_color = !parsing_color;
 						if(foreground != null || background != null) {
 							foreground = null;
 							background = null;
 						}
 						got_foreground = false;
+						break;
+					case HEX_COLOR:
+						parsing_hex_color = !parsing_hex_color;
+						if(hex_color != null) {
+							hex_color = null;
+						}
 						break;
 					default:
 						if(parsing_color && (c.isdigit() || c == ',')) {
@@ -156,12 +153,23 @@ namespace XSIRC {
 							} else if(c == ',') {
 								got_foreground = true;
 							}
+						} else if(parsing_hex_color && c == '#' && hex_color == null) {
+							hex_color = "#";
+						} else if(parsing_hex_color && (c.isdigit() || (c >= 'A' && c <= 'F')) && hex_color.length < 7) {
+							hex_color = hex_color + c.to_string();
 						} else {
 							if(parsing_color && !(c.isdigit() || c == ',')) {
 								parsing_color = false;
 								got_foreground = false;
 							}
-							AttrChar parsed_char = {c,bold,italic,underlined,(foreground != null ? mirc_colors[int.parse(foreground)%16] : null),(background != null ? mirc_colors[int.parse(background)%16] : null)};
+							if(parsing_hex_color && (!(c >= 'A' && c <= 'F'))) {
+								parsing_hex_color = false;
+								if(hex_color.length < 7) {
+									hex_color = null;
+								}
+							}
+							
+							AttrChar parsed_char = {c,bold,italic,underlined,(foreground != null ? mirc_colors[int.parse(foreground)%16] : null),(background != null ? mirc_colors[int.parse(background)%16] : null),hex_color};
 							parsed_string += parsed_char;
 						}
 						break;
