@@ -255,7 +255,7 @@ msgstr ""
 msgid "Result"
 msgstr ""
 
-#: src/prefdialog.vala:220
+#: src/prefdialog.vala:221
 msgid "The string entered isn't a valid regular expression."
 msgstr ""
 
@@ -858,53 +858,133 @@ msgstr ""
 msgid "UNHANDLED MESSAGE: %s"
 msgstr ""
 
-#: plugins/achievements.vala:24
+#: plugins/achievements.vala:33
+msgid "Tin"
+msgstr ""
+
+#: plugins/achievements.vala:34
+msgid "Type 50 messages."
+msgstr ""
+
+#: plugins/achievements.vala:35
+msgid "Spartan"
+msgstr ""
+
+#: plugins/achievements.vala:36
+msgid "Type 300 messages."
+msgstr ""
+
+#: plugins/achievements.vala:37
+msgid "The worth of a picture"
+msgstr ""
+
+#: plugins/achievements.vala:38
+msgid "Type 1,000 messages."
+msgstr ""
+
+#: plugins/achievements.vala:39
+msgid "0x1388"
+msgstr ""
+
+#: plugins/achievements.vala:40
+msgid "Type 5,000 messages."
+msgstr ""
+
+#: plugins/achievements.vala:41
+msgid "Myriapost"
+msgstr ""
+
+#: plugins/achievements.vala:42
+msgid "Type 10,000 messages."
+msgstr ""
+
+#: plugins/achievements.vala:43
+msgid "Decimegapost!"
+msgstr ""
+
+#: plugins/achievements.vala:44
+msgid "Type 100,000 messages."
+msgstr ""
+
+#: plugins/achievements.vala:45
 msgid "Frobnicator"
 msgstr ""
 
-#: plugins/achievements.vala:25
+#: plugins/achievements.vala:46
 msgid "Change the magic switch back and forth repeatedly."
 msgstr ""
 
-#: plugins/achievements.vala:26
+#: plugins/achievements.vala:47
 msgid "Anti-ɐʍɥɔs"
 msgstr ""
 
-#: plugins/achievements.vala:27
+#: plugins/achievements.vala:48
 msgid "Accomplish communication of many non-fifth symbols in a row."
 msgstr ""
 
+#: plugins/achievements.vala:49
+msgid "Adventurer"
+msgstr ""
+
+#: plugins/achievements.vala:50
+msgid "Pretend IRC is a text-based adventure."
+msgstr ""
+
+#: plugins/achievements.vala:51
+msgid "Be bold"
+msgstr ""
+
 #: plugins/achievements.vala:52
-msgid "Achievements"
+msgid "Use all the different formatting functions."
 msgstr ""
 
 #: plugins/achievements.vala:53
+msgid "COBOL specialist"
+msgstr ""
+
+#: plugins/achievements.vala:54
+msgid "Type in ALLCAPS."
+msgstr ""
+
+#: plugins/achievements.vala:55
+msgid "APL programmer"
+msgstr ""
+
+#: plugins/achievements.vala:56
+msgid "Type a message consisting of lots of special characters."
+msgstr ""
+
+#: plugins/achievements.vala:87
+msgid "Achievements"
+msgstr ""
+
+#: plugins/achievements.vala:88
 msgid "IRC Achievements."
 msgstr ""
 
-#: plugins/achievements.vala:98
+#: plugins/achievements.vala:149
 msgid "COUNTED_ALPHABET=abcdefghijklmnopqrstuvwxyz"
 msgstr ""
 
-#: plugins/achievements.vala:104
+#: plugins/achievements.vala:155
 msgid "E_CHAR=e"
 msgstr ""
 
-#: plugins/achievements.vala:191
+#: plugins/achievements.vala:334
 #, c-format
-msgid "<b>%s</b>: %s."
+msgid "<b>%s</b>: %s"
 msgstr ""
 
-#: plugins/achievements.vala:211
+#: plugins/achievements.vala:356
 #, c-format
 msgid "Achievement unlocked - %s"
 msgstr ""
 
-#: plugins/achievements.vala:234
+#: plugins/achievements.vala:378
 msgid "Enable achievements"
 msgstr ""
 
-#: plugins/achievements.vala:245
+#: plugins/achievements.vala:389
 msgid "Magic:"
 msgstr ""
 
@@ -1158,70 +1238,70 @@ msgstr ""
 msgid "IRC"
 msgstr ""
 
-#: ui/preferences.ui:427
+#: ui/preferences.ui:428
 msgid "Place tabs on:"
 msgstr ""
 
-#: ui/preferences.ui:442
+#: ui/preferences.ui:443
 msgid "Top"
 msgstr ""
 
-#: ui/preferences.ui:458 ui/preferences.ui:568
+#: ui/preferences.ui:459 ui/preferences.ui:569
 msgid "Right"
 msgstr ""
 
-#: ui/preferences.ui:475
+#: ui/preferences.ui:476
 msgid "Bottom"
 msgstr ""
 
-#: ui/preferences.ui:492 ui/preferences.ui:552
+#: ui/preferences.ui:493 ui/preferences.ui:553
 msgid "Left"
 msgstr ""
 
-#: ui/preferences.ui:517
+#: ui/preferences.ui:518
 msgid "Show user list"
 msgstr ""
 
-#: ui/preferences.ui:537
+#: ui/preferences.ui:538
 msgid "Place user list on:"
 msgstr ""
 
-#: ui/preferences.ui:593
+#: ui/preferences.ui:594
 msgid "Show topic bar"
 msgstr ""
 
-#: ui/preferences.ui:624
+#: ui/preferences.ui:625
 msgid "Show timestamps in chat"
 msgstr ""
 
-#: ui/preferences.ui:647
+#: ui/preferences.ui:648
 msgid "Timestamp format:"
 msgstr ""
 
-#: ui/preferences.ui:684
+#: ui/preferences.ui:685
 msgid "Font:"
 msgstr ""
 
-#: ui/preferences.ui:698
+#: ui/preferences.ui:699
 msgid "Select a font"
 msgstr ""
 
-#: ui/preferences.ui:723
+#: ui/preferences.ui:724
 msgid "Open links with:"
 msgstr ""
 
-#: ui/preferences.ui:753
+#: ui/preferences.ui:754
 msgid "Enable tab completion"
 msgstr ""
 
-#: ui/preferences.ui:777
+#: ui/preferences.ui:778
 msgid "Completion suffix:"
 msgstr ""
 
-#: ui/preferences.ui:823
+#: ui/preferences.ui:824
 msgid "Interface"
 msgstr ""
 
-#: ui/preferences.ui:901
+#: ui/preferences.ui:903
 msgid "Macros"
 msgstr ""
