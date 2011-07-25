@@ -258,7 +258,7 @@ msgstr "Reguljärt uttryck"
 msgid "Result"
 msgstr "Resultat"
 
-#: src/prefdialog.vala:220
+#: src/prefdialog.vala:221
 msgid "The string entered isn't a valid regular expression."
 msgstr "Strängen du skrev in är inte ett giltigt reguljärt uttryck."
 
@@ -865,53 +865,135 @@ msgstr "[Admin] "
 msgid "UNHANDLED MESSAGE: %s"
 msgstr "OHANTERAT MEDDELANDE: %s"
 
-#: plugins/achievements.vala:24
+#: plugins/achievements.vala:33
+msgid "Tin"
+msgstr "Tenn"
+
+#: plugins/achievements.vala:34
+msgid "Type 50 messages."
+msgstr "Skriv 50 meddelanden."
+
+#: plugins/achievements.vala:35
+msgid "Spartan"
+msgstr "Spartan"
+
+#: plugins/achievements.vala:36
+msgid "Type 300 messages."
+msgstr "Skriv 300 meddelanden."
+
+#: plugins/achievements.vala:37
+msgid "The worth of a picture"
+msgstr "Värdet av en bild"
+
+#: plugins/achievements.vala:38
+msgid "Type 1,000 messages."
+msgstr "Skriv 1000 meddelanden."
+
+#: plugins/achievements.vala:39
+msgid "0x1388"
+msgstr "0x1388"
+
+#: plugins/achievements.vala:40
+msgid "Type 5,000 messages."
+msgstr "Skriv 5000 meddelanden."
+
+#: plugins/achievements.vala:41
+msgid "Myriapost"
+msgstr "Myriameddelande"
+
+#: plugins/achievements.vala:42
+msgid "Type 10,000 messages."
+msgstr "Skriv 10000 meddelanden."
+
+#: plugins/achievements.vala:43
+msgid "Decimegapost!"
+msgstr "Decimegameddelande!"
+
+#: plugins/achievements.vala:44
+msgid "Type 100,000 messages."
+msgstr "Skriv 100000 meddelanden."
+
+#: plugins/achievements.vala:45
 msgid "Frobnicator"
 msgstr "Frobnicerare"
 
-#: plugins/achievements.vala:25
+#: plugins/achievements.vala:46
 msgid "Change the magic switch back and forth repeatedly."
 msgstr "Ändra magi-switchen fram och tillbaka upprepade gånger."
 
-#: plugins/achievements.vala:26
+#: plugins/achievements.vala:47
 msgid "Anti-ɐʍɥɔs"
 msgstr "Anti-ɐʍɥɔs"
 
-#: plugins/achievements.vala:27
+#: plugins/achievements.vala:48
 msgid "Accomplish communication of many non-fifth symbols in a row."
-msgstr "Förtälj många osiffror utan användning av viss vanlig bokstav."
+msgstr "Förtälj många ord utan användning av viss vanlig bokstav."
+
+#: plugins/achievements.vala:49
+msgid "Adventurer"
+msgstr "Äventyrare"
+
+#: plugins/achievements.vala:50
+msgid "Pretend IRC is a text-based adventure."
+msgstr "Låtsas att IRC är ett text-baserat äventyr."
+
+#: plugins/achievements.vala:51
+msgid "Be bold"
+msgstr "WP:BB"
 
 #: plugins/achievements.vala:52
-msgid "Achievements"
-msgstr "Bedrifter"
+msgid "Use all the different formatting functions."
+msgstr "Använd alla formateringsfunktionerna."
 
 #: plugins/achievements.vala:53
+msgid "COBOL specialist"
+msgstr "COBOL-specialist"
+
+#: plugins/achievements.vala:54
+msgid "Type in ALLCAPS."
+msgstr "Skriv med STORA BOKSTÄVER."
+
+#: plugins/achievements.vala:55
+msgid "APL programmer"
+msgstr "APL-programmerare"
+
+#: plugins/achievements.vala:56
+msgid "Type a message consisting of lots of special characters."
+msgstr "Skriv ett meddelande med en massa specialtecken."
+
+#: plugins/achievements.vala:87
+msgid "Achievements"
+msgstr ""
+"Bedrifter\n"
+"(achievements)"
+
+#: plugins/achievements.vala:88
 msgid "IRC Achievements."
 msgstr "IRC-Bedrifter."
 
-#: plugins/achievements.vala:98
+#: plugins/achievements.vala:149
 msgid "COUNTED_ALPHABET=abcdefghijklmnopqrstuvwxyz"
 msgstr "COUNTED_ALPHABET=abcdefghijklmnopqrstuvwyxzåäö"
 
-#: plugins/achievements.vala:104
+#: plugins/achievements.vala:155
 msgid "E_CHAR=e"
 msgstr "E_CHAR=e"
 
-#: plugins/achievements.vala:191
+#: plugins/achievements.vala:334
 #, c-format
-msgid "<b>%s</b>: %s."
-msgstr "<b>%s</b>: %s."
+msgid "<b>%s</b>: %s"
+msgstr "<b>%s</b>: %s"
 
-#: plugins/achievements.vala:211
+#: plugins/achievements.vala:356
 #, c-format
 msgid "Achievement unlocked - %s"
 msgstr "Bedrift utförd - %s"
 
-#: plugins/achievements.vala:234
+#: plugins/achievements.vala:378
 msgid "Enable achievements"
 msgstr "Aktivera Bedrifter"
 
-#: plugins/achievements.vala:245
+#: plugins/achievements.vala:389
 msgid "Magic:"
 msgstr "Magi:"
 
@@ -935,7 +1017,9 @@ msgstr "%s svar från %s: %s"
 
 #: plugins/highlights.vala:30
 msgid "Highlights"
-msgstr "Notifikationer"
+msgstr ""
+"Notifikationer\n"
+"(highlights)"
 
 #: plugins/highlights.vala:31
 msgid "Adds support for configurable highlights."
@@ -1167,70 +1251,70 @@ msgstr "Loggning aktivt"
 msgid "IRC"
 msgstr "IRC"
 
-#: ui/preferences.ui:427
+#: ui/preferences.ui:428
 msgid "Place tabs on:"
 msgstr "Placera flikar åt:"
 
-#: ui/preferences.ui:442
+#: ui/preferences.ui:443
 msgid "Top"
 msgstr "Toppen"
 
-#: ui/preferences.ui:458 ui/preferences.ui:568
+#: ui/preferences.ui:459 ui/preferences.ui:569
 msgid "Right"
 msgstr "Höger"
 
-#: ui/preferences.ui:475
+#: ui/preferences.ui:476
 msgid "Bottom"
 msgstr "Botten"
 
-#: ui/preferences.ui:492 ui/preferences.ui:552
+#: ui/preferences.ui:493 ui/preferences.ui:553
 msgid "Left"
 msgstr "Vänster"
 
-#: ui/preferences.ui:517
+#: ui/preferences.ui:518
 msgid "Show user list"
 msgstr "Visa användarlista"
 
-#: ui/preferences.ui:537
+#: ui/preferences.ui:538
 msgid "Place user list on:"
 msgstr "Placera användarlista åt:"
 
-#: ui/preferences.ui:593
+#: ui/preferences.ui:594
 msgid "Show topic bar"
 msgstr "Visa ämnesfält"
 
-#: ui/preferences.ui:624
+#: ui/preferences.ui:625
 msgid "Show timestamps in chat"
 msgstr "Visa tidsstämplar i chat"
 
-#: ui/preferences.ui:647
+#: ui/preferences.ui:648
 msgid "Timestamp format:"
 msgstr "Tidsformat:"
 
-#: ui/preferences.ui:684
+#: ui/preferences.ui:685
 msgid "Font:"
 msgstr "Font:"
 
-#: ui/preferences.ui:698
+#: ui/preferences.ui:699
 msgid "Select a font"
 msgstr "Välj en font"
 
-#: ui/preferences.ui:723
+#: ui/preferences.ui:724
 msgid "Open links with:"
 msgstr "Öppna länkar med:"
 
-#: ui/preferences.ui:753
+#: ui/preferences.ui:754
 msgid "Enable tab completion"
 msgstr "Aktivera tabb-komplettering"
 
-#: ui/preferences.ui:777
+#: ui/preferences.ui:778
 msgid "Completion suffix:"
 msgstr "Kompletteringssuffix:"
 
-#: ui/preferences.ui:823
+#: ui/preferences.ui:824
 msgid "Interface"
 msgstr "Gränssnitt"
 
-#: ui/preferences.ui:901
+#: ui/preferences.ui:903
 msgid "Macros"
 msgstr "Macron"
