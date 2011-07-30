@@ -208,15 +208,9 @@ namespace XSIRC {
 		}
 		
 		public override bool on_privmsg(Server server,string usernick,string username,string usermask,string target,string message) {
-			// Finding the rank.
 			string userrank = " ";
 			if(server.find_channel(target) != null) {
-				foreach(string user in server.find_channel(target).raw_users) {
-					if(user.substring(1) == usernick) {
-						userrank = user[0:1];
-						break;
-					}
-				}
+				userrank = server.find_channel(target).find_rank(usernick);
 			}
 			string my_target = target.down() == server.nick.down() ? usernick : target;
 			if(message.has_prefix("\001ACTION") && message.has_suffix("\x01")) { // ACTION
@@ -308,15 +302,9 @@ namespace XSIRC {
 		}
 		
 		public override bool on_sent_message(Server server,string nick,string target,string message,string raw_msg) {
-			// Finding our rank
 			string userrank = " ";
 			if(server.find_channel(target) != null) {
-				foreach(string user in server.find_channel(target).raw_users) {
-					if(user.substring(1).down() == nick.down()) {
-						userrank = user[0:1];
-						break;
-					}
-				}
+				userrank = server.find_channel(target).find_rank(nick);
 			}
 			if(raw_msg.down().has_prefix("notice")) {
 				string[] replaced = {"$NICK","$MESSAGE"};
