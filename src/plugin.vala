@@ -55,7 +55,8 @@ namespace XSIRC {
 			return true;
 		}
 		
-		public virtual bool on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
+		public virtual bool on_topic(Server server,Server.Channel.Topic topic,
+		        Server.Channel.Topic old_topic,string channel,string username,string usermask) {
 			return true;
 		}
 		

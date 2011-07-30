@@ -298,9 +298,10 @@ namespace XSIRC {
 			return true;
 		}
 		
-		public override bool on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
+		public override bool on_topic(Server server,Server.Channel.Topic topic,
+		        Server.Channel.Topic old_topic,string channel,string username,string usermask) {
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$TOPIC"};
-			string[] replacements = {usernick,username,usermask,channel,topic};
+			string[] replacements = {topic.setter,username,usermask,channel,topic.content};
 			string result = apply_message_style(MessageID.TOPIC,replaced,replacements);
 			server.add_to_view(channel,result);
 			return true;

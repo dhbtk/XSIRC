@@ -9,19 +9,28 @@ using Gee;
 namespace XSIRC {
 	public class AchievementsPlugin : Plugin {
 
-		public enum AchievementID {
+		private enum AchievementID {
 			M50,
 			M300,
 			M1000,
 			M5000,
 			M10000,
 			M100000,
+			OMNIPRESENT,
 			MAGIC,
+			KONAMI,
+			NITPICKER,
 			E,
 			ADVENTURE,
+			ECHO,
 			BEBOLD,
+			LUCKY,
+			SLOW,
 			ALLCAPS,
-			APL
+			APL,
+			UNIMAGINATIVE,
+			EMPTY,
+			TALKATIVE
 		}
 		private struct AchievementData {
 			public AchievementID id;
@@ -42,25 +51,46 @@ namespace XSIRC {
 				N_("Type 10,000 messages.")},
 			{AchievementID.M100000, N_("Decimegapost!"),
 				N_("Type 100,000 messages.")},
+			{AchievementID.OMNIPRESENT, N_("Omnipresent"),
+				N_("Keep the program open for a week.")},
 			{AchievementID.MAGIC, N_("Frobnicator"),
 			    N_("Change the magic switch back and forth repeatedly.")},
+			{AchievementID.KONAMI, N_("+100 lives!"),
+			    N_("Use the Konami Code.")},
+			{AchievementID.NITPICKER, N_("Nitpicker"),
+			    N_("Change one letter in a channel's subject.")},
 			{AchievementID.E, N_("Anti-ɐʍɥɔs"),
 			    N_("Accomplish communication of many non-fifth symbols in a row.")},
 			{AchievementID.ADVENTURE, N_("Adventurer"),
 			    N_("Pretend IRC is a text-based adventure.")},
+			{AchievementID.ECHO, N_("Echo"),
+			    N_("Repeat what you just said.")},
 			{AchievementID.BEBOLD, N_("Be bold"),
 			    N_("Use all the different formatting functions.")},
+			{AchievementID.LUCKY, N_("Cheese's fault"),
+			    N_("Be lucky.")},
+			{AchievementID.SLOW, N_("Slow typist"),
+			    N_("Spend more than 60 minutes typing a message.")},
 			{AchievementID.ALLCAPS, N_("COBOL specialist"),
 			    N_("Type in ALLCAPS.")},
 			{AchievementID.APL, N_("APL programmer"),
-			    N_("Type a message consisting of lots of special characters.")}
+			    N_("Type a message consisting of lots of special characters.")},
+			{AchievementID.UNIMAGINATIVE, N_("Creativity... fading..."),
+			    N_("Repeat the exact same thing 10 times within a chat session.")},
+			{AchievementID.EMPTY, N_("Hello? Anyone there?"),
+			    N_("Say something in an empty channel.")},
+			{AchievementID.TALKATIVE, N_("Talkative"),
+			    N_("Talk continuously for five hours.")}
 		};
 
 		private bool unsaved = false;
 		private double save_progress = 0;
+		private time_t last_message_time = time_t();
+
+		// OMNIPRESENT
+		private TimeoutSource? omnipresent_timeout = null;
 
 		// MAGIC
-		private const double MAGIC_LIMIT = 30;
 		private double magic_value = 1;
 		private double magic_counter;
 
@@ -71,8 +101,23 @@ namespace XSIRC {
 		// M50, etc.
 		private int sent_messages = 0;
 
+		// ECHO
+		private string last_message = "";
+
 		// BEBOLD
 		private int used_formatting = 0;
+
+		// SLOW
+		private time_t slow_start = time_t();
+
+		// KONAMI
+		private int konami_state;
+
+		// UNIMAGINATIVE
+		private HashMap<uint, int> unimaginative_seen = new HashMap<uint, int>();
+
+		// TALKATIVE
+		private time_t talkative_start = time_t();
 
 		private Gtk.HBox magic_box;
 		private Gtk.VBox achievement_box;
@@ -153,6 +198,20 @@ namespace XSIRC {
 				counted_alphabet.add(c);
 			}
 			e_char = _("E_CHAR=e").get(7);
+
+			// Konami code achievement
+			Main.gui.main_window.key_press_event.connect((key) => {
+				test_achievement(AchievementID.KONAMI, () => test_konami(key.keyval));
+				return false;
+			});
+
+			// Slow typist achievement
+			Main.gui.text_entry.key_press_event.connect((key) => {
+				if (Main.gui.text_entry.text == "") {
+					slow_start = time_t();
+				}
+				return false;
+			});
 		}
 
 		private void save() {
@@ -198,7 +257,28 @@ namespace XSIRC {
 
 		private void reset() {
 			magic_counter = 0;
+			konami_state = 0;
 			magic_box.set_sensitive(enabled);
+			unimaginative_seen.clear();
+
+			if (omnipresent_timeout != null) {
+				omnipresent_timeout.destroy();
+				omnipresent_timeout = null;
+			}
+			if (enabled && !has_achievement(AchievementID.OMNIPRESENT)) {
+				omnipresent_timeout = new TimeoutSource(1000*60*60*24*7);
+				omnipresent_timeout.set_callback(() => {
+					award_achievement(AchievementID.OMNIPRESENT);
+					return false;
+				});
+				omnipresent_timeout.attach(null);
+			}
+
+			if (unsaved) {
+				// If the plugin is disabled we will not be notified on shutdown,
+				// so save now if we have unsaved data.
+				save();
+			}
 		}
 
 
@@ -219,7 +299,7 @@ namespace XSIRC {
 					}
 					++len;
 				}
-				if (3*alpha >= 2*len) {
+				if (3*alpha >= 2*len && len > 0) {
 					++counted_words;
 				}
 			}
@@ -260,6 +340,91 @@ namespace XSIRC {
 			return (special.size >= 7);
 		}
 
+		private bool test_echo(string message) {
+			int since_last = (int)(time_t() - last_message_time);
+			if (since_last < 60*3 && message == last_message) {
+				return true;
+			}
+			last_message = message;
+			return false;
+		}
+
+		private bool test_lucky() {
+			return (Random.int_range(0, 200) == 0);
+		}
+
+		private bool test_slow() {
+			int since_start = (int)(time_t() - slow_start);
+			return (since_start >= 60*60);
+		}
+
+		private bool test_konami(uint key) {
+			bool valid = false;
+			if (key == Gdk.keyval_from_name("Up")) {
+				if (konami_state != 1) konami_state = 0;
+				valid = true;
+			}
+			else if (key == Gdk.keyval_from_name("Down")) {
+				valid = (konami_state == 2 || konami_state == 3);
+			}
+			else if (key == Gdk.keyval_from_name("Left")) {
+				valid = (konami_state == 4 || konami_state == 6);
+			}
+			else if (key == Gdk.keyval_from_name("Right")) {
+				valid = (konami_state == 5 || konami_state == 7);
+			}
+			else if (key == 'b' || key == 'B') {
+				valid = (konami_state == 8);
+			}
+			else if (key == 'a' || key == 'A') {
+				valid = (konami_state == 9);
+			}
+
+			if (valid) {
+				++konami_state;
+			}
+			else {
+				konami_state = 0;
+			}
+			return (konami_state == 10);
+		}
+
+		private bool test_talkative() {
+			time_t now = time_t();
+			int since_last = (int)(now - last_message_time);
+			if (since_last >= 60*5) {
+				talkative_start = now;
+			}
+
+			int since_start = (int)(now - talkative_start);
+			return (since_start >= 60*60*5);
+		}
+
+		private bool test_unimaginative(string message) {
+			uint hash = message.hash();
+
+			int since_last = (int)(time_t() - last_message_time);
+			if (since_last >= 60*90) {
+				// Not saying anything in 90 minutes counts as expiry of a
+				// chat session.
+				unimaginative_seen.clear();
+			}
+
+			if (!unimaginative_seen.has_key(hash)) {
+				unimaginative_seen.set(hash, 1);
+				return false;
+			}
+
+			int c = unimaginative_seen.get(hash) + 1;
+			if (c < 10) {
+				unimaginative_seen.set(hash, c);
+				return false;
+			}
+
+			unimaginative_seen.clear();
+			return true;
+		}
+
 		private bool test_adventure(string message) {
 			return /^(> ?)?(go (west|east|north|south)|xyzzy|inventory|examine .*)$/.match(message);
 		}
@@ -294,25 +459,82 @@ namespace XSIRC {
 			return false;
 		}
 
-		public void increase_and_test_messages() {
-			++sent_messages;
+		private bool test_empty(Server server, string target) {
+			// (I don't know enough about IRC to tell if this could be replaced
+			// by a check for (channel != null && channel.users.size == 1).)
 
-			if (sent_messages >= 50) award_achievement(AchievementID.M50);
-			if (sent_messages >= 300) award_achievement(AchievementID.M300);
-			if (sent_messages >= 1000) award_achievement(AchievementID.M1000);
-			if (sent_messages >= 5000) award_achievement(AchievementID.M5000);
-			if (sent_messages >= 10000) award_achievement(AchievementID.M10000);
-			if (sent_messages >= 100000) award_achievement(AchievementID.M100000);
-
-			incremental_save(0.02);
+			Server.Channel? channel = server.find_channel(target);
+			if (channel == null) {
+				return false;
+			}
+			string nick = server.nick.down();
+			foreach (string user in channel.users) {
+				if (user.down() != nick) {
+					return false;
+				}
+			}
+			return true;
 		}
 
-		private delegate bool MessageTestFunc (string message);
+		private bool modification_change(string a, string b) {
+			bool has_mod = false;
+			for (int i = 0; i < a.length; ++i) {
+				if (a[i] != b[i]) {
+					if (has_mod) {
+						return false;
+					}
+					has_mod = true;
+				}
+			}
+			return has_mod;
+		}
 
-		private void test_message_achievement(AchievementID id, MessageTestFunc func, string message) {
-			if (!has_achievement(id) && func(message)) {
+		private bool addition_change(string a, string b) {
+			bool has_mod = false;
+			for (int i = 0, j = 0; i < a.length; ++i, ++j) {
+				if (a[i] != b[j]) {
+					if (has_mod) {
+						return false;
+					}
+					--i;
+					has_mod = true;
+				}
+			}
+			return true;
+		}
+
+		private bool single_change(string a, string b) {
+			int sa = a.length, sb = b.length;
+			if (sa == sb) {
+				return modification_change(a, b);
+			}
+			if (sa+1 == sb) {
+				return addition_change(a, b);
+			}
+			if (sa == sb+1) {
+				return addition_change(b, a);
+			}
+			return false;
+		}
+
+		private bool test_nitpicker(Server server, Server.Channel.Topic current, Server.Channel.Topic old) {
+			return (server.nick.down() == current.setter.down() && single_change(current.content, old.content));
+		}
+
+		private TestFunc test_message_count(int lim) {
+			return () => (sent_messages >= lim);
+		}
+
+		private delegate bool TestFunc();
+		private void test_achievement(AchievementID id, TestFunc func) {
+			if (!has_achievement(id) && func()) {
 				award_achievement(id);
 			}
+		}
+
+		private delegate bool MessageTestFunc(string message);
+		private void test_message_achievement(AchievementID id, MessageTestFunc func, string message) {
+			test_achievement(id, () => func(message));
 		}
 
 
@@ -399,9 +621,7 @@ namespace XSIRC {
 				double nval = magic_switch.adjustment.value;
 				if (enabled) {
 					magic_counter += Math.fabs(nval - magic_value);
-					if (magic_counter > MAGIC_LIMIT) {
-						award_achievement(AchievementID.MAGIC);
-					}
+					test_achievement(AchievementID.MAGIC, () => (magic_counter > 30));
 				}
 				magic_value = nval;
 				incremental_save(0);
@@ -433,17 +653,46 @@ namespace XSIRC {
 			return true;
 		}
 
-		public override bool on_sent_message(Server server, string nick, string target, string message, string raw_msg) {
+		public override bool on_topic(Server server, Server.Channel.Topic topic,
+		        Server.Channel.Topic old_topic, string channel, string username, string usermask) {
+			test_achievement(AchievementID.NITPICKER, () => test_nitpicker(server, topic, old_topic));
+			return true;
+		}
+
+		public override bool on_sent_message(Server server, string nick, string target,
+		                                     string message, string raw_msg) {
 			if (message.has_prefix("\x01")) { // CTCP / action, ignore
 				string msg = message.slice(1, -1);
 				return true;
 			}
+			++sent_messages;
 			test_message_achievement(AchievementID.E, test_e, message);
 			test_message_achievement(AchievementID.ALLCAPS, test_allcaps, message);
 			test_message_achievement(AchievementID.APL, test_apl, message);
 			test_message_achievement(AchievementID.ADVENTURE, test_adventure, message);
+			test_message_achievement(AchievementID.ECHO, test_echo, message);
 			test_message_achievement(AchievementID.BEBOLD, test_bebold, message);
-			increase_and_test_messages();
+			test_message_achievement(AchievementID.UNIMAGINATIVE, test_unimaginative, message);
+			test_achievement(AchievementID.TALKATIVE, test_talkative);
+			test_achievement(AchievementID.LUCKY, test_lucky);
+			test_achievement(AchievementID.SLOW, test_slow);
+			test_achievement(AchievementID.EMPTY, () => test_empty(server, target));
+			test_achievement(AchievementID.M50, test_message_count(50));
+			test_achievement(AchievementID.M300, test_message_count(300));
+			test_achievement(AchievementID.M1000, test_message_count(1000));
+			test_achievement(AchievementID.M5000, test_message_count(5000));
+			test_achievement(AchievementID.M10000, test_message_count(10000));
+			test_achievement(AchievementID.M100000, test_message_count(100000));
+
+			last_message_time = time_t();
+			incremental_save(0.02);
+			return true;
+		}
+
+		public override bool on_shutdown() {
+			if (unsaved) {
+				save();
+			}
 			return true;
 		}
 	}
