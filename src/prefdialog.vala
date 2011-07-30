@@ -261,6 +261,7 @@ namespace XSIRC {
 				Main.macro_manager.macros.add(macro);
 				return false;
 			});
+			Main.macro_manager.save_macros();
 		}
 	
 	}
