@@ -566,10 +566,11 @@ namespace XSIRC {
 						break;
 					case "TOPIC":
 						Channel chan = find_channel(split[2]);
+						Channel.Topic old_topic = chan.topic;
 						chan.topic.setter = usernick;
 						chan.topic.content = message;
 						chan.topic.time_set = time_t();
-						Main.plugin_manager.on_topic(this,usernick,username,usermask,chan.name,message);
+						Main.plugin_manager.on_topic(this,chan.topic,old_topic,chan.name,username,usermask);
 						Main.gui.update_gui(this);
 						break;
 					case "333":
