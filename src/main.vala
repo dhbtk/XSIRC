@@ -25,7 +25,7 @@ namespace XSIRC {
 		Intl.bindtextdomain(GETTEXT_PACKAGE,LOCALE_DIR);
 		Environment.set_application_name(GETTEXT_PACKAGE);
 		try {
-			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file(get_file_path("pixmap", "xsirc.png")));
+			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file(get_icon_path()));
 		} catch(Error e) {
 			
 		}

@@ -114,7 +114,7 @@ namespace XSIRC {
 			tree_box.pack_start(scroll,true,true,0);
 			tree_box.pack_start(bbox,false,false,0);
 			vbox.pack_start(tree_box,true,true,0);
-			icon = new Gtk.StatusIcon.from_file(get_file_path("pixmap", "xsirc.png"));
+			icon = new Gtk.StatusIcon.from_file(get_icon_path());
 			icon.activate.connect(() => {
 				XSIRC.Main.gui.main_window.present();
 				XSIRC.Main.gui.main_window.set_urgency_hint(false);
@@ -328,7 +328,7 @@ namespace XSIRC {
 			}
 			if(pop_up_libnotify) {
 #if !WINDOWS
-				Notify.Notification notification = new Notify.Notification(title,Markup.escape_text(content),PREFIX+"/share/pixmaps/xsirc.png");
+				Notify.Notification notification = new Notify.Notification(title,Markup.escape_text(content),get_icon_path());
 				notification.set_timeout(5000);
 				notification.set_urgency(Notify.Urgency.CRITICAL);
 				try {

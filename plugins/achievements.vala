@@ -573,18 +573,24 @@ namespace XSIRC {
 				return;
 			}
 			AchievementData a = achievements[id];
+			string title = _("Achievement unlocked - %s").printf(_(a.short_name));
+			string desc = _(a.description);
 #if !WINDOWS
-			Notify.Notification notification = new Notify.Notification(
-				_("Achievement unlocked - %s").printf(_(a.short_name)),
-				Markup.escape_text("%s".printf(_(a.description))),
-				get_file_path("pixmap", "xsirc.png")
-			);
+			var notification = new Notify.Notification(title, Markup.escape_text(desc), get_icon_path());
 			notification.set_timeout(4000);
 			notification.set_urgency(Notify.Urgency.NORMAL);
 			try {
 				notification.show();
 			} catch(Error e) {
 
+			}
+#else
+			Server? server = Main.gui.current_server();
+			if (server != null) {
+				GUI.View? view = server.current_view();
+				if (view != null) {
+					view.add_text("\x02" + title + "\x02: " + desc);
+				}
 			}
 #endif
 			awarded[id] = time_t();

@@ -837,7 +837,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			try {
-				d.logo = new Gdk.Pixbuf.from_file(get_file_path("pixmap", "xsirc.png"));
+				d.logo = new Gdk.Pixbuf.from_file(get_icon_path());
 			} catch(Error e) {
 				
 			}
@@ -952,5 +952,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		}
 		return ret + "/" + file;
 #endif
+	}
+
+	public static string get_icon_path() {
+		return get_file_path("pixmap", "xsirc.png");
 	}
 }
