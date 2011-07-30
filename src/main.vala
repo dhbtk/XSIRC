@@ -1,6 +1,6 @@
 using Gee;
 namespace XSIRC {
-	bool irc_user_is_privileged(string user) {
+	public bool irc_user_is_privileged(string user) {
 		return /^(&|@|%|\+|~)/.match(user);
 	}
 	public static class Main {
