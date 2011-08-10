@@ -858,187 +858,195 @@ msgstr ""
 msgid "UNHANDLED MESSAGE: %s"
 msgstr ""
 
-#: plugins/achievements.vala:43
+#: plugins/achievements.vala:44
 msgid "Tin"
 msgstr ""
 
-#: plugins/achievements.vala:44
+#: plugins/achievements.vala:45
 msgid "Type 50 messages."
 msgstr ""
 
-#: plugins/achievements.vala:45
+#: plugins/achievements.vala:46
 msgid "Spartan"
 msgstr ""
 
-#: plugins/achievements.vala:46
+#: plugins/achievements.vala:47
 msgid "Type 300 messages."
 msgstr ""
 
-#: plugins/achievements.vala:47
+#: plugins/achievements.vala:48
 msgid "The worth of a picture"
 msgstr ""
 
-#: plugins/achievements.vala:48
+#: plugins/achievements.vala:49
 msgid "Type 1,000 messages."
 msgstr ""
 
-#: plugins/achievements.vala:49
+#: plugins/achievements.vala:50
 msgid "0x1388"
 msgstr ""
 
-#: plugins/achievements.vala:50
+#: plugins/achievements.vala:51
 msgid "Type 5,000 messages."
 msgstr ""
 
-#: plugins/achievements.vala:51
+#: plugins/achievements.vala:52
 msgid "Myriapost"
 msgstr ""
 
-#: plugins/achievements.vala:52
+#: plugins/achievements.vala:53
 msgid "Type 10,000 messages."
 msgstr ""
 
-#: plugins/achievements.vala:53
+#: plugins/achievements.vala:54
 msgid "Decimegapost!"
 msgstr ""
 
-#: plugins/achievements.vala:54
+#: plugins/achievements.vala:55
 msgid "Type 100,000 messages."
 msgstr ""
 
-#: plugins/achievements.vala:55
+#: plugins/achievements.vala:56
 msgid "Omnipresent"
 msgstr ""
 
-#: plugins/achievements.vala:56
+#: plugins/achievements.vala:57
 msgid "Keep the program open for a week."
 msgstr ""
 
-#: plugins/achievements.vala:57
+#: plugins/achievements.vala:58
 msgid "Frobnicator"
 msgstr ""
 
-#: plugins/achievements.vala:58
+#: plugins/achievements.vala:59
 msgid "Change the magic switch back and forth repeatedly."
 msgstr ""
 
-#: plugins/achievements.vala:59
+#: plugins/achievements.vala:60
 msgid "+100 lives!"
 msgstr ""
 
-#: plugins/achievements.vala:60
+#: plugins/achievements.vala:61
 msgid "Use the Konami Code."
 msgstr ""
 
-#: plugins/achievements.vala:61
+#: plugins/achievements.vala:62
 msgid "Nitpicker"
 msgstr ""
 
-#: plugins/achievements.vala:62
+#: plugins/achievements.vala:63
 msgid "Change one letter in a channel's subject."
 msgstr ""
 
-#: plugins/achievements.vala:63
-msgid "Anti-ɐʍɥɔs"
-msgstr ""
-
 #: plugins/achievements.vala:64
-msgid "Accomplish communication of many non-fifth symbols in a row."
+msgid "<3 thunder"
 msgstr ""
 
 #: plugins/achievements.vala:65
-msgid "Adventurer"
+msgid "Keep the text width lined up."
 msgstr ""
 
 #: plugins/achievements.vala:66
-msgid "Pretend IRC is a text-based adventure."
+msgid "Anti-ɐʍɥɔs"
 msgstr ""
 
 #: plugins/achievements.vala:67
-msgid "Echo"
+msgid "Accomplish communication of many non-fifth symbols in a row."
 msgstr ""
 
 #: plugins/achievements.vala:68
-msgid "Repeat what you just said."
+msgid "Adventurer"
 msgstr ""
 
 #: plugins/achievements.vala:69
-msgid "Be bold"
+msgid "Pretend IRC is a text-based adventure."
 msgstr ""
 
 #: plugins/achievements.vala:70
-msgid "Use all the different formatting functions."
+msgid "Echo"
 msgstr ""
 
 #: plugins/achievements.vala:71
-msgid "Cheese's fault"
+msgid "Repeat what you just said."
 msgstr ""
 
 #: plugins/achievements.vala:72
-msgid "Be lucky."
+msgid "Be bold"
 msgstr ""
 
 #: plugins/achievements.vala:73
-msgid "Slow typist"
+msgid "Use all the different formatting functions."
 msgstr ""
 
 #: plugins/achievements.vala:74
-msgid "Spend more than 60 minutes typing a message."
+msgid "Cheese's fault"
 msgstr ""
 
 #: plugins/achievements.vala:75
-msgid "COBOL specialist"
+msgid "Be lucky."
 msgstr ""
 
 #: plugins/achievements.vala:76
-msgid "Type in ALLCAPS."
+msgid "Slow typist"
 msgstr ""
 
 #: plugins/achievements.vala:77
-msgid "APL programmer"
+msgid "Spend more than 60 minutes typing a message."
 msgstr ""
 
 #: plugins/achievements.vala:78
-msgid "Type a message consisting of lots of special characters."
+msgid "COBOL specialist"
 msgstr ""
 
 #: plugins/achievements.vala:79
-msgid "Creativity... fading..."
+msgid "Type in ALLCAPS."
 msgstr ""
 
 #: plugins/achievements.vala:80
-msgid "Repeat the exact same thing 10 times within a chat session."
+msgid "APL programmer"
 msgstr ""
 
 #: plugins/achievements.vala:81
-msgid "Hello? Anyone there?"
+msgid "Type a message consisting of lots of special characters."
 msgstr ""
 
 #: plugins/achievements.vala:82
-msgid "Say something in an empty channel."
+msgid "Creativity... fading..."
 msgstr ""
 
 #: plugins/achievements.vala:83
-msgid "Talkative"
+msgid "Repeat the exact same thing 10 times within a chat session."
 msgstr ""
 
 #: plugins/achievements.vala:84
-msgid "Talk continuously for five hours."
+msgid "Hello? Anyone there?"
 msgstr ""
 
 #: plugins/achievements.vala:85
-msgid "Egg finder"
+msgid "Say something in an empty channel."
 msgstr ""
 
 #: plugins/achievements.vala:86
+msgid "Talkative"
+msgstr ""
+
+#: plugins/achievements.vala:87
+msgid "Talk continuously for five hours."
+msgstr ""
+
+#: plugins/achievements.vala:88
+msgid "Egg finder"
+msgstr ""
+
+#: plugins/achievements.vala:89
 msgid "Discover the hidden Easter egg game."
 msgstr ""
 
-#: plugins/achievements.vala:139
+#: plugins/achievements.vala:150
 msgid "Achievements"
 msgstr ""
 
-#: plugins/achievements.vala:140
+#: plugins/achievements.vala:151
 msgid "IRC Achievements."
 msgstr ""
 
@@ -1048,89 +1056,89 @@ msgstr ""
 #. or typing lots of smileys would be bad. (Letter frequences tend
 #. not to differ too much between languages using the same
 #. alphabets, so that's less of a problem.)
-#: plugins/achievements.vala:203
+#: plugins/achievements.vala:214
 msgid "COUNTED_ALPHABET=abcdefghijklmnopqrstuvwxyz"
 msgstr ""
 
 #. l10n: 'No E' achievement - localize 'e' into some other common
 #. letter for other languages ('a' might make sense in Spanish for
 #. example, to mimic 'A Void').
-#: plugins/achievements.vala:213
+#: plugins/achievements.vala:224
 msgid "E_CHAR=e"
 msgstr ""
 
-#: plugins/achievements.vala:233
+#: plugins/achievements.vala:244
 msgid "Save as..."
 msgstr ""
 
-#: plugins/achievements.vala:339
+#: plugins/achievements.vala:349
 msgid "Insufficient magic."
 msgstr ""
 
-#: plugins/achievements.vala:620
+#: plugins/achievements.vala:656
 #, c-format
 msgid "<b>%s</b>: %s"
 msgstr ""
 
-#: plugins/achievements.vala:640
+#: plugins/achievements.vala:676
 #, c-format
 msgid "Achievement unlocked - %s"
 msgstr ""
 
-#: plugins/achievements.vala:670
+#: plugins/achievements.vala:706
 msgid "Enable achievements"
 msgstr ""
 
-#: plugins/achievements.vala:681
+#: plugins/achievements.vala:717
 msgid "Magic:"
 msgstr ""
 
-#: plugins/achievements.vala:810
+#: plugins/achievements.vala:858
 msgid "XSIRC 2D"
 msgstr ""
 
-#: plugins/achievements.vala:921
+#: plugins/achievements.vala:969
 msgid "Press SPACE to start."
 msgstr ""
 
-#: plugins/achievements.vala:923
+#: plugins/achievements.vala:971
 msgid ""
 "Your favorite channel is being invaded by spammers and badly\n"
 "written IRC bots. Shoot them out of existance and save the\n"
 "channel from dying, without harming the innocent users!"
 msgstr ""
 
-#: plugins/achievements.vala:934
+#: plugins/achievements.vala:982
 msgid "Shoot with SPACE."
 msgstr ""
 
-#: plugins/achievements.vala:936
+#: plugins/achievements.vala:984
 msgid "Steer with the ARROW KEYS."
 msgstr ""
 
-#: plugins/achievements.vala:938
+#: plugins/achievements.vala:986
 msgid "Quit with ESCAPE."
 msgstr ""
 
-#: plugins/achievements.vala:1837
+#: plugins/achievements.vala:1885
 #, c-format
 msgid "Score: %d"
 msgstr ""
 
-#: plugins/achievements.vala:1846
+#: plugins/achievements.vala:1894
 msgid "GAME OVER"
 msgstr ""
 
-#: plugins/achievements.vala:1852
+#: plugins/achievements.vala:1900
 #, c-format
 msgid "SCORE: %d TIME: %ds"
 msgstr ""
 
-#: plugins/achievements.vala:1854
+#: plugins/achievements.vala:1902
 msgid "press ENTER to retry"
 msgstr ""
 
-#: plugins/achievements.vala:1857
+#: plugins/achievements.vala:1905
 #, c-format
 msgid "(highscore: %d)"
 msgstr ""
