@@ -20,6 +20,7 @@ namespace XSIRC {
 			MAGIC,
 			KONAMI,
 			NITPICKER,
+			LINEUP,
 			E,
 			ADVENTURE,
 			ECHO,
@@ -60,6 +61,8 @@ namespace XSIRC {
 			    N_("Use the Konami Code.")},
 			{AchievementID.NITPICKER, N_("Nitpicker"),
 			    N_("Change one letter in a channel's subject.")},
+			{AchievementID.LINEUP, N_("<3 thunder"),
+			    N_("Keep the text width lined up.")},
 			{AchievementID.E, N_("Anti-ɐʍɥɔs"),
 			    N_("Accomplish communication of many non-fifth symbols in a row.")},
 			{AchievementID.ADVENTURE, N_("Adventurer"),
@@ -96,6 +99,14 @@ namespace XSIRC {
 		// MAGIC
 		private int magic_value = 1;
 		private double magic_counter;
+
+		// LINEUP
+		class ChanLineWidth {
+			public int width = 0;
+			public int count = 0;
+		}
+		private HashMap<string, ChanLineWidth> line_widths =
+		                              new HashMap<string, ChanLineWidth>();
 
 		// E
 		private unichar e_char;
@@ -584,6 +595,33 @@ namespace XSIRC {
 			return (server.nick.down() == current.setter.down() && single_change(current.content, old.content));
 		}
 
+		private int add_line_width(Server server, string target, int width) {
+			if (!target.has_prefix("#")) {
+				return 0;
+			}
+			string id = ("%s-%d-%s").printf(server.server, server.port, target);
+			ChanLineWidth? lw = line_widths.get(id);
+
+			if (lw == null) {
+				lw = new ChanLineWidth();
+				line_widths.set(id, lw);
+			}
+			
+			if (lw.width != width) {
+				lw.width = width;
+				lw.count = 0;
+			}
+			++lw.count;
+
+			return lw.count;
+		}
+
+		private bool test_lineup(Server server, string target, string nick,
+		                         string message) {
+			int len = nick.char_count() + message.char_count();
+			return (add_line_width(server, target, len) >= 6);
+		}
+
 		private TestFunc test_message_count(int lim) {
 			return () => (sent_messages >= lim);
 		}
@@ -728,6 +766,13 @@ namespace XSIRC {
 			return true;
 		}
 
+		public override bool on_privmsg(Server server, string usernick,
+		        string username, string usermask, string target, string message) {
+			int len = usernick.char_count() + message.char_count();
+			add_line_width(server, target, len);
+			return true;
+		}
+
 		public override bool on_sent_message(Server server, string nick, string target,
 		                                     string message, string raw_msg) {
 			if (raw_msg.down().has_prefix("notice")) { // NOTICE, ignore
@@ -758,6 +803,7 @@ namespace XSIRC {
 			test_achievement(AchievementID.M5000, test_message_count(5000));
 			test_achievement(AchievementID.M10000, test_message_count(10000));
 			test_achievement(AchievementID.M100000, test_message_count(100000));
+			test_achievement(AchievementID.LINEUP, () => test_lineup(server, target, nick, message));
 
 			last_message_time = time_t();
 			incremental_save(0.02);
