@@ -865,209 +865,286 @@ msgstr "[Admin] "
 msgid "UNHANDLED MESSAGE: %s"
 msgstr "OHANTERAT MEDDELANDE: %s"
 
-#: plugins/achievements.vala:42
+#: plugins/achievements.vala:43
 msgid "Tin"
 msgstr "Tenn"
 
-#: plugins/achievements.vala:43
+#: plugins/achievements.vala:44
 msgid "Type 50 messages."
 msgstr "Skriv 50 meddelanden."
 
-#: plugins/achievements.vala:44
+#: plugins/achievements.vala:45
 msgid "Spartan"
 msgstr "Spartan"
 
-#: plugins/achievements.vala:45
+#: plugins/achievements.vala:46
 msgid "Type 300 messages."
 msgstr "Skriv 300 meddelanden."
 
-#: plugins/achievements.vala:46
+#: plugins/achievements.vala:47
 msgid "The worth of a picture"
 msgstr "Värdet av en bild"
 
-#: plugins/achievements.vala:47
+#: plugins/achievements.vala:48
 msgid "Type 1,000 messages."
 msgstr "Skriv 1000 meddelanden."
 
-#: plugins/achievements.vala:48
+#: plugins/achievements.vala:49
 msgid "0x1388"
 msgstr "0x1388"
 
-#: plugins/achievements.vala:49
+#: plugins/achievements.vala:50
 msgid "Type 5,000 messages."
 msgstr "Skriv 5000 meddelanden."
 
-#: plugins/achievements.vala:50
+#: plugins/achievements.vala:51
 msgid "Myriapost"
 msgstr "Myriameddelande"
 
-#: plugins/achievements.vala:51
+#: plugins/achievements.vala:52
 msgid "Type 10,000 messages."
 msgstr "Skriv 10000 meddelanden."
 
-#: plugins/achievements.vala:52
+#: plugins/achievements.vala:53
 msgid "Decimegapost!"
 msgstr "Decimegameddelande!"
 
-#: plugins/achievements.vala:53
+#: plugins/achievements.vala:54
 msgid "Type 100,000 messages."
 msgstr "Skriv 100000 meddelanden."
 
-#: plugins/achievements.vala:54
+#: plugins/achievements.vala:55
 msgid "Omnipresent"
 msgstr "Allseende"
 
-#: plugins/achievements.vala:55
+#: plugins/achievements.vala:56
 msgid "Keep the program open for a week."
 msgstr "Lämna programmet på i en vecka."
 
-#: plugins/achievements.vala:56
+#: plugins/achievements.vala:57
 msgid "Frobnicator"
 msgstr "Frobnicerare"
 
-#: plugins/achievements.vala:57
+#: plugins/achievements.vala:58
 msgid "Change the magic switch back and forth repeatedly."
 msgstr "Ändra magi-switchen fram och tillbaka upprepade gånger."
 
-#: plugins/achievements.vala:58
+#: plugins/achievements.vala:59
 msgid "+100 lives!"
 msgstr "+100 liv!"
 
-#: plugins/achievements.vala:59
+#: plugins/achievements.vala:60
 msgid "Use the Konami Code."
 msgstr "Använd Konami-koden."
 
-#: plugins/achievements.vala:60
+#: plugins/achievements.vala:61
 msgid "Nitpicker"
 msgstr "Pedantisk"
 
-#: plugins/achievements.vala:61
+#: plugins/achievements.vala:62
 msgid "Change one letter in a channel's subject."
 msgstr "Ändra en bokstav i en kanals ämne."
 
-#: plugins/achievements.vala:62
+#: plugins/achievements.vala:63
 msgid "Anti-ɐʍɥɔs"
 msgstr "Anti-ɐʍɥɔs"
 
-#: plugins/achievements.vala:63
+#: plugins/achievements.vala:64
 msgid "Accomplish communication of many non-fifth symbols in a row."
 msgstr "Förtälj många ord utan användning av viss vanlig bokstav."
 
-#: plugins/achievements.vala:64
+#: plugins/achievements.vala:65
 msgid "Adventurer"
 msgstr "Äventyrare"
 
-#: plugins/achievements.vala:65
+#: plugins/achievements.vala:66
 msgid "Pretend IRC is a text-based adventure."
 msgstr "Låtsas att IRC är ett text-baserat äventyr."
 
-#: plugins/achievements.vala:66
+#: plugins/achievements.vala:67
 msgid "Echo"
 msgstr "Eko"
 
-#: plugins/achievements.vala:67
+#: plugins/achievements.vala:68
 msgid "Repeat what you just said."
 msgstr "Upprepa det du just skrev."
 
-#: plugins/achievements.vala:68
+#: plugins/achievements.vala:69
 msgid "Be bold"
 msgstr "WP:BB"
 
-#: plugins/achievements.vala:69
+#: plugins/achievements.vala:70
 msgid "Use all the different formatting functions."
 msgstr "Använd alla formateringsfunktionerna."
 
-#: plugins/achievements.vala:70
+#: plugins/achievements.vala:71
 msgid "Cheese's fault"
 msgstr "Cheese:s fel"
 
-#: plugins/achievements.vala:71
+#: plugins/achievements.vala:72
 msgid "Be lucky."
 msgstr "Ha tur."
 
-#: plugins/achievements.vala:72
+#: plugins/achievements.vala:73
 msgid "Slow typist"
 msgstr "Skriver långsamt"
 
-#: plugins/achievements.vala:73
+#: plugins/achievements.vala:74
 msgid "Spend more than 60 minutes typing a message."
 msgstr "Lägg ner mer än en timme på att skriva ett meddelande."
 
-#: plugins/achievements.vala:74
+#: plugins/achievements.vala:75
 msgid "COBOL specialist"
 msgstr "COBOL-specialist"
 
-#: plugins/achievements.vala:75
+#: plugins/achievements.vala:76
 msgid "Type in ALLCAPS."
 msgstr "Skriv med STORA BOKSTÄVER."
 
-#: plugins/achievements.vala:76
+#: plugins/achievements.vala:77
 msgid "APL programmer"
 msgstr "APL-programmerare"
 
-#: plugins/achievements.vala:77
+#: plugins/achievements.vala:78
 msgid "Type a message consisting of lots of special characters."
 msgstr "Skriv ett meddelande med en massa specialtecken."
 
-#: plugins/achievements.vala:78
+#: plugins/achievements.vala:79
 msgid "Creativity... fading..."
 msgstr "Kreativitet... avtar..."
 
-#: plugins/achievements.vala:79
+#: plugins/achievements.vala:80
 msgid "Repeat the exact same thing 10 times within a chat session."
 msgstr "Upprepa samma sak 10 gånger under en chatt-session."
 
-#: plugins/achievements.vala:80
+#: plugins/achievements.vala:81
 msgid "Hello? Anyone there?"
 msgstr "Hallå? Någon där?"
 
-#: plugins/achievements.vala:81
+#: plugins/achievements.vala:82
 msgid "Say something in an empty channel."
 msgstr "Säg något i en tom kanal."
 
-#: plugins/achievements.vala:82
+#: plugins/achievements.vala:83
 msgid "Talkative"
 msgstr "Pratglad"
 
-#: plugins/achievements.vala:83
+#: plugins/achievements.vala:84
 msgid "Talk continuously for five hours."
 msgstr "Prata kontinuerligt i fem timmar."
 
-#: plugins/achievements.vala:132
+#: plugins/achievements.vala:85
+msgid "Egg finder"
+msgstr "Äggletare"
+
+#: plugins/achievements.vala:86
+msgid "Discover the hidden Easter egg game."
+msgstr "Upptäck det gömda påskäggsspelet."
+
+#: plugins/achievements.vala:139
 msgid "Achievements"
 msgstr ""
 "Bedrifter\n"
 "(achievements)"
 
-#: plugins/achievements.vala:133
+#: plugins/achievements.vala:140
 msgid "IRC Achievements."
 msgstr "IRC-Bedrifter."
 
-#: plugins/achievements.vala:194
+#. l10n: 'No E' achievement - localize the alphabet in which the
+#. letter is supposed to be avoided, since gaining the achievement
+#. automatically when writing in languages based on other alphabets
+#. or typing lots of smileys would be bad. (Letter frequences tend
+#. not to differ too much between languages using the same
+#. alphabets, so that's less of a problem.)
+#: plugins/achievements.vala:203
 msgid "COUNTED_ALPHABET=abcdefghijklmnopqrstuvwxyz"
 msgstr "COUNTED_ALPHABET=abcdefghijklmnopqrstuvwyxzåäö"
 
-#: plugins/achievements.vala:200
+#. l10n: 'No E' achievement - localize 'e' into some other common
+#. letter for other languages ('a' might make sense in Spanish for
+#. example, to mimic 'A Void').
+#: plugins/achievements.vala:213
 msgid "E_CHAR=e"
 msgstr "E_CHAR=e"
 
-#: plugins/achievements.vala:556
+#: plugins/achievements.vala:233
+msgid "Save as..."
+msgstr "Spara som..."
+
+#: plugins/achievements.vala:339
+msgid "Insufficient magic."
+msgstr "Otillräcklig magi."
+
+#: plugins/achievements.vala:620
 #, c-format
 msgid "<b>%s</b>: %s"
 msgstr "<b>%s</b>: %s"
 
-#: plugins/achievements.vala:578
+#: plugins/achievements.vala:640
 #, c-format
 msgid "Achievement unlocked - %s"
 msgstr "Bedrift utförd - %s"
 
-#: plugins/achievements.vala:600
+#: plugins/achievements.vala:670
 msgid "Enable achievements"
 msgstr "Aktivera Bedrifter"
 
-#: plugins/achievements.vala:611
+#: plugins/achievements.vala:681
 msgid "Magic:"
 msgstr "Magi:"
+
+#: plugins/achievements.vala:810
+msgid "XSIRC 2D"
+msgstr "XSIRC 2D"
+
+#: plugins/achievements.vala:921
+msgid "Press SPACE to start."
+msgstr "Tryck MELLANSLAG för att starta."
+
+#: plugins/achievements.vala:923
+msgid ""
+"Your favorite channel is being invaded by spammers and badly\n"
+"written IRC bots. Shoot them out of existance and save the\n"
+"channel from dying, without harming the innocent users!"
+msgstr ""
+"Din favoritkanal har blivit invaderad av spammare och dåligt\n"
+"skrivna IRC-bottar. Skjut ner dem och rädda kanalen från att\n"
+"dö, utan att de oskyldiga användarna kommer till skada!"
+
+#: plugins/achievements.vala:934
+msgid "Shoot with SPACE."
+msgstr "Skjut med MELLANSLAG."
+
+#: plugins/achievements.vala:936
+msgid "Steer with the ARROW KEYS."
+msgstr "Styr med PILTANGENTERNA."
+
+#: plugins/achievements.vala:938
+msgid "Quit with ESCAPE."
+msgstr "Avsluta med ESCAPE."
+
+#: plugins/achievements.vala:1837
+#, c-format
+msgid "Score: %d"
+msgstr "Poäng: %d"
+
+#: plugins/achievements.vala:1846
+msgid "GAME OVER"
+msgstr "GAME OVER"
+
+#: plugins/achievements.vala:1852
+#, c-format
+msgid "SCORE: %d TIME: %ds"
+msgstr "POÄNG: %d TID: %ds"
+
+#: plugins/achievements.vala:1854
+msgid "press ENTER to retry"
+msgstr "tryck ENTER för att spela igen"
+
+#: plugins/achievements.vala:1857
+msgid "(highscore: %d)"
+msgstr "(högsta poäng: %d)"
 
 #: plugins/ctcp.vala:21
 msgid "Customizable CTCP replies."
