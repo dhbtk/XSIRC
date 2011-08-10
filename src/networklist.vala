@@ -312,7 +312,7 @@ namespace XSIRC {
 						}
 					}
 					server_model.set(iter,0,new_text,-1);
-				}	
+				}
 			} else {
 				Gtk.MessageDialog d = new Gtk.MessageDialog(dialog,
 				                                            Gtk.DialogFlags.MODAL,

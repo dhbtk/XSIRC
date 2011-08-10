@@ -9,7 +9,7 @@ using Gee;
 namespace XSIRC {
 	public class AchievementsPlugin : Plugin {
 
-		private enum AchievementID {
+		public enum AchievementID {
 			M50,
 			M300,
 			M1000,
@@ -194,30 +194,34 @@ namespace XSIRC {
 				// Nothing saved yet.
 			}
 
-			// 'No E' achievement - localize 'e' into some other common letter
-			// for other languages ('a' might make sense in Spanish for example,
-			// to mimic 'A Void'), and also localize the alphabet in which the
-			// letter is supposed to be avoided - gaining the achievement
+			// l10n: 'No E' achievement - localize the alphabet in which the
+			// letter is supposed to be avoided, since gaining the achievement
 			// automatically when writing in languages based on other alphabets
 			// or typing lots of smileys would be bad. (Letter frequences tend
-			// not to differ too much between languages using the same alphabets,
-			// so that's less of a problem.)
+			// not to differ too much between languages using the same
+			// alphabets, so that's less of a problem.)
 			string counted_alphabet_str = _("COUNTED_ALPHABET=abcdefghijklmnopqrstuvwxyz").substring(17);
 			unichar c;
 			int i = 0;
 			while (counted_alphabet_str.get_next_char(ref i, out c)) {
 				counted_alphabet.add(c);
 			}
+
+			// l10n: 'No E' achievement - localize 'e' into some other common
+			// letter for other languages ('a' might make sense in Spanish for
+			// example, to mimic 'A Void').
 			e_char = _("E_CHAR=e").get(7);
 
 			// Konami code achievement
-			Main.gui.main_window.key_press_event.connect((key) => {
-				test_achievement(AchievementID.KONAMI, () => test_konami(key.keyval));
+			Main.gui.main_window.key_press_event.connect((ev) => {
+				if (enabled) {
+					test_achievement(AchievementID.KONAMI, () => test_konami(ev.keyval));
+				}
 				return false;
 			});
 
 			// Slow typist achievement
-			Main.gui.text_entry.key_press_event.connect((key) => {
+			Main.gui.text_entry.key_press_event.connect((ev) => {
 				if (Main.gui.text_entry.text == "") {
 					slow_start = time_t();
 				}
@@ -281,7 +285,7 @@ namespace XSIRC {
 			}
 		}
 
-		private bool has_achievement(AchievementID id) {
+		public bool has_achievement(AchievementID id) {
 			return ((int)awarded[id] != 0);
 		}
 
@@ -596,7 +600,6 @@ namespace XSIRC {
 			test_achievement(id, () => func(message));
 		}
 
-
 		private void build_achievement_box() {
 			var children = achievement_box.get_children();
 			foreach (Gtk.Widget ch in children) {
@@ -627,7 +630,7 @@ namespace XSIRC {
 			achievement_box.show_all();
 		}
 
-		private void award_achievement(AchievementID id) {
+		public void award_achievement(AchievementID id) {
 			if (has_achievement(id)) {
 				return;
 			}
@@ -727,10 +730,16 @@ namespace XSIRC {
 
 		public override bool on_sent_message(Server server, string nick, string target,
 		                                     string message, string raw_msg) {
-			if (message.has_prefix("\x01")) { // CTCP / action, ignore
-				string msg = message.slice(1, -1);
+			if (raw_msg.down().has_prefix("notice")) { // NOTICE, ignore
 				return true;
 			}
+
+			if (message.has_prefix("\x01")) { // CTCP / action, ignore
+				string msg = message.slice(1, -1);
+				(void)msg; // Silence warnings
+				return true;
+			}
+
 			++sent_messages;
 			test_message_achievement(AchievementID.E, test_e, message);
 			test_message_achievement(AchievementID.ALLCAPS, test_allcaps, message);
