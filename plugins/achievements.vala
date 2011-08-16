@@ -10,6 +10,7 @@ namespace XSIRC {
 	public class AchievementsPlugin : Plugin {
 
 		public enum AchievementID {
+			ACHIEVER,
 			M50,
 			M300,
 			M1000,
@@ -32,6 +33,7 @@ namespace XSIRC {
 			UNIMAGINATIVE,
 			EMPTY,
 			TALKATIVE,
+			INCEPTION,
 			EEGAME
 		}
 		private struct AchievementData {
@@ -41,6 +43,8 @@ namespace XSIRC {
 		}
 
 		private const AchievementData[] achievements = {
+			{AchievementID.ACHIEVER, N_("Achiever!"),
+				N_("Earn 15 achievements.")},
 			{AchievementID.M50, N_("Tin"),
 				N_("Type 50 messages.")},
 			{AchievementID.M300, N_("Spartan"),
@@ -85,6 +89,8 @@ namespace XSIRC {
 			    N_("Say something in an empty channel.")},
 			{AchievementID.TALKATIVE, N_("Talkative"),
 			    N_("Talk continuously for five hours.")},
+			{AchievementID.INCEPTION, N_("Inception"),
+			    N_("Earn an achievement while earning another achievement.")},
 			{AchievementID.EEGAME, N_("Egg finder"),
 			    N_("Discover the hidden Easter egg game.")}
 		};
@@ -92,6 +98,9 @@ namespace XSIRC {
 		private bool unsaved = false;
 		private double save_progress = 0;
 		private time_t last_message_time = time_t();
+
+		// ACHIEVER
+		private int achievements_awarded = 0;
 
 		// OMNIPRESENT
 		private TimeoutSource? omnipresent_timeout = null;
@@ -132,6 +141,9 @@ namespace XSIRC {
 
 		// TALKATIVE
 		private time_t talkative_start = time_t();
+
+		// INCEPTION
+		private time_t time_last_achievement = 0;
 
 		private Gtk.HBox magic_box;
 		private Gtk.VBox achievement_box;
@@ -199,6 +211,7 @@ namespace XSIRC {
 				foreach (AchievementData a in achievements) {
 					if (conf.has_key("achievements", get_internal_name(a))) {
 						awarded[a.id] = (time_t)conf.get_integer("achievements", get_internal_name(a));
+						++achievements_awarded;
 					}
 				}
 			} catch(Error e) {
@@ -696,6 +709,12 @@ namespace XSIRC {
 			awarded[id] = time_t();
 			build_achievement_box();
 			save();
+
+			++achievements_awarded;
+			test_achievement(AchievementID.ACHIEVER, () => (achievements_awarded >= 15));
+
+			test_achievement(AchievementID.INCEPTION, () => (time_last_achievement == time_t()));
+			time_last_achievement = time_t();
 		}
 
 		private void set_up_prefs() {

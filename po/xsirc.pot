@@ -259,49 +259,49 @@ msgstr ""
 msgid "The string entered isn't a valid regular expression."
 msgstr ""
 
-#: src/servermanager.vala:174 src/servermanager.vala:182 src/server.vala:165
-#: src/server.vala:198 src/server.vala:215 src/server.vala:256
-#: src/server.vala:258 src/server.vala:267 src/server.vala:274
-#: src/server.vala:281 src/server.vala:289 src/server.vala:413
-#: src/server.vala:508 src/server.vala:520 src/server.vala:524
-#: src/server.vala:527 src/server.vala:534 src/server.vala:541
-#: src/server.vala:590 src/server.vala:593 src/server.vala:596
-#: src/server.vala:599 src/server.vala:602 src/server.vala:605
-#: src/server.vala:608 src/server.vala:611 src/server.vala:614
-#: src/server.vala:617 src/server.vala:620 src/server.vala:623
-#: src/server.vala:626 src/server.vala:629 src/server.vala:632
-#: src/server.vala:635 src/server.vala:638 src/server.vala:641
-#: src/server.vala:644 src/server.vala:647 src/server.vala:665
-#: src/server.vala:668 src/server.vala:671 src/server.vala:674
-#: src/server.vala:677 src/server.vala:680 src/server.vala:683
-#: src/server.vala:686 src/server.vala:689 src/server.vala:692
-#: src/server.vala:695 src/server.vala:698 src/server.vala:701
-#: src/server.vala:704 src/server.vala:707 src/server.vala:710
-#: src/server.vala:713 src/server.vala:716 src/server.vala:719
-#: src/server.vala:722 src/server.vala:725 src/server.vala:728
-#: src/server.vala:731 src/server.vala:734 src/server.vala:738
-#: src/server.vala:740 src/server.vala:744 src/server.vala:747
-#: src/server.vala:750 src/server.vala:753 src/server.vala:756
-#: src/server.vala:759 src/server.vala:764 src/server.vala:767
-#: src/server.vala:770 src/server.vala:773 src/server.vala:777
-#: src/server.vala:781 src/server.vala:784 src/server.vala:787
-#: src/server.vala:790 src/server.vala:793 src/server.vala:796
-#: src/server.vala:799 src/server.vala:802 src/server.vala:805
-#: src/server.vala:808 src/server.vala:811 src/server.vala:814
-#: src/server.vala:840 src/server.vala:843 src/server.vala:846
-#: src/server.vala:849 src/server.vala:852 src/server.vala:882
-#: src/server.vala:885 src/server.vala:888 src/server.vala:891
-#: src/server.vala:894 src/server.vala:897 src/server.vala:900
-#: src/server.vala:903 src/server.vala:906 src/server.vala:909
-#: src/server.vala:912 src/server.vala:915 src/server.vala:918
-#: src/server.vala:921 src/server.vala:927 src/server.vala:930
-#: src/server.vala:933 src/server.vala:936 src/server.vala:939
-#: src/server.vala:944 src/server.vala:947 src/server.vala:950
-#: src/server.vala:953 src/server.vala:956 src/server.vala:959
-#: src/server.vala:1051 plugins/ctcp.vala:120 plugins/ctcp.vala:123
+#: src/servermanager.vala:174 src/servermanager.vala:182 src/server.vala:175
+#: src/server.vala:208 src/server.vala:225 src/server.vala:266
+#: src/server.vala:268 src/server.vala:277 src/server.vala:284
+#: src/server.vala:291 src/server.vala:299 src/server.vala:423
+#: src/server.vala:518 src/server.vala:530 src/server.vala:534
+#: src/server.vala:537 src/server.vala:544 src/server.vala:551
+#: src/server.vala:600 src/server.vala:603 src/server.vala:606
+#: src/server.vala:609 src/server.vala:612 src/server.vala:615
+#: src/server.vala:618 src/server.vala:621 src/server.vala:624
+#: src/server.vala:627 src/server.vala:630 src/server.vala:633
+#: src/server.vala:636 src/server.vala:639 src/server.vala:642
+#: src/server.vala:645 src/server.vala:648 src/server.vala:651
+#: src/server.vala:654 src/server.vala:657 src/server.vala:675
+#: src/server.vala:678 src/server.vala:681 src/server.vala:684
+#: src/server.vala:687 src/server.vala:690 src/server.vala:693
+#: src/server.vala:696 src/server.vala:699 src/server.vala:702
+#: src/server.vala:705 src/server.vala:708 src/server.vala:711
+#: src/server.vala:714 src/server.vala:717 src/server.vala:720
+#: src/server.vala:723 src/server.vala:726 src/server.vala:729
+#: src/server.vala:732 src/server.vala:735 src/server.vala:738
+#: src/server.vala:741 src/server.vala:744 src/server.vala:748
+#: src/server.vala:750 src/server.vala:754 src/server.vala:757
+#: src/server.vala:760 src/server.vala:763 src/server.vala:766
+#: src/server.vala:769 src/server.vala:774 src/server.vala:777
+#: src/server.vala:780 src/server.vala:783 src/server.vala:787
+#: src/server.vala:791 src/server.vala:794 src/server.vala:797
+#: src/server.vala:800 src/server.vala:803 src/server.vala:806
+#: src/server.vala:809 src/server.vala:812 src/server.vala:815
+#: src/server.vala:818 src/server.vala:821 src/server.vala:824
+#: src/server.vala:850 src/server.vala:853 src/server.vala:856
+#: src/server.vala:859 src/server.vala:862 src/server.vala:892
+#: src/server.vala:895 src/server.vala:898 src/server.vala:901
+#: src/server.vala:904 src/server.vala:907 src/server.vala:910
+#: src/server.vala:913 src/server.vala:916 src/server.vala:919
+#: src/server.vala:922 src/server.vala:925 src/server.vala:928
+#: src/server.vala:931 src/server.vala:937 src/server.vala:940
+#: src/server.vala:943 src/server.vala:946 src/server.vala:949
+#: src/server.vala:954 src/server.vala:957 src/server.vala:960
+#: src/server.vala:963 src/server.vala:966 src/server.vala:969
+#: src/server.vala:1061 plugins/ctcp.vala:120 plugins/ctcp.vala:123
 #: plugins/highlights.vala:257 plugins/highlights.vala:274
-#: plugins/highlights.vala:291 plugins/messages.vala:233
-#: plugins/messages.vala:255 plugins/messages.vala:297
+#: plugins/highlights.vala:291 plugins/messages.vala:227
+#: plugins/messages.vala:249 plugins/messages.vala:291
 msgid "<server>"
 msgstr ""
 
@@ -314,739 +314,755 @@ msgstr ""
 msgid "[Error] No more servers to connect to."
 msgstr ""
 
-#: src/server.vala:198
+#: src/server.vala:208
 msgid "Ping timeout. Reconnecting..."
 msgstr ""
 
-#: src/server.vala:215
+#: src/server.vala:225
 #, c-format
 msgid "ERROR: error fetching line: %s"
 msgstr ""
 
-#: src/server.vala:256
+#: src/server.vala:266
 msgid "[Connection] Starting connection attempt..."
 msgstr ""
 
-#: src/server.vala:258
+#: src/server.vala:268
 #, c-format
 msgid "[Connection] Resolving name %s..."
 msgstr ""
 
-#: src/server.vala:267
+#: src/server.vala:277
 msgid "[Connection] Error: could not look up host name."
 msgstr ""
 
-#: src/server.vala:274
+#: src/server.vala:284
 #, c-format
 msgid "[Connection] Resolved %s to %s."
 msgstr ""
 
-#: src/server.vala:281
+#: src/server.vala:291
 #, c-format
 msgid "[Connection] Error: could not connect -- %s"
 msgstr ""
 
-#: src/server.vala:289
+#: src/server.vala:299
 msgid "[Connection] Connected! Sending USER, NICK and PASS."
 msgstr ""
 
-#: src/server.vala:413
+#: src/server.vala:423
 #, c-format
 msgid "Error sending line: %s"
 msgstr ""
 
-#: src/server.vala:508
+#: src/server.vala:518
 #, c-format
 msgid "%s has invited you to %s."
 msgstr ""
 
-#: src/server.vala:520
+#: src/server.vala:530
 #, c-format
 msgid "[Server info] Welcome to the Internet Relay Network %s"
 msgstr ""
 
-#: src/server.vala:524
+#: src/server.vala:534
 msgid "[Server info] "
 msgstr ""
 
-#: src/server.vala:527
+#: src/server.vala:537
 #, c-format
 msgid ""
 "[Server info] Your server is %s running %s. Available user modes: %s. "
 "Available channel modes: %s"
 msgstr ""
 
-#: src/server.vala:534
+#: src/server.vala:544
 #, c-format
 msgid "[Server info] %s are supported by this server"
 msgstr ""
 
-#: src/server.vala:541
+#: src/server.vala:551
 #, c-format
 msgid "[Auth] %s"
 msgstr ""
 
-#: src/server.vala:580
+#: src/server.vala:590
 #, c-format
 msgid "Topic set by %s on %s"
 msgstr ""
 
-#: src/server.vala:590
+#: src/server.vala:600
 #, c-format
 msgid "[Error:401] No such nickname/channel: %s"
 msgstr ""
 
-#: src/server.vala:593
+#: src/server.vala:603
 #, c-format
 msgid "[Error:402] No such server: %s"
 msgstr ""
 
-#: src/server.vala:596
+#: src/server.vala:606
 #, c-format
 msgid "[Error:403] No such channel: %s"
 msgstr ""
 
-#: src/server.vala:599
+#: src/server.vala:609
 #, c-format
 msgid "[Error:404] Cannot send to channel: %s"
 msgstr ""
 
-#: src/server.vala:602
+#: src/server.vala:612
 #, c-format
 msgid "[Error:405] Cannot join %s: joined too many channels."
 msgstr ""
 
-#: src/server.vala:605
+#: src/server.vala:615
 #, c-format
 msgid "[Error:406] There was no such nickname: %s"
 msgstr ""
 
-#: src/server.vala:608
+#: src/server.vala:618
 msgid "[Error:407] Too many targets for notice/message."
 msgstr ""
 
-#: src/server.vala:611
+#: src/server.vala:621
 #, c-format
 msgid "[Error:408] No such service: %s"
 msgstr ""
 
-#: src/server.vala:614
+#: src/server.vala:624
 msgid "[Error:409] No origin specified."
 msgstr ""
 
-#: src/server.vala:617
+#: src/server.vala:627
 msgid "[Error:411] No recipient given for command."
 msgstr ""
 
-#: src/server.vala:620
+#: src/server.vala:630
 msgid "[Error:412] No text to send."
 msgstr ""
 
-#: src/server.vala:623
+#: src/server.vala:633
 #, c-format
 msgid "[Error:413] No toplevel domain specified for mask %s"
 msgstr ""
 
-#: src/server.vala:626
+#: src/server.vala:636
 #, c-format
 msgid "[Error:414] Wildcard in toplevel domain in mask %s"
 msgstr ""
 
-#: src/server.vala:629
+#: src/server.vala:639
 #, c-format
 msgid "[Error:415] Bad server/host mask: %s"
 msgstr ""
 
-#: src/server.vala:632
+#: src/server.vala:642
 #, c-format
 msgid "[Error:421] Unknown command: %s"
 msgstr ""
 
-#: src/server.vala:635
+#: src/server.vala:645
 msgid "[MOTD] MOTD file missing"
 msgstr ""
 
-#: src/server.vala:638
+#: src/server.vala:648
 #, c-format
 msgid "[Admin] No admin info available for server %s"
 msgstr ""
 
-#: src/server.vala:641
+#: src/server.vala:651
 msgid "[Error:424] File error."
 msgstr ""
 
-#: src/server.vala:644
+#: src/server.vala:654
 msgid "[Error:431] No nickname given."
 msgstr ""
 
-#: src/server.vala:647
+#: src/server.vala:657
 msgid "[Error:432] Illegal nickname given."
 msgstr ""
 
-#: src/server.vala:665
+#: src/server.vala:675
 #, c-format
 msgid "[Error:433] Nickname %s already in use."
 msgstr ""
 
-#: src/server.vala:668
+#: src/server.vala:678
 msgid "[Error:436] Nickname collision kill."
 msgstr ""
 
-#: src/server.vala:671
+#: src/server.vala:681
 #, c-format
 msgid "[Error:437] Nick/channel temporarily unavailable: %s"
 msgstr ""
 
-#: src/server.vala:674
+#: src/server.vala:684
 #, c-format
 msgid "[Error:441] %s isn't in channel %s."
 msgstr ""
 
-#: src/server.vala:677
+#: src/server.vala:687
 #, c-format
 msgid "[Error:442] You're not in channel %s."
 msgstr ""
 
-#: src/server.vala:680
+#: src/server.vala:690
 #, c-format
 msgid "[Error:443] %s is already in channel %s."
 msgstr ""
 
-#: src/server.vala:683
+#: src/server.vala:693
 #, c-format
 msgid "[Error:444] User %s is not logged in."
 msgstr ""
 
-#: src/server.vala:686
+#: src/server.vala:696
 msgid "[Error:445] SUMMON has been disabled."
 msgstr ""
 
-#: src/server.vala:689
+#: src/server.vala:699
 msgid "[Error:446] USERS has been disabled."
 msgstr ""
 
-#: src/server.vala:692
+#: src/server.vala:702
 msgid "[Error:451] You have not registered."
 msgstr ""
 
-#: src/server.vala:695
+#: src/server.vala:705
 #, c-format
 msgid "[Error:461] Not enough parameters for command %s."
 msgstr ""
 
-#: src/server.vala:698
+#: src/server.vala:708
 msgid "[Error:462] You have already registered."
 msgstr ""
 
-#: src/server.vala:701
+#: src/server.vala:711
 msgid "[Error:463] Your host is not priviledged."
 msgstr ""
 
-#: src/server.vala:704
+#: src/server.vala:714
 msgid "[Error:464] Password incorrect."
 msgstr ""
 
-#: src/server.vala:707
+#: src/server.vala:717
 msgid "[Error:465] You are banned from this server."
 msgstr ""
 
-#: src/server.vala:710
+#: src/server.vala:720
 msgid "[Error:466] You will be banned from this server."
 msgstr ""
 
-#: src/server.vala:713
+#: src/server.vala:723
 #, c-format
 msgid "[Error:467] The key for channel %s has already been set."
 msgstr ""
 
-#: src/server.vala:716
+#: src/server.vala:726
 #, c-format
 msgid "[Error:471] Cannot join channel %s: channel is full (+l)"
 msgstr ""
 
-#: src/server.vala:719
+#: src/server.vala:729
 #, c-format
 msgid "[Error:472] The server does not recognize the mode char %s."
 msgstr ""
 
-#: src/server.vala:722
+#: src/server.vala:732
 #, c-format
 msgid "[Error:473] Cannot join channel %s: channel is invite-only (+i)"
 msgstr ""
 
-#: src/server.vala:725
+#: src/server.vala:735
 #, c-format
 msgid "[Error:474] Cannot join channel %s: you are banned (+b)"
 msgstr ""
 
-#: src/server.vala:728
+#: src/server.vala:738
 #, c-format
 msgid "[Error:475] Cannot join channel %s: bad key."
 msgstr ""
 
-#: src/server.vala:731
+#: src/server.vala:741
 #, c-format
 msgid "[Error:476] Bad channel mask for %s."
 msgstr ""
 
-#: src/server.vala:734
+#: src/server.vala:744
 #, c-format
 msgid "[Error:477] The channel %s does not support modes."
 msgstr ""
 
-#: src/server.vala:738
+#: src/server.vala:748
 #, c-format
 msgid "[Error:478] Channel %s's ban list is full."
 msgstr ""
 
-#: src/server.vala:740
+#: src/server.vala:750
 #, c-format
 msgid "[Error:478] Channel %s's exceptions list is full."
 msgstr ""
 
-#: src/server.vala:744
+#: src/server.vala:754
 msgid "[Error:481] Permission denied: you are not an IRC operator."
 msgstr ""
 
-#: src/server.vala:747
+#: src/server.vala:757
 #, c-format
 msgid "[Error:482] You're not an operator in %s"
 msgstr ""
 
-#: src/server.vala:750
+#: src/server.vala:760
 msgid "[Error:483] You cannot kill a server."
 msgstr ""
 
-#: src/server.vala:753
+#: src/server.vala:763
 msgid "[Error:491] No O-lines for your host."
 msgstr ""
 
-#: src/server.vala:756
+#: src/server.vala:766
 msgid "[Error:501] Unknown mode flag."
 msgstr ""
 
-#: src/server.vala:759
+#: src/server.vala:769
 msgid "[Error:502] Cannot view or set the mode for other users."
 msgstr ""
 
-#: src/server.vala:764
+#: src/server.vala:774
 #, c-format
 msgid "[Userhost] %s: %s"
 msgstr ""
 
-#: src/server.vala:767
+#: src/server.vala:777
 #, c-format
 msgid "[ISON] %s is on"
 msgstr ""
 
-#: src/server.vala:770
+#: src/server.vala:780
 #, c-format
 msgid "[WHOIS] %s is away: %s"
 msgstr ""
 
-#: src/server.vala:773
+#: src/server.vala:783
 msgid "[Away] You are no longer marked as away."
 msgstr ""
 
-#: src/server.vala:777
+#: src/server.vala:787
 msgid "[Away] You are now marked as away."
 msgstr ""
 
-#: src/server.vala:781
+#: src/server.vala:791
 #, c-format
 msgid "[WHOIS] %s: %s@%s: %s"
 msgstr ""
 
-#: src/server.vala:784
+#: src/server.vala:794
 #, c-format
 msgid "[WHOIS] %s: in server %s: %s"
 msgstr ""
 
-#: src/server.vala:787
+#: src/server.vala:797
 #, c-format
 msgid "[WHOIS] %s: is an IRCop"
 msgstr ""
 
-#: src/server.vala:790
+#: src/server.vala:800
 #, c-format
 msgid "[WHOIS] %s: %s seconds idle"
 msgstr ""
 
-#: src/server.vala:793
+#: src/server.vala:803
 #, c-format
 msgid "[WHOIS] %s: end of /WHOIS list."
 msgstr ""
 
-#: src/server.vala:796
+#: src/server.vala:806
 #, c-format
 msgid "[WHOIS] %s: in channels %s"
 msgstr ""
 
-#: src/server.vala:799
+#: src/server.vala:809
 #, c-format
 msgid "[WHOIS] %s: is a registered nickname"
 msgstr ""
 
-#: src/server.vala:802
+#: src/server.vala:812
 #, c-format
 msgid "[WHOWAS] %s: %s@%s: %s"
 msgstr ""
 
-#: src/server.vala:805
+#: src/server.vala:815
 #, c-format
 msgid "[WHOWAS] %s: end of /WHOWAS list."
 msgstr ""
 
-#: src/server.vala:808
+#: src/server.vala:818
 msgid "[List] Channel (Users) Topic"
 msgstr ""
 
-#: src/server.vala:811
+#: src/server.vala:821
 #, c-format
 msgid "[List] %s (%s) %s"
 msgstr ""
 
-#: src/server.vala:814
+#: src/server.vala:824
 msgid "[List] end of /LIST."
 msgstr ""
 
-#: src/server.vala:820
+#: src/server.vala:830
 #, c-format
 msgid "Channel mode is %s"
 msgstr ""
 
-#: src/server.vala:825
+#: src/server.vala:835
 msgid "No topic is set"
 msgstr ""
 
-#: src/server.vala:829
+#: src/server.vala:839
 #, c-format
 msgid "Channel was created %s"
 msgstr ""
 
-#: src/server.vala:836
+#: src/server.vala:846
 #, c-format
 msgid "The topic is: %s"
 msgstr ""
 
-#: src/server.vala:840
+#: src/server.vala:850
 #, c-format
 msgid "[Invite] inviting %s to %s"
 msgstr ""
 
-#: src/server.vala:843
+#: src/server.vala:853
 #, c-format
 msgid "[Summon] summoning %s to IRC"
 msgstr ""
 
-#: src/server.vala:846
+#: src/server.vala:856
 #, c-format
 msgid "Server version: %s; server software: %s; %s"
 msgstr ""
 
-#: src/server.vala:849
+#: src/server.vala:859
 #, c-format
 msgid "[WHO] %s: %s!%s@%s in server %s (%s) %s"
 msgstr ""
 
-#: src/server.vala:852
+#: src/server.vala:862
 #, c-format
 msgid "[WHO] in %s: end of /WHO list."
 msgstr ""
 
-#: src/server.vala:882
+#: src/server.vala:892
 #, c-format
 msgid "[Links] %s %s :%s"
 msgstr ""
 
-#: src/server.vala:885
+#: src/server.vala:895
 msgid "[Links] end of /LINKS list."
 msgstr ""
 
-#: src/server.vala:888
+#: src/server.vala:898
 #, c-format
 msgid "[Banlist] %s: %s"
 msgstr ""
 
-#: src/server.vala:891
+#: src/server.vala:901
 #, c-format
 msgid "[Banlist] %s: end of ban (mode +b) list."
 msgstr ""
 
-#: src/server.vala:894
+#: src/server.vala:904
 #, c-format
 msgid "[Exceptions] %s: %s"
 msgstr ""
 
-#: src/server.vala:897
+#: src/server.vala:907
 #, c-format
 msgid "[Exceptions] %s: end of exceptions (mode +e) list."
 msgstr ""
 
-#: src/server.vala:900
+#: src/server.vala:910
 #, c-format
 msgid "[Info] %s"
 msgstr ""
 
-#: src/server.vala:903
+#: src/server.vala:913
 msgid "[Info] end of /INFO list."
 msgstr ""
 
-#: src/server.vala:906
+#: src/server.vala:916
 #, c-format
 msgid "[MOTD] %s:"
 msgstr ""
 
-#: src/server.vala:909
+#: src/server.vala:919
 msgid "[MOTD] "
 msgstr ""
 
-#: src/server.vala:912
+#: src/server.vala:922
 msgid "[MOTD] End of /MOTD command."
 msgstr ""
 
-#: src/server.vala:915
+#: src/server.vala:925
 msgid "[Oper] You are now an IRCop."
 msgstr ""
 
-#: src/server.vala:918
+#: src/server.vala:928
 #, c-format
 msgid "[Rehash] Rehashing config file %s."
 msgstr ""
 
-#: src/server.vala:921
+#: src/server.vala:931
 #, c-format
 msgid "[Time] Server's local time: %s"
 msgstr ""
 
-#: src/server.vala:927
+#: src/server.vala:937
 #, c-format
 msgid "[Mode] Your mode is: %s"
 msgstr ""
 
-#: src/server.vala:930 src/server.vala:944
+#: src/server.vala:940 src/server.vala:954
 #, c-format
 msgid "[Server info] %s"
 msgstr ""
 
-#: src/server.vala:933
+#: src/server.vala:943
 #, c-format
 msgid "[Server info] %s operator(s) online"
 msgstr ""
 
-#: src/server.vala:936
+#: src/server.vala:946
 #, c-format
 msgid "[Server info] %s unknown connection(s)"
 msgstr ""
 
-#: src/server.vala:939
+#: src/server.vala:949
 #, c-format
 msgid "[Server info] %s channels formed"
 msgstr ""
 
-#: src/server.vala:947
+#: src/server.vala:957
 #, c-format
 msgid "[Admin] Administrative info for %s:"
 msgstr ""
 
-#: src/server.vala:950 src/server.vala:953 src/server.vala:956
+#: src/server.vala:960 src/server.vala:963 src/server.vala:966
 msgid "[Admin] "
 msgstr ""
 
-#: src/server.vala:959
+#: src/server.vala:969
 #, c-format
 msgid "UNHANDLED MESSAGE: %s"
 msgstr ""
 
-#: plugins/achievements.vala:44
-msgid "Tin"
-msgstr ""
-
-#: plugins/achievements.vala:45
-msgid "Type 50 messages."
-msgstr ""
-
 #: plugins/achievements.vala:46
-msgid "Spartan"
+msgid "Achiever!"
 msgstr ""
 
 #: plugins/achievements.vala:47
-msgid "Type 300 messages."
+msgid "Earn 15 achievements."
 msgstr ""
 
 #: plugins/achievements.vala:48
-msgid "The worth of a picture"
+msgid "Tin"
 msgstr ""
 
 #: plugins/achievements.vala:49
-msgid "Type 1,000 messages."
+msgid "Type 50 messages."
 msgstr ""
 
 #: plugins/achievements.vala:50
-msgid "0x1388"
+msgid "Spartan"
 msgstr ""
 
 #: plugins/achievements.vala:51
-msgid "Type 5,000 messages."
+msgid "Type 300 messages."
 msgstr ""
 
 #: plugins/achievements.vala:52
-msgid "Myriapost"
+msgid "The worth of a picture"
 msgstr ""
 
 #: plugins/achievements.vala:53
-msgid "Type 10,000 messages."
+msgid "Type 1,000 messages."
 msgstr ""
 
 #: plugins/achievements.vala:54
-msgid "Decimegapost!"
+msgid "0x1388"
 msgstr ""
 
 #: plugins/achievements.vala:55
-msgid "Type 100,000 messages."
+msgid "Type 5,000 messages."
 msgstr ""
 
 #: plugins/achievements.vala:56
-msgid "Omnipresent"
+msgid "Myriapost"
 msgstr ""
 
 #: plugins/achievements.vala:57
-msgid "Keep the program open for a week."
+msgid "Type 10,000 messages."
 msgstr ""
 
 #: plugins/achievements.vala:58
-msgid "Frobnicator"
+msgid "Decimegapost!"
 msgstr ""
 
 #: plugins/achievements.vala:59
-msgid "Change the magic switch back and forth repeatedly."
+msgid "Type 100,000 messages."
 msgstr ""
 
 #: plugins/achievements.vala:60
-msgid "+100 lives!"
+msgid "Omnipresent"
 msgstr ""
 
 #: plugins/achievements.vala:61
-msgid "Use the Konami Code."
+msgid "Keep the program open for a week."
 msgstr ""
 
 #: plugins/achievements.vala:62
-msgid "Nitpicker"
+msgid "Frobnicator"
 msgstr ""
 
 #: plugins/achievements.vala:63
-msgid "Change one letter in a channel's subject."
+msgid "Change the magic switch back and forth repeatedly."
 msgstr ""
 
 #: plugins/achievements.vala:64
-msgid "<3 thunder"
+msgid "+100 lives!"
 msgstr ""
 
 #: plugins/achievements.vala:65
-msgid "Keep the text width lined up."
+msgid "Use the Konami Code."
 msgstr ""
 
 #: plugins/achievements.vala:66
-msgid "Anti-ɐʍɥɔs"
+msgid "Nitpicker"
 msgstr ""
 
 #: plugins/achievements.vala:67
-msgid "Accomplish communication of many non-fifth symbols in a row."
+msgid "Change one letter in a channel's subject."
 msgstr ""
 
 #: plugins/achievements.vala:68
-msgid "Adventurer"
+msgid "<3 thunder"
 msgstr ""
 
 #: plugins/achievements.vala:69
-msgid "Pretend IRC is a text-based adventure."
+msgid "Keep the text width lined up."
 msgstr ""
 
 #: plugins/achievements.vala:70
-msgid "Echo"
+msgid "Anti-ɐʍɥɔs"
 msgstr ""
 
 #: plugins/achievements.vala:71
-msgid "Repeat what you just said."
+msgid "Accomplish communication of many non-fifth symbols in a row."
 msgstr ""
 
 #: plugins/achievements.vala:72
-msgid "Be bold"
+msgid "Adventurer"
 msgstr ""
 
 #: plugins/achievements.vala:73
-msgid "Use all the different formatting functions."
+msgid "Pretend IRC is a text-based adventure."
 msgstr ""
 
 #: plugins/achievements.vala:74
-msgid "Cheese's fault"
+msgid "Echo"
 msgstr ""
 
 #: plugins/achievements.vala:75
-msgid "Be lucky."
+msgid "Repeat what you just said."
 msgstr ""
 
 #: plugins/achievements.vala:76
-msgid "Slow typist"
+msgid "Be bold"
 msgstr ""
 
 #: plugins/achievements.vala:77
-msgid "Spend more than 60 minutes typing a message."
+msgid "Use all the different formatting functions."
 msgstr ""
 
 #: plugins/achievements.vala:78
-msgid "COBOL specialist"
+msgid "Cheese's fault"
 msgstr ""
 
 #: plugins/achievements.vala:79
-msgid "Type in ALLCAPS."
+msgid "Be lucky."
 msgstr ""
 
 #: plugins/achievements.vala:80
-msgid "APL programmer"
+msgid "Slow typist"
 msgstr ""
 
 #: plugins/achievements.vala:81
-msgid "Type a message consisting of lots of special characters."
+msgid "Spend more than 60 minutes typing a message."
 msgstr ""
 
 #: plugins/achievements.vala:82
-msgid "Creativity... fading..."
+msgid "COBOL specialist"
 msgstr ""
 
 #: plugins/achievements.vala:83
-msgid "Repeat the exact same thing 10 times within a chat session."
+msgid "Type in ALLCAPS."
 msgstr ""
 
 #: plugins/achievements.vala:84
-msgid "Hello? Anyone there?"
+msgid "APL programmer"
 msgstr ""
 
 #: plugins/achievements.vala:85
-msgid "Say something in an empty channel."
+msgid "Type a message consisting of lots of special characters."
 msgstr ""
 
 #: plugins/achievements.vala:86
-msgid "Talkative"
+msgid "Creativity... fading..."
 msgstr ""
 
 #: plugins/achievements.vala:87
-msgid "Talk continuously for five hours."
+msgid "Repeat the exact same thing 10 times within a chat session."
 msgstr ""
 
 #: plugins/achievements.vala:88
-msgid "Egg finder"
+msgid "Hello? Anyone there?"
 msgstr ""
 
 #: plugins/achievements.vala:89
+msgid "Say something in an empty channel."
+msgstr ""
+
+#: plugins/achievements.vala:90
+msgid "Talkative"
+msgstr ""
+
+#: plugins/achievements.vala:91
+msgid "Talk continuously for five hours."
+msgstr ""
+
+#: plugins/achievements.vala:92
+msgid "Inception"
+msgstr ""
+
+#: plugins/achievements.vala:93
+msgid "Earn an achievement while earning another achievement."
+msgstr ""
+
+#: plugins/achievements.vala:94
+msgid "Egg finder"
+msgstr ""
+
+#: plugins/achievements.vala:95
 msgid "Discover the hidden Easter egg game."
 msgstr ""
 
-#: plugins/achievements.vala:150
+#: plugins/achievements.vala:162
 msgid "Achievements"
 msgstr ""
 
-#: plugins/achievements.vala:151
+#: plugins/achievements.vala:163
 msgid "IRC Achievements."
 msgstr ""
 
@@ -1056,89 +1072,89 @@ msgstr ""
 #. or typing lots of smileys would be bad. (Letter frequences tend
 #. not to differ too much between languages using the same
 #. alphabets, so that's less of a problem.)
-#: plugins/achievements.vala:214
+#: plugins/achievements.vala:227
 msgid "COUNTED_ALPHABET=abcdefghijklmnopqrstuvwxyz"
 msgstr ""
 
 #. l10n: 'No E' achievement - localize 'e' into some other common
 #. letter for other languages ('a' might make sense in Spanish for
 #. example, to mimic 'A Void').
-#: plugins/achievements.vala:224
+#: plugins/achievements.vala:237
 msgid "E_CHAR=e"
 msgstr ""
 
-#: plugins/achievements.vala:244
+#: plugins/achievements.vala:257
 msgid "Save as..."
 msgstr ""
 
-#: plugins/achievements.vala:349
+#: plugins/achievements.vala:362
 msgid "Insufficient magic."
 msgstr ""
 
-#: plugins/achievements.vala:656
+#: plugins/achievements.vala:669
 #, c-format
 msgid "<b>%s</b>: %s"
 msgstr ""
 
-#: plugins/achievements.vala:676
+#: plugins/achievements.vala:689
 #, c-format
 msgid "Achievement unlocked - %s"
 msgstr ""
 
-#: plugins/achievements.vala:706
+#: plugins/achievements.vala:725
 msgid "Enable achievements"
 msgstr ""
 
-#: plugins/achievements.vala:717
+#: plugins/achievements.vala:736
 msgid "Magic:"
 msgstr ""
 
-#: plugins/achievements.vala:858
+#: plugins/achievements.vala:877
 msgid "XSIRC 2D"
 msgstr ""
 
-#: plugins/achievements.vala:969
+#: plugins/achievements.vala:988
 msgid "Press SPACE to start."
 msgstr ""
 
-#: plugins/achievements.vala:971
+#: plugins/achievements.vala:990
 msgid ""
 "Your favorite channel is being invaded by spammers and badly\n"
 "written IRC bots. Shoot them out of existance and save the\n"
 "channel from dying, without harming the innocent users!"
 msgstr ""
 
-#: plugins/achievements.vala:982
+#: plugins/achievements.vala:1001
 msgid "Shoot with SPACE."
 msgstr ""
 
-#: plugins/achievements.vala:984
+#: plugins/achievements.vala:1003
 msgid "Steer with the ARROW KEYS."
 msgstr ""
 
-#: plugins/achievements.vala:986
+#: plugins/achievements.vala:1005
 msgid "Quit with ESCAPE."
 msgstr ""
 
-#: plugins/achievements.vala:1885
+#: plugins/achievements.vala:1904
 #, c-format
 msgid "Score: %d"
 msgstr ""
 
-#: plugins/achievements.vala:1894
+#: plugins/achievements.vala:1913
 msgid "GAME OVER"
 msgstr ""
 
-#: plugins/achievements.vala:1900
+#: plugins/achievements.vala:1919
 #, c-format
 msgid "SCORE: %d TIME: %ds"
 msgstr ""
 
-#: plugins/achievements.vala:1902
+#: plugins/achievements.vala:1921
 msgid "press ENTER to retry"
 msgstr ""
 
-#: plugins/achievements.vala:1905
+#: plugins/achievements.vala:1924
 #, c-format
 msgid "(highscore: %d)"
 msgstr ""
