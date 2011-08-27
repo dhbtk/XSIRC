@@ -119,6 +119,7 @@ namespace XSIRC {
 						background = null;
 						hex_color = null;
 						parsing_color = false;
+						parsing_hex_color = false;
 						break;
 					case COLOR:
 						parsing_color = !parsing_color;
