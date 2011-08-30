@@ -23,28 +23,10 @@ namespace XSIRC {
 			public string? background;
 			public string? hex_color;
 		}
-		private HashMap<int,string> mirc_colors = new HashMap<int,string>();
+		public static HashMap<int,string> mirc_colors;
 		private unichar[] data;
 		
 		public MIRCParser(string str) {
-			// I kinda miss Ruby
-			// Palette totally stolen from XChat
-			mirc_colors[0]  = "#cccccccccccc"; // white
-			mirc_colors[1]  = "black"; // black
-			mirc_colors[2]  = "#35c235c2b332"; // dark blue
-			mirc_colors[3]  = "#2a3d8ccc2a3d"; // green
-			mirc_colors[4]  = "#c3c33b3b3b3b"; // red
-			mirc_colors[5]  = "#c7c732323232"; // light red
-			mirc_colors[6]  = "#800026667fff"; // purple
-			mirc_colors[7]  = "#666636361f1f"; // orange
-			mirc_colors[8]  = "#d999a6d34147"; // yellow
-			mirc_colors[9]  = "#3d70cccc3d70"; // light green
-			mirc_colors[10] = "#199a55555555"; // aqua
-			mirc_colors[11] = "#2eef8ccc74df"; // light aqua
-			mirc_colors[12] = "#451e451ee666"; // blue
-			mirc_colors[13] = "#b0b03737b0b0"; // light purple
-			mirc_colors[14] = "#4c4c4c4c4c4c"; // grey
-			mirc_colors[15] = "#959595959595"; // light grey
 			unichar c;
 			int i = 0;
 			while(str.get_next_char(ref i,out c)) {

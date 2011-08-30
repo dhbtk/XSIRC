@@ -49,6 +49,25 @@ namespace XSIRC {
 		}
 		Main.server_manager = new ServerManager();
 		Main.macro_manager = new MacroManager();
+		// Setting default color palette
+		MIRCParser.mirc_colors = new HashMap<int,string>();
+		// Palette totally stolen from XChat
+		MIRCParser.mirc_colors[0]  = "#cccccccccccc"; // white
+		MIRCParser.mirc_colors[1]  = "#000000000000"; // black
+		MIRCParser.mirc_colors[2]  = "#35c235c2b332"; // dark blue
+		MIRCParser.mirc_colors[3]  = "#2a3d8ccc2a3d"; // green
+		MIRCParser.mirc_colors[4]  = "#c3c33b3b3b3b"; // red
+		MIRCParser.mirc_colors[5]  = "#c7c732323232"; // light red
+		MIRCParser.mirc_colors[6]  = "#800026667fff"; // purple
+		MIRCParser.mirc_colors[7]  = "#666636361f1f"; // orange
+		MIRCParser.mirc_colors[8]  = "#d999a6d34147"; // yellow
+		MIRCParser.mirc_colors[9]  = "#3d70cccc3d70"; // light green
+		MIRCParser.mirc_colors[10] = "#199a55555555"; // aqua
+		MIRCParser.mirc_colors[11] = "#2eef8ccc74df"; // light aqua
+		MIRCParser.mirc_colors[12] = "#451e451ee666"; // blue
+		MIRCParser.mirc_colors[13] = "#b0b03737b0b0"; // light purple
+		MIRCParser.mirc_colors[14] = "#4c4c4c4c4c4c"; // grey
+		MIRCParser.mirc_colors[15] = "#959595959595"; // light grey
 		Main.plugin_manager = new PluginManager();
 		Main.gui = new XSIRC.GUI();
 		Main.gui.startup();
