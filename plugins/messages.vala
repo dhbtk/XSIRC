@@ -306,7 +306,11 @@ namespace XSIRC {
 					}
 				}
 			}
-			string nick_color = "\x03%d".printf(get_nick_color(usernick));
+			int color = get_nick_color(usernick);
+			string nick_color = "";
+			if(color != -1) {
+				nick_color = "\x03%d".printf(get_nick_color(usernick));
+			}
 			string my_target = target.down() == server.nick.down() ? usernick : target;
 			if(message.has_prefix("\001ACTION") && message.has_suffix("\x01")) { // ACTION
 				string my_message = message.replace("\x01","").substring(7);
@@ -464,8 +468,12 @@ namespace XSIRC {
 			while(nick.get_next_char(ref i,out c)) {
 				sum += (int)c;
 			}
-			sum = sum % nick_colors.size + 1;
-			return colors[sum];
+			if(nick_colors.size != 0) {
+				sum = sum % nick_colors.size + 1;
+				return colors[sum];
+			} else {
+				return -1;
+			}
 		}
 	}
 }
