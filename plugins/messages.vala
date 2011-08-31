@@ -296,15 +296,9 @@ namespace XSIRC {
 		}
 		
 		public override bool on_privmsg(Server server,string usernick,string username,string usermask,string target,string message) {
-			// Finding the rank.
 			string userrank = " ";
 			if(server.find_channel(target) != null) {
-				foreach(string user in server.find_channel(target).raw_users) {
-					if(user.substring(1) == usernick) {
-						userrank = user[0:1];
-						break;
-					}
-				}
+				userrank = server.find_channel(target).find_rank(usernick);
 			}
 			int color = get_nick_color(usernick);
 			string nick_color = "";
@@ -391,24 +385,19 @@ namespace XSIRC {
 			return true;
 		}
 		
-		public override bool on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
+		public override bool on_topic(Server server,Server.Channel.Topic topic,
+		        Server.Channel.Topic old_topic,string channel,string username,string usermask) {
 			string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$CHANNEL","$TOPIC"};
-			string[] replacements = {usernick,username,usermask,channel,topic};
+			string[] replacements = {topic.setter,username,usermask,channel,topic.content};
 			string result = apply_message_style(MessageID.TOPIC,replaced,replacements);
 			server.add_to_view(channel,result);
 			return true;
 		}
 		
 		public override bool on_sent_message(Server server,string nick,string target,string message,string raw_msg) {
-			// Finding our rank
 			string userrank = " ";
 			if(server.find_channel(target) != null) {
-				foreach(string user in server.find_channel(target).raw_users) {
-					if(user.substring(1).down() == nick.down()) {
-						userrank = user[0:1];
-						break;
-					}
-				}
+				userrank = server.find_channel(target).find_rank(nick);
 			}
 			if(raw_msg.down().has_prefix("notice")) {
 				string[] replaced = {"$NICK","$MESSAGE"};
