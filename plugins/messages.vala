@@ -219,7 +219,7 @@ namespace XSIRC {
 						stdout.printf("%s (%d) does not match\n",s,i);
 					}
 				}
-				int[] colors = {2,6,7,8,10,13,15};
+				int[] colors = {2,6,7,8,11};
 				if(file.has_key("palette","nick_colors")) {
 					colors = file.get_integer_list("palette","nick_colors");
 				}
