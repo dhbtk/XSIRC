@@ -69,7 +69,7 @@ namespace XSIRC {
 			{MessageID.ACTION,"*  $NICKCOLOR$USERNICK$COLOR $MESSAGE"},
 			{MessageID.CTCPMSG,N_("$BOLD-!-$BOLD Got CTCP $REQUEST from $USERNICK")},
 			{MessageID.NOTICE,"-$USERNICK- $MESSAGE"},
-			{MessageID.QUIT,N_("$BOLD<-$BOLD $USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]")},
+			{MessageID.QUIT,N_("$BOLD<-$BOLD $COLOR4$USERNICK [$USERNAME@$USERMASK] has disconnected [$MESSAGE]")},
 			{MessageID.CHANUSERMODE,N_("$BOLD-!-$BOLD $USERNICK sets mode $MODES on $TARGETS")},
 			{MessageID.CHANMODE,N_("$BOLD-!-$BOLD $USERNICK sets $CHANNEL's mode: $MODES")},
 			{MessageID.MODE,N_("$BOLD-!-$BOLD Changing mode: $MODES")},
