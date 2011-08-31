@@ -49,6 +49,7 @@ namespace XSIRC {
 			add_plugin(new MessagesPlugin());
 			add_plugin(new CTCPPlugin());
 			add_plugin(new IgnorePlugin());
+			add_plugin(new AchievementsPlugin());
 #else
 			load_plugins();
 			
@@ -237,9 +238,10 @@ namespace XSIRC {
 			}
 		}
 		
-		internal void on_topic(Server server,string usernick,string username,string usermask,string channel,string topic) {
+		internal void on_topic(Server server,Server.Channel.Topic topic,
+		        Server.Channel.Topic old_topic,string channel,string username,string usermask) {
 			foreach(Plugin plugin in plugins) {
-				if(plugin.enabled && !plugin.on_topic(server,usernick,username,usermask,channel,topic)) {
+				if(plugin.enabled && !plugin.on_topic(server,topic,old_topic,channel,username,usermask)) {
 					break;
 				}
 			}

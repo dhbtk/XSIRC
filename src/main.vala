@@ -1,6 +1,6 @@
 using Gee;
 namespace XSIRC {
-	bool irc_user_is_privileged(string user) {
+	public bool irc_user_is_privileged(string user) {
 		return /^(&|@|%|\+|~)/.match(user);
 	}
 	public static class Main {
@@ -25,11 +25,7 @@ namespace XSIRC {
 		Intl.bindtextdomain(GETTEXT_PACKAGE,LOCALE_DIR);
 		Environment.set_application_name(GETTEXT_PACKAGE);
 		try {
-#if WINDOWS
-			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file("resources\\xsirc.png"));
-#else
-			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file(PREFIX+"/share/pixmaps/xsirc.png"));
-#endif
+			Gtk.Window.set_default_icon(new Gdk.Pixbuf.from_file(get_icon_path()));
 		} catch(Error e) {
 			
 		}

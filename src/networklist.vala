@@ -27,11 +27,7 @@ namespace XSIRC {
 		public NetworkList() {
 			builder = new Gtk.Builder();
 			try {
-#if WINDOWS
-				builder.add_from_file("resources\\networks.ui");
-#else
-				builder.add_from_file(PREFIX+"/share/xsirc/networks.ui");
-#endif
+				builder.add_from_file(get_file_path("share", "networks.ui"));
 			} catch(Error e) {
 				Posix.exit(Posix.EXIT_FAILURE);
 			}
@@ -316,7 +312,7 @@ namespace XSIRC {
 						}
 					}
 					server_model.set(iter,0,new_text,-1);
-				}	
+				}
 			} else {
 				Gtk.MessageDialog d = new Gtk.MessageDialog(dialog,
 				                                            Gtk.DialogFlags.MODAL,

@@ -3,21 +3,26 @@
 #
 # Copyright (c) 2010 Eduardo Niehues
 # Distributed under the New BSD License; see LICENSE for details.
+
+source = bld.path.ant_glob('*.vala')
+flags = ['-g']
+
 if bld.env['windows'] == 'yes':
-	flags = ['-g','-mingw32','-mwindows']
-	source = bld.path.ant_glob('*.vala') + ['../plugins/testplugin.vala','../plugins/highlights.vala','../plugins/messages.vala','../plugins/ctcp.vala','../plugins/ignore.vala']
-else:
-	flags = ['-g']
-	source = bld.path.ant_glob('*.vala')
+	flags.extend(['-mingw32', '-mwindows'])
+	source.extend(['../plugins/achievements.vala', '../plugins/testplugin.vala', '../plugins/highlights.vala', '../plugins/messages.vala', '../plugins/ctcp.vala', '../plugins/ignore.vala'])
+
 bld.stlib(
 	source = 'gen_timestamp.c',
 	includes = '.. .',
-	target = 'timestamp')
+	target = 'timestamp'
+)
+
 if 'windows' in bld.env:
 	bld.stlib(
 		source = 'gen_timestamp_shlib.c',
-		target = 'timestamp_shlib')
-to_use = 'timestamp'
+		target = 'timestamp_shlib'
+	)
+
 bld.program(
 	source    = source,
 	features  = 'c cprogram',
@@ -25,11 +30,12 @@ bld.program(
 	vapi_dirs = '../vapi',
 	includes  = '../vapi',
 	target    = 'xsirc',
-	use       = to_use,
+	use       = 'timestamp',
 	cflags    = ['-include','config.h','-g'],
 	linkflags = flags,
 	uselib    = 'GTK GLIB GIO GEE GMODULE',
-	)
+)
+
 if not 'windows' in bld.env:
 	bld.shlib(
 		source = bld.path.ant_glob('*.vala'),
@@ -42,4 +48,4 @@ if not 'windows' in bld.env:
 		cflags    = ['-include','config.h','-g'],
 		linkflags = flags,
 		uselib    = 'GTK GLIB GIO GEE GMODULE',
-		)
+	)

@@ -32,11 +32,7 @@ namespace XSIRC {
 		public PrefDialog() {
 			builder = new Gtk.Builder();
 			try {
-#if WINDOWS
-				builder.add_from_file("resources\\preferences.ui");
-#else
-				builder.add_from_file(PREFIX+"/share/xsirc/preferences.ui");
-#endif
+				builder.add_from_file(get_file_path("share", "preferences.ui"));
 			} catch(Error e) {
 				Posix.exit(Posix.EXIT_FAILURE);
 			}
@@ -114,6 +110,7 @@ namespace XSIRC {
 					PluginView view = new PluginView();
 					view.name = plugin.name;
 					view.label = new Gtk.Label(plugin.name);
+					view.label.justify = Gtk.Justification.CENTER;
 					view.widget = plugin.prefs_widget;
 					notebook.append_page(view.widget,view.label);
 					notebook.show_all();
@@ -264,6 +261,7 @@ namespace XSIRC {
 				Main.macro_manager.macros.add(macro);
 				return false;
 			});
+			Main.macro_manager.save_macros();
 		}
 	
 	}
