@@ -20,14 +20,14 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 EOF
 
 set -ex
-xgettext -o po/temp-source.pot --language=C --keyword=_ --keyword=N_ --omit-header -E --add-comments=l10n src/*.vala plugins/*.vala
-xgettext -o po/temp-glade.pot --language=Glade --omit-header -E ui/*.ui
+xgettext -o po/temp-source.pot --language=C -E --from-code=utf-8 --keyword=_ --keyword=N_ --add-comments=l10n src/*.vala plugins/*.vala
+xgettext -o po/temp-glade.pot --language=Glade -E --from-code=utf-8 ui/*.ui
 msgcat -o po/xsirc.pot --use-first po/temp-template.pot po/temp-source.pot po/temp-glade.pot
 rm po/temp-glade.pot po/temp-template.pot po/temp-source.pot
 set +x

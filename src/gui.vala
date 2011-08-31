@@ -73,8 +73,8 @@ namespace XSIRC {
 			{"HelpContents",Gtk.Stock.HELP,N_("_Online help"),"F1",null,spawn_help_cb},
 			{"About",Gtk.Stock.ABOUT,null,null,null,spawn_about_cb}
 		};
-		private Gtk.UIManager ui_manager;
-		private string ui_manager_xml = """
+		public Gtk.UIManager menu_ui {get; private set;}
+		private string menu_ui_xml = """
 <ui>
 	<menubar name="MainMenu">
 		<menu action="ClientMenu">
@@ -204,18 +204,18 @@ namespace XSIRC {
 			action_group.set_translation_domain(null);
 
 			action_group.add_actions(menu_actions,null);
-			ui_manager = new Gtk.UIManager();
-			ui_manager.insert_action_group(action_group,0);
-			main_window.add_accel_group(ui_manager.get_accel_group());
+			menu_ui = new Gtk.UIManager();
+			menu_ui.insert_action_group(action_group,0);
+			main_window.add_accel_group(menu_ui.get_accel_group());
 			try {
-				ui_manager.add_ui_from_string(ui_manager_xml,-1);
+				menu_ui.add_ui_from_string(menu_ui_xml,-1);
 			} catch(Error e) {
-				stderr.printf("ui_manager.add_ui_from_string failed!\n");
+				stderr.printf("menu_ui.add_ui_from_string failed!\n");
 				Posix.exit(Posix.EXIT_FAILURE);
 			}
 			
 			// Menu bar & children
-			Gtk.MenuBar menu_bar = ui_manager.get_widget("/MainMenu") as Gtk.MenuBar;
+			Gtk.MenuBar menu_bar = menu_ui.get_widget("/MainMenu") as Gtk.MenuBar;
 			main_vbox.pack_start(menu_bar,false,true,0);
 			
 			// Topic text box
@@ -489,7 +489,7 @@ namespace XSIRC {
 				}
 				// Updating the labels in the view menu
 				for(int i = 1; i <= 10; i++) {
-					Gtk.MenuItem item = ui_manager.get_widget("/MainMenu/ViewMenu/View%d".printf(i)) as Gtk.MenuItem;
+					Gtk.MenuItem item = menu_ui.get_widget("/MainMenu/ViewMenu/View%d".printf(i)) as Gtk.MenuItem;
 					item.visible = false;
 					if(current_server() != null) {
 						if(current_server().notebook.get_n_pages() >= i) {
@@ -507,7 +507,7 @@ namespace XSIRC {
 				main_window.title = _("XSIRC - Idle");
 				// Hiding the view shortcuts
 				for(int i = 1; i <= 10; i++) {
-					Gtk.MenuItem item = ui_manager.get_widget("/MainMenu/ViewMenu/View%d".printf(i)) as Gtk.MenuItem;
+					Gtk.MenuItem item = menu_ui.get_widget("/MainMenu/ViewMenu/View%d".printf(i)) as Gtk.MenuItem;
 					item.visible = false;
 				}
 			}
@@ -765,7 +765,7 @@ namespace XSIRC {
 			}
 		}
 		
-		public static void open_last_link_cb(Gtk.Action action) {
+		public static void open_nth_last_link(int n) {
 			Server server;
 			if((server = Main.gui.current_server()) != null) {
 				View? view;
@@ -777,10 +777,14 @@ namespace XSIRC {
 					} catch(RegexError e) {
 						return;
 					}
+					int matches = 0;
 					for(int i = lines.length-1; i >= 0; i--) {
 						MatchInfo info;
 						if(!regex.match(lines[i],0,out info)) {
-							//stderr.printf("Line doesn't match\n");
+							continue;
+						}
+						if (matches < n) {
+							++matches;
 							continue;
 						}
 						Main.gui.open_link(info.fetch(1));
@@ -790,33 +794,12 @@ namespace XSIRC {
 			}
 		}
 		
+		public static void open_last_link_cb(Gtk.Action action) {
+			open_nth_last_link(0);
+		}
+
 		public static void open_sl_link_cb(Gtk.Action action) {
-			Server server;
-			if((server = Main.gui.current_server()) != null) {
-				View? view;
-				if((view = server.current_view()) != null) {
-					string[] lines = view.text_view.buffer.text.split(" ");
-					Regex regex = null;
-					try {
-						regex = new Regex(link_regex);
-					} catch(RegexError e) {
-						return;
-					}
-					bool first_match = true;
-					for(int i = lines.length-1; i >= 0; i--) {
-						MatchInfo info;
-						if(!regex.match(lines[i],0,out info)) {
-							continue;
-						}
-						if(first_match) {
-							first_match = false;
-							continue;
-						}
-						Main.gui.open_link(info.fetch(1));
-						break;
-					}
-				}
-			}
+			open_nth_last_link(1);
 		}
 		
 		public static void spawn_help_cb(Gtk.Action action) {
@@ -854,11 +837,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			try {
-#if WINDOWS
-				d.logo = new Gdk.Pixbuf.from_file("resources\\xsirc.png");
-#else
-				d.logo = new Gdk.Pixbuf.from_file(PREFIX+"/share/pixmaps/xsirc.png");
-#endif
+				d.logo = new Gdk.Pixbuf.from_file(get_icon_path());
 			} catch(Error e) {
 				
 			}
@@ -953,9 +932,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			}
 #endif
 		}
-		
+
 		public string timestamp() {
 			return gen_timestamp(Main.config.string["timestamp_format"],time_t());
 		}
+	}
+
+	public static string get_file_path(string category, string file) {
+#if WINDOWS
+		return "resources\\" + file;
+#else
+		string ret = PREFIX;
+		if (category == "pixmap") {
+			ret = ret + "/share/pixmaps";
+		} else if (category == "share") {
+			ret = ret + "/share/xsirc";
+		} else {
+			assert_not_reached();
+		}
+		return ret + "/" + file;
+#endif
+	}
+
+	public static string get_icon_path() {
+		return get_file_path("pixmap", "xsirc.png");
 	}
 }
