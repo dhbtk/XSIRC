@@ -96,15 +96,44 @@ namespace XSIRC {
 			prefs_widget = null;
 			load_default_messages();
 			load_messages();
+			load_palette();
 			set_up_prefs();
 		}
 		
 		private void set_up_prefs() {
+			Gtk.HBox hbox = new Gtk.HBox(false,5);
+			prefs_widget  = hbox;
+			Gtk.Frame colors_frame = new Gtk.Frame(_("mIRC Colors"));
+			hbox.pack_start(colors_frame,false,true,2);
+			Gtk.Table table = new Gtk.Table(16,3,false);
+			foreach(int i in MIRCParser.mirc_colors.keys) {
+				Gtk.Label label = new Gtk.Label(null);
+				label.set_markup("<b>%d</b>".printf(i));
+				table.attach_defaults(label,0,1,i,i+1);
+				Gdk.Color c;
+				Gdk.Color.parse(MIRCParser.mirc_colors[i],out c);
+				Gtk.ColorButton button = new Gtk.ColorButton.with_color(c);
+				button.color_set.connect(() => {
+					Gdk.Color c2;
+					button.get_color(out c2);
+					MIRCParser.mirc_colors[i] = c2.to_string();
+					stdout.printf("Setting color %d to %s\n",i,c2.to_string());
+					save_palette();
+				});
+				table.attach_defaults(button,1,2,i,i+1);
+				Gtk.CheckButton check = new Gtk.CheckButton.with_label(_("Nick color"));
+				check.toggled.connect(() => {
+					// Do nothing for now
+				});
+				table.attach_defaults(check,2,3,i,i+1);
+			}
+			colors_frame.add(table);
 			Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow(null,null);
+			hbox.pack_start(scroll,true,true,2);
 			Gtk.VBox box = new Gtk.VBox(false,0);
 			scroll.add_with_viewport(box);
 			LinkedList<Gtk.Entry> entries = new LinkedList<Gtk.Entry>();
-			prefs_widget = scroll;
+			//prefs_widget = scroll;
 			foreach(MessageType message_type in message_types) {
 				Gtk.Label label = new Gtk.Label(_(message_type.name));
 				Gtk.Entry entry = new Gtk.Entry();
@@ -162,6 +191,37 @@ namespace XSIRC {
 					i++;
 				}
 				FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/messages.conf",conf.to_data());
+			} catch(Error e) {
+				
+			}
+		}
+		
+		private void load_palette() {
+			try {
+				KeyFile file = new KeyFile();
+				file.load_from_file(Environment.get_user_config_dir()+"/xsirc/palette.conf",0);
+				for(int i = 0;file.has_key("palette","color%d".printf(i)) && i <= 15;i++) {
+					string s = file.get_string("palette","color%d".printf(i));
+					if(/^#[a-fA-F0-9]{12}$/.match(s)) {
+						MIRCParser.mirc_colors[i] = s;
+					} else {
+						stdout.printf("%s (%d) does not match\n",s,i);
+					}
+				}
+			} catch(Error e) {
+				
+			}
+		}
+		
+		private void save_palette() {
+			KeyFile conf = new KeyFile();
+			stdout.printf("Saving palette\n");
+			foreach(int i in MIRCParser.mirc_colors.keys) {
+				stdout.printf("Saving color %d as %s\n",i,MIRCParser.mirc_colors[i]);
+				conf.set_string("palette","color%d".printf(i),MIRCParser.mirc_colors[i]);
+			}
+			try {
+				FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/palette.conf",conf.to_data());
 			} catch(Error e) {
 				
 			}
