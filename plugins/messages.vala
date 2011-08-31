@@ -81,7 +81,8 @@ namespace XSIRC {
 		};
 		
 		private HashMap<MessageID,string> messages = new HashMap<MessageID,string>();
-		private bool colored_nicks = true; // TODO: make configurable
+		
+		private HashSet<int> nick_colors = new HashSet<int>();
 		
 		public MessagesPlugin() {
 			Object();
@@ -123,13 +124,18 @@ namespace XSIRC {
 				table.attach_defaults(button,1,2,i,i+1);
 				Gtk.CheckButton check = new Gtk.CheckButton.with_label(_("Nick color"));
 				check.toggled.connect(() => {
-					// Do nothing for now
+					save_palette();
 				});
+				if(i in nick_colors) {
+					check.active = true;
+				}
 				table.attach_defaults(check,2,3,i,i+1);
 			}
 			colors_frame.add(table);
+			Gtk.Frame messages_frame = new Gtk.Frame(_("Messages"));
 			Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow(null,null);
-			hbox.pack_start(scroll,true,true,2);
+			messages_frame.add(scroll);
+			hbox.pack_start(messages_frame,true,true,2);
 			Gtk.VBox box = new Gtk.VBox(false,0);
 			scroll.add_with_viewport(box);
 			LinkedList<Gtk.Entry> entries = new LinkedList<Gtk.Entry>();
@@ -208,8 +214,19 @@ namespace XSIRC {
 						stdout.printf("%s (%d) does not match\n",s,i);
 					}
 				}
+				int[] colors = {2,6,7,8,10,13,15};
+				if(file.has_key("palette","nick_colors")) {
+					colors = file.get_integer_list("palette","nick_colors");
+				}
+				nick_colors.clear();
+				foreach(int i in colors) {
+					nick_colors.add(i);
+				}
 			} catch(Error e) {
-				
+				int[] colors = {2,6,7,8,10,13,15};
+				foreach(int i in colors) {
+					nick_colors.add(i);
+				}
 			}
 		}
 		
@@ -220,6 +237,11 @@ namespace XSIRC {
 				stdout.printf("Saving color %d as %s\n",i,MIRCParser.mirc_colors[i]);
 				conf.set_string("palette","color%d".printf(i),MIRCParser.mirc_colors[i]);
 			}
+			int[] colors = {};
+			foreach(int i in nick_colors) {
+				colors += i;
+			}
+			conf.set_integer_list("palette","nick_colors",colors);
 			try {
 				FileUtils.set_contents(Environment.get_user_config_dir()+"/xsirc/palette.conf",conf.to_data());
 			} catch(Error e) {
@@ -279,11 +301,12 @@ namespace XSIRC {
 					}
 				}
 			}
+			string nick_color = "\x03%d".printf(get_nick_color(usernick));
 			string my_target = target.down() == server.nick.down() ? usernick : target;
 			if(message.has_prefix("\001ACTION") && message.has_suffix("\x01")) { // ACTION
 				string my_message = message.replace("\x01","").substring(7);
-				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE"};
-				string[] replacements = {usernick,username,usermask,my_message};
+				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE","$NICKCOLOR"};
+				string[] replacements = {usernick,username,usermask,my_message,nick_color};
 				string result = apply_message_style(MessageID.ACTION,replaced,replacements);
 				server.add_to_view(my_target,result);
 			} else if(message.has_prefix("\x01") && message.has_suffix("\x01")) { // CTCPMSG
@@ -293,8 +316,8 @@ namespace XSIRC {
 				string result = apply_message_style(MessageID.CTCPMSG,replaced,replacements);
 				server.add_to_view(_("<server>"),result);
 			} else { // PRIVMSG
-				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE","$USERRANK"};
-				string[] replacements = {usernick,username,usermask,message,userrank};
+				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE","$USERRANK","$NICKCOLOR"};
+				string[] replacements = {usernick,username,usermask,message,userrank,nick_color};
 				string result = apply_message_style(MessageID.PRIVMSG,replaced,replacements);
 				server.add_to_view(my_target,result);
 			}
@@ -423,6 +446,21 @@ namespace XSIRC {
 				i++;
 			}
 			return result;
+		}
+		
+		private int get_nick_color(string nick) {
+			int[] colors = {};
+			foreach(int i in nick_colors) {
+				colors += i;
+			}
+			int sum = 0;
+			unichar c;
+			int i = 0;
+			while(nick.get_next_char(ref i,out c)) {
+				sum += (int)c;
+			}
+			sum = sum % nick_colors.size + 1;
+			return colors[sum];
 		}
 	}
 }
