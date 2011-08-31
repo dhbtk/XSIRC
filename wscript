@@ -50,6 +50,7 @@ def configure(conf):
 		conf.define('WINDOWS','WINDOWS')
 	else:
 		conf.define('OS','Linux') # Sorry, OS X users (if you exist at all)
+
 	conf.check_cfg(package='glib-2.0',uselib_store='GLIB',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gtk+-2.0',uselib_store='GTK',atleast_version='2.16.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gio-2.0',uselib_store='GIO',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
@@ -82,5 +83,6 @@ def build(bld):
 	# Preferences ui
 	bld.install_files(bld.env['PREFIX']+'/share/xsirc','ui/preferences.ui')
 	bld.install_files(bld.env['PREFIX']+'/share/xsirc','ui/networks.ui')
+	bld.install_files(bld.env['PREFIX']+'/share/xsirc','ui/achievement_bg.png')
 	bld.new_task_gen(features='subst',source='xsirc.desktop.in',target='xsirc.desktop')
 	bld.install_files(bld.env['PREFIX']+'/share/applications','xsirc.desktop')

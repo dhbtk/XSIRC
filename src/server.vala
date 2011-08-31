@@ -58,6 +58,16 @@ namespace XSIRC {
 				this.server = server;
 			}
 			
+			public string find_rank(string nick) {
+				string dnick = nick.down();
+				foreach (string user in raw_users) {
+					if (irc_user_is_privileged(user) && user.substring(1).down() == dnick) {
+						return user[0:1];
+					}
+				}
+				return " ";
+			}
+
 			public void update_user(string nick) {
 				string simple_nick = nick.down();
 				if(irc_user_is_privileged(nick)) {
@@ -566,10 +576,11 @@ namespace XSIRC {
 						break;
 					case "TOPIC":
 						Channel chan = find_channel(split[2]);
+						Channel.Topic old_topic = chan.topic;
 						chan.topic.setter = usernick;
 						chan.topic.content = message;
 						chan.topic.time_set = time_t();
-						Main.plugin_manager.on_topic(this,usernick,username,usermask,chan.name,message);
+						Main.plugin_manager.on_topic(this,chan.topic,old_topic,chan.name,username,usermask);
 						Main.gui.update_gui(this);
 						break;
 					case "333":
