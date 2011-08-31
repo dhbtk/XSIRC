@@ -398,6 +398,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">IRC</property>
+                <property name="justify">center</property>
               </object>
               <packing>
                 <property name="tab_fill">False</property>
@@ -821,6 +822,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Interface</property>
+                <property name="justify">center</property>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -899,6 +901,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Macros</property>
+                <property name="justify">center</property>
               </object>
               <packing>
                 <property name="position">2</property>
