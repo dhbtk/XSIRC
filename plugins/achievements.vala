@@ -343,8 +343,8 @@ namespace XSIRC {
 				Gtk.MessageDialog d = new Gtk.MessageDialog(
 						Main.gui.main_window,
 						Gtk.DialogFlags.MODAL,
-						Gtk.MessageType.QUESTION,
-						Gtk.ButtonsType.YES_NO,
+						Gtk.MessageType.ERROR,
+						Gtk.ButtonsType.OK,
 						"%s",
 						_("Insufficient magic.")
 				);
