@@ -124,6 +124,11 @@ namespace XSIRC {
 				table.attach_defaults(button,1,2,i,i+1);
 				Gtk.CheckButton check = new Gtk.CheckButton.with_label(_("Nick color"));
 				check.toggled.connect(() => {
+					if(check.active) {
+						nick_colors.add(i);
+					} else {
+						nick_colors.remove(i);
+					}
 					save_palette();
 				});
 				if(i in nick_colors) {
