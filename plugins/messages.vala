@@ -458,7 +458,7 @@ namespace XSIRC {
 				sum += (int)c;
 			}
 			if(nick_colors.size != 0) {
-				sum = sum % nick_colors.size + 1;
+				sum = sum % nick_colors.size;
 				return colors[sum];
 			} else {
 				return -1;
