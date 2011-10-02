@@ -882,7 +882,7 @@ namespace XSIRC {
 			window.key_press_event.connect(cb_keypress);
 			window.key_release_event.connect(cb_keyrelease);
 			window.focus_out_event.connect(cb_focusout);
-			window.expose_event.connect(cb_expose);
+			window.draw.connect(cb_expose);
 			window.set_app_paintable(true);
 			window.show_all();
 		}
@@ -918,8 +918,8 @@ namespace XSIRC {
 			return false;
 		}
 
-		private bool cb_expose(Gdk.EventExpose ev) {
-			Cairo.Context context = Gdk.cairo_create(ev.window);
+		private bool cb_expose(Cairo.Context context) {
+			//Cairo.Context context = Gdk.cairo_create(ev.window);
 			if (!running) {
 				draw_menu(context);
 			}
