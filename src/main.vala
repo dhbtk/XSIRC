@@ -3,7 +3,7 @@ namespace XSIRC {
 	public bool irc_user_is_privileged(string user) {
 		return /^(&|@|%|\+|~)/.match(user);
 	}
-	public static class Main {
+	namespace Main {
 		public static GUI gui;
 		public static ConfigManager config_manager;
 		public static ConfigManager.ConfigAccessor config;

@@ -52,7 +52,7 @@ def configure(conf):
 		conf.define('OS','Linux') # Sorry, OS X users (if you exist at all)
 
 	conf.check_cfg(package='glib-2.0',uselib_store='GLIB',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
-	conf.check_cfg(package='gtk+-2.0',uselib_store='GTK',atleast_version='2.16.0',mandatory=1,args='--cflags --libs')
+	conf.check_cfg(package='gtk+-3.0',uselib_store='GTK',atleast_version='3.0.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gio-2.0',uselib_store='GIO',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gmodule-2.0',uselib_store='GMODULE',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gee-1.0',uselib_store='GEE',atleast_version='0.5.0',mandatory=1,args='--cflags --libs')

@@ -702,7 +702,9 @@ namespace XSIRC {
 				});
 				box.pack_start(server_entry,false,false,0);
 				server_entry.grab_focus();
-				dialog.vbox.pack_start(box,false,false,0);
+				Gtk.Box dialog_box = dialog.get_content_area() as Gtk.Box;
+				assert(dialog_box != null);
+				dialog_box.pack_start(box,false,false,0);
 				dialog.response.connect((id) => {
 					if(id == Gtk.ResponseType.ACCEPT) {
 						server.open_view(server_entry.text);
@@ -808,8 +810,11 @@ namespace XSIRC {
 		}
 		
 		public static void spawn_about_cb(Gtk.Action action) {
-			Gtk.AboutDialog.set_url_hook((Gtk.AboutDialogActivateLinkFunc)open_browser);
 			Gtk.AboutDialog d = new Gtk.AboutDialog();
+			d.activate_link.connect((link) => {
+				Main.gui.open_link(link);
+				return true;
+			});
 			d.authors = {"Eduardo Niehues (NieXS) <neo.niexs@gmail.com>","Simon Lindholm (operator[]) <simon.lindholm10@gmail.com>"};
 			d.artists = {"MonkeyofDoom (found in Foonetic and xkcd fora)"};
 			d.copyright = _("Copyright (c) 2010-11 Eduardo Niehues. All rights reserved.");
@@ -874,7 +879,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 			});
 			box.pack_start(server_entry,false,false,0);
 			server_entry.grab_focus();
-			dialog.vbox.pack_start(box,false,false,0);
+			Gtk.Box dialog_box = dialog.get_content_area() as Gtk.Box;
+			assert(dialog_box != null);
+			dialog_box.pack_start(box,false,false,0);
 			dialog.response.connect((id) => {
 				if(id == Gtk.ResponseType.ACCEPT) {
 					// Checking for a valid pseudo-uri

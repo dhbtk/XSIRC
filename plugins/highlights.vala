@@ -118,7 +118,7 @@ namespace XSIRC {
 			icon.activate.connect(() => {
 				XSIRC.Main.gui.main_window.present();
 				XSIRC.Main.gui.main_window.set_urgency_hint(false);
-				icon.blinking = false;
+				/*icon.blinking = false;*/
 			});
 		}
 		
@@ -313,7 +313,7 @@ namespace XSIRC {
 				return;
 			}
 			// Haven't figured out the API for Win32 balloons yet :/
-			if(blink_status_icon) {
+			/*if(blink_status_icon) {
 				icon.blinking = true;
 			}
 			if(blink_on_taskbar) {
@@ -325,7 +325,7 @@ namespace XSIRC {
 					return true;
 				});
 				src.attach(null);
-			}
+			}*/
 			if(pop_up_libnotify) {
 #if !WINDOWS
 				Notify.Notification notification = new Notify.Notification(title,Markup.escape_text(content),get_icon_path());
