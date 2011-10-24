@@ -996,17 +996,21 @@ namespace XSIRC {
 			notebook.page = notebook.page_num(view.scrolled_window);
 		}
 		
-		public void add_to_view(string name,string text) {
+		public void add_to_view(string name,string text,bool highlight = true,GUI.View.HighlightLevel level = GUI.View.HighlightLevel.BORING,bool log = true) {
 			open_view(name);
 			GUI.View? view;
 			if((view = find_view(name)) != null) {
-				IRCLogger.log(this,view,text);
-				view.add_text(text);
-				if(current_view() != view) {
-					view.label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text(view.name));
+				if(log) {
+					IRCLogger.log(this,view,text);
 				}
-				if(Main.gui.current_server() != this) {
-					label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text((network != null ? network.name+" - " : "")+server));
+				view.add_text(text);
+				if(highlight) {
+					if(current_view() != view) {
+						view.label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text(view.name));
+					}
+					if(Main.gui.current_server() != this) {
+						label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text((network != null ? network.name+" - " : "")+server));
+					}
 				}
 			}
 		}
