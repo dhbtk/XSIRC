@@ -144,6 +144,11 @@ namespace XSIRC {
 		private Gtk.ScrolledWindow user_list_container;
 		
 		public class View {
+			public enum HighlightLevel {
+				BORING,
+				NORMAL,
+				IMPORTANT
+			}
 			public string name;
 			public Gtk.ScrolledWindow scrolled_window;
 			public Gtk.TextView text_view;
