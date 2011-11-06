@@ -19,6 +19,7 @@ namespace XSIRC {
 		public Gtk.Label nickname_label {get; private set;}
 		public IRCEntry text_entry {get; private set;}
 		public Gtk.Entry topic_view {get; private set;}
+		public HashMap<View.HighlightLevel,bool> highlight_level_enabled = new HashMap<View.HighlightLevel,bool>();
 		//public View system_view {get; private set;}
 		public bool has_quit {get; private set;}
 		private const Gtk.ActionEntry[] menu_actions = {
@@ -145,6 +146,7 @@ namespace XSIRC {
 		
 		public class View {
 			public enum HighlightLevel {
+				NONE,
 				BORING,
 				NORMAL,
 				IMPORTANT
@@ -153,9 +155,12 @@ namespace XSIRC {
 			public Gtk.ScrolledWindow scrolled_window;
 			public Gtk.TextView text_view;
 			public Gtk.Label label;
+			public HighlightLevel highlight_level;
 			
 			public View(string name) {
 				this.name = name;
+				
+				highlight_level = HighlightLevel.NONE;
 				
 				label = new Gtk.Label(Markup.escape_text(name));
 				label.use_markup = true;
@@ -381,6 +386,9 @@ namespace XSIRC {
 					}
 					break;
 			}
+			highlight_level_enabled[View.HighlightLevel.BORING] = true;
+			highlight_level_enabled[View.HighlightLevel.NORMAL] = true;
+			highlight_level_enabled[View.HighlightLevel.IMPORTANT] = true;
 		}
 		
 		public void iterate() {

@@ -82,7 +82,11 @@ namespace XSIRC {
 			string_defaults["realname"] = Environment.get_user_name();
 			string_defaults["away_msg"] = _("Away");
 			string_defaults["quit_msg"] = _("Leaving.");
+#if WINDOWS
+			string_defaults["log_date_format"] = "%Y-%m-%d";
+#else
 			string_defaults["log_date_format"] = "%F";
+#endif
 			string_defaults["log_folder"] = Environment.get_home_dir()+"/irclogs";
 			string_defaults["timestamp_format"] = "%H:%M";
 			string_defaults["web_browser"] = "xdg-open %s";
@@ -90,6 +94,9 @@ namespace XSIRC {
 			string_defaults["font"] = "Monospace 10";
 			string_defaults["tab_pos"] = "bottom";
 			string_defaults["userlist_pos"] = "left";
+			string_defaults["boring_highlight"] = "#4545E6";
+			string_defaults["normal_highlight"] = "#2A8C2A";
+			string_defaults["important_highlight"] = "#C73232";
 			// ints (currently just one)
 			HashMap<string,int> int_defaults = new HashMap<string,int>();
 			int_defaults["away_mins"] = 15;

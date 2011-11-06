@@ -240,6 +240,8 @@ namespace XSIRC {
 				} else {
 					my_message = "<%s:%s> %s".printf(my_target,usernick,my_message);
 				}
+				server.find_view(my_target).highlight_level = GUI.View.HighlightLevel.IMPORTANT;
+				Main.gui.queue_update_gui();
 				highlight(server.server+" - "+my_target,my_message);
 				return true;
 			}
@@ -256,6 +258,8 @@ namespace XSIRC {
 				if(add_to_server_view) {
 					server.add_to_view(_("<server>"),my_message);
 				}
+				server.find_view(my_target).highlight_level = GUI.View.HighlightLevel.IMPORTANT;
+				Main.gui.queue_update_gui();
 				highlight(server.server+" - "+my_target,my_message);
 				return true;
 			}
@@ -273,6 +277,8 @@ namespace XSIRC {
 					if(add_to_server_view) {
 						server.add_to_view(_("<server>"),my_message);
 					}
+					server.find_view(my_target).highlight_level = GUI.View.HighlightLevel.IMPORTANT;
+					Main.gui.queue_update_gui();
 					highlight(server.server+" - "+my_target,my_message);
 					return true;
 				}
@@ -290,6 +296,8 @@ namespace XSIRC {
 				if(add_to_server_view) {
 					server.add_to_view(_("<server>"),my_message);
 				}
+				server.find_view(my_target).highlight_level = GUI.View.HighlightLevel.IMPORTANT;
+				Main.gui.queue_update_gui();
 				highlight(server.server+" - "+my_target,my_message);
 				return true;
 			}
@@ -302,6 +310,8 @@ namespace XSIRC {
 				string my_target = target.down() == server.nick.down() ? usernick : target;
 				if(!my_message.has_prefix("\x01")) { // We don't really want to be highlighted on CTCP replies
 					my_message = "-%s- %s".printf(usernick,my_message);
+					server.find_view(my_target).highlight_level = GUI.View.HighlightLevel.IMPORTANT;
+					Main.gui.queue_update_gui();
 					highlight(server.server+" - "+my_target,my_message);
 				}
 			}

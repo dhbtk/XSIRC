@@ -311,7 +311,7 @@ namespace XSIRC {
 				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE","$NICKCOLOR"};
 				string[] replacements = {usernick,username,usermask,my_message,nick_color};
 				string result = apply_message_style(MessageID.ACTION,replaced,replacements);
-				server.add_to_view(my_target,result);
+				server.add_to_view(my_target,result,true,GUI.View.HighlightLevel.NORMAL);
 			} else if(message.has_prefix("\x01") && message.has_suffix("\x01")) { // CTCPMSG
 				string my_message = message.replace("\x01","");
 				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$REQUEST"};
@@ -322,7 +322,7 @@ namespace XSIRC {
 				string[] replaced = {"$USERNICK","$USERNAME","$USERMASK","$MESSAGE","$USERRANK","$NICKCOLOR"};
 				string[] replacements = {usernick,username,usermask,message,userrank,nick_color};
 				string result = apply_message_style(MessageID.PRIVMSG,replaced,replacements);
-				server.add_to_view(my_target,result);
+				server.add_to_view(my_target,result,true,GUI.View.HighlightLevel.NORMAL);
 			}
 			return true;
 		}

@@ -25,6 +25,18 @@ namespace XSIRC {
 		public bool connected {get; private set; default = false;}
 		public bool sock_error {get; private set; default = false;}
 		public bool am_away {get; private set;}
+		public GUI.View.HighlightLevel highlight_level {
+			get {
+				int level = 0;
+				foreach(GUI.View view in views) {
+					if((int)view.highlight_level >= level) {
+						level = view.highlight_level;
+					}
+				}
+				stdout.printf("%d\n",level);
+				return (GUI.View.HighlightLevel)level;
+			}
+		}
 		private int nick_tries = 0;
 		private bool sent_ping = false;
 		// Socket
@@ -186,6 +198,7 @@ namespace XSIRC {
 			notebook.switch_page.connect((page,page_num) => {
 				Main.gui.update_gui(this,find_view_from_page_num((int)page_num));
 				find_view_from_page_num((int)page_num).label.label = Markup.escape_text(find_view_from_page_num((int)page_num).name);
+				find_view_from_page_num((int)page_num).highlight_level = GUI.View.HighlightLevel.NONE;
 			});
 			notebook.page_removed.connect(() => {
 				Main.gui.queue_update_gui();
@@ -1007,12 +1020,39 @@ namespace XSIRC {
 					IRCLogger.log(this,view,text);
 				}
 				view.add_text(text);
-				if(highlight) {
+				if(highlight && Main.gui.highlight_level_enabled[level]) {
+					string color = "";
+					if((int)view.highlight_level <= (int)level) {
+						view.highlight_level = level;
+					}
+					switch(view.highlight_level) {
+						case GUI.View.HighlightLevel.BORING:
+							color = Main.config.string["boring_highlight"];
+							break;
+						case GUI.View.HighlightLevel.NORMAL:
+							color = Main.config.string["normal_highlight"];
+							break;
+						case GUI.View.HighlightLevel.IMPORTANT:
+							color = Main.config.string["important_highlight"];
+							break;
+					}
 					if(current_view() != view) {
-						view.label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text(view.name));
+						view.label.label = "<span foreground=\"%s\">%s</span>".printf(color,Markup.escape_text(view.name));
 					}
 					if(Main.gui.current_server() != this) {
-						label.label = "<span foreground=\"red\">%s</span>".printf(Markup.escape_text((network != null ? network.name+" - " : "")+server));
+						stdout.printf("highlight_level at add_to_view: %d\n",this.highlight_level);
+						switch(this.highlight_level) {
+							case GUI.View.HighlightLevel.BORING:
+								color = Main.config.string["boring_highlight"];
+								break;
+							case GUI.View.HighlightLevel.NORMAL:
+								color = Main.config.string["normal_highlight"];
+								break;
+							case GUI.View.HighlightLevel.IMPORTANT:
+								color = Main.config.string["important_highlight"];
+								break;
+						}
+						label.label = "<span foreground=\"%s\">%s</span>".printf(color,Markup.escape_text((network != null ? network.name+" - " : "")+server));
 					}
 				}
 			}
