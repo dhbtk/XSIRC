@@ -460,18 +460,21 @@ namespace XSIRC {
 						sent_ping = false;
 						break;
 					case "JOIN":
-						if(find_channel(message) == null) {
+						// The replacing is needed in networks like Foonetic, which
+						// send the message as :foo!foo@foo JOIN :#channel
+						string channel_name = split[2].replace(":","");
+						if(find_channel(channel_name) == null) {
 							Channel channel = new Channel(this);
 							this.channels.add(channel);
-							channel.name = message;
-							open_view(message);
-							send("NAMES %s".printf(message));
+							channel.name = channel_name;
+							open_view(channel_name);
+							send("NAMES %s".printf(channel_name));
 						}
-						find_channel(message).in_channel = true;
+						find_channel(channel_name).in_channel = true;
 						Main.gui.update_gui(this);
-						find_channel(message).update_user(usernick);
-						send("MODE "+message);
-						Main.plugin_manager.on_join(this,usernick,username,usermask,message);
+						find_channel(channel_name).update_user(usernick);
+						send("MODE "+channel_name);
+						Main.plugin_manager.on_join(this,usernick,username,usermask,channel_name);
 						break;
 					case "PART":
 						message = message == s ? "" : message;
