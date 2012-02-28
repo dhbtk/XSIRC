@@ -328,15 +328,10 @@ namespace XSIRC {
 			Main.gui.update_gui(this);
 			last_received = time_t();
 			
-			/*
+			
 			SocketSource socket_source = socket_conn.socket.create_source(IOCondition.IN|IOCondition.PRI,null);
 			socket_source.set_callback(receive_data);
 			socket_source.attach(null);
-			*/
-			socket_source = new TimeoutSource(10);
-			socket_source.set_callback(receive_data);
-			socket_source.attach(null);
-			
 		}
 		
 		public void shutdown() {
@@ -366,7 +361,6 @@ namespace XSIRC {
 			sock_error = false;
 			socket_conn = null;
 			socket_source.destroy();
-			assert(socket_source.is_destroyed());
 			foreach(Channel channel in channels) {
 				channel.in_channel = false;
 			}
