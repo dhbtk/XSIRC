@@ -1,7 +1,7 @@
 /*
  * gui.vala
  *
- * Copyright (c) 2011 Eduardo Niehues
+ * Copyright (c) 2012 Eduardo Niehues
  * Distributed under the New BSD License; see ../LICENSE for details.
  */
 using Gee;
@@ -825,8 +825,8 @@ namespace XSIRC {
 			Gtk.AboutDialog d = new Gtk.AboutDialog();
 			d.authors = {"Eduardo Niehues (NieXS) <neo.niexs@gmail.com>","Simon Lindholm (operator[]) <simon.lindholm10@gmail.com>"};
 			d.artists = {"MonkeyofDoom (found in Foonetic and xkcd fora)"};
-			d.copyright = _("Copyright (c) 2010-11 Eduardo Niehues. All rights reserved.");
-			d.license = """Copyright (c) 2010-11, Eduardo Niehues.
+			d.copyright = _("Copyright (c) 2010-12 Eduardo Niehues. All rights reserved.");
+			d.license = """Copyright (c) 2010-12, Eduardo Niehues.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
