@@ -164,7 +164,6 @@ namespace XSIRC {
 			
 			Main.gui.apply_settings();
 			
-			//Main.gui.system_view.text_view.modify_font(Pango.FontDescription.from_string(Main.config.string["font"]));
 			foreach(Server server in Main.server_manager.servers) {
 				foreach(GUI.View view in server.views) {
 					view.text_view.modify_font(Pango.FontDescription.from_string(Main.config.string["font"]));

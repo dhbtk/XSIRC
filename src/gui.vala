@@ -20,7 +20,6 @@ namespace XSIRC {
 		public IRCEntry text_entry {get; private set;}
 		public Gtk.Entry topic_view {get; private set;}
 		public HashMap<View.HighlightLevel,bool> highlight_level_enabled = new HashMap<View.HighlightLevel,bool>();
-		//public View system_view {get; private set;}
 		public bool has_quit {get; private set;}
 		private const Gtk.ActionEntry[] menu_actions = {
 			// Client
@@ -136,8 +135,6 @@ namespace XSIRC {
 	</menubar>
 </ui>""";
 		private bool gui_updated = true;
-		//private unowned Thread server_threads;
-		public Mutex gui_mutex = new Mutex();
 		private PrefDialog preferences_dialog = null;
 		private NetworkList network_dialog = null;
 		private Gtk.VBox server_vbox;
@@ -333,9 +330,7 @@ namespace XSIRC {
 		}
 		
 		public void startup() {
-			/*system_view = new View("XSIRC");
-			servers_notebook.append_page(system_view.scrolled_window,system_view.label);
-			servers_notebook.show_all();*/
+			
 		}
 		
 		public void apply_settings() {
@@ -410,7 +405,7 @@ namespace XSIRC {
 					current_server().send("PRIVMSG %s :%s".printf(current_server().current_view().name,sent),(float)0.5,current_server().current_view().name);
 				}
 			} else if(s.has_prefix("/")) {
-				// IRC command, with exactly two exceptions
+				// IRC command
 				string sent = s.substring(1);
 				if(current_server() != null && current_server().current_view() != null) {
 					string result;
@@ -423,7 +418,6 @@ namespace XSIRC {
 			} else {
 				if(current_server() != null && current_server().current_view() != null && s.length > 0) {
 					current_server().send("PRIVMSG %s :%s".printf(current_server().current_view().name,s),(float)0.5,current_server().current_view().name);
-					//current_server().add_to_view(current_server().current_view().name,"<%s> %s".printf(current_server().nick,s));
 				}
 			}
 		}
@@ -454,7 +448,6 @@ namespace XSIRC {
 		}
 		
 		public void update_gui(Server? server,owned GUI.View? curr_view = null,bool force = false) {
-			//gui_mutex.lock();
 			if(server != null) {
 				// Only servers in the foreground can update the GUI
 				if(server != current_server() && !force) {
@@ -561,7 +554,6 @@ namespace XSIRC {
 					}
 				}
 			}
-			//gui_mutex.unlock();
 		}
 		
 		public void queue_update_gui() {
@@ -869,7 +861,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 		}
 		// Dialogs
 		public void open_connect_dialog() {
-			//gui_mutex.lock();
 			Gtk.Dialog dialog = new Gtk.Dialog.with_buttons(_("Connect to server"),main_window,Gtk.DialogFlags.MODAL|Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.Stock.OK,Gtk.ResponseType.ACCEPT,Gtk.Stock.CANCEL,Gtk.ResponseType.REJECT,null);
 			Gtk.HBox box = new Gtk.HBox(false,0);
 			box.pack_start(new Gtk.Label(_("Server URL:")),false,false,0);
@@ -904,7 +895,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.""";
 				}
 			});
 			dialog.show_all();
-			//gui_mutex.unlock();
 		}
 		
 		public void create_prefs_dialog() {
