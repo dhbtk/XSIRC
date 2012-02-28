@@ -153,11 +153,9 @@ namespace XSIRC {
 		public void open_server(string address,int port = 6667,bool ssl = false,string password = "",Network? network = null) {
 			Server server = new Server(address,port,ssl,password,network);
 			servers.add(server);
-			//gui_mutex.lock();
 			Main.gui.servers_notebook.append_page(server.notebook,server.label);
 			Main.gui.servers_notebook.show_all();
 			Main.gui.servers_notebook.page = Main.gui.servers_notebook.page_num(server.notebook);
-			//gui_mutex.unlock();
 		}
 		
 		public void on_connect(Server server) requires (server.network != null) {

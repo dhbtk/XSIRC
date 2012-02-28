@@ -253,7 +253,6 @@ namespace XSIRC {
 				}
 			}
 			s = s.strip().replace("\r","").replace("\n","");
-			//add_to_view(_("<server>"),_("DEBUG -- got: %s").printf(s));
 			handle_server_input(s);
 			return true;
 		}
@@ -599,12 +598,6 @@ namespace XSIRC {
 						chan.topic.time_set = (time_t)int.parse(split[5]);
 						add_to_view(split[3],_("Topic set by %s on %s").printf(split[4],gen_timestamp("%c",chan.topic.time_set)));
 						break;
-					/*case "305":
-						am_away = false;
-						break;
-					case "306":
-						am_away = true;
-						break;*/
 					// Error messages
 					case "401":
 						add_to_view(_("<server>"),_("[Error:401] No such nickname/channel: %s").printf(split[3]));
