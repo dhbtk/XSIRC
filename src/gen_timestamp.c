@@ -22,7 +22,6 @@ char *gen_timestamp(char *format,time_t time) {
 }
 
 #ifdef WINDOWS
-/* Opening a file never has been so easy! */
 void open_url_in_browser(char *url) {
 	ShellExecute(NULL,"open",url,NULL,NULL,SW_SHOW);
 }

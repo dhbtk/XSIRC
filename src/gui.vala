@@ -1,7 +1,7 @@
 /*
  * gui.vala
  *
- * Copyright (c) 2011 Diana Horbatiuk
+ * Copyright (c) 2012 Diana Horbatiuk
  * Distributed under the New BSD License; see ../LICENSE for details.
  */
 using Gee;
@@ -825,8 +825,8 @@ namespace XSIRC {
 			Gtk.AboutDialog d = new Gtk.AboutDialog();
 			d.authors = {"Diana Horbatiuk (NieXS) <diana@dianahorbatiuk.com>","Simon Lindholm (operator[]) <simon.lindholm10@gmail.com>"};
 			d.artists = {"MonkeyofDoom (found in Foonetic and xkcd fora)"};
-			d.copyright = _("Copyright (c) 2010-11 Diana Horbatiuk. All rights reserved.");
-			d.license = """Copyright (c) 2010-11, Diana Horbatiuk.
+			d.copyright = _("Copyright (c) 2010-12 Diana Horbatiuk. All rights reserved.");
+			d.license = """Copyright (c) 2010-12, Diana Horbatiuk.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
