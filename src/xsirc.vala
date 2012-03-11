@@ -12,10 +12,4 @@ namespace XSIRC {
 		public static MacroManager macro_manager;
 		public static PluginManager plugin_manager;
 	}
-	
-	void main_loop() {
-		Main.plugin_manager.on_startup();
-		Gtk.main();
-		Main.plugin_manager.on_shutdown();
-	}
 }

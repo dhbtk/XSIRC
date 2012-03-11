@@ -247,7 +247,7 @@ namespace XSIRC {
 			}
 		}
 		
-		internal void on_startup() {
+		public void on_startup() {
 			foreach(Plugin plugin in plugins) {
 				if(plugin.enabled && !plugin.on_startup()) {
 					break;
@@ -255,7 +255,7 @@ namespace XSIRC {
 			}
 		}
 		
-		internal void on_shutdown() {
+		public void on_shutdown() {
 			foreach(Plugin plugin in plugins) {
 				if(plugin.enabled && !plugin.on_shutdown()) {
 					break;
