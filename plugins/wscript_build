@@ -15,7 +15,7 @@ plugins = [
 for plugin in plugins:
 	opt = {
 		'features': 'c cshlib',
-		'packages': ['xsirc'],
+		'packages': ['libxsirc'],
 		'vapi_dirs': ['../src', '../vapi'],
 		'includes': ['../src', '../vapi'],
 		'cflags': ['-include','config.h','-g'],

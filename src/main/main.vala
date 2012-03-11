@@ -49,8 +49,9 @@ int main(string[] args) {
 	Main.gui.startup();
 	Main.plugin_manager.startup();
 	Main.server_manager.startup();
-
-	main_loop();
+	Main.plugin_manager.on_startup();
+	Gtk.main();
+	Main.plugin_manager.on_shutdown();
 	Main.server_manager.shutdown();
 	return 0;
 }
