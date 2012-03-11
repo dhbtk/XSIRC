@@ -42,7 +42,6 @@ namespace XSIRC {
 		// Socket
 		private SocketClient socket_client;
 		public SocketConnection socket_conn;
-		private Source socket_source;
 		private IOChannel io_channel;
 		public bool connecting = false;
 		
@@ -359,7 +358,6 @@ namespace XSIRC {
 			connected = false;
 			sock_error = false;
 			socket_conn = null;
-			socket_source.destroy();
 			foreach(Channel channel in channels) {
 				channel.in_channel = false;
 			}
