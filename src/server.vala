@@ -365,7 +365,7 @@ namespace XSIRC {
 			Main.gui.update_gui(this);
 		}
 		
-		public void send(string s,float priority = 0.5,string view_name = "") {
+		public void send(string s,double priority = 0.5,string view_name = "") {
 			if(s.down().has_prefix("privmsg ") || s.down().has_prefix("notice ")) {
 				string prefix = s.split(" :")[0] + " :";
 				string message = s.substring(prefix.length);
