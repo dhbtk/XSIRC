@@ -110,7 +110,7 @@ namespace XSIRC {
 
 			if(c.foreground.empty && c.background.empty &&
 			   !c.bold && !c.italic && !c.underlined) {
-				textview.buffer.insert(start_iter,added,(int)added.length);
+				textview.buffer.insert(ref start_iter,added,(int)added.length);
 			} else {
 				string tag_name = "%s%s%c".printf(c.foreground.serialize(),
 				                                  c.background.serialize(),

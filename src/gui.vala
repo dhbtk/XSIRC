@@ -183,8 +183,8 @@ namespace XSIRC {
 					text = what+"\n";
 				}
 				MIRCParser parser = new MIRCParser(text);
-				bool scrolled = (int)scrolled_window.vadjustment.value == (int)(scrolled_window.vadjustment.upper -
-				                                                                scrolled_window.vadjustment.page_size);
+				stdout.printf("VAdjustment value: %d; VAdjustment upper: %f; VAdjustment page_size: %f; upper-page_size: %d\n",(int)scrolled_window.vadjustment.value,scrolled_window.vadjustment.upper,scrolled_window.vadjustment.page_size,(int)(scrolled_window.vadjustment.upper - scrolled_window.vadjustment.page_size));
+				bool scrolled = ((int)(scrolled_window.vadjustment.upper - scrolled_window.vadjustment.page_size)) - (int)scrolled_window.vadjustment.value <= 35;
 				parser.insert(text_view);
 				if(scrolled) {
 					Gtk.TextIter iter;
