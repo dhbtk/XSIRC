@@ -93,7 +93,7 @@ namespace XSIRC {
 			description = _("Customizable messages.");
 			author = "NieXS";
 			version = "0.1";
-			priority = int.MAX;
+			priority = int.MAX-1;
 			prefs_widget = null;
 			load_default_messages();
 			load_messages();
