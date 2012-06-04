@@ -31,7 +31,7 @@ namespace XSIRC {
 			description = _("Adds support for configurable highlights.");
 			author = "NieXS";
 			version = "0.1";
-			priority = 0;
+			priority = int.MAX;
 			Gtk.VBox vbox = new Gtk.VBox(false,0);
 			prefs_widget = vbox;
 			load_settings();
