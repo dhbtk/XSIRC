@@ -1,13 +1,8 @@
 GUI:
-	* Add more colors: color server messages, JOINs, PARTs, etc and nicknames
-	  differently, so that text is easily identifiable at glance.
-	* Redo the Messages and Notifications preferences (they are terrifyingly ugly)
 	* Add right-click menus to tabs, containing things like "close tab", "rejoin
 	  channel", etc.
 	* Make <server> tab toggleable
-	* Overhaul the highlight system: allow colors to be configurable
 	* Fix beeping on backspace under Windows
-	*
 Server:
 	* Treat non-RFC compliant servers better: networks like GIMPnet send the AUTH
 	  notices as "NOTICE AUTH :*** msg" instead of ":server NOTICE AUTH :***",
