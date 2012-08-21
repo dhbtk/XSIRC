@@ -20,7 +20,7 @@ for plugin in plugins:
 		'includes': ['../src', '../vapi'],
 		'cflags': ['-include','config.h','-g'],
 		'uselib': ['GMODULE', 'GLIB'],
-		'use': 'xsirc',
+		'use': 'libxsirc',
 		'linkflags': ['-g'],
 		'install_path': bld.env['PREFIX']+'/lib/xsirc'
 	}
