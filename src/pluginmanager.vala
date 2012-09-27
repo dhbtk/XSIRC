@@ -43,14 +43,6 @@ namespace XSIRC {
 		}
 		
 		public void startup() {
-#if WINDOWS
-			add_plugin(new HighlightsPlugin());
-			add_plugin(new TestPlugin());
-			add_plugin(new MessagesPlugin());
-			add_plugin(new CTCPPlugin());
-			add_plugin(new IgnorePlugin());
-			add_plugin(new AchievementsPlugin());
-#else
 			load_plugins();
 			
 			// Infodump for plugins, testing stuff
@@ -61,7 +53,6 @@ namespace XSIRC {
 				stdout.printf("\tVersion: %s\n",plugin.version);
 				stdout.printf("\tAuthor: %s\n",plugin.author);
 			}
-#endif
 		}
 		
 		private LinkedList<string> load_plugins() {
