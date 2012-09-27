@@ -326,8 +326,11 @@ namespace XSIRC {
 			Main.gui.update_gui(this);
 			last_received = time_t();
 			
-			
-			SocketSource socket_source = socket_conn.socket.create_source(IOCondition.IN|IOCondition.PRI,null);
+#if WINDOWS
+			TimeoutSource socket_source = new TimeoutSource(10);
+#else			
+			SocketSource socket_source = socket_conn.socket.create_source(IOCondition.IN,null);
+#endif
 			socket_source.set_callback(receive_data);
 			socket_source.attach(null);
 		}
