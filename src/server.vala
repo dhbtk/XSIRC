@@ -119,7 +119,7 @@ namespace XSIRC {
 					raw_users.add(nick);
 				}
 				users.sort();
-				raw_users.sort((CompareFunc)ircusrcmp);
+				raw_users.sort((CompareDataFunc)ircusrcmp);
 				Main.gui.update_gui(server);
 			}
 			
@@ -159,7 +159,7 @@ namespace XSIRC {
 					users.remove_at(index);
 				}
 				users.sort();
-				raw_users.sort((CompareFunc)ircusrcmp);
+				raw_users.sort((CompareDataFunc)ircusrcmp);
 				Main.gui.update_gui(server);
 			}
 		}
@@ -884,7 +884,7 @@ namespace XSIRC {
 						Channel channel = find_channel(split[3]);
 						return_if_fail(channel != null);
 						channel.userlist_received = true;
-						channel.raw_users.sort((CompareFunc)ircusrcmp);
+						channel.raw_users.sort((CompareDataFunc)ircusrcmp);
 						channel.users.sort();
 						// User list
 						Main.gui.update_gui(this);
