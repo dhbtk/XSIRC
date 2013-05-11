@@ -28,7 +28,7 @@ if not 'windows' in bld.env:
 	bld.shlib(
 		source = bld.path.ant_glob('*.vala'),
 		features  = 'c cshlib',
-		packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix config glib-2.0 gmodule-2.0',
+		packages  = 'gtk+-2.0 gio-2.0 gee-0.8 posix config glib-2.0 gmodule-2.0',
 		vapi_dirs = '../vapi',
 		includes  = '../vapi',
 		target    = 'libxsirc',
@@ -42,7 +42,7 @@ if not 'windows' in bld.env:
 	bld.program(
 		source    = 'main/main.vala',
 		features  = 'c cprogram',
-		packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix config glib-2.0 gmodule-2.0 libxsirc',
+		packages  = 'gtk+-2.0 gio-2.0 gee-0.8 posix config glib-2.0 gmodule-2.0 libxsirc',
 		vapi_dirs = '../vapi',
 		includes  = '../vapi .',
 		target    = 'xsirc',

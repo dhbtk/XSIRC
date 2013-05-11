@@ -114,7 +114,7 @@ namespace XSIRC {
 					matches.add(view.name);
 				}
 				completing = true;
-				matches.sort((CompareFunc)strcasecmp);
+				matches.sort((CompareDataFunc)strcasecmp);
 				complete(server,view,reverse);
 			}
 		}

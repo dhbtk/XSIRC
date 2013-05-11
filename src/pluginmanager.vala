@@ -136,7 +136,7 @@ namespace XSIRC {
 			// suboptimal to an O(N log N) solution of sorting the plugins
 			// only after inserting all of them, or using a heap, but this
 			// doesn't matter in practice since N is about 10.
-			plugins.sort((CompareFunc)plugincmp);
+			plugins.sort((CompareDataFunc)plugincmp);
 		}
 		
 		public Plugin? find_plugin(string name) {
