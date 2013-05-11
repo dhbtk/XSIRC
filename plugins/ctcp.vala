@@ -128,8 +128,6 @@ public class CTCPPlugin : Plugin {
 	}
 }
 
-#if !WINDOWS
 Type register_plugin(TypeModule module) {
 	return typeof(CTCPPlugin);
 }
-#endif

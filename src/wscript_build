@@ -8,8 +8,9 @@ source = bld.path.ant_glob('*.vala')
 flags = ['-g']
 
 if bld.env['windows'] == 'yes':
-	flags.extend(['-mingw32', '-mwindows'])
-	source.extend(['../plugins/achievements.vala', '../plugins/testplugin.vala', '../plugins/highlights.vala', '../plugins/messages.vala', '../plugins/ctcp.vala', '../plugins/ignore.vala'])
+	flags.extend(['-mms-bitfields', '-mwindows'])
+#	source.extend(['../plugins/achievements.vala', '../plugins/testplugin.vala', '../plugins/highlights.vala', '../plugins/messages.vala', '../plugins/ctcp.vala', '../plugins/ignore.vala'])
+
 
 bld.stlib(
 	source = 'gen_timestamp.c',
@@ -18,36 +19,28 @@ bld.stlib(
 	target = 'timestamp'
 )
 
-if 'windows' in bld.env:
-	bld.stlib(
-		source = 'gen_timestamp_shlib.c',
-		target = 'timestamp_shlib'
-	)
+bld.shlib(
+	source = bld.path.ant_glob('*.vala'),
+	features  = 'c cshlib',
+	packages  = 'gtk+-2.0 gio-2.0 gee-1.0 posix config glib-2.0 gmodule-2.0',
+	vapi_dirs = '../vapi',
+	includes  = '../vapi',
+	target    = 'libxsirc',
+	use       = 'timestamp',
+	cflags    = ['-include','config.h','-g'],
+	linkflags = flags,
+	uselib    = 'GTK GLIB GIO GEE GMODULE',
+)
 
-if not 'windows' in bld.env:
-	bld.shlib(
-		source = bld.path.ant_glob('*.vala'),
-		features  = 'c cshlib',
-		packages  = 'gtk+-2.0 gio-2.0 gee-0.8 posix config glib-2.0 gmodule-2.0',
-		vapi_dirs = '../vapi',
-		includes  = '../vapi',
-		target    = 'libxsirc',
-		use       = 'timestamp',
-		cflags    = ['-include','config.h','-g'],
-		linkflags = flags,
-		uselib    = 'GTK GLIB GIO GEE GMODULE',
-	)
-	
-if not 'windows' in bld.env:
-	bld.program(
-		source    = 'main/main.vala',
-		features  = 'c cprogram',
-		packages  = 'gtk+-2.0 gio-2.0 gee-0.8 posix config glib-2.0 gmodule-2.0 libxsirc',
-		vapi_dirs = '../vapi',
-		includes  = '../vapi .',
-		target    = 'xsirc',
-		use       = 'timestamp libxsirc',
-		cflags    = ['-include','config.h','-g'],
-		linkflags = flags,
-		uselib    = 'GTK GLIB GIO GEE GMODULE',
-	)
+bld.program(
+	source    = 'main/main.vala',
+	features  = 'c cprogram',
+	packages  = 'gtk+-2.0 gio-2.0 gee-0.8 posix config glib-2.0 gmodule-2.0 libxsirc',
+	vapi_dirs = '../vapi',
+	includes  = '../vapi .',
+	target    = 'xsirc',
+	use       = 'timestamp libxsirc',
+	cflags    = ['-include','config.h','-g'],
+	linkflags = flags,
+	uselib    = 'GTK GLIB GIO GEE GMODULE',
+)

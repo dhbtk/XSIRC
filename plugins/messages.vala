@@ -467,9 +467,7 @@ namespace XSIRC {
 	}
 }
 
-#if !WINDOWS
 //[ModuleInit]
 Type register_plugin(TypeModule module) {
 	return typeof(XSIRC.MessagesPlugin);
 }
-#endif

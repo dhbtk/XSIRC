@@ -39,8 +39,6 @@ public class IgnorePlugin : Plugin {
 	}
 }
 
-#if !WINDOWS
 Type register_type(TypeModule module) {
 	return typeof(IgnorePlugin);
 }
-#endif

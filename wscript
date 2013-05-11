@@ -8,15 +8,6 @@ import os
 import Options
 APPNAME = "XSIRC"
 VERSION = "1.3"
-# Shamefully stolen from midori's wscript
-try:
-	git = Utils.cmd_output(['git','rev-parse','--short','HEAD'],silent=True)
-	if git:
-		VERSION = (VERSION + '-' + git).strip()
-except:
-	pass
-
-
 top = "."
 out = "build"
 
@@ -49,7 +40,7 @@ def configure(conf):
 		conf.env['LOCALEDIR'] = 'share/locale'
 		conf.define('WINDOWS','WINDOWS')
 	else:
-		conf.define('OS','Linux') # Sorry, OS X users (if you exist at all)
+		conf.define('OS','Linux')
 
 	conf.check_cfg(package='glib-2.0',uselib_store='GLIB',atleast_version='2.10.0',mandatory=1,args='--cflags --libs')
 	conf.check_cfg(package='gtk+-2.0',uselib_store='GTK',atleast_version='2.16.0',mandatory=1,args='--cflags --libs')
@@ -74,10 +65,9 @@ def configure(conf):
 	
 def build(bld):
 	bld.add_subdirs('src')
-	if not 'windows' in bld.env:
-		bld.add_subdirs('plugins')
-		bld(features='intltool_po',appname='xsirc',podir='po',install_path=bld.env['LOCALEDIR'])
-	bld.install_files(bld.env['PREFIX']+'/share/licenses/xsirc','LICENSE') # Arch Linux thing
+	bld.add_subdirs('plugins')
+	bld(features='intltool_po',appname='xsirc',podir='po',install_path=bld.env['LOCALEDIR'])
+	bld.install_files(bld.env['PREFIX']+'/share/licenses/xsirc','LICENSE')
 	# Icon
 	bld.install_files(bld.env['PREFIX']+'/share/pixmaps','xsirc.png')
 	# Preferences ui
